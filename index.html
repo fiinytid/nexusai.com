@@ -643,7 +643,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 const K = {
   claude: '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',
   openai: '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',
-  gemini: 'AIzaSyAYqTd_c6_RjetfkUBSm1dFkBKGJiMSzso'
+  gemini: 'AIzaSyChga3ZG5a3I3kaO0C7UWB761NgsysJ734'
 };
 
 // UNLIMITED credit users (by Roblox username)
@@ -1081,7 +1081,7 @@ async function callGemini(model, img) {
     if (l.role==='user') l.parts.push({inline_data:{mime_type:img.split(';')[0].split(':')[1],data:img.split(',')[1]}});
   }
   const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${K.gemini}`,{
-    method:'POST',headers:{'Content-Type':'application/json'},
+    method:'POST',headers:{'Content-Type':'application/json', 'X-goog-api-key':'${K.gemini}'},
     body:JSON.stringify({contents,systemInstruction:{parts:[{text:SYS}]},generationConfig:{maxOutputTokens:8192,temperature:.7}})
   });
   if (!r.ok) { const e=await r.json().catch(()=>({})); throw new Error(e.error?.message||`Gemini error ${r.status}`); }
