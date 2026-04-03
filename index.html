@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS AI — Roblox Dev Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+:root {
+  --bg:    #030312; --bg2: #06071a; --bg3: #0a0b22;
+  --card:  rgba(0,229,255,.04); --hover: rgba(0,229,255,.07);
+  --cyan:  #00e5ff; --cyan2: rgba(0,229,255,.35); --cyan3: rgba(0,229,255,.12);
+  --purple:#8800ff; --purple2:rgba(136,0,255,.35);
+  --pink:  #ff2d6b; --green:#00ffaa; --yellow:#ffd600; --orange:#ff7700;
+  --text:  #b8cfff; --dim: #3a4a7a;
+  --b:     rgba(0,229,255,.12); --bb: rgba(0,229,255,.3);
+  --gc:    0 0 20px rgba(0,229,255,.15); --gp: 0 0 20px rgba(136,0,255,.15);
+  --r: 8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--text);font-size:13px;}
+body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0,229,255,.018)1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.018)1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+
+/* ───── LAYOUT ───── */
+#app{display:grid;grid-template-columns:260px 1fr 280px;height:100vh;position:relative;z-index:1;}
+
+/* ───── SIDEBAR ───── */
+#sb{display:flex;flex-direction:column;background:var(--bg2);border-right:1px solid var(--b);overflow:hidden;}
+.sb-head{padding:16px 14px 12px;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.sb-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--cyan),var(--purple));border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:12px;color:white;flex-shrink:0;}
+.sb-logo-text{font-family:'Orbitron',sans-serif;font-weight:900;font-size:13px;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;}
+.sb-logo-sub{font-size:9px;color:var(--dim);}
+.sb-user{padding:9px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--b);cursor:pointer;transition:.15s;flex-shrink:0;}
+.sb-user:hover{background:var(--hover);}
+.sb-av{width:28px;height:28px;border-radius:50%;border:1px solid var(--cyan2);object-fit:cover;}
+.sb-un{font-size:11px;color:white;font-weight:500;}
+.sb-logout{margin-left:auto;font-size:10px;color:var(--dim);padding:3px 6px;border-radius:4px;cursor:pointer;transition:.12s;}
+.sb-logout:hover{color:var(--pink);}
+.creds{margin:9px 12px;padding:9px 11px;background:linear-gradient(135deg,rgba(255,214,0,.06),rgba(255,119,0,.06));border:1px solid rgba(255,214,0,.18);border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.cred-v{font-family:'Orbitron',sans-serif;font-size:17px;color:var(--yellow);font-weight:700;}
+.cred-l{font-size:9px;color:rgba(255,214,0,.6);text-transform:uppercase;letter-spacing:1.5px;}
+.btn-nc{margin:0 12px 8px;padding:8px 11px;background:rgba(0,229,255,.06);border:1px solid var(--b);border-radius:var(--r);color:var(--cyan);font-size:11px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:6px;width:calc(100% - 24px);}
+.btn-nc:hover{border-color:var(--cyan);background:var(--hover);}
+.model-wrap{margin:0 12px 6px;position:relative;flex-shrink:0;}
+.model-sel{padding:8px 10px;background:var(--card);border:1px solid var(--b);border-radius:var(--r);cursor:pointer;display:flex;align-items:center;gap:6px;transition:.15s;}
+.model-sel:hover{border-color:var(--bb);}
+.mi{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.mi.g{background:rgba(66,133,244,.18);}
+.mi.c{background:rgba(255,150,80,.18);}
+.mi.o{background:rgba(0,255,150,.18);}
+.mn{font-size:11px;color:white;flex:1;}
+.mb{font-size:8px;padding:1px 5px;border-radius:3px;}
+.mb.f{background:rgba(0,255,170,.1);color:var(--green);}
+.mb.s{background:rgba(0,229,255,.1);color:var(--cyan);}
+.mb.p{background:rgba(136,0,255,.12);color:#bb44ff;}
+.mb.u{background:rgba(255,45,107,.1);color:var(--pink);}
+.mc{color:var(--dim);font-size:9px;transition:.2s;}
+.model-sel.open .mc{transform:rotate(180deg);}
+.model-dd{position:absolute;top:calc(100% + 3px);left:0;right:0;background:var(--bg3);border:1px solid var(--b);border-radius:var(--r);z-index:300;display:none;max-height:280px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.7);}
+.model-dd.open{display:block;}
+.mg{padding:6px 10px 3px;font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:2px;border-top:1px solid var(--b);}
+.mg:first-child{border-top:none;}
+.mo{padding:6px 10px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:.1s;}
+.mo:hover{background:var(--hover);}
+.mo.act{background:rgba(0,229,255,.06);}
+.mo-n{font-size:11px;color:white;flex:1;}
+.mo-s{font-size:9px;color:var(--dim);}
+.sec-lbl{padding:5px 14px 3px;font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:2px;flex-shrink:0;}
+.convs{flex:1;overflow-y:auto;padding:3px 7px;}
+.convs::-webkit-scrollbar{width:2px;}
+.convs::-webkit-scrollbar-thumb{background:var(--b);}
+.ci{padding:6px 9px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.1s;}
+.ci:hover{background:var(--hover);}
+.ci.act{background:rgba(0,229,255,.06);border-left:2px solid var(--cyan);padding-left:7px;}
+.ci-title{font-size:11px;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ci-time{font-size:9px;color:var(--dim);flex-shrink:0;}
+.ci-del{font-size:10px;color:var(--dim);opacity:0;padding:1px 4px;border-radius:3px;cursor:pointer;transition:.1s;}
+.ci:hover .ci-del{opacity:1;}
+.ci-del:hover{color:var(--pink);}
+.conv-empty{padding:16px;text-align:center;color:var(--dim);font-size:11px;}
+
+/* ───── CHAT MAIN ───── */
+#chat{display:flex;flex-direction:column;overflow:hidden;}
+.chat-hdr{padding:12px 16px;border-bottom:1px solid var(--b);background:var(--bg2);display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.chat-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:white;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.plug-badge{display:flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1px solid;font-size:9px;cursor:pointer;transition:.15s;flex-shrink:0;}
+.plug-badge.off{border-color:rgba(255,45,107,.3);color:var(--pink);background:rgba(255,45,107,.06);}
+.plug-badge.on{border-color:rgba(0,255,170,.3);color:var(--green);background:rgba(0,255,170,.06);}
+.pdot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+.pdot.pulse{animation:pd 1.8s infinite;}
+@keyframes pd{0%,100%{opacity:1}50%{opacity:.25}}
+#msgs{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;}
+#msgs::-webkit-scrollbar{width:2px;}
+#msgs::-webkit-scrollbar-thumb{background:var(--b);}
+
+/* Not-connected overlay */
+#not-connected{position:absolute;inset:0;background:rgba(3,3,18,.88);z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+#not-connected.hidden{display:none;}
+.nc-box{text-align:center;max-width:340px;padding:32px 28px;background:var(--bg2);border:1px solid var(--b);border-radius:14px;box-shadow:var(--gc);}
+.nc-icon{font-size:40px;margin-bottom:14px;}
+.nc-title{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--pink);margin-bottom:8px;}
+.nc-desc{font-size:11px;color:var(--dim);line-height:1.7;margin-bottom:18px;}
+.nc-step{display:flex;align-items:flex-start;gap:9px;padding:7px 10px;background:rgba(0,229,255,.04);border:1px solid var(--b);border-radius:6px;margin-bottom:6px;text-align:left;}
+.nc-step-n{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--cyan);font-weight:700;flex-shrink:0;margin-top:1px;}
+.nc-step-t{font-size:10px;color:var(--text);line-height:1.5;}
+.nc-step code{color:var(--cyan);background:rgba(0,229,255,.08);padding:1px 4px;border-radius:3px;font-size:9.5px;}
+.btn-nc-retry{margin-top:14px;padding:10px 20px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:var(--r);color:white;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.5px;}
+.btn-nc-retry:hover{opacity:.85;}
+
+/* Welcome */
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;gap:12px;padding:40px;color:var(--dim);}
+.wt{font-family:'Orbitron',sans-serif;font-size:30px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ws{font-size:12px;line-height:1.8;max-width:360px;}
+.suggs{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-width:440px;margin-top:6px;}
+.sugg{padding:10px 12px;background:var(--card);border:1px solid var(--b);border-radius:var(--r);cursor:pointer;transition:.18s;text-align:left;font-size:11px;color:var(--text);line-height:1.5;}
+.sugg:hover{border-color:var(--cyan2);background:var(--hover);color:white;}
+.sugg strong{color:var(--cyan);display:block;margin-bottom:2px;font-size:10.5px;}
+
+/* Messages */
+.msg{display:flex;gap:9px;animation:mi .25s ease;}
+.msg.user{flex-direction:row-reverse;}
+@keyframes mi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.av{width:28px;height:28px;border-radius:50%;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.av img{width:100%;height:100%;object-fit:cover;}
+.av.ai{background:linear-gradient(135deg,var(--cyan),var(--purple));font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;color:white;}
+.mb-wrap{max-width:76%;display:flex;flex-direction:column;gap:2px;}
+.msg-sender{font-size:9px;color:var(--dim);display:flex;align-items:center;gap:5px;padding:0 2px;}
+.msg.user .msg-sender{flex-direction:row-reverse;}
+.bubble{padding:10px 12px;border-radius:9px;line-height:1.65;font-size:12.5px;}
+.msg.user .bubble{background:linear-gradient(135deg,rgba(0,229,255,.09),rgba(136,0,255,.09));border:1px solid rgba(0,229,255,.16);border-radius:9px 2px 9px 9px;color:white;}
+.msg.ai .bubble{background:var(--bg2);border:1px solid var(--b);border-radius:2px 9px 9px 9px;color:var(--text);}
+.bubble pre{background:rgba(0,0,0,.6);border:1px solid rgba(0,229,255,.09);border-radius:6px;padding:11px 13px;overflow-x:auto;margin:7px 0;font-size:11px;}
+.bubble code{background:rgba(0,229,255,.08);padding:1px 4px;border-radius:3px;font-size:11px;color:var(--cyan);}
+.bubble pre code{background:none;padding:0;color:#9cd4ff;}
+.bubble p{margin-bottom:6px;} .bubble p:last-child{margin-bottom:0;}
+.bubble h1,.bubble h2,.bubble h3{color:var(--cyan);margin:9px 0 5px;font-family:'Orbitron',sans-serif;}
+.bubble h1{font-size:14px;} .bubble h2{font-size:12.5px;} .bubble h3{font-size:11.5px;}
+.bubble ul,.bubble ol{padding-left:16px;margin-bottom:6px;} .bubble li{margin-bottom:2px;}
+.bubble strong{color:white;} .bubble a{color:var(--cyan);}
+.bubble blockquote{border-left:2px solid var(--cyan2);padding:5px 10px;margin:7px 0;color:var(--dim);font-style:italic;}
+.bubble table{width:100%;border-collapse:collapse;margin:7px 0;font-size:11px;}
+.bubble th,.bubble td{padding:5px 9px;border:1px solid var(--b);}
+.bubble th{background:rgba(0,229,255,.06);color:var(--cyan);}
+.msg-img{max-width:200px;border-radius:6px;margin-top:7px;border:1px solid var(--b);}
+.msg-acts{display:flex;gap:5px;padding:3px 1px;}
+.mab{font-size:9.5px;color:var(--dim);background:none;border:none;cursor:pointer;padding:2px 5px;border-radius:3px;transition:.1s;display:flex;align-items:center;gap:2px;}
+.mab:hover{color:var(--cyan);background:var(--cyan3);}
+.typing{display:flex;align-items:center;gap:8px;}
+.tdots{display:flex;gap:4px;padding:11px 13px;background:var(--bg2);border:1px solid var(--b);border-radius:2px 9px 9px 9px;}
+.tdots span{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:td 1.2s infinite;}
+.tdots span:nth-child(2){animation-delay:.2s;} .tdots span:nth-child(3){animation-delay:.4s;}
+@keyframes td{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+
+/* Input */
+.inp-area{padding:12px 16px;border-top:1px solid var(--b);background:var(--bg2);flex-shrink:0;}
+.img-row{display:none;gap:7px;margin-bottom:7px;}
+.img-row.show{display:flex;}
+.img-thumb{position:relative;}
+.img-thumb img{width:52px;height:52px;border-radius:5px;object-fit:cover;border:1px solid var(--b);}
+.img-rm{position:absolute;top:-5px;right:-5px;width:16px;height:16px;background:var(--pink);border:none;border-radius:50%;color:white;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.inp-box{background:var(--bg3);border:1px solid var(--b);border-radius:11px;transition:.2s;overflow:hidden;}
+.inp-box:focus-within{border-color:var(--cyan2);box-shadow:0 0 0 2px rgba(0,229,255,.06);}
+#inp{width:100%;background:transparent;border:none;outline:none;color:white;font-family:'JetBrains Mono',monospace;font-size:13px;padding:12px 14px;resize:none;min-height:46px;max-height:130px;line-height:1.5;}
+#inp::placeholder{color:var(--dim);}
+.inp-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 9px;border-top:1px solid var(--b);}
+.inp-l{display:flex;align-items:center;gap:5px;}
+.ib{width:26px;height:26px;border-radius:5px;border:1px solid var(--b);background:transparent;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:.12s;}
+.ib:hover{color:var(--cyan);border-color:var(--cyan2);}
+.cur-m{font-size:9px;color:var(--dim);display:flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;background:var(--card);}
+.btn-send{background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:7px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:white;font-size:14px;transition:.18s;}
+.btn-send:hover{opacity:.82;box-shadow:var(--gp);transform:scale(1.04);}
+.btn-send:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+
+/* ───── PLUGIN PANEL ───── */
+#pp{display:flex;flex-direction:column;background:var(--bg2);border-left:1px solid var(--b);overflow:hidden;}
+.pp-hdr{padding:12px 13px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.pp-title{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:var(--cyan);letter-spacing:1px;}
+.pp-tabs{display:flex;gap:3px;}
+.pt{padding:3px 7px;border-radius:4px;font-size:9px;cursor:pointer;color:var(--dim);border:1px solid transparent;transition:.1s;}
+.pt.act{background:rgba(0,229,255,.08);border-color:var(--b);color:var(--cyan);}
+.pt:hover:not(.act){color:var(--text);}
+.pp-body{flex:1;overflow-y:auto;display:flex;flex-direction:column;}
+.pp-body::-webkit-scrollbar{width:2px;}
+.pp-body::-webkit-scrollbar-thumb{background:var(--b);}
+.pp-off{padding:20px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.pp-orb{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.pp-orb.off{background:rgba(255,45,107,.07);border:2px solid rgba(255,45,107,.2);}
+.pp-orb.on{background:rgba(0,255,170,.07);border:2px solid rgba(0,255,170,.25);animation:orbGlow 2s infinite;}
+@keyframes orbGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,255,170,.2)}50%{box-shadow:0 0 0 8px rgba(0,255,170,.0)}}
+.pp-conn-title{font-size:12px;color:white;font-weight:500;}
+.pp-conn-sub{font-size:10px;color:var(--dim);line-height:1.6;max-width:200px;}
+.btn-install{padding:7px 13px;background:rgba(0,229,255,.07);border:1px solid var(--b);border-radius:var(--r);color:var(--cyan);font-size:10px;cursor:pointer;transition:.15s;width:100%;}
+.btn-install:hover{border-color:var(--cyan);background:rgba(0,229,255,.12);}
+.ws-hdr{padding:7px 12px;font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:2px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.ws-ref{font-size:12px;cursor:pointer;color:var(--dim);transition:.1s;}
+.ws-ref:hover{color:var(--cyan);}
+.ws-tree{flex:1;overflow-y:auto;padding:5px;}
+.tn{display:flex;align-items:center;gap:5px;padding:3px 7px;border-radius:4px;cursor:pointer;font-size:10.5px;color:var(--text);transition:.1s;}
+.tn:hover{background:var(--hover);}
+.tn.sel{background:rgba(0,229,255,.07);color:var(--cyan);}
+.tn.d1{padding-left:18px;} .tn.d2{padding-left:30px;} .tn.d3{padding-left:42px;}
+.ti{font-size:11px;flex-shrink:0;}
+.tl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc{font-size:8px;color:var(--dim);}
+.se{display:none;flex-direction:column;border-top:1px solid var(--b);}
+.se.show{display:flex;}
+.se-hdr{padding:7px 10px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--b);}
+.se-n{font-size:10.5px;color:var(--cyan);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.se-close{cursor:pointer;color:var(--dim);font-size:12px;}
+.se-close:hover{color:var(--pink);}
+.se-code{padding:9px;font-size:10px;color:var(--text);line-height:1.6;background:rgba(0,0,0,.3);min-height:70px;max-height:180px;overflow-y:auto;white-space:pre;tab-size:2;}
+.log-hdr{padding:6px 12px;font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:2px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-top:1px solid var(--b);flex-shrink:0;}
+.log-hdr:hover{color:var(--text);}
+.log-ents{max-height:140px;overflow-y:auto;padding:5px 9px;}
+.le{padding:3px 7px;font-size:9.5px;border-left:2px solid var(--b);margin-bottom:3px;color:var(--dim);display:flex;gap:5px;}
+.le.ok{border-color:rgba(0,255,170,.3);color:var(--green);}
+.le.err{border-color:rgba(255,45,107,.3);color:var(--pink);}
+.le.info{border-color:rgba(0,229,255,.25);color:var(--cyan);}
+.le-t{color:var(--dim);font-size:8px;flex-shrink:0;opacity:.6;}
+
+/* Modal */
+.ov{position:fixed;inset:0;background:rgba(3,3,18,.88);z-index:500;display:none;align-items:center;justify-content:center;}
+.ov.show{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--b);border-radius:12px;padding:26px;width:480px;max-width:92vw;box-shadow:var(--gc);}
+.modal-t{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--cyan);margin-bottom:12px;}
+.modal-b{font-size:11.5px;color:var(--text);line-height:1.7;margin-bottom:16px;}
+.modal-b code{font-family:'JetBrains Mono';background:rgba(0,229,255,.08);padding:1px 4px;border-radius:3px;color:var(--cyan);}
+.modal-b pre{background:rgba(0,0,0,.5);border:1px solid var(--b);border-radius:6px;padding:9px 11px;overflow-x:auto;margin:7px 0;font-size:10.5px;}
+.btn-close-modal{background:var(--cyan);color:#030312;border:none;border-radius:var(--r);padding:8px 16px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;cursor:pointer;}
+.btn-close-modal:hover{opacity:.84;}
+
+/* ── Auth screen (FIX: position:relative untuk ::before) ── */
+#auth{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1000;background:radial-gradient(ellipse at 50% 40%,#0a0030 0%,var(--bg) 70%);}
+.auth-box{
+  position:relative; /* FIX: perlu ini agar ::before bekerja */
+  width:420px;background:var(--bg2);border:1px solid var(--b);border-radius:14px;
+  padding:40px 34px;text-align:center;box-shadow:var(--gc),var(--gp);
+  animation:authIn .4s cubic-bezier(.16,1,.3,1);
+}
+.auth-box::before{content:'';position:absolute;top:0;left:25%;right:25%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+@keyframes authIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.auth-logo{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:3px;margin-bottom:2px;}
+.auth-tag{font-size:9px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+
+/* Port selector untuk localhost */
+.port-selector{display:flex;gap:6px;margin-bottom:12px;justify-content:center;}
+.port-btn{padding:5px 11px;border-radius:6px;border:1px solid var(--b);background:var(--card);color:var(--dim);font-size:10px;cursor:pointer;transition:.15s;font-family:'JetBrains Mono',monospace;}
+.port-btn:hover{border-color:var(--cyan2);color:var(--cyan);}
+.port-btn.active{border-color:var(--cyan);background:rgba(0,229,255,.08);color:var(--cyan);}
+.port-label{font-size:9px;color:var(--dim);margin-bottom:5px;}
+
+.auth-desc{font-size:11px;color:var(--dim);margin-bottom:16px;line-height:1.6;}
+#unInput{width:100%;background:rgba(0,229,255,.04);border:1px solid var(--b);border-radius:var(--r);padding:12px 13px;color:white;font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;transition:.2s;margin-bottom:9px;}
+#unInput:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,229,255,.07);}
+#unInput::placeholder{color:var(--dim);}
+.btn-find{width:100%;background:var(--cyan);color:#030312;border:none;border-radius:var(--r);padding:12px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:.2s;}
+.btn-find:hover{background:#33ecff;box-shadow:var(--gc);}
+.btn-find:disabled{opacity:.45;cursor:not-allowed;}
+.auth-prev{display:none;flex-direction:column;align-items:center;gap:9px;margin-top:12px;padding:16px;background:var(--card);border:1px solid var(--b);border-radius:var(--r);}
+.auth-prev.show{display:flex;}
+.auth-av{width:72px;height:72px;border-radius:50%;border:2px solid var(--cyan);box-shadow:0 0 18px rgba(0,229,255,.25);}
+.auth-n{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:white;}
+.auth-id{font-size:9px;color:var(--dim);}
+.btn-cont{width:100%;background:linear-gradient(135deg,var(--cyan),var(--purple));color:white;border:none;border-radius:var(--r);padding:11px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:.2s;}
+.btn-cont:hover{opacity:.85;transform:translateY(-1px);}
+.auth-err{display:none;color:var(--pink);font-size:10px;margin-top:6px;padding:7px 11px;background:rgba(255,45,107,.07);border-radius:5px;border:1px solid rgba(255,45,107,.18);}
+.auth-err.show{display:block;}
+.auth-load{display:none;align-items:center;justify-content:center;gap:7px;color:var(--dim);font-size:10px;margin-top:8px;}
+.auth-load.show{display:flex;}
+.spin{width:13px;height:13px;border:2px solid var(--b);border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none!important;}
+::-webkit-scrollbar{width:2px;height:2px;}
+::-webkit-scrollbar-thumb{background:var(--b);border-radius:2px;}
+@keyframes toastIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="auth">
+  <div class="auth-box">
+    <div class="auth-logo">NEXUS AI</div>
+    <div class="auth-tag">Roblox Dev Intelligence</div>
+
+    <!-- FIX: Port selector (2-3 localhost option) -->
+    <div class="port-label">Bridge Server Port:</div>
+    <div class="port-selector">
+      <button class="port-btn active" data-port="3000" onclick="selectPort(this)">:3000</button>
+      <button class="port-btn" data-port="3001" onclick="selectPort(this)">:3001</button>
+      <button class="port-btn" data-port="3002" onclick="selectPort(this)">:3002</button>
+    </div>
+
+    <div class="auth-desc">Masukkan username Roblox untuk login</div>
+    <input type="text" id="unInput" placeholder="Username Roblox kamu..." autocomplete="off" spellcheck="false">
+    <button class="btn-find" id="findBtn" onclick="findUser()">🔍 CARI AKUN ROBLOX</button>
+    <div class="auth-load" id="authLoad"><div class="spin"></div><span id="authLoadTxt">Mencari akun...</span></div>
+    <div class="auth-err" id="authErr"></div>
+    <div class="auth-prev" id="authPrev">
+      <img class="auth-av" id="authAv" src="" alt="avatar">
+      <div class="auth-n" id="authName"></div>
+      <div class="auth-id" id="authId"></div>
+      <button class="btn-cont" onclick="doLogin()">✓ MASUK SEBAGAI <span id="authNameBtn"></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+
+  <!-- SIDEBAR -->
+  <div id="sb">
+    <div class="sb-head">
+      <div class="sb-logo">N</div>
+      <div>
+        <div class="sb-logo-text">NEXUS AI</div>
+        <div class="sb-logo-sub">v3.1 · Roblox Dev</div>
+      </div>
+    </div>
+    <div class="sb-user">
+      <img class="sb-av" id="sbAv" src="" alt="">
+      <div>
+        <div class="sb-un" id="sbUn">-</div>
+        <div style="font-size:9px;color:var(--dim);">Roblox Developer</div>
+      </div>
+      <span class="sb-logout" onclick="logout()" title="Logout">⏏</span>
+    </div>
+    <div class="creds">
+      <div>
+        <div class="cred-l">Credits</div>
+        <div style="font-size:9px;color:rgba(255,214,0,.5);margin-top:1px;">Pro model pakai credit</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="cred-v" id="credDisp">200</div>
+        <div style="font-size:9px;color:rgba(255,214,0,.5);">CR</div>
+      </div>
+    </div>
+    <button class="btn-nc" onclick="newChat()"><span>✦</span><span>New Conversation</span></button>
+    <div class="sec-lbl">AI Model</div>
+    <div class="model-wrap">
+      <div class="model-sel" id="mSel" onclick="toggleMDD()">
+        <div class="mi g">G</div>
+        <span class="mn" id="mSelName">Gemini 2.0 Flash</span>
+        <span class="mb f" id="mSelBadge">FREE</span>
+        <span class="mc">▾</span>
+      </div>
+      <div class="model-dd" id="mDD">
+        <div class="mg">⬡ Google Gemini</div>
+        <div class="mo act" data-m="gemini-2.0-flash-exp" data-p="gemini" data-c="0" data-n="Gemini 2.0 Flash" data-t="f" onclick="selModel(this)"><div class="mi g">G</div><div><div class="mo-n">Gemini 2.0 Flash</div><div class="mo-s">Terbaru · Cepat</div></div><span class="mb f">FREE</span></div>
+        <div class="mo" data-m="gemini-1.5-flash" data-p="gemini" data-c="0" data-n="Gemini 1.5 Flash" data-t="f" onclick="selModel(this)"><div class="mi g">G</div><div><div class="mo-n">Gemini 1.5 Flash</div><div class="mo-s">Ringan · Efisien</div></div><span class="mb f">FREE</span></div>
+        <div class="mo" data-m="gemini-1.5-pro" data-p="gemini" data-c="2" data-n="Gemini 1.5 Pro" data-t="s" onclick="selModel(this)"><div class="mi g">G</div><div><div class="mo-n">Gemini 1.5 Pro</div><div class="mo-s">Powerful · Multimodal</div></div><span class="mb s">2 CR</span></div>
+        <div class="mo" data-m="gemini-exp-1206" data-p="gemini" data-c="5" data-n="Gemini Exp 1206" data-t="p" onclick="selModel(this)"><div class="mi g">G</div><div><div class="mo-n">Gemini Exp 1206</div><div class="mo-s">Eksperimental</div></div><span class="mb p">5 CR</span></div>
+        <div class="mg">◆ Anthropic Claude</div>
+        <div class="mo" data-m="claude-haiku-4-5-20251001" data-p="claude" data-c="0" data-n="Claude Haiku 4.5" data-t="f" onclick="selModel(this)"><div class="mi c">C</div><div><div class="mo-n">Claude Haiku 4.5</div><div class="mo-s">Ringan · Cepat</div></div><span class="mb f">FREE</span></div>
+        <div class="mo" data-m="claude-sonnet-4-6" data-p="claude" data-c="2" data-n="Claude Sonnet 4.6" data-t="s" onclick="selModel(this)"><div class="mi c">C</div><div><div class="mo-n">Claude Sonnet 4.6</div><div class="mo-s">Balanced · Smart</div></div><span class="mb s">2 CR</span></div>
+        <div class="mo" data-m="claude-opus-4-6" data-p="claude" data-c="5" data-n="Claude Opus 4.6" data-t="p" onclick="selModel(this)"><div class="mi c">C</div><div><div class="mo-n">Claude Opus 4.6</div><div class="mo-s">Paling Cerdas</div></div><span class="mb p">5 CR</span></div>
+        <div class="mg">◈ OpenAI ChatGPT</div>
+        <div class="mo" data-m="gpt-3.5-turbo" data-p="openai" data-c="0" data-n="GPT-3.5 Turbo" data-t="f" onclick="selModel(this)"><div class="mi o">⊕</div><div><div class="mo-n">GPT-3.5 Turbo</div><div class="mo-s">Cepat · Gratis</div></div><span class="mb f">FREE</span></div>
+        <div class="mo" data-m="gpt-4o-mini" data-p="openai" data-c="1" data-n="GPT-4o Mini" data-t="f" onclick="selModel(this)"><div class="mi o">⊕</div><div><div class="mo-n">GPT-4o Mini</div><div class="mo-s">Hemat · Efficient</div></div><span class="mb f">1 CR</span></div>
+        <div class="mo" data-m="gpt-4o" data-p="openai" data-c="4" data-n="GPT-4o" data-t="p" onclick="selModel(this)"><div class="mi o">⊕</div><div><div class="mo-n">GPT-4o</div><div class="mo-s">Powerful · Multimodal</div></div><span class="mb p">4 CR</span></div>
+        <div class="mo" data-m="o1-mini" data-p="openai" data-c="6" data-n="o1-mini" data-t="u" onclick="selModel(this)"><div class="mi o">⊕</div><div><div class="mo-n">o1-mini</div><div class="mo-s">Reasoning · Logic</div></div><span class="mb u">6 CR</span></div>
+        <div class="mo" data-m="o1" data-p="openai" data-c="10" data-n="o1" data-t="u" onclick="selModel(this)"><div class="mi o">⊕</div><div><div class="mo-n">o1</div><div class="mo-s">Best Reasoning</div></div><span class="mb u">10 CR</span></div>
+      </div>
+    </div>
+    <div class="sec-lbl">Recent Chats</div>
+    <div class="convs" id="convList"><div class="conv-empty">Belum ada percakapan</div></div>
+  </div>
+
+  <!-- CHAT MAIN -->
+  <div id="chat" style="position:relative;">
+    <div id="not-connected">
+      <div class="nc-box">
+        <div class="nc-icon">🔌</div>
+        <div class="nc-title">Belum Terhubung ke Studio!</div>
+        <div class="nc-desc">Ikuti langkah berikut untuk menghubungkan NEXUS AI Plugin:</div>
+        <div class="nc-step"><div class="nc-step-n">01</div><div class="nc-step-t">Install Node.js dari <strong style="color:var(--cyan)">nodejs.org</strong> lalu restart PC/terminal</div></div>
+        <div class="nc-step"><div class="nc-step-n">02</div><div class="nc-step-t">Buka terminal di folder NEXUS AI: <code>npm install ws</code> lalu <code>node bridge.js</code></div></div>
+        <div class="nc-step"><div class="nc-step-n">03</div><div class="nc-step-t">Di Roblox Studio → Plugin Management → centang <strong style="color:var(--green)">localhost:7778</strong> (HANYA SATU centang!)</div></div>
+        <div class="nc-step"><div class="nc-step-n">04</div><div class="nc-step-t">Klik tombol <strong style="color:var(--green)">⚡ CONNECT</strong> di panel NEXUS AI Studio</div></div>
+        <button class="btn-nc-retry" onclick="retryConn()">↺ Coba Koneksi Ulang</button>
+      </div>
+    </div>
+    <div class="chat-hdr">
+      <div class="chat-title" id="chatTitle">NEXUS AI — Roblox Dev Assistant</div>
+      <div class="plug-badge off" id="plugBadge" onclick="showInstall()">
+        <div class="pdot pulse"></div>
+        <span id="plugTxt">Plugin offline</span>
+      </div>
+    </div>
+    <div id="msgs">
+      <div class="welcome" id="welcome">
+        <div class="wt">NEXUS AI</div>
+        <div class="ws">AI assistant cerdas untuk Roblox Studio kamu.<br>Tulis kode Lua, debug error, atau tanya apa saja.</div>
+        <div class="suggs">
+          <div class="sugg" onclick="useSugg(this)"><strong>🔧 Debug Script</strong>Bantu perbaiki error di script Roblox Studio-ku</div>
+          <div class="sugg" onclick="useSugg(this)"><strong>📝 Buat Script</strong>Buatkan script sistem untuk game Roblox-ku</div>
+          <div class="sugg" onclick="useSugg(this)"><strong>🎮 Game Mechanics</strong>Jelaskan cara buat combat system di Roblox</div>
+          <div class="sugg" onclick="useSugg(this)"><strong>⚡ Optimasi Kode</strong>Bantu optimasi script agar lebih efisien</div>
+        </div>
+      </div>
+    </div>
+    <div class="inp-area">
+      <div class="img-row" id="imgRow"></div>
+      <div class="inp-box">
+        <textarea id="inp" placeholder="Tanya NEXUS AI tentang Roblox..." rows="1"></textarea>
+        <div class="inp-bar">
+          <div class="inp-l">
+            <label for="fi" class="ib" title="Upload gambar">📎</label>
+            <input type="file" id="fi" accept="image/*" style="display:none" onchange="handleImg(event)">
+            <button class="ib" onclick="clearChat()" title="Hapus chat">🗑</button>
+            <div class="cur-m"><span id="inpMIcon">G</span> <span id="inpMName">Gemini 2.0 Flash</span></div>
+          </div>
+          <button class="btn-send" id="sendBtn" onclick="send()">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLUGIN PANEL -->
+  <div id="pp">
+    <div class="pp-hdr">
+      <div class="pp-title">⬡ STUDIO</div>
+      <div class="pp-tabs">
+        <div class="pt act" onclick="ppTab('ws',this)">Workspace</div>
+        <div class="pt" onclick="ppTab('log',this)">Log</div>
+      </div>
+    </div>
+    <div class="pp-body" id="ppBody">
+      <div class="pp-off" id="ppOff">
+        <div class="pp-orb off">🔌</div>
+        <div class="pp-conn-title">Plugin Offline</div>
+        <div class="pp-conn-sub">Hubungkan NEXUS AI Plugin di Roblox Studio untuk akses workspace.</div>
+        <button class="btn-install" onclick="showInstall()">📥 Cara Install Plugin</button>
+        <button class="btn-install" onclick="retryConn()" style="margin-top:5px;">↺ Reconnect</button>
+      </div>
+      <div id="ppOn" class="hidden">
+        <div class="ws-hdr">
+          <span>Explorer</span>
+          <span class="ws-ref" onclick="refreshWs()" title="Refresh">↺</span>
+        </div>
+        <div class="ws-tree" id="wsTree"><div style="padding:14px;text-align:center;color:var(--dim);font-size:10px;">Memuat workspace...</div></div>
+        <div class="se" id="se">
+          <div class="se-hdr"><span class="se-n" id="seN">script</span><span class="se-close" onclick="closeSE()">✕</span></div>
+          <div class="se-code" id="seCode"></div>
+        </div>
+      </div>
+    </div>
+    <div class="log-hdr" onclick="toggleLog()">
+      <span>▸ Log</span><span id="logCnt" style="font-size:9px;">0</span>
+    </div>
+    <div class="log-ents hidden" id="logEnts"></div>
+  </div>
+</div>
+
+<!-- Install modal -->
+<div class="ov" id="installModal">
+  <div class="modal">
+    <div class="modal-t">⬡ Setup NEXUS AI — Step by Step</div>
+    <div class="modal-b">
+      <p><strong style="color:var(--cyan)">STEP 1 — Install Node.js (wajib!)</strong></p>
+      <p>Download di: <strong>https://nodejs.org</strong> → pilih LTS → Install → Restart PC</p>
+      <br>
+      <p><strong style="color:var(--cyan)">STEP 2 — Jalankan Bridge</strong></p>
+      <pre>cd [folder NEXUS AI]
+npm install ws
+node bridge.js</pre>
+      <p><strong style="color:var(--cyan)">STEP 3 — Install Plugin di Studio</strong></p>
+      <pre>C:\Users\[Username]\AppData\Local\Roblox\Plugins\</pre>
+      <p>Copy <code>NexusAI_Plugin.lua</code> ke folder di atas → Restart Studio</p>
+      <br>
+      <p><strong style="color:var(--cyan)">STEP 4 — Aktifkan HTTP di Plugin Management</strong></p>
+      <p style="color:var(--yellow)">⚠ Centang HANYA SATU <code>localhost:7778</code> saja!</p>
+      <p>Jika ada 2 entri, hapus plugin lama dulu dari Script Explorer.</p>
+      <br>
+      <p><strong style="color:var(--cyan)">STEP 5 — Connect</strong></p>
+      <p>Klik ⚡ CONNECT di panel plugin Studio → status hijau = berhasil!</p>
+    </div>
+    <button class="btn-close-modal" onclick="closeModal('installModal')">MENGERTI</button>
+  </div>
+</div>
+
+<script>
+// ⚠ API keys — JANGAN SHARE file ini!
+const K = {
+  claude: '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',
+  openai: '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',
+  gemini: 'AIzaSyAYqTd_c6_RjetfkUBSm1dFkBKGJiMSzso'
+};
+
+const SYS = `Kamu adalah NEXUS AI, asisten developer Roblox yang sangat expert.
+Selalu jawab dalam bahasa Indonesia yang friendly dan profesional.
+Tulis kode Luau (Roblox Lua) yang bersih, lengkap, dan siap pakai.
+Gunakan task.wait() bukan wait(). Handle error dengan pcall().
+Bedakan Script (server), LocalScript (client), ModuleScript (shared).
+Berikan penjelasan yang jelas untuk setiap kode yang kamu tulis.`;
+
+// ── State ──
+let S = {
+  user: null, convs: [], curConv: null, msgs: [],
+  model: { id:'gemini-2.0-flash-exp', provider:'gemini', cost:0, name:'Gemini 2.0 Flash', tier:'f' },
+  credits: 200, plugConnected: false, ws: null, img: null, gen: false,
+  bridgePort: 3000
+};
+
+function loadS() {
+  try {
+    const d = localStorage.getItem('nx31');
+    if (d) {
+      const p = JSON.parse(d);
+      S.credits   = p.credits  ?? 200;
+      S.convs     = p.convs    ?? [];
+      S.user      = p.user     ?? null;
+      S.bridgePort= p.bridgePort ?? 3000;
+    }
+  } catch(e) {}
+}
+function saveS() {
+  try {
+    localStorage.setItem('nx31', JSON.stringify({
+      credits: S.credits, convs: S.convs, user: S.user, bridgePort: S.bridgePort
+    }));
+  } catch(e) {}
+}
+
+// ── Port selector ──
+function selectPort(btn) {
+  document.querySelectorAll('.port-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  S.bridgePort = parseInt(btn.dataset.port);
+}
+
+// FIX: Multi-proxy CORS untuk Roblox API (allorigins sering mati!)
+const PROXIES = [
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://api.codetabs.com/v1/proxy?quest=${url}`,
+  url => `https://thingproxy.freeboard.io/fetch/${url}`
+];
+
+async function fetchRoblox(url) {
+  let lastErr = null;
+  for (const makeProxy of PROXIES) {
+    try {
+      const proxyUrl = makeProxy(url);
+      const r = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+      if (!r.ok) continue;
+      const text = await r.text();
+      return JSON.parse(text);
+    } catch(e) {
+      lastErr = e;
+      continue;
+    }
+  }
+  throw new Error('Semua proxy gagal. Cek koneksi internet. Detail: ' + (lastErr?.message || ''));
+}
+
+// ── Auth ──
+let pendUser = null;
+
+async function findUser() {
+  const un = document.getElementById('unInput').value.trim();
+  if (!un) { showAuthErr('Masukkan username Roblox dulu!'); return; }
+
+  hideAuthEl('authErr'); hideAuthEl('authPrev');
+  document.getElementById('authLoad').classList.add('show');
+  document.getElementById('authLoadTxt').textContent = 'Mencari akun...';
+  document.getElementById('findBtn').disabled = true;
+
+  try {
+    // FIX: Cari berdasarkan username exact (bukan displayName)
+    const searchUrl = `https://users.roblox.com/v1/users/search?keyword=${encodeURIComponent(un)}&limit=10`;
+    const d = await fetchRoblox(searchUrl);
+
+    if (!d.data || !d.data.length) {
+      throw new Error('Akun "' + un + '" tidak ditemukan di Roblox');
+    }
+
+    // FIX: Gunakan u.name (username), bukan displayName
+    const u = d.data.find(x => x.name.toLowerCase() === un.toLowerCase()) || d.data[0];
+
+    document.getElementById('authLoadTxt').textContent = 'Mengambil avatar...';
+
+    // Ambil avatar
+    let avUrl = `https://www.roblox.com/headshot-thumbnail/image?userId=${u.id}&width=420&height=420&format=png`;
+    try {
+      const avatarApiUrl = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${u.id}&size=420x420&format=Png`;
+      const td = await fetchRoblox(avatarApiUrl);
+      if (td.data?.[0]?.imageUrl) avUrl = td.data[0].imageUrl;
+    } catch(e) {
+      // Pakai fallback URL
+    }
+
+    // FIX: Simpan username (name), bukan displayName
+    pendUser = {
+      id:          u.id,
+      username:    u.name,        // ← ini yang benar (FIINYTID25)
+      displayName: u.displayName || u.name,
+      avatar:      avUrl
+    };
+
+    document.getElementById('authAv').src       = avUrl;
+    document.getElementById('authName').textContent  = u.name;  // tampilkan username
+    document.getElementById('authId').textContent    = 'ID: ' + u.id;
+    document.getElementById('authNameBtn').textContent = u.name;
+    document.getElementById('authPrev').classList.add('show');
+
+  } catch(e) {
+    showAuthErr(e.message);
+  } finally {
+    document.getElementById('authLoad').classList.remove('show');
+    document.getElementById('findBtn').disabled = false;
+  }
+}
+
+function showAuthErr(m) {
+  const el = document.getElementById('authErr');
+  el.textContent = '⚠ ' + m;
+  el.classList.add('show');
+}
+function hideAuthEl(id) { document.getElementById(id).classList.remove('show'); }
+
+function doLogin() {
+  if (!pendUser) return;
+  S.user = pendUser;
+  saveS();
+  document.getElementById('auth').style.display = 'none';
+  document.getElementById('app').classList.remove('hidden');
+  initApp();
+}
+
+function logout() {
+  if (!confirm('Logout dari NEXUS AI?')) return;
+  S.user = null; saveS();
+  document.getElementById('auth').style.display = 'flex';
+  document.getElementById('app').classList.add('hidden');
+  if (S.ws) { S.ws.close(); S.ws = null; }
+}
+
+document.getElementById('unInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') findUser();
+});
+
+// ── Init App ──
+function initApp() {
+  document.getElementById('sbAv').src         = S.user.avatar || '';
+  document.getElementById('sbUn').textContent = S.user.username;
+  updateCreds();
+  renderConvs();
+  connectWS();
+  if (!S.convs.length) newChat();
+  else loadConv(S.convs[S.convs.length - 1].id);
+  // Sync port selector
+  document.querySelectorAll('.port-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.port) === S.bridgePort);
+  });
+}
+
+function updateCreds() {
+  document.getElementById('credDisp').textContent = S.credits;
+}
+
+// ── Conversations ──
+function newChat() {
+  const c = { id: Date.now() + '', title: 'New Chat', msgs: [], created: Date.now() };
+  S.convs.push(c); S.curConv = c.id; S.msgs = [];
+  saveS(); renderConvs(); renderMsgs();
+  document.getElementById('chatTitle').textContent = 'NEXUS AI';
+}
+
+function loadConv(id) {
+  const c = S.convs.find(x => x.id === id);
+  if (!c) return;
+  S.curConv = id; S.msgs = c.msgs || [];
+  renderConvs(); renderMsgs();
+  document.getElementById('chatTitle').textContent = c.title || 'Chat';
+}
+
+function delConv(id, e) {
+  e.stopPropagation();
+  S.convs = S.convs.filter(c => c.id !== id);
+  if (S.curConv === id) {
+    S.convs.length ? loadConv(S.convs[S.convs.length - 1].id) : newChat();
+  }
+  saveS(); renderConvs();
+}
+
+function renderConvs() {
+  const el = document.getElementById('convList');
+  if (!S.convs.length) { el.innerHTML = '<div class="conv-empty">Belum ada percakapan</div>'; return; }
+  el.innerHTML = S.convs.slice().reverse().map(c => `
+    <div class="ci ${c.id === S.curConv ? 'act' : ''}" onclick="loadConv('${c.id}')">
+      <div style="flex:1;min-width:0;">
+        <div class="ci-title">${esc(c.title)}</div>
+        <div class="ci-time">${ago(c.created)}</div>
+      </div>
+      <span class="ci-del" onclick="delConv('${c.id}',event)">✕</span>
+    </div>`).join('');
+}
+
+function setConvTitle(id, msg) {
+  const c = S.convs.find(x => x.id === id);
+  if (c && c.title === 'New Chat') {
+    c.title = msg.substring(0, 38) + (msg.length > 38 ? '...' : '');
+    document.getElementById('chatTitle').textContent = c.title;
+    renderConvs();
+  }
+}
+
+// ── Model ──
+function toggleMDD() {
+  document.getElementById('mDD').classList.toggle('open');
+  document.getElementById('mSel').classList.toggle('open');
+}
+function selModel(el) {
+  document.querySelectorAll('.mo').forEach(o => o.classList.remove('act'));
+  el.classList.add('act');
+  S.model = { id: el.dataset.m, provider: el.dataset.p, cost: +el.dataset.c, name: el.dataset.n, tier: el.dataset.t };
+  const icons = { claude:'C', openai:'⊕', gemini:'G' };
+  const ic = icons[S.model.provider] || 'AI';
+  const mcls = { claude:'c', openai:'o', gemini:'g' }[S.model.provider] || 'g';
+  document.getElementById('mSel').innerHTML = `
+    <div class="mi ${mcls}">${ic}</div>
+    <span class="mn">${S.model.name}</span>
+    <span class="mb ${S.model.tier}">${S.model.cost === 0 ? 'FREE' : S.model.cost + ' CR'}</span>
+    <span class="mc">▾</span>`;
+  document.getElementById('inpMName').textContent = S.model.name;
+  document.getElementById('inpMIcon').textContent = ic;
+  document.getElementById('mDD').classList.remove('open');
+  document.getElementById('mSel').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.model-wrap')) {
+    document.getElementById('mDD').classList.remove('open');
+    document.getElementById('mSel').classList.remove('open');
+  }
+});
+
+// ── Messages ──
+function renderMsgs() {
+  const a = document.getElementById('msgs');
+  const w = document.getElementById('welcome');
+  if (!S.msgs.length) { a.innerHTML = ''; a.appendChild(w); w.style.display = ''; return; }
+  w.style.display = 'none'; a.innerHTML = '';
+  S.msgs.forEach(m => a.appendChild(mkMsg(m)));
+  a.scrollTop = a.scrollHeight;
+}
+
+function mkMsg(m) {
+  const d = document.createElement('div');
+  d.className = `msg ${m.role}`;
+  if (m.role === 'user') {
+    d.innerHTML = `
+      <div class="av"><img src="${S.user?.avatar || ''}" alt=""></div>
+      <div class="mb-wrap">
+        <div class="msg-sender">${esc(S.user?.username || 'You')}<span style="font-size:9px;color:var(--dim)">${ago(m.time)}</span></div>
+        <div class="bubble">${esc(m.content)}${m.img ? `<br><img class="msg-img" src="${m.img}" alt="img">` : ''}</div>
+      </div>`;
+  } else {
+    const pClr = { claude:'#ff9650', openai:'#00ff9d', gemini:'#4285f4' }[m.provider] || 'var(--cyan)';
+    const ic   = { claude:'C', openai:'⊕', gemini:'G' }[m.provider] || 'AI';
+    d.innerHTML = `
+      <div class="av ai" style="background:linear-gradient(135deg,${pClr}44,${pClr}88)">${ic}</div>
+      <div class="mb-wrap">
+        <div class="msg-sender"><span style="color:${pClr}">${m.model || 'AI'}</span><span style="font-size:9px;color:var(--dim)">${ago(m.time)}</span></div>
+        <div class="bubble">${marked.parse(m.content || '')}</div>
+        <div class="msg-acts"><button class="mab" onclick="cpMsg(this,'${escA(m.content)}')">📋 Copy</button></div>
+      </div>`;
+  }
+  return d;
+}
+
+function appendMsg(m) {
+  const a = document.getElementById('msgs');
+  document.getElementById('welcome').style.display = 'none';
+  a.appendChild(mkMsg(m));
+  a.scrollTop = a.scrollHeight;
+}
+
+function showTyping() {
+  const a = document.getElementById('msgs');
+  const d = document.createElement('div');
+  d.className = 'msg ai'; d.id = 'typing';
+  d.innerHTML = `<div class="av ai">✦</div><div class="typing"><div class="tdots"><span></span><span></span><span></span></div></div>`;
+  a.appendChild(d); a.scrollTop = a.scrollHeight;
+}
+function rmTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
+
+// ── Send ──
+async function send() {
+  if (S.gen) return;
+  const txt = document.getElementById('inp').value.trim();
+  const img = S.img;
+  if (!txt && !img) return;
+  const m = S.model;
+  if (m.cost > 0 && S.credits < m.cost) { toast('⚠ Kredit kurang! Butuh ' + m.cost + ' CR'); return; }
+
+  const um = { role:'user', content: txt, img, time: Date.now() };
+  S.msgs.push(um); appendMsg(um);
+  document.getElementById('inp').value = '';
+  document.getElementById('inp').style.height = 'auto';
+  clearImgPrev();
+  setConvTitle(S.curConv, txt || 'Gambar');
+
+  S.gen = true;
+  document.getElementById('sendBtn').disabled = true;
+  showTyping();
+
+  try {
+    let r = '';
+    if (m.provider === 'gemini')      r = await callGemini(m.id, img);
+    else if (m.provider === 'claude') r = await callClaude(m.id, img);
+    else                              r = await callOpenAI(m.id, img);
+
+    rmTyping();
+    const am = { role:'ai', content:r, model:m.name, provider:m.provider, time:Date.now() };
+    S.msgs.push(am); appendMsg(am);
+    if (m.cost > 0) { S.credits = Math.max(0, S.credits - m.cost); updateCreds(); }
+    const c = S.convs.find(x => x.id === S.curConv);
+    if (c) c.msgs = S.msgs;
+    saveS(); addLog('info', m.name + ' merespon');
+  } catch(e) {
+    rmTyping();
+    const em = { role:'ai', content:`❌ **Error:** ${e.message}\n\nCoba model lain atau cek API key.`, model:m.name, provider:m.provider, time:Date.now() };
+    S.msgs.push(em); appendMsg(em); addLog('err', e.message);
+  } finally {
+    S.gen = false;
+    document.getElementById('sendBtn').disabled = false;
+  }
+}
+
+function buildMsgs() {
+  return S.msgs.slice(-18).map(m => ({
+    role: m.role === 'ai' ? 'assistant' : 'user',
+    content: m.content || ''
+  }));
+}
+
+async function callGemini(model, img) {
+  const ms = buildMsgs();
+  const contents = ms.map(m => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }]
+  }));
+  if (img && contents.length > 0) {
+    const l = contents[contents.length - 1];
+    if (l.role === 'user') {
+      const b = img.split(',')[1], mt = img.split(';')[0].split(':')[1];
+      l.parts.push({ inline_data: { mime_type: mt, data: b } });
+    }
+  }
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${K.gemini}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contents, systemInstruction:{ parts:[{ text:SYS }] }, generationConfig:{ maxOutputTokens:8192, temperature:.7 } })
+  });
+  if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.error?.message || `Gemini error ${r.status}`); }
+  const d = await r.json();
+  if (d.candidates?.[0]?.content?.parts?.[0]?.text) return d.candidates[0].content.parts[0].text;
+  throw new Error('Respons Gemini kosong');
+}
+
+async function callClaude(model, img) {
+  const ms = buildMsgs();
+  if (img && ms.length > 0) {
+    const l = ms[ms.length - 1];
+    if (l.role === 'user') {
+      const b = img.split(',')[1], mt = img.split(';')[0].split(':')[1];
+      l.content = [{ type:'image', source:{ type:'base64', media_type:mt, data:b } }, { type:'text', text:l.content }];
+    }
+  }
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': K.claude,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({ model, max_tokens: 8192, system: SYS, messages: ms })
+  });
+  if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.error?.message || `Claude error ${r.status}`); }
+  const d = await r.json();
+  if (d.content?.[0]?.text) return d.content[0].text;
+  throw new Error('Respons Claude kosong');
+}
+
+async function callOpenAI(model, img) {
+  const ms = buildMsgs();
+  const all = [{ role:'system', content:SYS }, ...ms];
+  if (img && all.length > 0) {
+    const l = all[all.length - 1];
+    if (l.role === 'user') {
+      l.content = [{ type:'text', text:l.content }, { type:'image_url', image_url:{ url:img } }];
+    }
+  }
+  const body = { model, messages: model.startsWith('o1') ? all.filter(m => m.role !== 'system') : all };
+  if (!model.startsWith('o1')) body.max_tokens = 4096;
+  const r = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + K.openai },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.error?.message || `OpenAI error ${r.status}`); }
+  const d = await r.json();
+  if (d.choices?.[0]?.message?.content) return d.choices[0].message.content;
+  throw new Error('Respons OpenAI kosong');
+}
+
+// ── Image ──
+function handleImg(e) {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = ev => {
+    S.img = ev.target.result;
+    const row = document.getElementById('imgRow');
+    row.innerHTML = `<div class="img-thumb"><img src="${ev.target.result}" alt=""><button class="img-rm" onclick="clearImgPrev()">✕</button></div>`;
+    row.classList.add('show');
+  };
+  rd.readAsDataURL(f); e.target.value = '';
+}
+function clearImgPrev() {
+  S.img = null;
+  document.getElementById('imgRow').classList.remove('show');
+  document.getElementById('imgRow').innerHTML = '';
+}
+
+// ── WebSocket (FIX: auto-reconnect) ──
+let wsReconnTimer = null;
+
+function connectWS() {
+  if (wsReconnTimer) { clearTimeout(wsReconnTimer); wsReconnTimer = null; }
+  const wsPort = S.bridgePort === 3000 ? 7777 : (S.bridgePort === 3001 ? 7778 : 7779);
+  // WS selalu di 7777 regardless of web port
+  try {
+    const ws = new WebSocket('ws://localhost:7777');
+    S.ws = ws;
+    ws.onopen = () => {
+      addLog('ok', 'Bridge WebSocket terhubung!');
+      checkPluginStatus();
+    };
+    ws.onmessage = e => {
+      try { handleWS(JSON.parse(e.data)); } catch(err) {}
+    };
+    ws.onclose = () => {
+      S.ws = null;
+      setPlugUI(false);
+      addLog('warn', 'WS terputus, reconnect 5s...');
+      wsReconnTimer = setTimeout(connectWS, 5000);
+    };
+    ws.onerror = () => {
+      S.ws = null; setPlugUI(false);
+    };
+  } catch(e) {
+    setPlugUI(false);
+    wsReconnTimer = setTimeout(connectWS, 5000);
+  }
+}
+
+function retryConn() {
+  toast('↺ Mencoba koneksi...');
+  addLog('info', 'Manual reconnect...');
+  if (S.ws) { S.ws.close(); }
+  else connectWS();
+}
+
+function checkPluginStatus() {
+  fetch('http://localhost:7778/status')
+    .then(r => r.json())
+    .then(d => {
+      if (d.pluginConnected) { S.plugConnected = true; setPlugUI(true); }
+      addLog('info', 'Bridge OK · Web clients: ' + (d.webClientCount || 1));
+    })
+    .catch(() => {});
+}
+
+function handleWS(msg) {
+  if (msg.action === 'bridgeReady' || msg.action === 'pluginStatus') {
+    S.plugConnected = msg.pluginConnected || msg.connected || false;
+    setPlugUI(S.plugConnected);
+    if (msg.placeInfo?.name) addLog('info', 'Place: ' + msg.placeInfo.name);
+  } else if (msg.action === 'workspace') {
+    renderWorkspace(msg.data); addLog('ok', 'Workspace diterima');
+  } else if (msg.action === 'scriptContent') {
+    showScript(msg.path, msg.content); addLog('ok', 'Script: ' + msg.path);
+  } else if (msg.action === 'scriptWritten') {
+    toast(msg.success ? `✓ ${msg.path} diperbarui!` : `❌ Gagal: ${msg.message}`);
+    addLog(msg.success ? 'ok' : 'err', (msg.success ? 'Ditulis: ' : 'Gagal: ') + msg.path);
+  } else if (msg.action === 'error') {
+    toast('❌ ' + msg.message); addLog('err', msg.message);
+  }
+}
+
+function sendPlugin(cmd) {
+  if (S.ws && S.ws.readyState === 1) S.ws.send(JSON.stringify(cmd));
+}
+
+function setPlugUI(on) {
+  const badge = document.getElementById('plugBadge');
+  const txt   = document.getElementById('plugTxt');
+  const nc    = document.getElementById('not-connected');
+  if (on) {
+    badge.className     = 'plug-badge on';
+    txt.textContent     = 'Plugin online';
+    nc.classList.add('hidden');
+    document.getElementById('ppOff').classList.add('hidden');
+    document.getElementById('ppOn').classList.remove('hidden');
+  } else {
+    badge.className     = 'plug-badge off';
+    txt.textContent     = 'Plugin offline';
+    nc.classList.remove('hidden');
+    document.getElementById('ppOff').classList.remove('hidden');
+    document.getElementById('ppOn').classList.add('hidden');
+  }
+}
+
+// ── Workspace ──
+const SI = {
+  Workspace:'🌍',Players:'👥',Lighting:'💡',ReplicatedStorage:'📦',ReplicatedFirst:'⚡',
+  ServerScriptService:'⚙',ServerStorage:'🗄',StarterGui:'🖼',StarterPack:'🎒',StarterPlayer:'👤',
+  Teams:'🏷',SoundService:'🔊',TextChatService:'💬',Script:'📄',LocalScript:'📱',
+  ModuleScript:'🔧',Folder:'📁',Part:'🟦',Model:'🧩'
+};
+function gIcon(cn) { return SI[cn] || '◻'; }
+
+function renderWorkspace(data) {
+  const t = document.getElementById('wsTree');
+  if (!data?.length) { t.innerHTML = '<div style="padding:12px;color:var(--dim);font-size:10px;">Workspace kosong</div>'; return; }
+  t.innerHTML = data.map(svc => `
+    <div class="tn" onclick="toggleTN(this)" data-name="${svc.name}">
+      <span class="ti">${gIcon(svc.name)}</span>
+      <span class="tl">${esc(svc.name)}</span>
+      <span class="tc">${svc.ClassName || ''}</span>
+    </div>
+    ${(svc.children || []).map(c => `
+      <div class="tn d1 hidden child-${svc.name}" onclick="tnClick(this,'${svc.name}/${c.name}')" data-path="${svc.name}/${c.name}" data-class="${c.ClassName || ''}">
+        <span class="ti">${gIcon(c.ClassName)}</span>
+        <span class="tl">${esc(c.name)}</span>
+        <span class="tc" style="font-size:8px">${c.ClassName || ''}</span>
+      </div>
+      ${(c.children || []).map(gc => `
+        <div class="tn d2 hidden child-${svc.name}" onclick="tnClick(this,'${svc.name}/${c.name}/${gc.name}')" data-path="${svc.name}/${c.name}/${gc.name}" data-class="${gc.ClassName || ''}">
+          <span class="ti">${gIcon(gc.ClassName)}</span>
+          <span class="tl">${esc(gc.name)}</span>
+        </div>`).join('')}
+    `).join('')}
+  `).join('');
+}
+
+function toggleTN(el) {
+  const nm = el.dataset.name, isOpen = !el.dataset.open;
+  el.dataset.open = isOpen ? '1' : '';
+  document.querySelectorAll('.child-' + nm).forEach(c => c.classList.toggle('hidden', !isOpen));
+}
+function tnClick(el, path) {
+  document.querySelectorAll('.tn').forEach(n => n.classList.remove('sel'));
+  el.classList.add('sel');
+  const cls = el.dataset.class;
+  if (cls === 'Script' || cls === 'LocalScript' || cls === 'ModuleScript') {
+    sendPlugin({ action:'readScript', path }); addLog('info', 'Membaca: ' + path);
+  }
+}
+function showScript(path, content) {
+  document.getElementById('seN').textContent = path.split('/').pop();
+  document.getElementById('seCode').textContent = content;
+  document.getElementById('se').classList.add('show');
+}
+function closeSE() { document.getElementById('se').classList.remove('show'); }
+function refreshWs() { sendPlugin({ action:'getWorkspace' }); toast('↺ Refresh workspace...'); }
+
+// ── Log ──
+let logOpen = false, logN = 0;
+function addLog(type, msg) {
+  logN++;
+  const el = document.getElementById('logEnts');
+  const e  = document.createElement('div');
+  e.className = 'le ' + type;
+  const t  = new Date().toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  const pfx = { ok:'✓', err:'✗', info:'→', warn:'⚠' }[type] || '·';
+  e.innerHTML = `<span class="le-t">${t}</span><span>${pfx} ${esc(msg)}</span>`;
+  el.insertBefore(e, el.firstChild);
+  while (el.children.length > 40) el.removeChild(el.lastChild);
+  document.getElementById('logCnt').textContent = el.children.length;
+}
+function toggleLog() {
+  logOpen = !logOpen;
+  document.getElementById('logEnts').classList.toggle('hidden', !logOpen);
+}
+
+// ── Misc ──
+function clearChat() {
+  if (!confirm('Hapus semua pesan di chat ini?')) return;
+  S.msgs = [];
+  const c = S.convs.find(x => x.id === S.curConv);
+  if (c) { c.msgs = []; c.title = 'New Chat'; }
+  saveS(); renderMsgs();
+}
+function cpMsg(btn, txt) {
+  navigator.clipboard.writeText(txt).then(() => toast('✓ Disalin!'));
+}
+function useSugg(el) {
+  const strong = el.querySelector('strong');
+  const label  = strong ? strong.textContent.replace(/^[^\w]+/, '').trim() : '';
+  const desc   = el.textContent.replace(strong ? strong.textContent : '', '').trim();
+  document.getElementById('inp').value = label + ' — ' + desc;
+  send();
+}
+function showInstall() { document.getElementById('installModal').classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function ppTab(t, el) { document.querySelectorAll('.pt').forEach(x => x.classList.remove('act')); el.classList.add('act'); }
+
+function toast(msg) {
+  document.querySelectorAll('.toast-el').forEach(x => x.remove());
+  const t = document.createElement('div');
+  t.className  = 'toast-el';
+  t.style.cssText = 'position:fixed;bottom:22px;right:22px;background:var(--bg3);border:1px solid var(--b);border-radius:7px;padding:10px 14px;font-size:11px;color:var(--text);z-index:9999;animation:toastIn .25s ease;box-shadow:var(--gc);max-width:280px;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+function escA(s) {
+  if (!s) return '';
+  return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+function ago(ts) {
+  if (!ts) return '';
+  const d = Date.now() - ts;
+  if (d < 60000) return 'baru';
+  if (d < 3600000) return Math.floor(d / 60000) + 'm';
+  if (d < 86400000) return Math.floor(d / 3600000) + 'j';
+  return Math.floor(d / 86400000) + 'h';
+}
+
+// Auto-resize textarea
+document.getElementById('inp').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 130) + 'px';
+});
+document.getElementById('inp').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+});
+
+// Marked config
+marked.setOptions({ breaks: true, gfm: true });
+
+// ── Startup ──
+loadS();
+if (S.user) {
+  document.getElementById('auth').style.display = 'none';
+  document.getElementById('app').classList.remove('hidden');
+  initApp();
+}
+setInterval(() => renderConvs(), 60000);
+</script>
+</body>
+</html>
