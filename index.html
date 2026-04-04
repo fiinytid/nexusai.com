@@ -690,12 +690,21 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 // ══════════════════════════════════════════
 //  API KEYS — injected by GitHub Actions from repository secrets
 // ══════════════════════════════════════════
-const K = {
-  gemini: '%%GEMINI_API_KEY%%',
-  claude: '%%CLAUDE_API_KEY%%',
-  openai: '%%OPENAI_API_KEY%%',
-  grok:   '%%GROK_API_KEY%%',
-};
+async function getKeys() {
+  const resp = await fetch('/api/main');
+  const keys = await resp.json();
+  
+  const K = {
+    gemini: keys.gemini,
+    claude: keys.claude,
+    openai: keys.openai
+  };
+  
+  return K;
+}
+
+const myKeys = await getKeys();
+console.log(myKeys.gemini);
 
 const OWNER_USERS = ['FIINYTID25','fiinytid25'];
 const USER_PASSWORDS = { 'FIINYTID25': 'nexusai2024', 'fiinytid25': 'nexusai2024' };
