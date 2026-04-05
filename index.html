@@ -780,12 +780,12 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-  // Kode "Ninja" untuk memaksa marked selalu pakai String agar tidak crash
+  // Pengaman agar web tidak crash saat AI error
   const asliMarked = window.marked;
   window.marked = function(isi) {
-    if (typeof isi !== 'string') isi = String(isi || "");
-    // Pakai .parse jika pakai versi baru, jika tidak pakai fungsi langsung
-    return (asliMarked.parse ? asliMarked.parse(isi) : asliMarked(isi));
+    const teksAman = String(isi || "Gagal memproses pesan.");
+    // Otomatis deteksi versi marked (lama atau baru)
+    return (asliMarked.parse ? asliMarked.parse(teksAman) : asliMarked(teksAman));
   };
 </script>
   
