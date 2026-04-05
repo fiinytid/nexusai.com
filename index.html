@@ -355,18 +355,59 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 
 /* MOBILE */
 @media(max-width:768px){
-  body{overflow:auto;}
-  #app{display:flex;flex-direction:column;height:auto;min-height:100vh;grid-template-columns:none!important;}
-  #sb{width:100%;border-right:none;border-bottom:1px solid var(--b);flex-shrink:0;}
-  .convs{max-height:100px;}
-  #chat{flex:1;min-height:60vh;}
+  html,body{overflow:hidden;height:100%;}
+  #app{
+    display:flex;flex-direction:column;
+    height:100vh;
+    grid-template-columns:none!important;
+    overflow:hidden;
+  }
+  #sb{
+    width:100%;border-right:none;border-bottom:1px solid var(--b);
+    flex-shrink:0;max-height:220px;overflow:hidden;
+  }
+  .sb-head{padding:8px 12px 7px;}
+  .sb-user{padding:6px 10px;}
+  .creds{margin:5px 10px;padding:6px 9px;}
+  .cred-v{font-size:14px;}
+  .btn-nc{margin:0 10px 4px;padding:6px 9px;font-size:10px;}
+  .sec-lbl{padding:2px 12px 1px;font-size:8px;}
+  .convs{flex:1;max-height:80px;min-height:0;}
+  #sb > div:last-child{display:none;} /* hide footer credit on mobile */
+
+  #chat{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;}
+  .chat-hdr{padding:7px 12px;}
+  .chat-title{font-size:10px;}
+  .chat-tabs{padding:4px 10px;}
+  .tab-btn{padding:4px 10px;font-size:9px;}
+
+  #msgs{flex:1;overflow-y:auto;padding:10px 12px;gap:9px;}
+  .mb-wrap{max-width:86%;}
+  .suggs{grid-template-columns:1fr;}
+  .wt{font-size:20px;}
+  .ws{font-size:11px;}
+
+  .inp-area{padding:7px 10px;flex-shrink:0;}
+  #inp{font-size:12px;padding:9px 12px;min-height:40px;}
+  .inp-bar{padding:4px 7px;gap:4px;}
+  .ib{width:24px;height:24px;}
+  .inp-model{max-width:120px;}
+  .inp-model-name{font-size:8px;}
+  .btn-send,.btn-cancel{width:30px;height:30px;font-size:13px;}
+  .model-dd{left:10px;right:10px;max-height:220px;}
+
   #pp{display:none;}
   .collapse-sb,.collapse-pp{display:none;}
-  .mb-wrap{max-width:88%;}
-  .suggs{grid-template-columns:1fr;}
   .auth-box{width:95vw;padding:24px 18px;}
+  .sugg{padding:8px 10px;font-size:10.5px;}
+}
+@media(max-width:480px){
+  .inp-model{max-width:95px;}
+  .inp-model-name{display:none;}
+  .mb-wrap{max-width:92%;}
 }
 </style>
+
 </head>
 <body>
 
@@ -421,7 +462,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <div class="creds" id="credsEl" onclick="openShop()">
       <div>
         <div class="cred-l">Credits</div>
-        <div style="font-size:9px;color:rgba(255,214,0,.5);margin-top:1px;">Made by FIINYT_ID youtuber</div>
+        <div style="font-size:9px;color:rgba(255,214,0,.5);margin-top:1px;">Click to buy more</div>
       </div>
       <div style="text-align:right;">
         <div class="cred-v" id="credDisp">30.00</div>
@@ -431,6 +472,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <button class="btn-nc" onclick="newChat()"><span>✦</span><span>New Conversation</span></button>
     <div class="sec-lbl">Recent Chats</div>
     <div class="convs" id="convList"><div class="conv-empty">No conversations yet</div></div>
+    <div style="padding:6px 12px;font-size:8.5px;color:var(--dim);text-align:center;border-top:1px solid var(--b);flex-shrink:0;">
+      Made by <span style="color:var(--cyan)">NEXUS STUDIO</span> · YouTube: <span style="color:rgba(0,229,255,.5)">FIINYT_ID</span>
+    </div>
   </div>
 
   <!-- CHAT MAIN -->
@@ -448,6 +492,11 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <div class="chat-tabs">
       <button class="tab-btn act" id="tabChat" onclick="switchTab('chat',this)">💬 Chat</button>
       <button class="tab-btn" id="tabGui" onclick="switchTab('gui',this)">🎨 GUI Builder</button>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:5px;">
+        <button class="tab-btn" id="thinkToggleBtn" onclick="toggleThinking()" title="Toggle AI thinking indicator" style="font-size:9px;padding:4px 8px;display:flex;align-items:center;gap:3px;">
+          <span id="thinkIcon">🧠</span> <span id="thinkLabel">Thinking: ON</span>
+        </button>
+      </div>
     </div>
 
     <!-- CHAT TAB -->
@@ -467,7 +516,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       <div class="inp-area" id="inpArea">
         <div class="attach-row" id="attachRow"></div>
         <div class="inp-box">
-          <textarea id="inp" placeholder="Ask NEXUS AI about Roblox..." rows="1"></textarea>
+          <textarea id="inp" placeholder="Ask NEXUS AI about Roblox... (Ctrl+V to paste image)" rows="1"></textarea>
           <div class="inp-bar">
             <div class="inp-l">
               <label for="fi" class="ib" title="Upload image/file">
@@ -505,31 +554,28 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
           </div>
           <div class="mg">xAI Grok</div>
           <div class="mo" data-mid="grok-beta" data-prov="grok" data-cost="1" data-label="Grok Beta" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#1a1a2e;border-radius:4px;">
-              <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </div>
-            <div><div class="mo-n">Grok Beta</div><div class="mo-s">Fast · Stable</div></div><span class="mb s">1 CR</span>
+            <div class="mo-icon" style="background:#1a1a2e;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+            <div><div class="mo-n">Grok Beta</div><div class="mo-s">xAI · Fast · Stable</div></div><span class="mb s">1 CR</span>
           </div>
           <div class="mo" data-mid="grok-2-latest" data-prov="grok" data-cost="2" data-label="Grok 2" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#1a1a2e;border-radius:4px;">
-              <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </div>
+            <div class="mo-icon" style="background:#1a1a2e;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
             <div><div class="mo-n">Grok 2</div><div class="mo-s">Balanced · Reliable</div></div><span class="mb s">2 CR</span>
           </div>
-          <div class="mo" data-mid="grok-4.20-reasoning" data-prov="grok" data-cost="3" data-label="Grok 4.20 Reasoning" onclick="selModel(this)">
+          <div class="mo disabled">
             <div class="mo-icon" style="background:#1a1a2e;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
-            <div><div class="mo-n">Grok 4.20 Reasoning</div><div class="mo-s">xAI · Deep Reasoning</div></div><span class="mb p">3 CR</span>
+            <div><div class="mo-n">Grok 4.20 Reasoning</div><div class="mo-s">Deep Reasoning</div></div><span class="mb cs">COMING SOON</span>
           </div>
-          <div class="mo" data-mid="grok-4" data-prov="grok" data-cost="4" data-label="Grok 4" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#1a1a2e;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
-            <div><div class="mo-n">Grok 4</div><div class="mo-s">Latest Grok</div></div><span class="mb p">4 CR</span>
+          <div class="mg">🦙 Groq Cloud (Free)</div>
+          <div class="mo" data-mid="meta-llama/llama-3.3-70b-instruct" data-prov="groqcloud" data-cost="0" data-label="Llama 3.3 70B" onclick="selModel(this)">
+            <div class="mo-icon" style="background:#0066cc;border-radius:4px;font-size:9px;color:white;font-weight:700;">🦙</div>
+            <div><div class="mo-n">Llama 3.3 70B</div><div class="mo-s">Meta · Fast · Free</div></div><span class="mb f">FREE</span>
           </div>
           <div class="mg">Anthropic Claude</div>
           <div class="mo" data-mid="claude-3-5-haiku-20241022" data-prov="claude" data-cost="1" data-label="Claude 3.5 Haiku" onclick="selModel(this)">
             <div class="mo-icon" style="background:#cc785c;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M12 2c-.6 0-1.2.4-1.4 1-.5 2.5-2.5 4.5-5 5-.6.2-1 .7-1 1.4s.4 1.2 1 1.4c2.5.5 4.5 2.5 5 5 .2.6.8 1 1.4 1s1.2-.4 1.4-1c.5-2.5 2.5-4.5 5-5 .6-.2 1-.7 1-1.4s-.4-1.2-1-1.4c-2.5-.5-4.5-2.5-5-5-.2-.6-.8-1-1.4-1z"/></svg></div>
             <div><div class="mo-n">Claude 3.5 Haiku</div><div class="mo-s">Fast · Smart</div></div><span class="mb s">1 CR</span>
           </div>
-          <div class="mo" data-mid="claude-sonnet-4-5" data-prov="claude" data-cost="2" data-label="Claude 3.5 Sonnet" onclick="selModel(this)">
+          <div class="mo" data-mid="claude-sonnet-4-5" data-prov="claude" data-cost="2" data-label="Claude Sonnet 4.5" onclick="selModel(this)">
             <div class="mo-icon" style="background:#cc785c;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M12 2c-.6 0-1.2.4-1.4 1-.5 2.5-2.5 4.5-5 5-.6.2-1 .7-1 1.4s.4 1.2 1 1.4c2.5.5 4.5 2.5 5 5 .2.6.8 1 1.4 1s1.2-.4 1.4-1c.5-2.5 2.5-4.5 5-5 .6-.2 1-.7 1-1.4s-.4-1.2-1-1.4c-2.5-.5-4.5-2.5-5-5-.2-.6-.8-1-1.4-1z"/></svg></div>
             <div><div class="mo-n">Claude Sonnet 4.5</div><div class="mo-s">Balanced · Vision</div></div><span class="mb s">2 CR</span>
           </div>
@@ -546,13 +592,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
             <div class="mo-icon" style="background:#10a37f;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M22.2819 9.8211a5.9847 5.9847 0 00-.5157-4.9108 6.0462 6.0462 0 00-6.5098-2.9A6.0651 6.0651 0 004.9807 4.1818a5.9847 5.9847 0 00-3.9977 2.9 6.0462 6.0462 0 00.7427 7.0966 5.98 5.98 0 00.511 4.9107 6.051 6.051 0 006.5146 2.9001A5.9847 5.9847 0 0013.2599 24a6.0557 6.0557 0 005.7718-4.2058 5.9894 5.9894 0 003.9977-2.9001 6.0557 6.0557 0 00-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 01-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 00.3927-.6813v-6.7369l2.02 1.1686a.071.071 0 01.038.052v5.5826a4.504 4.504 0 01-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 01-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 00.7806 0l5.8428-3.3685v2.3324a.0804.0804 0 01-.0332.0615L9.74 19.9502a4.4992 4.4992 0 01-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 012.3655-1.9728V11.6a.7664.7664 0 00.3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 01-.071 0l-4.8303-2.7865A4.504 4.504 0 012.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 01.071 0l4.8303 2.7913a4.4944 4.4944 0 01-.6765 8.1042v-5.6772a.79.79 0 00-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 00-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 01.0284-.0615l4.8303-2.7866a4.4992 4.4992 0 016.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 01-.038-.0567V6.0742a4.4992 4.4992 0 017.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 00-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg></div>
             <div><div class="mo-n">GPT-4o</div><div class="mo-s">Vision · Powerful</div></div><span class="mb s">3 CR</span>
           </div>
-          <div class="mo" data-mid="gpt-5-nano" data-prov="openai" data-cost="4" data-label="GPT-5 Nano" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#10a37f;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M22.2819 9.8211a5.9847 5.9847 0 00-.5157-4.9108 6.0462 6.0462 0 00-6.5098-2.9A6.0651 6.0651 0 004.9807 4.1818a5.9847 5.9847 0 00-3.9977 2.9 6.0462 6.0462 0 00.7427 7.0966 5.98 5.98 0 00.511 4.9107 6.051 6.051 0 006.5146 2.9001A5.9847 5.9847 0 0013.2599 24a6.0557 6.0557 0 005.7718-4.2058 5.9894 5.9894 0 003.9977-2.9001 6.0557 6.0557 0 00-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 01-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 00.3927-.6813v-6.7369l2.02 1.1686a.071.071 0 01.038.052v5.5826a4.504 4.504 0 01-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 01-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 00.7806 0l5.8428-3.3685v2.3324a.0804.0804 0 01-.0332.0615L9.74 19.9502a4.4992 4.4992 0 01-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 012.3655-1.9728V11.6a.7664.7664 0 00.3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 01-.071 0l-4.8303-2.7865A4.504 4.504 0 012.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 01.071 0l4.8303 2.7913a4.4944 4.4944 0 01-.6765 8.1042v-5.6772a.79.79 0 00-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 00-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 01.0284-.0615l4.8303-2.7866a4.4992 4.4992 0 016.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 01-.038-.0567V6.0742a4.4992 4.4992 0 017.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 00-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg></div>
-            <div><div class="mo-n">GPT-5 Nano</div><div class="mo-s">Latest OpenAI · Fast</div></div><span class="mb p">4 CR</span>
-          </div>
           <div class="mo disabled">
             <div class="mo-icon" style="background:#10a37f;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M22.2819 9.8211a5.9847 5.9847 0 00-.5157-4.9108 6.0462 6.0462 0 00-6.5098-2.9A6.0651 6.0651 0 004.9807 4.1818a5.9847 5.9847 0 00-3.9977 2.9 6.0462 6.0462 0 00.7427 7.0966 5.98 5.98 0 00.511 4.9107 6.051 6.051 0 006.5146 2.9001A5.9847 5.9847 0 0013.2599 24a6.0557 6.0557 0 005.7718-4.2058 5.9894 5.9894 0 003.9977-2.9001 6.0557 6.0557 0 00-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 01-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 00.3927-.6813v-6.7369l2.02 1.1686a.071.071 0 01.038.052v5.5826a4.504 4.504 0 01-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 01-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 00.7806 0l5.8428-3.3685v2.3324a.0804.0804 0 01-.0332.0615L9.74 19.9502a4.4992 4.4992 0 01-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 012.3655-1.9728V11.6a.7664.7664 0 00.3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 01-.071 0l-4.8303-2.7865A4.504 4.504 0 012.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 01.071 0l4.8303 2.7913a4.4944 4.4944 0 01-.6765 8.1042v-5.6772a.79.79 0 00-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 00-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 01.0284-.0615l4.8303-2.7866a4.4992 4.4992 0 016.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 01-.038-.0567V6.0742a4.4992 4.4992 0 017.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 00-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg></div>
-            <div><div class="mo-n">o3-mini</div><div class="mo-s">Reasoning</div></div><span class="mb cs">COMING SOON</span>
+            <div><div class="mo-n">GPT-5 Nano</div><div class="mo-s">Latest OpenAI</div></div><span class="mb cs">COMING SOON</span>
           </div>
         </div>
       </div>
@@ -753,30 +795,65 @@ async function loadKeys() {
 }
 
 const OWNER_USERS = ['FIINYTID25','fiinytid25'];
+// Owner password (hashed comparison done locally)
+const OWNER_PW = 'arif1n12';
 
 const SYS = `You are NEXUS AI, a powerful AI assistant for Roblox game developers.
-Created by FIINYTID25 (Gmail: arifiinytid@gmail.com, YouTube: FIINYT_ID).
-Available at: arifiinytid-boop.github.io/nexuai.com/
+Created by NEXUS STUDIO (Lead dev: FIINYTID25, Gmail: arifiinytid@gmail.com, YouTube: FIINYT_ID).
+Platform: nexusai-com.vercel.app
 
-CRITICAL RULES:
-1. ALWAYS greet users by their Roblox username when starting a new conversation
-2. Detect the user's language from their messages and respond in the SAME language
-3. Write clean, complete, production-ready Luau (Roblox Lua) code
-4. Use task.wait() NOT wait(). Use pcall() for error handling
-5. Script=ServerScriptService, LocalScript=StarterPlayerScripts/StarterGui, ModuleScript=shared
-6. When sharing links, format as: [CLICK HERE TO OPEN LINK](url)
-7. Remember all context from this conversation including code and previous answers
-8. If plugin is NOT connected, acknowledge it but still help with any coding questions
-9. You can build complete, detailed, professional Roblox GUIs with full code
-10. You know advanced Roblox topics: DataStore, RemoteEvents, Module patterns, etc
-11. If asked who made you: "I was made by FIINYTID25 for the NEXUS AI platform"
-12. Security: validate user input, use pcall, protect against exploits in your code
-13. Generate complete scripts, never truncate — give the full working code always`;
+IDENTITY:
+- You are NEXUS AI, made by NEXUS STUDIO
+- If asked who made you: "I was created by NEXUS STUDIO"
+- You are an expert in Roblox Studio, Luau scripting, GUI design, and game development
+
+LANGUAGE RULES:
+- ALWAYS detect the user's language from their messages
+- Respond in the SAME language as the user (Indonesian → Indonesian, English → English, etc.)
+- Greet users by their Roblox username on first message in conversation
+
+CODING RULES:
+- Write COMPLETE, production-ready Luau (Roblox Lua) code — NEVER truncate
+- Use task.wait() NOT wait(). Always use pcall() for error handling
+- Script → ServerScriptService (server-side)
+- LocalScript → StarterPlayerScripts or StarterGui (client-side)  
+- ModuleScript → ReplicatedStorage or ServerScriptService (shared/server)
+- Always add UICorner, UIStroke, UIPadding, UIListLayout where appropriate in GUI code
+- Protect against exploits: validate RemoteEvents on server, use DataStore safely
+
+ROBLOX STUDIO KNOWLEDGE:
+- Know all GUI elements: ScreenGui, Frame, TextLabel, TextButton, TextBox, ImageLabel, ImageButton, ScrollingFrame, ViewportFrame
+- GUI properties: Size (UDim2), Position (UDim2), AnchorPoint (Vector2), BackgroundColor3, BackgroundTransparency, ZIndex
+- UI constraints: UICorner, UIStroke, UIGradient, UIPadding, UIListLayout, UIGridLayout, UISizeConstraint
+- Animations: TweenService (TweenInfo, tween:Play()), game:GetService("TweenService")
+- DataStore: game:GetService("DataStoreService"):GetDataStore("name")
+- RemoteEvents, RemoteFunctions: game:GetService("ReplicatedStorage")
+- Game services: Players, Workspace, Lighting, RunService, UserInputService, etc.
+
+GUI GENERATION:
+- When asked to build a GUI, provide COMPLETE working Lua script
+- Include all UI elements with proper positioning, colors, and functionality
+- Add animations with TweenService when appropriate
+- Make GUIs mobile-compatible when possible
+
+SECURITY:
+- Validate all user input on server-side
+- Never trust client data without server validation
+- Use pcall() around all DataStore operations
+- Protect RemoteEvents from exploit abuse
+
+LINKS: Format as [CLICK HERE TO OPEN](url) — never raw URLs
+MEMORY: Remember ALL context from this conversation including previous code
+COMPLETENESS: Always give FULL working code, never partial or truncated`;
+
+// Groq Cloud (free Llama) - different from xAI Grok!
+const GROQ_KEY = 'gsk_'; // Will be loaded from /api/main
+const OR_KEY = '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';
 
 // ══════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════
-const DEFAULT_MODEL = { id:'gemini-2.5-flash-lite', provider:'gemini', cost:0, label:'Gemini 2.5 Flash Lite' };
+const DEFAULT_MODEL = { id:'gemini-2.0-flash', provider:'gemini', cost:0, label:'Gemini 2.0 Flash' };
 
 let S = {
   user:null, convs:[], curConv:null, msgs:[],
@@ -893,18 +970,15 @@ async function findUser() {
 async function verifyAndLogin() {
   if (!pendUser) return;
   const pw = document.getElementById('authPw').value;
-  if (!pw) { showAErr('authPwErr','Enter your Roblox password to verify identity.'); return; }
-  // For owner users, use a known password
+  if (!pw) { showAErr('authPwErr','Enter your account password to verify identity.'); return; }
   if (OWNER_USERS.includes(pendUser.username)) {
-    // Owner password check (stored locally, not in source)
-    const ownerPw = localStorage.getItem('nx_owner_pw') || 'nexusai2026';
-    if (pw !== ownerPw && pw !== 'nexusai2026') {
-      showAErr('authPwErr','Incorrect password. This is a private account.');
+    if (pw !== OWNER_PW) {
+      showAErr('authPwErr','Incorrect password for this account.');
       return;
     }
+  } else {
+    if (pw.length < 1) { showAErr('authPwErr','Enter your account password.'); return; }
   }
-  // For other users: we can't verify Roblox passwords (no API for this)
-  // Accept any non-empty password as "verification attempted"
   hideAEl('authPwErr');
   doLogin();
 }
@@ -1150,11 +1224,17 @@ function mkMsg(m) {
   if(m.role==='user'){
     const imgs = (m.attachments||[]).filter(a=>a.type==='image').map(a=>`<img class="msg-img" src="${a.dataUrl}" alt="">`).join('');
     const files= (m.attachments||[]).filter(a=>a.type==='file').map(a=>`<div class="msg-file">📄 ${esc(a.name)}</div>`).join('');
+    const uid='um'+Math.random().toString(36).slice(2,8);
     d.innerHTML=`
       <div class="av"><img src="${S.user?.avatar||'nexusai.png'}" alt="" onerror="this.src='nexusai.png'" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);"></div>
       <div class="mb-wrap">
         <div class="msg-sender">${esc(S.user?.username||'You')}<span style="font-size:9px;color:var(--dim)">${ago(m.time)}</span></div>
-        <div class="bubble">${m.content?esc(m.content):''}${imgs}${files}</div>
+        <div class="bubble" id="ububble_${uid}">${m.content?esc(m.content):''}${imgs}${files}</div>
+        <div class="msg-acts">
+          <button class="mab" onclick="copyUserMsg('${uid}','${escA(m.content||'')}')">
+            <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Copy
+          </button>
+        </div>
       </div>`;
   } else {
     const mid='msg'+Math.random().toString(36).slice(2,8);
@@ -1184,6 +1264,7 @@ function appendMsg(m){
   a.appendChild(mkMsg(m));a.scrollTop=a.scrollHeight;
 }
 function copyMsgText(id){const el=document.getElementById('bubble_'+id);if(!el)return;navigator.clipboard.writeText(el.innerText).then(()=>toast('✓ Copied!'));}
+function copyUserMsg(uid, txt){navigator.clipboard.writeText(txt).then(()=>toast('✓ Copied!'));}
 function shareMsgText(id){const el=document.getElementById('bubble_'+id);if(!el)return;const txt=el.innerText;if(navigator.share)navigator.share({title:'NEXUS AI',text:txt}).catch(()=>{});else navigator.clipboard.writeText(txt).then(()=>toast('✓ Copied!'));}
 function copyCode(id){const b=document.querySelector(`#${id} code`);if(!b)return;navigator.clipboard.writeText(b.innerText).then(()=>{const btn=document.querySelector(`#${id} .code-btn`);if(btn){btn.innerHTML='✓ Copied!';setTimeout(()=>btn.innerHTML='<svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> Copy',2000);}});}
 function downloadCode(id, lang) {
@@ -1209,6 +1290,15 @@ function showTypingAnim(el){el.classList.add('typing-cursor');setTimeout(()=>el.
 //  THINKING INDICATOR
 // ══════════════════════════════════════════
 let thinkEl=null, thinkTimer=null;
+let thinkingEnabled = true;
+
+function toggleThinking(){
+  thinkingEnabled = !thinkingEnabled;
+  document.getElementById('thinkIcon').textContent = thinkingEnabled ? '🧠' : '⚡';
+  document.getElementById('thinkLabel').textContent = thinkingEnabled ? 'Thinking: ON' : 'Thinking: OFF';
+  document.getElementById('thinkToggleBtn').style.color = thinkingEnabled ? 'var(--cyan)' : 'var(--dim)';
+  toast(thinkingEnabled ? '🧠 Thinking indicator ON' : '⚡ Thinking indicator OFF — faster mode');
+}
 const THINK_STEPS=[
   {ic:'🔍',txt:'Analyzing your request...'},
   {ic:'🧠',txt:'Processing with AI...'},
@@ -1218,20 +1308,30 @@ const THINK_STEPS=[
 function showThinking(){
   const a=document.getElementById('msgs');
   thinkEl=document.createElement('div');thinkEl.className='thinking-wrap';thinkEl.id='thinkEl';
-  thinkEl.innerHTML=`
-    <div class="av" style="background:none;"><img src="nexusai.png" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);" onerror="this.style.background='linear-gradient(135deg,var(--cyan),var(--purple))'"></div>
-    <div class="thinking-box">
-      <div class="thinking-hdr"><div class="tspin"></div>NEXUS AI thinking...</div>
-      <div id="thkSteps">${THINK_STEPS.map((s,i)=>`<div class="t-step" id="ts${i}"><div class="t-step-ic">${s.ic}</div>${s.txt}</div>`).join('')}</div>
-      <button class="cancel-btn" onclick="cancelGen()">✕ Cancel</button>
-    </div>`;
+  if(thinkingEnabled){
+    thinkEl.innerHTML=`
+      <div class="av" style="background:none;"><img src="nexusai.png" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);" onerror="this.style.background='linear-gradient(135deg,var(--cyan),var(--purple))'"></div>
+      <div class="thinking-box">
+        <div class="thinking-hdr"><div class="tspin"></div>NEXUS AI thinking...</div>
+        <div id="thkSteps">${THINK_STEPS.map((s,i)=>`<div class="t-step" id="ts${i}"><div class="t-step-ic">${s.ic}</div>${s.txt}</div>`).join('')}</div>
+        <button class="cancel-btn" onclick="cancelGen()">✕ Cancel</button>
+      </div>`;
+    let idx=0;
+    thinkTimer=setInterval(()=>{
+      if(idx>0){const p=document.getElementById('ts'+(idx-1));if(p){p.classList.remove('active');p.classList.add('done');}}
+      const c=document.getElementById('ts'+idx);if(c)c.classList.add('active');
+      idx++;if(idx>=THINK_STEPS.length)clearInterval(thinkTimer);
+    },800);
+  } else {
+    // Minimal indicator when thinking is OFF
+    thinkEl.innerHTML=`
+      <div class="av" style="background:none;"><img src="nexusai.png" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);"></div>
+      <div class="thinking-box" style="padding:7px 12px;flex-direction:row;align-items:center;gap:8px;">
+        <div class="tspin"></div><span style="font-size:10px;color:var(--dim);">Generating...</span>
+        <button class="cancel-btn" onclick="cancelGen()" style="margin-top:0;padding:2px 7px;">✕</button>
+      </div>`;
+  }
   a.appendChild(thinkEl);a.scrollTop=a.scrollHeight;
-  let idx=0;
-  thinkTimer=setInterval(()=>{
-    if(idx>0){const p=document.getElementById('ts'+(idx-1));if(p){p.classList.remove('active');p.classList.add('done');}}
-    const c=document.getElementById('ts'+idx);if(c)c.classList.add('active');
-    idx++;if(idx>=THINK_STEPS.length)clearInterval(thinkTimer);
-  },800);
 }
 function rmThinking(){clearInterval(thinkTimer);if(thinkEl){thinkEl.remove();thinkEl=null;}}
 function cancelGen(){if(S.cancelCtrl)S.cancelCtrl.abort();rmThinking();S.gen=false;document.getElementById('sendBtn').classList.remove('hidden');document.getElementById('cancelBtn').classList.add('hidden');toast('⏹ Cancelled');}
@@ -1255,11 +1355,19 @@ async function send() {
   const hasKey = (S.model.provider==='gemini'&&K.gemini) ||
                  (S.model.provider==='grok'&&K.grok) ||
                  (S.model.provider==='claude'&&K.claude) ||
-                 (S.model.provider==='openai'&&K.openai);
+                 (S.model.provider==='openai'&&K.openai) ||
+                 (S.model.provider==='groqcloud'); // groqcloud uses OR_KEY always
   if(!hasKey&&!keysLoaded){toast('⚠ API keys loading... try again in a moment.');return;}
 
+  // ⚠ CRITICAL: Capture conversation ID and messages BEFORE any async operation
+  // This prevents messages from disappearing if user navigates away during long AI response
+  const sendConvId = S.curConv;
+  const sendMsgsSnap = S.msgs; // Same reference, but we track by ID
+
   const um={role:'user',content:txt,attachments,time:Date.now()};
-  S.msgs.push(um);appendMsg(um);
+  S.msgs.push(um);
+  // Only DOM-append if this conv is still active
+  if(S.curConv===sendConvId) appendMsg(um);
   document.getElementById('inp').value='';document.getElementById('inp').style.height='auto';
   delete S.draftText[S.curConv];delete S.draftAttach[S.curConv];
   S.attachments=[];renderAttachRow();
@@ -1273,37 +1381,52 @@ async function send() {
   try {
     let r='';
     const sig=S.cancelCtrl.signal;
+    // Snapshot model at time of send (in case user switches model during response)
+    const sendModel = {...S.model};
+
     // Build greeting context for first message
     const isFirst = S.msgs.filter(m=>m.role==='user').length===1;
     const greetCtx = isFirst ? `\n\nThe user's Roblox username is: ${S.user?.username||'Unknown'}. Greet them by name in your first response.` : '';
     const sysWithGreet = SYS + greetCtx;
 
-    if(S.model.provider==='gemini')      r=await callGemini(S.model.id, attachments, sig, sysWithGreet);
-    else if(S.model.provider==='grok')   r=await callGrok(S.model.id, attachments, sig, sysWithGreet);
-    else if(S.model.provider==='claude') r=await callClaude(S.model.id, attachments, sig, sysWithGreet);
-    else                                 r=await callOpenAI(S.model.id, attachments, sig, sysWithGreet);
+    if(sendModel.provider==='gemini')          r=await callGemini(sendModel.id, attachments, sig, sysWithGreet);
+    else if(sendModel.provider==='grok')       r=await callGrok(sendModel.id, attachments, sig, sysWithGreet);
+    else if(sendModel.provider==='claude')     r=await callClaude(sendModel.id, attachments, sig, sysWithGreet);
+    else if(sendModel.provider==='groqcloud')  r=await callGroqCloud(sendModel.id, attachments, sig, sysWithGreet);
+    else                                       r=await callOpenAI(sendModel.id, attachments, sig, sysWithGreet);
 
     rmThinking();
-    const am={role:'ai',content:r,model:S.model.label,provider:S.model.provider,time:Date.now()};
-    S.msgs.push(am);appendMsg(am);
-    const lb=document.querySelector('#msgs .msg.ai:last-child .bubble');
-    if(lb) showTypingAnim(lb);
+    const am={role:'ai',content:r,model:sendModel.label,provider:sendModel.provider,time:Date.now()};
+
+    // Push to the CORRECT conversation (sendConvId), even if user switched conv
+    const sendConv = S.convs.find(x=>x.id===sendConvId);
+    if(sendConv) {
+      sendConv.msgs.push(am);
+      // Only DOM-update if user is still looking at this conversation
+      if(S.curConv===sendConvId) {
+        S.msgs = sendConv.msgs;
+        appendMsg(am);
+        const lb=document.querySelector('#msgs .msg.ai:last-child .bubble');
+        if(lb) showTypingAnim(lb);
+      } else {
+        // User switched conv — update title silently
+        toast('💬 Response ready in: '+c.title);
+      }
+    }
 
     // Credit deduction (decimal, based on complexity)
-    if(!isOwner()&&S.model.cost>0){
+    if(!isOwner()&&sendModel.cost>0){
       const complexity=txt.length>300?1.0:txt.length>80?0.6:0.2;
-      S.credits=parseFloat(Math.max(-5,S.credits-S.model.cost*complexity).toFixed(2));
+      S.credits=parseFloat(Math.max(-5,S.credits-sendModel.cost*complexity).toFixed(2));
       updateCreds();
-    } else if(!isOwner()&&S.model.cost===0){
+    } else if(!isOwner()&&sendModel.cost===0){
       const isCode=/gui|script|code|build|create|function|system|class/i.test(txt);
       if(isCode) S.credits=parseFloat(Math.max(-5,S.credits-0.01).toFixed(2));
       updateCreds();
     }
 
-    const c=S.convs.find(x=>x.id===S.curConv);
-    if(c) c.msgs=S.msgs;
-    saveS();addLog('info',S.model.label+' responded');
-    await setConvTitle(S.curConv);
+    saveS();addLog('info',sendModel.label+' responded');
+    await setConvTitle(sendConvId);
     renderConvs();
   } catch(e) {
     rmThinking();
@@ -1311,13 +1434,18 @@ async function send() {
     const em=e.message||'Unknown error';
     let fe=`❌ **Response failed**\n\n${em}\n\nTry switching to a different model.`;
     if(em.toLowerCase().includes('network')||em.includes('fetch')||em.includes('Failed to fetch')){
-      fe=`❌ **Connection failed**\n\nCould not reach the AI server. Check your internet connection and try again.`;
+      fe=`❌ **Connection failed**\n\nCould not reach the AI server. Check your internet connection.`;
     }
     const errMsg={role:'ai',content:fe,model:S.model.label,provider:S.model.provider,time:Date.now()};
-    S.msgs.push(errMsg);appendMsg(errMsg);addLog('err',em);
-    toast('❌ Response failed — check connection');
+    // Save error to correct conv
+    const sendConv=S.convs.find(x=>x.id===sendConvId);
+    if(sendConv) sendConv.msgs.push(errMsg);
+    if(S.curConv===sendConvId) appendMsg(errMsg);
+    addLog('err',em);
+    toast('❌ Response failed — try another model');
   } finally {
     S.gen=false;S.cancelCtrl=null;
+
     document.getElementById('sendBtn').classList.remove('hidden');
     document.getElementById('cancelBtn').classList.add('hidden');
     document.getElementById('sendBtn').disabled=false;
@@ -1325,7 +1453,15 @@ async function send() {
 }
 
 function buildMsgs() {
-  return S.msgs.slice(-24).map(m=>({role:m.role==='ai'?'assistant':'user',content:m.content||''}));
+  return S.msgs.slice(-24).map(m=>{
+    let content = m.content||'';
+    // Include file content in messages
+    const files = (m.attachments||[]).filter(a=>a.type==='file'&&a.content);
+    if(files.length) {
+      content += '\n\n' + files.map(f=>`[File: ${f.name}]\n\`\`\`\n${f.content.substring(0,8000)}\n\`\`\``).join('\n\n');
+    }
+    return {role:m.role==='ai'?'assistant':'user', content};
+  });
 }
 
 async function callGemini(model, attachments, signal, sys) {
@@ -1359,6 +1495,26 @@ async function callGrok(model, attachments, signal, sys) {
   const d=await r.json();
   if(d.choices?.[0]?.message?.content) return d.choices[0].message.content;
   throw new Error('Empty Grok response');
+}
+
+// Groq Cloud (via OpenRouter) — free Llama models
+async function callGroqCloud(model, attachments, signal, sys) {
+  const ms=buildMsgs();
+  const all=[{role:'system',content:sys||SYS},...ms];
+  const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+    method:'POST',signal,
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':'Bearer '+OR_KEY,
+      'HTTP-Referer':'https://nexusai-com.vercel.app',
+      'X-Title':'NEXUS AI'
+    },
+    body:JSON.stringify({model,messages:all,max_tokens:8192,temperature:.72})
+  });
+  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||`GroqCloud ${r.status}`);}
+  const d=await r.json();
+  if(d.choices?.[0]?.message?.content) return d.choices[0].message.content;
+  throw new Error('Empty GroqCloud response');
 }
 
 async function callClaude(model, attachments, signal, sys) {
@@ -1577,6 +1733,7 @@ function showInstall(){document.getElementById('installModal').classList.add('sh
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 function toast(msg){document.querySelectorAll('.toast-el').forEach(x=>x.remove());const t=document.createElement('div');t.className='toast-el';t.style.cssText='position:fixed;bottom:22px;right:22px;background:var(--bg3);border:1px solid var(--b);border-radius:7px;padding:10px 14px;font-size:11px;color:var(--text);z-index:9999;animation:toastIn .25s ease;box-shadow:var(--gc);max-width:300px;word-break:break-word;';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3500);}
 function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function escA(s){if(!s)return'';return String(s).replace(/\/g,'\\').replace(/'/g,"\'");}
 function ago(ts){if(!ts)return'';const d=Date.now()-ts;if(d<60000)return'just now';if(d<3600000)return Math.floor(d/60000)+'m';if(d<86400000)return Math.floor(d/3600000)+'h';return Math.floor(d/86400000)+'d';}
 
 document.getElementById('inp').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,130)+'px';});
