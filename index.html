@@ -777,6 +777,18 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 </div>
 
 <script>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  // Kode "Ninja" untuk memaksa marked selalu pakai String agar tidak crash
+  const asliMarked = window.marked;
+  window.marked = function(isi) {
+    if (typeof isi !== 'string') isi = String(isi || "");
+    // Pakai .parse jika pakai versi baru, jika tidak pakai fungsi langsung
+    return (asliMarked.parse ? asliMarked.parse(isi) : asliMarked(isi));
+  };
+</script>
+  
 // ══════════════════════════════════════════
 //  API KEYS — loaded from Vercel env vars via /api/main
 //  FIX: Use module-level let, initialize before use
