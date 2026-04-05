@@ -419,7 +419,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <div id="authStep1">
       <div style="font-size:11px;color:var(--dim);margin-bottom:14px;">Login with your Roblox username</div>
       <input type="text" id="unInput" class="auth-input" placeholder="Your Roblox username..." autocomplete="off" spellcheck="false">
-      <button class="btn-auth" id="findBtn" onclick="findUser()">FIND ROBLOX ACCOUNT</button>
+      <button class="btn-auth" id="findBtn" onclick="findUser()">🔍 FIND ROBLOX ACCOUNT</button>
       <div class="auth-load" id="authLoad"><div class="spin"></div><span id="authLoadTxt">Searching...</span></div>
       <div class="auth-err" id="authErr"></div>
       <div class="auth-prev" id="authPrev">
@@ -540,68 +540,68 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
         <!-- Model Dropdown -->
         <div class="model-dd" id="mDD">
           <div class="mg">Google Gemini</div>
-          <div class="mo act" data-mid="gemini-2.5-flash" data-prov="gemini" data-cost="0" data-label="Gemini 2.0 Flash" onclick="selModel(this)">
-            <div class="mo-icon"><img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="G"></div>
+          <div class="mo act" data-mid="gemini-2.0-flash" data-prov="gemini" data-cost="0" data-label="Gemini 2.0 Flash" onclick="selModel(this)">
+            <div class="mo-icon"><img src="icon/gemini.png" alt="G" onerror="this.src='https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg'"></div>
             <div><div class="mo-n">Gemini 2.0 Flash</div><div class="mo-s">Latest · Fast · Vision</div></div><span class="mb f">FREE</span>
           </div>
           <div class="mo" data-mid="gemini-2.5-flash-lite" data-prov="gemini" data-cost="2" data-label="Gemini 2.5 Flash-Lite" onclick="selModel(this)">
-            <div class="mo-icon"><img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="G"></div>
+            <div class="mo-icon"><img src="icon/gemini.png" alt="G" onerror="this.src='https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg'"></div>
             <div><div class="mo-n">Gemini 2.5 Flash-Lite</div><div class="mo-s">Economical · Thinking</div></div><span class="mb s">2 CR</span>
           </div>
           <div class="mo" data-mid="gemini-3-flash-preview" data-prov="gemini" data-cost="5" data-label="Gemini 3 Flash" onclick="selModel(this)">
-            <div class="mo-icon"><img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="G"></div>
+            <div class="mo-icon"><img src="icon/gemini.png" alt="G" onerror="this.src='https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg'"></div>
             <div><div class="mo-n">Gemini 3 Flash</div><div class="mo-s">Next Gen</div></div><span class="mb s">5 CR</span>
           </div>
-          <div class="mo" data-mid="gemini-3.1-pro-preview" data-prov="gemini" data-cost="10" data-label="Gemini 3.1 Pro" onclick="selModel(this)">
-            <div class="mo-icon"><img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="G"></div>
-            <div><div class="mo-n">Gemini 3.1 Pro</div><div class="mo-s">Advanced Intelligence</div></div><span class="mb s">10 CR</span>
-          </div>
-          <div class="mo" data-mid="gemini-3.1-flash-lite-preview" data-prov="gemini" data-cost="4" data-label="Gemini 3.1 Flash-Lite" onclick="selModel(this)">
-            <div class="mo-icon"><img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="G"></div>
+          <div class="mo" data-mid="gemini-3.1-flash-lite-preview" data-prov="gemini" data-cost="4" data-label="Gemini 3.1 Flash Lite" onclick="selModel(this)">
+            <div class="mo-icon"><img src="icon/gemini.png" alt="G" onerror="this.src='https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg'"></div>
             <div><div class="mo-n">Gemini 3.1 Flash Lite</div><div class="mo-s">Frontier Class</div></div><span class="mb s">4 CR</span>
+          </div>
+          <div class="mo" data-mid="gemini-3.1-pro-preview" data-prov="gemini" data-cost="10" data-label="Gemini 3.1 Pro" onclick="selModel(this)">
+            <div class="mo-icon"><img src="icon/gemini.png" alt="G" onerror="this.src='https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg'"></div>
+            <div><div class="mo-n">Gemini 3.1 Pro</div><div class="mo-s">Advanced Intelligence</div></div><span class="mb s">10 CR</span>
           </div>
           <div class="mg">xAI Grok</div>
           <div class="mo" data-mid="grok-beta" data-prov="grok" data-cost="1" data-label="Grok Beta" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#1a1a2e;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+            <div class="mo-icon" style="border-radius:4px;overflow:hidden;"><img src="icon/grok.png" alt="X" style="width:18px;height:18px;object-fit:cover;" onerror="this.parentElement.style.background='#1a1a2e';this.style.display='none'"></div>
             <div><div class="mo-n">Grok Beta</div><div class="mo-s">xAI · Fast · Stable</div></div><span class="mb s">1 CR</span>
           </div>
           <div class="mo" data-mid="grok-2-latest" data-prov="grok" data-cost="2" data-label="Grok 2" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#1a1a2e;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+            <div class="mo-icon" style="border-radius:4px;overflow:hidden;"><img src="icon/grok.png" alt="X" style="width:18px;height:18px;object-fit:cover;" onerror="this.parentElement.style.background='#1a1a2e';this.style.display='none'"></div>
             <div><div class="mo-n">Grok 2</div><div class="mo-s">Balanced · Reliable</div></div><span class="mb s">2 CR</span>
           </div>
           <div class="mo disabled">
-            <div class="mo-icon" style="background:#1a1a2e;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+            <div class="mo-icon" style="border-radius:4px;overflow:hidden;"><img src="icon/grok.png" alt="X" style="width:18px;height:18px;object-fit:cover;" onerror="this.parentElement.style.background='#1a1a2e';this.style.display='none'"></div>
             <div><div class="mo-n">Grok 4.20 Reasoning</div><div class="mo-s">Deep Reasoning</div></div><span class="mb cs">COMING SOON</span>
           </div>
           <div class="mg">🦙 Groq Cloud (Free)</div>
           <div class="mo" data-mid="meta-llama/llama-3.3-70b-instruct" data-prov="groqcloud" data-cost="0" data-label="Llama 3.3 70B" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#0066cc;border-radius:4px;font-size:9px;color:white;font-weight:700;">🦙</div>
+            <div class="mo-icon" style="border-radius:4px;overflow:hidden;"><img src="icon/meta.png" alt="M" style="width:18px;height:18px;object-fit:cover;" onerror="this.parentElement.innerHTML='🦙'"></div>
             <div><div class="mo-n">Llama 3.3 70B</div><div class="mo-s">Meta · Fast · Free</div></div><span class="mb f">FREE</span>
           </div>
           <div class="mg">Anthropic Claude</div>
           <div class="mo" data-mid="claude-3-5-haiku-20241022" data-prov="claude" data-cost="1" data-label="Claude 3.5 Haiku" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#cc785c;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M12 2c-.6 0-1.2.4-1.4 1-.5 2.5-2.5 4.5-5 5-.6.2-1 .7-1 1.4s.4 1.2 1 1.4c2.5.5 4.5 2.5 5 5 .2.6.8 1 1.4 1s1.2-.4 1.4-1c.5-2.5 2.5-4.5 5-5 .6-.2 1-.7 1-1.4s-.4-1.2-1-1.4c-2.5-.5-4.5-2.5-5-5-.2-.6-.8-1-1.4-1z"/></svg></div>
+            <div class="mo-icon" style="border-radius:4px;overflow:hidden;"><img src="icon/claude.png" alt="C" style="width:18px;height:18px;object-fit:cover;" onerror="this.parentElement.style.background='#cc785c';this.style.display='none'"></div>
             <div><div class="mo-n">Claude 3.5 Haiku</div><div class="mo-s">Fast · Smart</div></div><span class="mb s">1 CR</span>
           </div>
           <div class="mo" data-mid="claude-sonnet-4-5" data-prov="claude" data-cost="2" data-label="Claude Sonnet 4.5" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#cc785c;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M12 2c-.6 0-1.2.4-1.4 1-.5 2.5-2.5 4.5-5 5-.6.2-1 .7-1 1.4s.4 1.2 1 1.4c2.5.5 4.5 2.5 5 5 .2.6.8 1 1.4 1s1.2-.4 1.4-1c.5-2.5 2.5-4.5 5-5 .6-.2 1-.7 1-1.4s-.4-1.2-1-1.4c-2.5-.5-4.5-2.5-5-5-.2-.6-.8-1-1.4-1z"/></svg></div>
+            <div class="mo-icon" style="border-radius:4px;overflow:hidden;"><img src="icon/claude.png" alt="C" style="width:18px;height:18px;object-fit:cover;" onerror="this.parentElement.style.background='#cc785c';this.style.display='none'"></div>
             <div><div class="mo-n">Claude Sonnet 4.5</div><div class="mo-s">Balanced · Vision</div></div><span class="mb s">2 CR</span>
           </div>
           <div class="mo disabled">
-            <div class="mo-icon" style="background:#cc785c;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M12 2c-.6 0-1.2.4-1.4 1-.5 2.5-2.5 4.5-5 5-.6.2-1 .7-1 1.4s.4 1.2 1 1.4c2.5.5 4.5 2.5 5 5 .2.6.8 1 1.4 1s1.2-.4 1.4-1c.5-2.5 2.5-4.5 5-5 .6-.2 1-.7 1-1.4s-.4-1.2-1-1.4c-2.5-.5-4.5-2.5-5-5-.2-.6-.8-1-1.4-1z"/></svg></div>
+            <div class="mo-icon" style="border-radius:4px;overflow:hidden;"><img src="icon/claude.png" alt="C" style="width:18px;height:18px;object-fit:cover;" onerror="this.parentElement.style.background='#cc785c';this.style.display='none'"></div>
             <div><div class="mo-n">Claude 4 Opus</div><div class="mo-s">Most Intelligent</div></div><span class="mb cs">COMING SOON</span>
           </div>
           <div class="mg">OpenAI ChatGPT</div>
           <div class="mo" data-mid="gpt-4o-mini" data-prov="openai" data-cost="0" data-label="GPT-4o Mini" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#10a37f;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M22.2819 9.8211a5.9847 5.9847 0 00-.5157-4.9108 6.0462 6.0462 0 00-6.5098-2.9A6.0651 6.0651 0 004.9807 4.1818a5.9847 5.9847 0 00-3.9977 2.9 6.0462 6.0462 0 00.7427 7.0966 5.98 5.98 0 00.511 4.9107 6.051 6.051 0 006.5146 2.9001A5.9847 5.9847 0 0013.2599 24a6.0557 6.0557 0 005.7718-4.2058 5.9894 5.9894 0 003.9977-2.9001 6.0557 6.0557 0 00-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 01-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 00.3927-.6813v-6.7369l2.02 1.1686a.071.071 0 01.038.052v5.5826a4.504 4.504 0 01-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 01-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 00.7806 0l5.8428-3.3685v2.3324a.0804.0804 0 01-.0332.0615L9.74 19.9502a4.4992 4.4992 0 01-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 012.3655-1.9728V11.6a.7664.7664 0 00.3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 01-.071 0l-4.8303-2.7865A4.504 4.504 0 012.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 01.071 0l4.8303 2.7913a4.4944 4.4944 0 01-.6765 8.1042v-5.6772a.79.79 0 00-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 00-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 01.0284-.0615l4.8303-2.7866a4.4992 4.4992 0 016.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 01-.038-.0567V6.0742a4.4992 4.4992 0 017.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 00-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg></div>
+            <div class="mo-icon" style="border-radius:4px;overflow:hidden;"><img src="icon/chatgpt.png" alt="GPT" style="width:18px;height:18px;object-fit:cover;" onerror="this.parentElement.style.background='#10a37f';this.style.display='none'"></div>
             <div><div class="mo-n">GPT-4o Mini</div><div class="mo-s">Fast · Economical</div></div><span class="mb f">FREE</span>
           </div>
           <div class="mo" data-mid="gpt-4o" data-prov="openai" data-cost="3" data-label="GPT-4o" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#10a37f;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M22.2819 9.8211a5.9847 5.9847 0 00-.5157-4.9108 6.0462 6.0462 0 00-6.5098-2.9A6.0651 6.0651 0 004.9807 4.1818a5.9847 5.9847 0 00-3.9977 2.9 6.0462 6.0462 0 00.7427 7.0966 5.98 5.98 0 00.511 4.9107 6.051 6.051 0 006.5146 2.9001A5.9847 5.9847 0 0013.2599 24a6.0557 6.0557 0 005.7718-4.2058 5.9894 5.9894 0 003.9977-2.9001 6.0557 6.0557 0 00-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 01-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 00.3927-.6813v-6.7369l2.02 1.1686a.071.071 0 01.038.052v5.5826a4.504 4.504 0 01-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 01-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 00.7806 0l5.8428-3.3685v2.3324a.0804.0804 0 01-.0332.0615L9.74 19.9502a4.4992 4.4992 0 01-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 012.3655-1.9728V11.6a.7664.7664 0 00.3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 01-.071 0l-4.8303-2.7865A4.504 4.504 0 012.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 01.071 0l4.8303 2.7913a4.4944 4.4944 0 01-.6765 8.1042v-5.6772a.79.79 0 00-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 00-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 01.0284-.0615l4.8303-2.7866a4.4992 4.4992 0 016.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 01-.038-.0567V6.0742a4.4992 4.4992 0 017.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 00-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg></div>
+            <div class="mo-icon" style="border-radius:4px;overflow:hidden;"><img src="icon/chatgpt.png" alt="GPT" style="width:18px;height:18px;object-fit:cover;" onerror="this.parentElement.style.background='#10a37f';this.style.display='none'"></div>
             <div><div class="mo-n">GPT-4o</div><div class="mo-s">Vision · Powerful</div></div><span class="mb s">3 CR</span>
           </div>
           <div class="mo disabled">
-            <div class="mo-icon" style="background:#10a37f;border-radius:4px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M22.2819 9.8211a5.9847 5.9847 0 00-.5157-4.9108 6.0462 6.0462 0 00-6.5098-2.9A6.0651 6.0651 0 004.9807 4.1818a5.9847 5.9847 0 00-3.9977 2.9 6.0462 6.0462 0 00.7427 7.0966 5.98 5.98 0 00.511 4.9107 6.051 6.051 0 006.5146 2.9001A5.9847 5.9847 0 0013.2599 24a6.0557 6.0557 0 005.7718-4.2058 5.9894 5.9894 0 003.9977-2.9001 6.0557 6.0557 0 00-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 01-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 00.3927-.6813v-6.7369l2.02 1.1686a.071.071 0 01.038.052v5.5826a4.504 4.504 0 01-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 01-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 00.7806 0l5.8428-3.3685v2.3324a.0804.0804 0 01-.0332.0615L9.74 19.9502a4.4992 4.4992 0 01-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 012.3655-1.9728V11.6a.7664.7664 0 00.3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 01-.071 0l-4.8303-2.7865A4.504 4.504 0 012.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 01.071 0l4.8303 2.7913a4.4944 4.4944 0 01-.6765 8.1042v-5.6772a.79.79 0 00-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 00-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 01.0284-.0615l4.8303-2.7866a4.4992 4.4992 0 016.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 01-.038-.0567V6.0742a4.4992 4.4992 0 017.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 00-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg></div>
+            <div class="mo-icon" style="border-radius:4px;overflow:hidden;"><img src="icon/chatgpt.png" alt="GPT" style="width:18px;height:18px;object-fit:cover;" onerror="this.parentElement.style.background='#10a37f';this.style.display='none'"></div>
             <div><div class="mo-n">GPT-5 Nano</div><div class="mo-s">Latest OpenAI</div></div><span class="mb cs">COMING SOON</span>
           </div>
         </div>
@@ -1110,7 +1110,7 @@ function delConv(id,e) {
   e.stopPropagation();
   S.convs=S.convs.filter(c=>c.id!==id);
   delete S.draftText[id]; delete S.draftAttach[id];
-  if(S.curConv===id){const r=S.convs.filter(c=>c.msgs?.length);r.length?loadConv(r[0].id):newChat();}
+  const rem=S.convs.filter(function(c){return c.msgs&&c.msgs.length;});if(rem.length)loadConv(rem[0].id);else newChat();
   saveS();renderConvs();
 }
 function renderConvs() {
@@ -1143,7 +1143,8 @@ async function setConvTitle(id) {
     document.getElementById('chatTitle').textContent=c.title;
     renderConvs();saveS();
   } catch(e) {
-    c.title=(S.msgs[0]?.content||'Chat').substring(0,38);
+    var fc=S.msgs.find(function(m){return m.role==='user';});
+    c.title=(fc&&fc.content?fc.content:'New Chat').substring(0,38);
     renderConvs();saveS();
   }
 }
@@ -1213,10 +1214,7 @@ renderer.code = (code, language) => {
     <pre><code class="hljs language-${lang}" id="code_${id}" contenteditable="false" spellcheck="false">${highlighted}</code></pre>
   </div>`;
 };
-renderer.link=(href,title,text)=>{
-  if(href?.startsWith('http')) return `<a href="${href}" target="_blank" rel="noopener">${text} ↗</a>`;
-  return `<a href="${href||'#'}">${text}</a>`;
-};
+renderer.link=function(tok,t2,t3){var href=typeof tok==='object'?tok.href:tok;var txt=typeof tok==='object'?(tok.tokens&&tok.tokens.length?tok.tokens.map(function(x){return x.raw||x.text||''}).join(''):tok.text||''):t3||'';if(href&&href.startsWith&&href.startsWith('http'))return '<a href="'+href+'" target="_blank" rel="noopener">'+txt+' ↗</a>';return '<a href="'+(href||'#')+'">'+txt+'</a>';};
 marked.setOptions({renderer,breaks:true,gfm:true});
 
 function renderMsgs() {
@@ -1342,7 +1340,7 @@ function showThinking(){
   a.appendChild(thinkEl);a.scrollTop=a.scrollHeight;
 }
 function rmThinking(){clearInterval(thinkTimer);if(thinkEl){thinkEl.remove();thinkEl=null;}}
-function cancelGen(){if(S.cancelCtrl)S.cancelCtrl.abort();rmThinking();S.gen=false;document.getElementById('sendBtn').classList.remove('hidden');document.getElementById('cancelBtn').classList.add('hidden');toast('⏹ Cancelled');}
+function cancelGen(){if(S.cancelCtrl)S.cancelCtrl.abort();rmThinking();var sm={role:'ai',content:'⏹ **Generation stopped.**\n\nResponse was cancelled. Ask again anytime!',time:Date.now()};var conv=S.convs.find(function(x){return x.id===S.curConv;});if(conv){conv.msgs.push(sm);S.msgs=conv.msgs;appendMsg(sm);saveS();}S.gen=false;document.getElementById('sendBtn').classList.remove('hidden');document.getElementById('cancelBtn').classList.add('hidden');toast('⏹ Stopped');}
 
 // ══════════════════════════════════════════
 //  SEND — FIX: await loadKeys() before calling API
@@ -1394,7 +1392,7 @@ async function send() {
 
     // Build greeting context for first message
     const isFirst = S.msgs.filter(m=>m.role==='user').length===1;
-    const greetCtx = isFirst ? `\n\nThe user's Roblox username is: ${S.user?.username||'Unknown'}. Greet them by name in your first response.` : '';
+    const greetCtx = `\n\nUser Roblox username: "${S.user?.username||'Unknown'}". Plan: ${S.plan||'free'}. ${isFirst?'First message - greet by username!':'Continue conversation.'}`;
     const sysWithGreet = SYS + greetCtx;
 
     if(sendModel.provider==='gemini')          r=await callGemini(sendModel.id, attachments, sig, sysWithGreet);
@@ -1741,7 +1739,7 @@ function showInstall(){document.getElementById('installModal').classList.add('sh
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 function toast(msg){document.querySelectorAll('.toast-el').forEach(x=>x.remove());const t=document.createElement('div');t.className='toast-el';t.style.cssText='position:fixed;bottom:22px;right:22px;background:var(--bg3);border:1px solid var(--b);border-radius:7px;padding:10px 14px;font-size:11px;color:var(--text);z-index:9999;animation:toastIn .25s ease;box-shadow:var(--gc);max-width:300px;word-break:break-word;';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3500);}
 function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function escA(s){if(!s)return'';return String(s).replace(/\\/g, '\\\\').replace(/'/g,"\\'");}
+function escA(s){if(!s)return'';var r=String(s);r=r.split('\').join('\\');r=r.split("'").join("\'");return r;}
 function ago(ts){if(!ts)return'';const d=Date.now()-ts;if(d<60000)return'just now';if(d<3600000)return Math.floor(d/60000)+'m';if(d<86400000)return Math.floor(d/3600000)+'h';return Math.floor(d/86400000)+'d';}
 
 document.getElementById('inp').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,130)+'px';});
