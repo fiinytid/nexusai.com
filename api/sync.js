@@ -1,158 +1,159 @@
-// api/sync.js — NEXUS AI Cross-device user data sync v2.0
-// Supports Vercel KV (@vercel/kv) for real persistence.
-// If KV not configured, falls back to in-memory (resets on cold start).
-// To enable KV: vercel env add KV_URL  (from Vercel dashboard → Storage → KV)
+// api/sync.js — Persistent user data sync via Vercel KV
+// Setup: vercel env add KV_REST_API_URL and KV_REST_API_TOKEN
+// Or use the Vercel KV dashboard to link a KV store
 
 let kv = null;
-try {
-  const { kv: vercelKV } = require('@vercel/kv');
-  kv = vercelKV;
-  console.log('[sync] Vercel KV connected');
-} catch (e) {
-  console.log('[sync] KV not available, using in-memory store');
+let kvReady = false;
+
+async function initKV() {
+  if (kvReady) return kv;
+  try {
+    const kvModule = require('@vercel/kv');
+    kv = kvModule.kv || kvModule.default || kvModule;
+    kvReady = true;
+  } catch (e) {
+    // Fallback: in-memory (not persistent across cold starts)
+    kv = null;
+    kvReady = false;
+  }
+  return kv;
 }
 
-// In-memory fallback (lost on cold start)
+// In-memory fallback
 const memStore = {};
 
-async function kvGet(key) {
-  if (kv) {
-    try {
-      const val = await kv.get(key);
-      // KV may return string or object depending on how it was stored
-      if (typeof val === 'string') {
-        try { return JSON.parse(val); } catch(e) { return val; }
-      }
-      return val;
-    } catch (e) {
-      console.error('[sync] KV get error:', e.message);
-    }
+async function getUser(key) {
+  const kvClient = await initKV();
+  if (kvClient && kvReady) {
+    try { return await kvClient.get('nexusai:' + key); } catch(e) {}
   }
-  return memStore[key] ?? null;
+  return memStore[key] || null;
 }
 
-async function kvSet(key, value) {
-  if (kv) {
-    try {
-      await kv.set(key, JSON.stringify(value), { ex: 60 * 60 * 24 * 30 }); // 30 days TTL
-      return true;
-    } catch (e) {
-      console.error('[sync] KV set error:', e.message);
-    }
+async function setUser(key, data) {
+  const kvClient = await initKV();
+  if (kvClient && kvReady) {
+    try { await kvClient.set('nexusai:' + key, data, { ex: 60 * 60 * 24 * 365 }); return; } catch(e) {}
   }
-  memStore[key] = value;
-  return true;
+  memStore[key] = data;
 }
 
-async function kvList(prefix) {
-  if (kv) {
+async function listUsers() {
+  const kvClient = await initKV();
+  if (kvClient && kvReady) {
     try {
-      const keys = await kv.keys(prefix + '*');
+      const keys = await kvClient.keys('nexusai:*');
       const result = {};
       for (const k of keys) {
-        result[k] = await kvGet(k);
+        result[k.replace('nexusai:', '')] = await kvClient.get(k);
       }
       return result;
-    } catch (e) {}
+    } catch(e) {}
   }
-  // In-memory list
-  const result = {};
-  for (const [k, v] of Object.entries(memStore)) {
-    if (k.startsWith(prefix)) result[k] = v;
-  }
-  return result;
+  return memStore;
 }
 
 module.exports = async (req, res) => {
-  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
 
-  const userParam = (req.query.user || '').toLowerCase().trim();
-  const action = req.query.action || '';
+  const userKey = (req.query.user || '').toLowerCase().trim();
 
-  // ── GET ──
   if (req.method === 'GET') {
-    if (!userParam && action !== 'list-users') {
-      res.json(null); return;
-    }
-
-    // Admin: list all users
-    if (action === 'list-users') {
-      const all = await kvList('nexus_user:');
-      const users = Object.entries(all).map(([k, v]) => ({
-        username: k.replace('nexus_user:', ''),
-        credits: v?.credits ?? 0,
-        plan: v?.plan ?? 'free',
-        lastSeen: v?._updated ?? 0,
-      }));
-      res.json(users);
+    if (req.query.list === '1') {
+      // Admin list all users
+      const all = await listUsers();
+      res.json(all);
       return;
     }
-
-    const data = await kvGet('nexus_user:' + userParam);
+    if (!userKey) { res.json(null); return; }
+    const data = await getUser(userKey);
     res.json(data);
     return;
   }
 
-  // ── POST ──
   if (req.method === 'POST') {
     try {
-      const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-      const { user, data, action: bodyAction } = body;
+      const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+      const { user, data, action } = body || {};
 
-      // Admin: give credits
-      if (bodyAction === 'give-credits' && user && body.amount !== undefined) {
-        const key = 'nexus_user:' + user.toLowerCase();
-        const existing = await kvGet(key) || { credits: 0, plan: 'free' };
-        existing.credits = parseFloat(((existing.credits || 0) + parseFloat(body.amount)).toFixed(4));
+      // Admin actions
+      if (action === 'give-credits') {
+        const { target, amount } = body;
+        if (!target || isNaN(amount)) { res.json({ error: 'Invalid params' }); return; }
+        const existing = await getUser(target.toLowerCase()) || {};
+        existing.credits = parseFloat(((existing.credits || 0) + parseFloat(amount)).toFixed(4));
         existing._updated = Date.now();
-        await kvSet(key, existing);
+        await setUser(target.toLowerCase(), existing);
         res.json({ success: true, newCredits: existing.credits });
         return;
       }
 
-      // Admin: set plan
-      if (bodyAction === 'set-plan' && user && body.plan) {
-        const key = 'nexus_user:' + user.toLowerCase();
-        const existing = await kvGet(key) || {};
-        existing.plan = body.plan;
+      if (action === 'set-plan') {
+        const { target, plan } = body;
+        if (!target || !plan) { res.json({ error: 'Invalid params' }); return; }
+        const existing = await getUser(target.toLowerCase()) || {};
+        existing.plan = plan;
         existing._updated = Date.now();
-        await kvSet(key, existing);
+        await setUser(target.toLowerCase(), existing);
         res.json({ success: true });
         return;
       }
 
-      // Normal sync
-      if (!user || !data) {
-        res.status(400).json({ error: 'Missing user or data' });
+      if (action === 'reset-credits') {
+        const { target } = body;
+        if (!target) { res.json({ error: 'Invalid params' }); return; }
+        const existing = await getUser(target.toLowerCase()) || {};
+        existing.credits = 30;
+        existing._updated = Date.now();
+        await setUser(target.toLowerCase(), existing);
+        res.json({ success: true });
         return;
       }
 
-      const key = 'nexus_user:' + user.toLowerCase().trim();
-      const toSave = { ...data, _updated: Date.now() };
-      await kvSet(key, toSave);
+      if (action === 'ban') {
+        const { target } = body;
+        if (!target) { res.json({ error: 'Invalid params' }); return; }
+        const existing = await getUser(target.toLowerCase()) || {};
+        existing.banned = true;
+        existing._updated = Date.now();
+        await setUser(target.toLowerCase(), existing);
+        res.json({ success: true });
+        return;
+      }
+
+      if (action === 'unban') {
+        const { target } = body;
+        const existing = await getUser(target.toLowerCase()) || {};
+        existing.banned = false;
+        existing._updated = Date.now();
+        await setUser(target.toLowerCase(), existing);
+        res.json({ success: true });
+        return;
+      }
+
+      // Normal user sync
+      if (!user || !data) { res.json({ error: 'Missing user or data' }); return; }
+      const key = user.toLowerCase();
+      await setUser(key, { ...data, _updated: Date.now() });
       res.json({ success: true });
     } catch (e) {
-      console.error('[sync] POST error:', e);
-      res.status(500).json({ error: e.message });
+      res.status(400).json({ error: e.message });
     }
     return;
   }
 
-  // ── DELETE ──
   if (req.method === 'DELETE') {
-    if (!userParam) { res.status(400).json({ error: 'Missing user' }); return; }
+    if (!userKey) { res.json({ error: 'Missing user' }); return; }
     try {
-      if (kv) await kv.del('nexus_user:' + userParam);
-      else delete memStore['nexus_user:' + userParam];
+      const kvClient = await initKV();
+      if (kvClient && kvReady) { await kvClient.del('nexusai:' + userKey); }
+      else { delete memStore[userKey]; }
       res.json({ success: true });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
+    } catch(e) { res.status(500).json({ error: e.message }); }
     return;
   }
 
