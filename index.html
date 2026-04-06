@@ -1754,7 +1754,7 @@ The user wants: ${prompt}
 IMPORTANT: Build a ${prompt} GUI, NOT a leaderboard or anything else! Match exactly what the user asks for.`;
 
   try{
-    var response=await callGemini('gemini-2.0-flash',[],null,guiSys);
+    var response=await callGemini('+model+',[],null,guiSys);
     document.getElementById('guiLoading').classList.remove('show');
 
     // Parse JSON from response
