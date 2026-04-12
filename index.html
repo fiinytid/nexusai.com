@@ -343,7 +343,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 </head>
 <body>
 <div id="app" class="hidden">
-  <div class="collapse-sb" onclick="toggleSidebar()" title="Toggle Sidebar">◀</div>
+  <div class="collapse-sb" onclick="toggleSidebar()" title="Toggle Sidebar" id="collapseSbBtn">
+    <svg id="collapseSbIcon" width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+  </div>
 
   <!-- ══════ SIDEBAR ══════ -->
   <div id="sb">
@@ -606,7 +608,51 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
         <button class="gui-btn" onclick="addEl('ImageLabel')">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Image
         </button>
-        <div style="margin-left:auto;display:flex;gap:5px;align-items:center;">
+        <div style="margin-left:auto;display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
+          <!-- Model selector untuk GUI Builder -->
+          <div style="position:relative;">
+            <div class="inp-model" id="guiModelBtn" onclick="toggleGuiMDD()" style="max-width:140px;" title="Model AI untuk GUI Builder">
+              <img id="guiMIcon" src="" alt="" onerror="this.style.display='none'" style="width:14px;height:14px;border-radius:3px;">
+              <span class="inp-model-name" id="guiMName">Gemini 2.0 Flash</span>
+              <span class="inp-model-badge" id="guiMBadge" style="color:var(--green);">FREE</span>
+              <svg width="8" height="8" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="color:var(--dim);flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <!-- GUI Model Dropdown -->
+            <div class="model-dd" id="guiMDD" style="bottom:calc(100% + 4px);left:0;right:auto;min-width:220px;">
+              <div class="mg">Google Gemini</div>
+              <div class="mo act" data-gmid="gemini-2.0-flash" data-gprov="gemini" data-gcost="0" data-glabel="Gemini 2.0 Flash" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
+                <div><div class="mo-n">Gemini 2.0 Flash</div><div class="mo-s">Fast · Free</div></div><span class="mb f">FREE</span>
+              </div>
+              <div class="mo" data-gmid="gemini-2.5-flash-preview-05-20" data-gprov="gemini" data-gcost="2" data-glabel="Gemini 2.5 Flash" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
+                <div><div class="mo-n">Gemini 2.5 Flash</div><div class="mo-s">Smart · Thinking</div></div><span class="mb s">2 CR</span>
+              </div>
+              <div class="mo" data-gmid="gemini-2.5-pro-preview-06-05" data-gprov="gemini" data-gcost="5" data-glabel="Gemini 2.5 Pro" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
+                <div><div class="mo-n">Gemini 2.5 Pro</div><div class="mo-s">Most Capable</div></div><span class="mb s">5 CR</span>
+              </div>
+              <div class="mg">OpenAI</div>
+              <div class="mo" data-gmid="gpt-4o-mini" data-gprov="openai" data-gcost="0" data-glabel="GPT-4o Mini" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
+                <div><div class="mo-n">GPT-4o Mini</div><div class="mo-s">Fast · Free</div></div><span class="mb f">FREE</span>
+              </div>
+              <div class="mo" data-gmid="gpt-4o" data-gprov="openai" data-gcost="3" data-glabel="GPT-4o" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
+                <div><div class="mo-n">GPT-4o</div><div class="mo-s">Vision · Powerful</div></div><span class="mb s">3 CR</span>
+              </div>
+              <div class="mg">Meta Llama</div>
+              <div class="mo" data-gmid="meta-llama/llama-4-maverick:free" data-gprov="openrouter" data-gcost="0" data-glabel="Llama 4 Maverick" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/meta.png" alt="M"></div>
+                <div><div class="mo-n">Llama 4 Maverick</div><div class="mo-s">Free · Vision</div></div><span class="mb f">FREE</span>
+              </div>
+              <div class="mg">Anthropic</div>
+              <div class="mo" data-gmid="claude-haiku-4-5" data-gprov="claude" data-gcost="3" data-glabel="Claude Haiku 4.5" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/claude.png" alt="C"></div>
+                <div><div class="mo-n">Claude Haiku 4.5</div><div class="mo-s">Fast · Smart</div></div><span class="mb s">3 CR</span>
+              </div>
+            </div>
+          </div>
           <button class="gui-ai-btn" onclick="openGuiAIChat()">
             <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             AI Build
@@ -802,11 +848,12 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
   <div class="modal" style="width:520px;">
     <div class="modal-t">AI GUI Builder</div>
     <div class="modal-b" style="margin-bottom:8px;">
-      <p style="margin-bottom:10px;font-size:11px;">Deskripsikan GUI yang kamu inginkan dan AI akan membangunnya di canvas + generate Lua script.</p>
-      <textarea id="guiAIPrompt" style="width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:10px;color:white;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;resize:vertical;min-height:90px;" placeholder="contoh: Shop GUI dengan 3 kartu item, Menu utama dengan tombol animasi..."></textarea>
+      <p style="margin-bottom:6px;font-size:11px;">Deskripsikan GUI yang kamu inginkan. AI akan membangunnya di canvas + generate Lua script lengkap.</p>
+      <p style="margin-bottom:10px;font-size:10px;color:var(--dim);">Model: <span id="guiModalModelLabel" style="color:var(--cyan);">Gemini 2.0 Flash</span> — Ganti model di toolbar GUI Builder</p>
+      <textarea id="guiAIPrompt" style="width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:10px;color:white;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;resize:vertical;min-height:90px;" placeholder="contoh: Shop GUI dengan 3 kartu item, scroll list, tombol beli hijau..."></textarea>
     </div>
     <div class="modal-footer">
-      <button class="btn-modal primary" onclick="generateGuiFromAI()">Bangun dengan AI</button>
+      <button class="btn-modal primary" onclick="updateGuiModalLabel();generateGuiFromAI()">Bangun dengan AI</button>
       <button class="btn-modal secondary" onclick="closeModal('guiAIChatModal')">Batal</button>
     </div>
   </div>
@@ -1116,7 +1163,7 @@ TUTORIAL ROBLOX POPULER (gunakan pengetahuan ini):
 • Tool/weapon: Instance.new("Tool", StarterPack)
 • NPC: humanoid dengan RigType R6/R15
 
-Selalu akhiri respons dengan: "📌 Tempatkan di: [lokasi]" untuk script baru.
+Selalu akhiri respons dengan: "Tempatkan di: [lokasi]" untuk script baru.
 Gunakan format markdown yang rapi dengan headers, code blocks, dan lists.`;
 }
 
@@ -1126,7 +1173,8 @@ Gunakan format markdown yang rapi dengan headers, code blocks, dan lists.`;
 function toggleSidebar(){
   var a = document.getElementById('app');
   var hidden = a.classList.toggle('sb-hidden');
-  document.querySelector('.collapse-sb').textContent = hidden ? '▶' : '◀';
+  var icon = document.getElementById('collapseSbIcon');
+  if(icon) icon.style.transform = hidden ? 'rotate(180deg)' : '';
 }
 
 // ═══════════════════════════════════════
@@ -1238,7 +1286,7 @@ function renderConvs(){
     var title = (c.title && c.title!=='Untitled') ? c.title : ((c.msgs&&c.msgs[0]) ? (c.msgs[0].content||'Chat').substring(0,35) : 'Chat Baru');
     return '<div class="ci '+(c.id===S.curConv?'act':'')+'" onclick="loadConv(\''+c.id+'\')">'+
       '<div style="flex:1;min-width:0;"><div class="ci-title">'+esc(title)+'</div><div class="ci-time">'+ago(c.created)+'</div></div>'+
-      '<span class="ci-del" onclick="delConv(\''+c.id+'\',event)">✕</span>'+
+      '<span class="ci-del" onclick="delConv(\''+c.id+'\',event)"><svg width="9" height="9" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>'+
     '</div>';
   }).join('');
 }
@@ -1474,7 +1522,7 @@ function rmThinking(){clearInterval(thinkTimer);if(thinkEl){thinkEl.remove();thi
 function cancelGen(){
   if(S.cancelCtrl)S.cancelCtrl.abort();
   rmThinking();
-  var sm={role:'ai',content:'⏹ Dihentikan. Tanya lagi kapanpun!',time:Date.now()};
+  var sm={role:'ai',content:'Dihentikan. Tanya lagi kapanpun!',time:Date.now()};
   var conv=S.convs.find(function(x){return x.id===S.curConv;});
   if(conv){conv.msgs.push(sm);S.msgs=conv.msgs;appendMsg(sm);saveS();}
   S.gen=false;
@@ -1750,9 +1798,10 @@ function renderAttachRow(){
   var row=document.getElementById('attachRow');
   if(!S.attachments.length){row.innerHTML='';return;}
   row.innerHTML=S.attachments.map(function(a,i){
+    var rmBtn='<button class="attach-rm" onclick="removeAttach('+i+')"><svg width="8" height="8" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
     return a.type==='image'
-      ?'<div class="attach-item"><img src="'+a.dataUrl+'" alt=""><button class="attach-rm" onclick="removeAttach('+i+')">✕</button></div>'
-      :'<div class="attach-item"><div class="attach-file"><svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+esc(a.name)+'</div><button class="attach-rm" onclick="removeAttach('+i+')">✕</button></div>';
+      ?'<div class="attach-item"><img src="'+a.dataUrl+'" alt="">'+rmBtn+'</div>'
+      :'<div class="attach-item"><div class="attach-file"><svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+esc(a.name)+'</div>'+rmBtn+'</div>';
   }).join('');
 }
 function removeAttach(i){S.attachments.splice(i,1);renderAttachRow();}
@@ -1783,6 +1832,45 @@ document.addEventListener('paste',function(e){
 // ═══════════════════════════════════════
 //  GUI BUILDER
 // ═══════════════════════════════════════
+
+// State model khusus GUI Builder
+var guiModel = { id:'gemini-2.0-flash', provider:'gemini', cost:0, label:'Gemini 2.0 Flash' };
+
+function toggleGuiMDD() {
+  document.getElementById('guiMDD').classList.toggle('open');
+}
+function selGuiModel(el) {
+  var mid   = el.getAttribute('data-gmid');
+  var prov  = el.getAttribute('data-gprov');
+  var cost  = parseFloat(el.getAttribute('data-gcost') || '0');
+  var label = el.getAttribute('data-glabel') || mid;
+  guiModel  = { id: mid, provider: prov, cost: cost, label: label };
+
+  // Update UI
+  var icon = el.querySelector('.mo-icon img');
+  var gIcon = document.getElementById('guiMIcon');
+  if (icon) { gIcon.src = icon.src; gIcon.style.display = ''; }
+  else { gIcon.style.display = 'none'; }
+  document.getElementById('guiMName').textContent = label;
+  var badge = document.getElementById('guiMBadge');
+  badge.textContent  = cost === 0 ? 'FREE' : cost + ' CR';
+  badge.style.color  = cost === 0 ? 'var(--green)' : 'var(--cyan)';
+
+  // Mark active
+  document.querySelectorAll('#guiMDD .mo').forEach(function(o) {
+    o.classList.toggle('act', o.getAttribute('data-gmid') === mid);
+  });
+  document.getElementById('guiMDD').classList.remove('open');
+  toast('GUI Model: ' + label);
+}
+// Tutup dropdown saat klik di luar
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#guiMDD') && !e.target.closest('#guiModelBtn')) {
+    var dd = document.getElementById('guiMDD');
+    if (dd) dd.classList.remove('open');
+  }
+});
+
 var guiEls=[],selEl=null,elC=0;
 var GUI_DEF={
   Frame:{bg:'#1a2040',text:'',border:'#00e5ff',textColor:'#fff',w:200,h:100,x:50,y:50,opacity:1,fontSize:14,anchorX:0,anchorY:0,cornerRadius:0},
@@ -1882,19 +1970,57 @@ function generateGuiCode(){
 }
 function copyGuiCode(){navigator.clipboard.writeText(document.getElementById('guiCodeOutput').textContent).then(function(){toast('Script disalin!');});}
 function downloadGuiCode(){var blob=new Blob([document.getElementById('guiCodeOutput').textContent],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='NexusAI_GUI.lua';a.click();URL.revokeObjectURL(a.href);}
-function openGuiAIChat(){document.getElementById('guiAIChatModal').classList.add('show');}
+function openGuiAIChat(){
+  document.getElementById('guiModalModelLabel').textContent = guiModel.label;
+  document.getElementById('guiAIChatModal').classList.add('show');
+}
+function updateGuiModalLabel(){
+  var el = document.getElementById('guiModalModelLabel');
+  if(el) el.textContent = guiModel.label;
+}
 
 async function generateGuiFromAI(){
   var prompt=document.getElementById('guiAIPrompt').value.trim();
   if(!prompt){toast('Deskripsikan GUI dulu!');return;}
   closeModal('guiAIChatModal');
   await loadKeys();
-  if(!K.gemini){toast('Gemini API key diperlukan');return;}
+
+  // Cek kredit
+  if(!isOwner() && guiModel.cost > 0 && S.credits < guiModel.cost) {
+    toast('Perlu '+guiModel.cost+' CR untuk '+guiModel.label);
+    openShop(); return;
+  }
+
   document.getElementById('guiLoading').classList.add('show');
-  var guiSys='Kamu adalah NEXUS AI GUI Builder. Buat GUI Roblox berdasarkan deskripsi.\n\nRespond HANYA dengan:\n1. Blok ```json dengan array elements\n2. Kemudian blok ```lua dengan script Lua lengkap\n\nFormat JSON:\n```json\n{"title":"Nama GUI","elements":[{"type":"Frame","name":"MainFrame","x":50,"y":50,"w":400,"h":300,"bg":"#0d1a2e","border":"#00e5ff","text":"","textColor":"#ffffff","fontSize":14,"cornerRadius":10,"opacity":0.97,"anchorX":0,"anchorY":0}]}\n```\n\nType tersedia: Frame, TextLabel, TextButton, TextBox, ImageLabel\nCanvas 800x600px. User minta: '+prompt;
+  var guiSys='Kamu adalah NEXUS AI GUI Builder untuk Roblox.\nBuat GUI berdasarkan deskripsi user.\n\nRespond HANYA dengan 2 bagian:\n1. Blok ```json dengan array elements\n2. Blok ```lua dengan Lua script LENGKAP (jangan potong)\n\nFormat JSON:\n```json\n{"title":"Nama GUI","elements":[{"type":"Frame","name":"MainFrame","x":200,"y":150,"w":400,"h":300,"bg":"#0d1a2e","border":"#00e5ff","text":"","textColor":"#ffffff","fontSize":14,"cornerRadius":10,"opacity":0.97,"anchorX":0.5,"anchorY":0.5}]}\n```\n\nType tersedia: Frame, TextLabel, TextButton, TextBox, ImageLabel\nCanvas 800x600px.\nScript Lua harus LENGKAP, tidak boleh dipotong.\n\nUser minta: '+prompt;
+
   try{
-    var response=await callGemini('gemini-2.0-flash',[],null,guiSys);
+    var response = '';
+
+    // Gunakan model yang dipilih di GUI Builder
+    if (guiModel.provider === 'gemini') {
+      response = await callGemini(guiModel.id, [], null, guiSys);
+    } else if (guiModel.provider === 'openai') {
+      // Override system prompt untuk OpenAI
+      var savedMsgs = S.msgs;
+      S.msgs = [{ role:'user', content: prompt }];
+      response = await callOpenAI(guiModel.id, [], null, guiSys);
+      S.msgs = savedMsgs;
+    } else if (guiModel.provider === 'claude') {
+      var savedMsgs2 = S.msgs;
+      S.msgs = [{ role:'user', content: prompt }];
+      response = await callClaude(guiModel.id, [], null, guiSys);
+      S.msgs = savedMsgs2;
+    } else {
+      var savedMsgs3 = S.msgs;
+      S.msgs = [{ role:'user', content: prompt }];
+      response = await callOpenRouter(guiModel.id, [], null, guiSys);
+      S.msgs = savedMsgs3;
+    }
+
     document.getElementById('guiLoading').classList.remove('show');
+
+    // Parse JSON elements
     var jsonMatch=response.match(/```json\s*([\s\S]*?)```/);
     if(jsonMatch){
       try{
@@ -1909,14 +2035,25 @@ async function generateGuiFromAI(){
             guiEls.push(newEl);renderGuiEl(newEl);
           });
           document.getElementById('guiEmpty').style.display='none';
-          toast(guiData.elements.length+' elemen berhasil dibuat!');
+          toast(guiData.elements.length+' elemen dibuat dengan '+guiModel.label+'!');
         }
-      }catch(pe){toast('Gagal parse JSON GUI');}
+      }catch(pe){toast('Gagal parse JSON GUI: '+pe.message);}
     }
+
+    // Parse Lua script
     var luaMatch=response.replace(/```json[\s\S]*?```/,'').match(/```lua\s*([\s\S]*?)```/);
     if(!luaMatch)luaMatch=response.replace(/```json[\s\S]*?```/,'').match(/```\s*([\s\S]*?)```/);
-    if(luaMatch){document.getElementById('guiCodeOutput').textContent=luaMatch[1];setTimeout(function(){document.getElementById('guiCodeModal').classList.add('show');},300);}
-    if(!isOwner()){S.credits=parseFloat(Math.max(CREDIT_FLOOR,S.credits-0.5).toFixed(4));updateCreds();}
+    if(luaMatch){
+      document.getElementById('guiCodeOutput').textContent=luaMatch[1];
+      setTimeout(function(){document.getElementById('guiCodeModal').classList.add('show');},300);
+    }
+
+    // Kurangi kredit
+    if(!isOwner()){
+      var cost = guiModel.cost > 0 ? guiModel.cost * 0.5 : 0.5;
+      S.credits=parseFloat(Math.max(CREDIT_FLOOR,S.credits-cost).toFixed(4));
+      updateCreds();
+    }
     saveS();
   }catch(e){
     document.getElementById('guiLoading').classList.remove('show');
