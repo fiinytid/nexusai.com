@@ -5,11 +5,12 @@ export default function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   res.status(200).json({
-    gemini:   process.env.GEMINI_API_KEY  || '',
-    claude:   process.env.CLAUDE_API_KEY  || '',
-    openai:   process.env.OPENAI_API_KEY  || '',
-    grok:     process.env.GROK_API_KEY    || '',
-    gmail_key: process.env.GMAIL_KEY      || '',  // Google OAuth Client ID
-    version:  '5.0',
+    gemini:           process.env.GEMINI_API_KEY       || '',
+    claude:           process.env.CLAUDE_API_KEY        || '',
+    openai:           process.env.OPENAI_API_KEY        || '',
+    grok:             process.env.GROK_API_KEY          || '',
+    gmail_key:        process.env.GMAIL_KEY             || '',  // Google OAuth Client ID
+    roblox_client_id: process.env.ROBLOX_CLIENT_ID     || '',  // Roblox OAuth Client ID
+    version:          '5.0',
   });
 }
