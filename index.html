@@ -146,7 +146,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .bubble th{background:rgba(0,229,255,.06);color:var(--cyan);}
 
 /* User code display (long scripts) */
-.user-code-wrap{position:relative;margin-top:6px;border:1px solid rgba(0,229,255,.15);border-radius:7px;overflow:hidden;max-height:220px;}
+.user-code-wrap{position:relative;margin-top:6px;border:1px solid rgba(0,229,255,.15);border-radius:7px;overflow:hidden;max-height:240px;background:rgba(0,0,0,.4);}
 .user-code-inner{overflow-y:auto;max-height:220px;}
 .user-code-inner::-webkit-scrollbar{width:3px;}
 .user-code-inner::-webkit-scrollbar-thumb{background:var(--b);}
@@ -236,8 +236,8 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .btn-send svg,.btn-cancel svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;}
 
 /* ── GUI BUILDER ── */
-#guiTab{flex:1;overflow:hidden;display:none;flex-direction:column;}
-.gui-toolbar{padding:7px 12px;border-bottom:1px solid var(--b);background:var(--bg2);display:flex;align-items:center;gap:5px;flex-wrap:wrap;flex-shrink:0;}
+#guiTab{flex:1;overflow:visible;display:none;flex-direction:column;}
+.gui-toolbar{padding:7px 12px;border-bottom:1px solid var(--b);background:var(--bg2);display:flex;align-items:center;gap:5px;flex-wrap:wrap;flex-shrink:0;position:relative;overflow:visible;z-index:100;}
 .gui-btn{padding:4px 10px;border-radius:5px;border:1px solid var(--b);background:var(--card);color:var(--text);font-size:10px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:4px;}
 .gui-btn:hover{border-color:var(--cyan2);color:var(--cyan);}
 .gui-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;}
@@ -350,12 +350,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
   <!-- ══════ SIDEBAR ══════ -->
   <div id="sb">
     <div class="sb-head">
-      <div class="sb-logo" style="overflow:hidden;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/>
-          <line x1="10" y1="17" x2="10" y2="21"/><line x1="14" y1="17" x2="14" y2="21"/>
-          <line x1="9" y1="21" x2="15" y2="21"/>
-        </svg>
+      <div class="sb-logo" style="overflow:hidden;padding:0;background:transparent;border:none;">
+        <img src="nexusai.png" alt="N" style="width:30px;height:30px;object-fit:cover;border-radius:7px;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:12px;color:white;">N</div>
       </div>
       <div>
         <div class="sb-logo-text">NEXUS AI</div>
@@ -639,12 +636,16 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
               <span class="inp-model-badge" id="guiMBadge" style="color:var(--green);">FREE</span>
               <svg width="8" height="8" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="color:var(--dim);flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
-            <!-- GUI Model Dropdown -->
-            <div class="model-dd" id="guiMDD" style="position:absolute;bottom:calc(100% + 4px);left:0;right:auto;min-width:220px;z-index:999;">
+            <!-- GUI Model Dropdown - same as chat -->
+            <div class="model-dd" id="guiMDD" style="position:absolute;bottom:calc(100% + 4px);left:0;right:auto;min-width:240px;z-index:9999;max-height:350px;overflow-y:auto;">
               <div class="mg">Google Gemini</div>
               <div class="mo act" data-gmid="gemini-2.0-flash" data-gprov="gemini" data-gcost="0" data-glabel="Gemini 2.0 Flash" onclick="selGuiModel(this)">
                 <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
                 <div><div class="mo-n">Gemini 2.0 Flash</div><div class="mo-s">Fast · Free</div></div><span class="mb f">FREE</span>
+              </div>
+              <div class="mo" data-gmid="gemini-2.5-flash-lite" data-gprov="gemini" data-gcost="1" data-glabel="Gemini 2.5 Flash Lite" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
+                <div><div class="mo-n">Gemini 2.5 Flash Lite</div><div class="mo-s">Fast · Thinking</div></div><span class="mb s">1 CR</span>
               </div>
               <div class="mo" data-gmid="gemini-2.5-flash" data-gprov="gemini" data-gcost="2" data-glabel="Gemini 2.5 Flash" onclick="selGuiModel(this)">
                 <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
@@ -653,6 +654,14 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
               <div class="mo" data-gmid="gemini-2.5-pro" data-gprov="gemini" data-gcost="5" data-glabel="Gemini 2.5 Pro" onclick="selGuiModel(this)">
                 <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
                 <div><div class="mo-n">Gemini 2.5 Pro</div><div class="mo-s">Most Capable</div></div><span class="mb s">5 CR</span>
+              </div>
+              <div class="mo" data-gmid="gemini-3-flash-preview" data-gprov="gemini" data-gcost="7" data-glabel="Gemini 3 Flash" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
+                <div><div class="mo-n">Gemini 3 Flash</div><div class="mo-s">Extra Fast</div></div><span class="mb s">7 CR</span>
+              </div>
+              <div class="mo" data-gmid="gemini-3.1-pro-preview" data-gprov="gemini" data-gcost="12" data-glabel="Gemini 3.1 Pro" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
+                <div><div class="mo-n">Gemini 3.1 Pro</div><div class="mo-s">Pro · Super Capable</div></div><span class="mb s">12 CR</span>
               </div>
               <div class="mg">OpenAI</div>
               <div class="mo" data-gmid="gpt-4o-mini" data-gprov="openai" data-gcost="0" data-glabel="GPT-4o Mini" onclick="selGuiModel(this)">
@@ -663,17 +672,30 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
                 <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
                 <div><div class="mo-n">GPT-4o</div><div class="mo-s">Vision · Powerful</div></div><span class="mb s">3 CR</span>
               </div>
-              <div class="mg">Meta Llama</div>
+              <div class="mo" data-gmid="gpt-4.1" data-gprov="openai" data-gcost="5" data-glabel="GPT-4.1" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
+                <div><div class="mo-n">GPT-4.1</div><div class="mo-s">Latest OpenAI</div></div><span class="mb s">5 CR</span>
+              </div>
+              <div class="mg">Meta Llama (Free)</div>
               <div class="mo" data-gmid="meta-llama/llama-4-maverick:free" data-gprov="openrouter" data-gcost="0" data-glabel="Llama 4 Maverick" onclick="selGuiModel(this)">
                 <div class="mo-icon"><img src="icon/meta.png" alt="M"></div>
                 <div><div class="mo-n">Llama 4 Maverick</div><div class="mo-s">Free · Vision</div></div><span class="mb f">FREE</span>
+              </div>
+              <div class="mg">DeepSeek</div>
+              <div class="mo" data-gmid="deepseek/deepseek-r1:free" data-gprov="openrouter" data-gcost="0" data-glabel="DeepSeek R1" onclick="selGuiModel(this)">
+                <div class="mo-icon" style="background:#2563eb;color:white;font-size:8px;font-weight:700;">DS</div>
+                <div><div class="mo-n">DeepSeek R1</div><div class="mo-s">Reasoning · Free</div></div><span class="mb f">FREE</span>
               </div>
               <div class="mg">Anthropic</div>
               <div class="mo" data-gmid="claude-haiku-4-5" data-gprov="claude" data-gcost="3" data-glabel="Claude Haiku 4.5" onclick="selGuiModel(this)">
                 <div class="mo-icon"><img src="icon/claude.png" alt="C"></div>
                 <div><div class="mo-n">Claude Haiku 4.5</div><div class="mo-s">Fast · Smart</div></div><span class="mb s">3 CR</span>
               </div>
-            </div>
+              <div class="mo" data-gmid="claude-sonnet-4-6" data-gprov="claude" data-gcost="7" data-glabel="Claude Sonnet 4.6" onclick="selGuiModel(this)">
+                <div class="mo-icon"><img src="icon/claude.png" alt="C"></div>
+                <div><div class="mo-n">Claude Sonnet 4.6</div><div class="mo-s">Powerful</div></div><span class="mb s">7 CR</span>
+              </div>
+                        </div>
           </div>
           <button class="gui-ai-btn" onclick="openGuiAIChat()">
             <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -1266,29 +1288,43 @@ STUDIO CONNECTED: ${connected}
 LANGUAGE RULE (WAJIB): ${langInst}
 Panggil user sebagai "${u.username}" secara natural dalam percakapan.
 
-═══════════════════════════════════════════════
 IDENTITAS: Kamu adalah NEXUS AI buatan NEXUS STUDIO (FIINYTID25).
-Kamu tahu SEGALANYA tentang Roblox Studio dan Lua scripting.
-Bersemangat, membantu, dan encouraging dalam setiap respons.
-═══════════════════════════════════════════════
+Kamu expert di ROBLOX STUDIO, LUA, dan MINECRAFT SCRIPTING.
+Bersemangat, profesional, langsung kerjakan tanpa list tugas.
 
-PENGETAHUAN ROBLOX STUDIO LENGKAP:
-• Services utama: game:GetService() untuk semua service
-• Workspace: tempat Part, Model, terrain berada
-• ServerScriptService: Script server-side
-• StarterGui: LocalScript untuk GUI player
-• StarterPlayerScripts: LocalScript yang jalan saat spawn
-• ReplicatedStorage: ModuleScript dan data shared
-• ServerStorage: data hanya di server
-• Players: info semua player
-• Lighting: atmosphere, sky, effects
-• TweenService: animasi smooth
-• DataStoreService: penyimpanan data persisten
-• RemoteEvent/RemoteFunction: komunikasi server-client
-• BindableEvent/BindableFunction: komunikasi same-side
+PENTING - JANGAN TAMPILKAN LIST TUGAS ATAU RENCANA:
+Langsung output kode/jawaban. Jangan tulis "yang akan saya lakukan:" atau langkah-langkah dulu.
+
+ROBLOX STUDIO (EXPERT):
+• Services: game:GetService() untuk semua service
+• Workspace, ServerScriptService, StarterGui, StarterPlayerScripts
+• ReplicatedStorage, ServerStorage, Players, Lighting, Teams
+• TweenService, DataStoreService, PathfindingService, MarketplaceService
+• RemoteEvent/RemoteFunction: server-client communication
+• BindableEvent/BindableFunction: same-side communication
+• PhysicsService, CollectionService, RunService, UserInputService
+
+MINECRAFT SCRIPTING (EXPERT):
+Bedrock Edition:
+• Behavior Packs: entity/*.json, items/*.json, blocks/*.json, recipes/*.json
+• Script API: @minecraft/server, @minecraft/server-ui, @minecraft/server-gametest
+• manifest.json structure: format_version, header{name,uuid,version}, modules[], dependencies[]
+• GameEvents, world.afterEvents, world.beforeEvents, system.runInterval
+• Entity components: minecraft:health, minecraft:movement, minecraft:behavior.*
+• Item components: minecraft:food, minecraft:durability, minecraft:wearable
+• mcfunction files, tick.json, load.json, pack_manifest.json
+
+Java Edition:
+• Forge: @Mod annotation, FMLJavaModLoadingContext, event bus, @SubscribeEvent
+• Fabric: FabricMod interface, ModInitializer, Registry.register
+• Mixins: @Mixin, @Inject, @Overwrite, CallbackInfo
+• Gradle build configs, mixin.json, fabric.mod.json
+
+Untuk Minecraft addon: buat SEMUA file lengkap yang bisa langsung download dan pakai.
 
 ATURAN KODE WAJIB (JANGAN PERNAH DILANGGAR):
 1. SELALU tulis kode LENGKAP — JANGAN pernah potong dengan "..." atau "-- lanjutan"
+   Untuk Minecraft addon: output SEMUA file (manifest.json + script files + entity JSON, dll)
 2. Gunakan task.wait() bukan wait() | task.spawn() bukan spawn()
 3. SELALU wrap DataStore dalam pcall()
 4. SELALU gunakan :FindFirstChild() dengan nil check
@@ -1349,7 +1385,32 @@ TUTORIAL ROBLOX POPULER (gunakan pengetahuan ini):
 • NPC: humanoid dengan RigType R6/R15
 
 Selalu akhiri respons dengan: "Tempatkan di: [lokasi]" untuk script baru.
-Gunakan format markdown yang rapi dengan headers, code blocks, dan lists.`;
+
+MINECRAFT KNOWLEDGE (Bedrock & Java Edition):
+Kamu JUGA ahli Minecraft scripting — Bedrock ScriptAPI dan Java modding.
+
+BEDROCK ADDON (@minecraft/server API):
+- import { world, system, Player, Entity } from "@minecraft/server"
+- system.runInterval(callback, ticks), world.getAllPlayers()
+- player.sendMessage(text), player.dimension.runCommand(cmd)
+- world.afterEvents.chatSend.subscribe(cb), world.afterEvents.playerSpawn.subscribe(cb)
+- entity.getComponent("minecraft:health"), player.getComponent("minecraft:equippable")
+- Struktur: manifest.json + scripts/main.js + pack_icon.png
+
+JAVA MODDING: Forge/Fabric, @Mod, @SubscribeEvent, DeferredRegister, Mixin
+
+MEMBUAT FILE ADDON:
+Saat user minta addon/mod Minecraft, buat semua file lengkap:
+1. manifest.json (header, modules, dependencies, format_version)
+2. scripts/main.js (logic lengkap)
+3. Instruksi install jelas
+
+PENTING — Kapan TIDAK buat script:
+- User tanya hal umum (cuaca, cerita, dll) → jawab saja tanpa script
+- User tanya Minecraft → buat kode Minecraft, JANGAN taruh ke Roblox Studio
+- User tanya Roblox → inject ke Studio kalau connected
+
+Format respons: markdown rapi dengan headers, code blocks, dan lists.`;
 }
 
 // ═══════════════════════════════════════
@@ -1600,21 +1661,34 @@ function mkMsg(m){
     var content=m.content||'';
     var contentHtml='';
 
-    // Only show code block if it's clearly a script being shared
-    // But keep as plain text for short messages
-    if(isLuaCode(content) && content.length > 200) {
+    // Detect code type: Lua or Minecraft (JS/JSON/Java)
+    var isCode = false;
+    var codeLang = 'lua';
+    var codeLabel = 'Lua Script';
+    if(isLuaCode(content) && content.length > 150){
+      isCode = true; codeLang = 'lua'; codeLabel = 'Lua Script';
+    } else if(content.length > 150 && /import\s+{|system\.run|world\.|@minecraft|manifest\.json|"format_version"/.test(content)){
+      isCode = true; codeLang = 'javascript'; codeLabel = 'Minecraft Script';
+    } else if(content.length > 100 && /public\s+class|@Override|@Mod\(|import\s+net\.minecraft/.test(content)){
+      isCode = true; codeLang = 'java'; codeLabel = 'Java Mod';
+    } else if(content.length > 50 && /^\s*{/.test(content) && /"format_version"|"modules"|"dependencies"/.test(content)){
+      isCode = true; codeLang = 'json'; codeLabel = 'manifest.json';
+    }
+
+    if(isCode) {
       var h=content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      try{h=hljs.highlight(content,{language:'lua'}).value;}catch(e){}
+      try{h=hljs.highlight(content,{language:codeLang}).value;}catch(e){}
       var cid='ucb'+Math.random().toString(36).slice(2,8);
+      var lineCount=content.split('\n').length;
       contentHtml='<div class="user-code-wrap">'+
         '<div class="user-code-header">'+
-          '<span>Lua Script (' + content.split('\n').length + ' baris)</span>'+
+          '<span>'+codeLabel+' ('+lineCount+' baris)</span>'+
           '<button onclick="copyUserCode(\''+cid+'\')" style="background:none;border:none;color:var(--cyan);font-size:9px;cursor:pointer;display:flex;align-items:center;gap:3px;">'+
             '<svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy'+
           '</button>'+
         '</div>'+
         '<div class="user-code-inner">'+
-          '<pre><code class="hljs language-lua" id="'+cid+'">'+h+'</code></pre>'+
+          '<pre><code class="hljs language-'+codeLang+'" id="'+cid+'">'+h+'</code></pre>'+
         '</div>'+
       '</div>';
     } else {
