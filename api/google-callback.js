@@ -16,7 +16,8 @@ export default async function handler(req, res) {
     });
   }
   try {
-    const redirectUri = (process.env.PRODUCTION_URL || 'https://nexusai-com.vercel.app') + '/api/google-callback';
+    const base = (process.env.PRODUCTION_URL || 'https://nexusai-com.vercel.app').replace(/\/api\/google-callback\/?$/, '').replace(/\/$/, '');
+    const redirectUri = base + '/api/google-callback';
     // Step 1: Exchange code for tokens
     const tokenResp = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
