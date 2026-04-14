@@ -24,22 +24,19 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--text);font-size:13px;overflow:hidden;}
 body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0,229,255,.012)1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.012)1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
-
-/* ── LAYOUT ── */
 #app{display:grid;grid-template-columns:255px 1fr;height:100vh;position:relative;z-index:1;transition:grid-template-columns .2s;}
 #app.sb-hidden{grid-template-columns:0 1fr;}
-
-/* ── SIDEBAR ── */
 #sb{display:flex;flex-direction:column;background:var(--bg2);border-right:1px solid var(--b);overflow:hidden;}
 .sb-head{padding:11px 14px 9px;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.sb-logo{width:30px;height:30px;background:linear-gradient(135deg,var(--cyan),var(--purple));border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:12px;color:white;flex-shrink:0;}
+.sb-logo{width:30px;height:30px;border-radius:7px;overflow:hidden;flex-shrink:0;}
+.sb-logo img{width:100%;height:100%;object-fit:cover;}
 .sb-logo-text{font-family:'Orbitron',sans-serif;font-weight:900;font-size:12px;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .sb-logo-sub{font-size:8px;color:var(--dim);}
 .sb-user{padding:8px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--b);flex-shrink:0;}
 .sb-av{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--cyan2);object-fit:cover;background:var(--bg3);flex-shrink:0;}
 .sb-un{font-size:11px;color:white;font-weight:500;}
 .sb-role{font-size:9px;color:var(--dim);}
-.sb-gear{margin-left:auto;font-size:15px;color:var(--dim);cursor:pointer;transition:.12s;flex-shrink:0;background:none;border:none;padding:2px;}
+.sb-gear{margin-left:auto;color:var(--dim);cursor:pointer;transition:.12s;flex-shrink:0;background:none;border:none;padding:2px;}
 .sb-gear:hover{color:var(--cyan);}
 .creds{margin:7px 12px;padding:8px 10px;background:linear-gradient(135deg,rgba(255,214,0,.06),rgba(255,119,0,.06));border:1px solid rgba(255,214,0,.18);border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;cursor:pointer;}
 .creds:hover{border-color:rgba(255,214,0,.35);}
@@ -63,13 +60,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .ci-del:hover{color:var(--pink);}
 .conv-empty{padding:14px;text-align:center;color:var(--dim);font-size:11px;}
 .sb-footer{padding:6px 12px;font-size:8px;color:var(--dim);text-align:center;border-top:1px solid var(--b);flex-shrink:0;line-height:1.8;}
-
-/* Toggle sidebar */
 .collapse-sb{position:absolute;left:249px;top:50%;transform:translateY(-50%);width:18px;height:40px;background:var(--bg2);border:1px solid var(--b);border-radius:0 6px 6px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--dim);z-index:10;transition:.15s;}
 .collapse-sb:hover{color:var(--cyan);}
 #app.sb-hidden .collapse-sb{left:0;}
-
-/* ── CHAT AREA ── */
 #chat{display:flex;flex-direction:column;overflow:hidden;position:relative;}
 .plug-banner{padding:5px 14px;background:rgba(255,45,107,.08);border-bottom:1px solid rgba(255,45,107,.2);font-size:10px;color:var(--pink);display:flex;align-items:center;gap:7px;flex-shrink:0;}
 .plug-banner a{color:var(--cyan);cursor:pointer;text-decoration:none;}
@@ -82,8 +75,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .sdot{width:5px;height:5px;border-radius:50%;background:currentColor;}
 .sdot.pulse{animation:pd 1.8s infinite;}
 @keyframes pd{0%,100%{opacity:1}50%{opacity:.25}}
-
-/* ── CHAT TABS ── */
 .chat-tabs{display:flex;gap:4px;padding:5px 14px;border-bottom:1px solid var(--b);background:var(--bg2);flex-shrink:0;align-items:center;}
 .tab-btn{padding:5px 13px;border-radius:6px;border:1px solid transparent;font-size:10px;cursor:pointer;color:var(--dim);transition:.1s;background:none;}
 .tab-btn.act{background:rgba(0,229,255,.08);border-color:var(--b);color:var(--cyan);}
@@ -91,9 +82,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .tab-right{margin-left:auto;display:flex;align-items:center;gap:5px;}
 .think-toggle{padding:4px 9px;border-radius:5px;border:1px solid var(--b);background:rgba(0,229,255,.05);color:var(--dim);font-size:9px;cursor:pointer;transition:.15s;}
 .think-toggle.active{color:var(--cyan);border-color:var(--cyan2);}
-.think-toggle:hover{color:var(--cyan);}
-
-/* ── MESSAGES ── */
 #msgs{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:12px;}
 #msgs::-webkit-scrollbar{width:3px;}
 #msgs::-webkit-scrollbar-thumb{background:var(--b);}
@@ -104,8 +92,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .sugg{padding:9px 11px;background:var(--card);border:1px solid var(--b);border-radius:var(--r);cursor:pointer;transition:.18s;text-align:left;font-size:11px;color:var(--text);line-height:1.5;}
 .sugg:hover{border-color:var(--cyan2);background:var(--hover);color:white;}
 .sugg strong{color:var(--cyan);display:block;margin-bottom:2px;font-size:10px;}
-
-/* ── MESSAGE BUBBLES ── */
 .msg{display:flex;gap:9px;animation:mi .25s ease;}
 .msg.user{flex-direction:row-reverse;}
 @keyframes mi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -117,8 +103,12 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .bubble{padding:10px 13px;border-radius:10px;line-height:1.7;font-size:12.5px;word-break:break-word;overflow-wrap:break-word;}
 .msg.user .bubble{background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(136,0,255,.08));border:1px solid rgba(0,229,255,.15);border-radius:10px 2px 10px 10px;color:white;}
 .msg.ai .bubble{background:var(--bg2);border:1px solid var(--b);border-radius:2px 10px 10px 10px;color:var(--text);}
-
-/* Code blocks inside AI bubbles */
+/* Studio inject card */
+.studio-inject-card{background:rgba(0,255,170,.05);border:1px solid rgba(0,255,170,.2);border-radius:8px;padding:10px 13px;margin:6px 0;font-size:11px;}
+.studio-inject-card .sc-title{color:var(--green);font-weight:700;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;margin-bottom:5px;}
+.studio-inject-card .sc-item{color:var(--text);padding:2px 0;display:flex;align-items:center;gap:6px;font-size:10.5px;}
+.studio-inject-card .sc-item::before{content:'✓';color:var(--green);font-weight:700;}
+/* Code block */
 .code-block-wrap{position:relative;margin:8px 0;}
 .code-block-wrap pre{margin:0;border-radius:7px;overflow:hidden;}
 .code-block-wrap pre code.hljs{font-size:11px;line-height:1.55;padding:12px 14px;border-radius:7px;border:1px solid rgba(0,229,255,.1);}
@@ -130,8 +120,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .cbtn.dl{color:#cc55ff;border-color:rgba(136,0,255,.3);}
 .cbtn.ed{color:var(--yellow);border-color:rgba(255,214,0,.3);}
 .cbtn.cp{color:var(--green);border-color:rgba(0,255,170,.3);}
-
-/* Inline code */
 .bubble code:not(.hljs){background:rgba(0,229,255,.08);padding:2px 5px;border-radius:3px;font-size:11px;color:var(--cyan);}
 .bubble p{margin-bottom:6px;}.bubble p:last-child{margin-bottom:0;}
 .bubble h1,.bubble h2,.bubble h3{color:var(--cyan);margin:10px 0 5px;font-family:'Orbitron',sans-serif;}
@@ -144,8 +132,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .bubble table{width:100%;border-collapse:collapse;margin:7px 0;font-size:11px;}
 .bubble th,.bubble td{padding:5px 9px;border:1px solid var(--b);}
 .bubble th{background:rgba(0,229,255,.06);color:var(--cyan);}
-
-/* User code display (long scripts) */
 .user-code-wrap{position:relative;margin-top:6px;border:1px solid rgba(0,229,255,.15);border-radius:7px;overflow:hidden;max-height:240px;background:rgba(0,0,0,.4);}
 .user-code-inner{overflow-y:auto;max-height:220px;}
 .user-code-inner::-webkit-scrollbar{width:3px;}
@@ -153,19 +139,10 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .user-code-inner pre code.hljs{font-size:10.5px;border:none;border-radius:0;}
 .user-code-header{padding:5px 10px;background:rgba(0,229,255,.06);border-bottom:1px solid rgba(0,229,255,.1);font-size:9px;color:var(--cyan);display:flex;align-items:center;justify-content:space-between;}
 .user-file-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.12);border-radius:5px;font-size:10px;color:var(--cyan);margin-top:6px;}
-
-/* Message actions */
 .msg-acts{display:flex;gap:5px;padding:3px 2px;flex-wrap:wrap;}
 .mab{font-size:9.5px;color:var(--dim);background:none;border:none;cursor:pointer;padding:2px 7px;border-radius:3px;transition:.1s;display:flex;align-items:center;gap:3px;}
 .mab:hover{color:var(--cyan);background:var(--cyan3);}
 .mab svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;}
-
-/* Studio send button in msg actions */
-.mab.studio-send{color:var(--green);border:1px solid rgba(0,255,170,.2);background:rgba(0,255,170,.04);}
-.mab.studio-send:hover{background:rgba(0,255,170,.12);}
-.mab.studio-send:disabled{opacity:.4;cursor:not-allowed;}
-
-/* ── THINKING UI (like Claude) ── */
 .thinking-wrap{display:flex;gap:9px;animation:mi .25s ease;}
 .thinking-box{background:var(--bg2);border:1px solid var(--b);border-radius:2px 10px 10px 10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;max-width:300px;}
 .thinking-hdr{font-size:10px;color:var(--cyan);display:flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;letter-spacing:.5px;}
@@ -180,12 +157,8 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .t-step.active .t-step-ic::after{content:'›';}
 .cancel-btn{margin-top:4px;padding:3px 10px;background:rgba(255,45,107,.1);border:1px solid rgba(255,45,107,.3);border-radius:5px;color:var(--pink);font-size:9.5px;cursor:pointer;align-self:flex-start;transition:.1s;}
 .cancel-btn:hover{background:rgba(255,45,107,.18);}
-
-/* Fast thinking */
 .thinking-fast{display:flex;gap:9px;animation:mi .25s ease;}
 .thinking-fast-box{background:var(--bg2);border:1px solid var(--b);border-radius:2px 10px 10px 10px;padding:9px 14px;display:flex;align-items:center;gap:8px;}
-
-/* ── INPUT AREA ── */
 .inp-area{padding:10px 14px;border-top:1px solid var(--b);background:var(--bg2);flex-shrink:0;position:relative;}
 .attach-row{display:flex;gap:7px;margin-bottom:7px;flex-wrap:wrap;}
 .attach-row:empty{display:none;}
@@ -202,14 +175,13 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .ib{width:27px;height:27px;border-radius:5px;border:1px solid var(--b);background:transparent;color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.12s;flex-shrink:0;}
 .ib:hover{color:var(--cyan);border-color:var(--cyan2);}
 .ib svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;}
-
-/* Model selector */
 .inp-model{display:flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;background:var(--card);border:1px solid var(--b);cursor:pointer;transition:.12s;font-size:9.5px;color:var(--dim);max-width:165px;overflow:hidden;flex-shrink:0;}
 .inp-model:hover{border-color:var(--cyan2);color:var(--cyan);}
 .inp-model img{width:14px;height:14px;border-radius:3px;object-fit:contain;flex-shrink:0;}
 .inp-model-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;font-size:9px;}
 .inp-model-badge{font-size:8px;font-weight:700;flex-shrink:0;}
-.model-dd{position:absolute;bottom:calc(100% + 4px);left:14px;right:14px;background:var(--bg3);border:1px solid var(--b);border-radius:var(--r);z-index:400;display:none;max-height:320px;overflow-y:auto;box-shadow:0 -8px 32px rgba(0,0,0,.8);}
+/* Model dropdown - fixed positioning to prevent clipping */
+.model-dd{position:fixed;background:var(--bg3);border:1px solid var(--b);border-radius:var(--r);z-index:9000;display:none;max-height:360px;overflow-y:auto;box-shadow:0 -8px 32px rgba(0,0,0,.9);min-width:260px;}
 .model-dd::-webkit-scrollbar{width:3px;}
 .model-dd::-webkit-scrollbar-thumb{background:var(--b);}
 .model-dd.open{display:block;}
@@ -226,18 +198,15 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .mb{font-size:8px;padding:1px 5px;border-radius:3px;font-weight:700;white-space:nowrap;}
 .mb.f{background:rgba(0,255,170,.12);color:var(--green);}
 .mb.s{background:rgba(0,229,255,.12);color:var(--cyan);}
-
-/* Send / Cancel buttons */
 .btn-send,.btn-cancel{border:none;border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.18s;flex-shrink:0;}
 .btn-send{background:linear-gradient(135deg,var(--cyan),var(--purple));color:white;}
 .btn-send:hover{opacity:.82;transform:scale(1.05);}
 .btn-send:disabled{opacity:.35;cursor:not-allowed;transform:none;}
 .btn-cancel{background:rgba(255,45,107,.15);border:1px solid rgba(255,45,107,.3);color:var(--pink);}
 .btn-send svg,.btn-cancel svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;}
-
-/* ── GUI BUILDER ── */
+/* GUI Builder */
 #guiTab{flex:1;overflow:visible;display:none;flex-direction:column;}
-.gui-toolbar{padding:7px 12px;border-bottom:1px solid var(--b);background:var(--bg2);display:flex;align-items:center;gap:5px;flex-wrap:wrap;flex-shrink:0;position:relative;overflow:visible;z-index:100;}
+.gui-toolbar{padding:7px 12px;border-bottom:1px solid var(--b);background:var(--bg2);display:flex;align-items:center;gap:5px;flex-wrap:wrap;flex-shrink:0;position:relative;z-index:100;}
 .gui-btn{padding:4px 10px;border-radius:5px;border:1px solid var(--b);background:var(--card);color:var(--text);font-size:10px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:4px;}
 .gui-btn:hover{border-color:var(--cyan2);color:var(--cyan);}
 .gui-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;}
@@ -258,8 +227,11 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .gui-loading{position:absolute;inset:0;background:rgba(3,3,18,.85);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;font-size:11px;color:var(--cyan);}
 .gui-loading.show{display:flex;}
 .gui-empty-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:rgba(0,229,255,.15);font-size:11px;pointer-events:none;}
-
-/* ── MODALS ── */
+/* GUI model selector wrapper */
+.gui-model-wrap{position:relative;display:inline-block;}
+.gui-model-dd{position:fixed;background:var(--bg3);border:1px solid var(--b);border-radius:var(--r);z-index:9001;display:none;max-height:380px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.9);min-width:260px;}
+.gui-model-dd.open{display:block;}
+/* Modals */
 .ov{position:fixed;inset:0;background:rgba(3,3,18,.92);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
 .ov.show{display:flex;}
 .modal{background:var(--bg2);border:1px solid var(--b);border-radius:13px;padding:22px;width:500px;max-width:95vw;box-shadow:var(--gc);max-height:90vh;overflow-y:auto;}
@@ -272,8 +244,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .btn-modal.primary{background:var(--cyan);color:#030312;}
 .btn-modal.secondary{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--b);}
 .btn-modal:hover{opacity:.84;}
-
-/* Settings */
 .settings-section{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--b);}
 .settings-section:last-child{border-bottom:none;margin-bottom:0;}
 .settings-title{font-size:10px;color:var(--cyan);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-family:'Orbitron',sans-serif;}
@@ -285,8 +255,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .settings-select{background:var(--bg3);border:1px solid var(--b);border-radius:5px;padding:4px 7px;color:white;font-family:'JetBrains Mono',monospace;font-size:10px;outline:none;cursor:pointer;}
 .report-ta{width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:8px 10px;color:white;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;resize:vertical;min-height:80px;margin-top:6px;}
 .report-ta:focus{border-color:var(--cyan2);}
-
-/* Admin Console */
 .console-box{background:rgba(0,0,0,.55);border:1px solid rgba(0,229,255,.18);border-radius:6px;padding:8px;font-family:'JetBrains Mono',monospace;font-size:10px;min-height:100px;max-height:200px;overflow-y:auto;margin-bottom:8px;color:var(--green);}
 .console-inp{width:100%;background:var(--bg3);border:1px solid rgba(0,229,255,.18);border-radius:5px;padding:6px 10px;color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;}
 .console-inp:focus{border-color:var(--cyan2);}
@@ -295,8 +263,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .console-line.ok{color:var(--green);}
 .console-line.err{color:var(--pink);}
 .console-line.info{color:var(--yellow);}
-
-/* Shop */
 .credit-plans{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .credit-plan{padding:14px;border:1px solid var(--b);border-radius:var(--r);text-align:center;}
 .credit-plan.popular{border-color:var(--cyan);}
@@ -311,159 +277,54 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .credit-pack-price{font-size:16px;color:white;font-weight:700;}
 .credit-pack-credits{font-size:11px;color:var(--cyan);margin-top:3px;}
 .credit-pack-idr{font-size:9px;color:var(--dim);margin-top:2px;}
-
-/* Install modal */
 .install-step{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--b);align-items:flex-start;}
 .install-step:last-child{border-bottom:none;}
 .install-num{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;margin-top:1px;}
 .install-txt{font-size:11px;color:var(--text);line-height:1.65;flex:1;}
 .install-txt code{color:var(--cyan);background:rgba(0,229,255,.08);padding:1px 4px;border-radius:3px;font-size:10px;}
-
-/* Utils */
 .hidden{display:none!important;}
 ::-webkit-scrollbar{width:2px;height:2px;}
 ::-webkit-scrollbar-thumb{background:var(--b);border-radius:2px;}
 @keyframes toastIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
-
-/* ── MOBILE ── */
-@media (max-width: 768px) {
-  #app {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    grid-template-columns: none !important;
-    overflow: hidden;
-  }
-  
-  #sb {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--b);
-    flex-shrink: 0;
-    max-height: 200px;
-    overflow: hidden;
-  }
-  
-  .sb-head {
-    padding: 8px 12px 6px;
-  }
-  
-  .sb-user {
-    padding: 6px 10px;
-  }
-  
-  .creds {
-    margin: 5px 10px;
-    padding: 6px 8px;
-  }
-  
-  .cred-v {
-    font-size: 15px;
-  }
-  
-  .btn-nc {
-    margin: 0 10px 4px;
-    padding: 6px 10px;
-  }
-  
-  .convs {
-    max-height: 40px;
-    padding: 2px 5px;
-  }
-  
-  .sb-footer {
-    display: none;
-  }
-  
-  #chat {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    overflow: hidden;
-  }
-  
-  #msgs {
-    flex: 1;
-    overflow-y: auto;
-    padding: 8px 10px;
-    gap: 8px; /* Pastikan #msgs memiliki display: flex; atau display: grid; agar gap berfungsi */
-  }
-  
-  .mb-wrap {
-    max-width: 92%;
-  }
-  
-  .bubble {
-    font-size: 12px;
-    padding: 8px 10px;
-  }
-  
-  .inp-area {
-    padding: 6px 8px;
-    flex-shrink: 0;
-  }
-  
-  #inp {
-    font-size: 12px;
-    padding: 8px 10px;
-    min-height: 38px;
-  }
-  
-  .inp-model {
-    max-width: 130px;
-  }
-  
-  .collapse-sb {
-    display: none;
-  }
-  
-  .chat-title {
-    font-size: 10px;
-  }
-  
-  .chat-tabs {
-    padding: 4px 10px;
-  }
-  
-  .tab-btn {
-    font-size: 9px;
-  }
-  
-  .plug-banner {
-    font-size: 9px;
-    padding: 4px 10px;
-  }
-  
-  .model-dd {
-    left: 8px;
-    right: 8px;
-  }
-  
-  .modal {
-    padding: 16px;
-    max-height: 85vh;
-  }
+@media(max-width:768px){
+  #app{display:flex;flex-direction:column;height:100vh;grid-template-columns:none!important;overflow:hidden;}
+  #sb{width:100%;border-right:none;border-bottom:1px solid var(--b);flex-shrink:0;max-height:200px;overflow:hidden;}
+  .sb-head{padding:8px 12px 6px;}
+  .sb-user{padding:6px 10px;}
+  .creds{margin:5px 10px;padding:6px 8px;}
+  .cred-v{font-size:15px;}
+  .btn-nc{margin:0 10px 4px;padding:6px 10px;}
+  .convs{max-height:40px;padding:2px 5px;}
+  .sb-footer{display:none;}
+  #chat{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;}
+  #msgs{flex:1;overflow-y:auto;padding:8px 10px;gap:8px;}
+  .mb-wrap{max-width:92%;}
+  .bubble{font-size:12px;padding:8px 10px;}
+  .inp-area{padding:6px 8px;flex-shrink:0;}
+  #inp{font-size:12px;padding:8px 10px;min-height:38px;}
+  .inp-model{max-width:130px;}
+  .collapse-sb{display:none;}
+  .chat-title{font-size:10px;}
+  .chat-tabs{padding:4px 10px;}
+  .tab-btn{font-size:9px;}
+  .plug-banner{font-size:9px;padding:4px 10px;}
+  .modal{padding:16px;max-height:85vh;}
 }
-  
 </style>
 </head>
 <body>
 <div id="app" class="hidden">
-  <div class="collapse-sb" onclick="toggleSidebar()" title="Toggle Sidebar" id="collapseSbBtn">
+  <div class="collapse-sb" onclick="toggleSidebar()" id="collapseSbBtn">
     <svg id="collapseSbIcon" width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
   </div>
-
-  <!-- ══════ SIDEBAR ══════ -->
   <div id="sb">
     <div class="sb-head">
-      <div class="sb-logo" style="overflow:hidden;padding:0;background:transparent;border:none;">
-        <img src="nexusai.png" alt="N" style="width:30px;height:30px;object-fit:cover;border-radius:7px;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:12px;color:white;">N</div>
+      <div class="sb-logo">
+        <img src="nexusai.png" alt="N" onerror="this.style.display='none'">
       </div>
       <div>
         <div class="sb-logo-text">NEXUS AI</div>
-        <div class="sb-logo-sub">v5.0 · Roblox Dev</div>
+        <div class="sb-logo-sub">v5.2 · Roblox Dev</div>
       </div>
     </div>
     <div class="sb-user">
@@ -472,7 +333,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
         <div class="sb-un" id="sbUn">-</div>
         <div class="sb-role" id="sbRole">Roblox Developer</div>
       </div>
-      <button class="sb-gear" onclick="openSettings()" title="Settings">
+      <button class="sb-gear" onclick="openSettings()">
         <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
       </button>
     </div>
@@ -492,23 +353,16 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     </button>
     <div class="sec-lbl" id="recentLbl">Riwayat Chat</div>
     <div class="convs" id="convList"><div class="conv-empty" id="noConvLbl">Belum ada percakapan</div></div>
-    <div class="sb-footer">
-      Made by <span style="color:var(--cyan)">NEXUS STUDIO</span><br>
-      YouTube: <span style="color:rgba(0,229,255,.6)">NEXUS STUDIO</span>
-    </div>
+    <div class="sb-footer">Made by <span style="color:var(--cyan)">NEXUS STUDIO</span><br>YouTube: <span style="color:rgba(0,229,255,.6)">NEXUS STUDIO</span></div>
   </div>
 
-  <!-- ══════ CHAT MAIN ══════ -->
   <div id="chat">
-    <!-- Plugin status banner -->
     <div class="plug-banner" id="plugBanner">
       <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span id="plugBannerTxt">Plugin belum terhubung —</span>
       <a onclick="showInstall()">Cara connect →</a>
       <a onclick="retryStudio()" style="margin-left:8px;color:var(--green);">Reconnect</a>
     </div>
-
-    <!-- Header -->
     <div class="chat-hdr">
       <div class="chat-title" id="chatTitle">NEXUS AI — Roblox Dev Assistant</div>
       <div class="status-badge off" id="studioBadge" onclick="retryStudio()">
@@ -516,16 +370,12 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
         <span id="studioTxt">Studio: OFF</span>
       </div>
     </div>
-
-    <!-- Tabs -->
     <div class="chat-tabs">
       <button class="tab-btn act" id="tabChat" onclick="switchTab('chat',this)">
-        <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-        Chat
+        <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Chat
       </button>
       <button class="tab-btn" id="tabGui" onclick="switchTab('gui',this)">
-        <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        GUI Builder
+        <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>GUI Builder
       </button>
       <div class="tab-right">
         <button class="think-toggle active" id="thinkToggle" onclick="toggleThinking()">
@@ -535,46 +385,27 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       </div>
     </div>
 
-    <!-- ─ CHAT TAB ─ -->
     <div id="chatTab" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
       <div id="msgs">
         <div class="welcome" id="welcome">
           <div class="wt">NEXUS AI</div>
           <div class="ws" id="welcomeText">AI Roblox cerdas — tulis Lua, debug script, buat GUI. Connect plugin untuk kirim script langsung ke Studio!</div>
           <div class="suggs">
-            <div class="sugg" onclick="useSugg('Debug script Roblox saya dan perbaiki semua error')">
-              <strong>
-                <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:2px"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                Debug Script
-              </strong>
-              Perbaiki error di script kamu
+            <div class="sugg" onclick="useSugg('Buat loading screen yang bagus dan profesional untuk game Roblox saya')">
+              <strong>🎬 Loading Screen</strong>Buat loading screen keren & lengkap
             </div>
-            <div class="sugg" onclick="useSugg('Buat shop GUI lengkap untuk Roblox dengan Frame, ScrollingFrame, tombol beli, dan animasi')">
-              <strong>
-                <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:2px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                Buat GUI
-              </strong>
-              Shop GUI dengan scroll dan beli
+            <div class="sugg" onclick="useSugg('Buat shop GUI lengkap untuk Roblox dengan item, tombol beli, harga, dan animasi')">
+              <strong>🏪 Shop GUI</strong>GUI toko dengan animasi & scroll
             </div>
-            <div class="sugg" onclick="useSugg('Buat sistem DataStore leaderboard untuk game Roblox dengan Coins dan Level')">
-              <strong>
-                <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:2px"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                Leaderboard
-              </strong>
-              DataStore Coins + Level
+            <div class="sugg" onclick="useSugg('Buat sistem DataStore leaderboard untuk game Roblox dengan Coins, Level, dan Win')">
+              <strong>📊 Leaderboard</strong>DataStore Coins + Level + Win
             </div>
-            <div class="sugg" onclick="useSugg('Cara optimasi script Roblox agar performa lebih baik dan tidak lag')">
-              <strong>
-                <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:2px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                Optimasi
-              </strong>
-              Improve performance
+            <div class="sugg" onclick="useSugg('Buat sistem admin commands lengkap untuk Roblox dengan kick, ban, give, speed, dan fly')">
+              <strong>⚙️ Admin System</strong>Admin commands lengkap
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Input -->
       <div class="inp-area" id="inpArea">
         <div class="attach-row" id="attachRow"></div>
         <div class="inp-box">
@@ -588,7 +419,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
               <button class="ib" onclick="clearChat()" title="Clear chat">
                 <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
               </button>
-              <div class="inp-model" id="inpModelBtn" onclick="toggleMDD()">
+              <div class="inp-model" id="inpModelBtn" onclick="toggleMDD(event)">
                 <img id="inpMIcon" src="" alt="" onerror="this.style.display='none'" style="width:14px;height:14px;border-radius:3px;">
                 <span class="inp-model-name" id="inpMName">Gemini 2.0 Flash</span>
                 <span class="inp-model-badge" id="inpMBadge" style="color:var(--green);">FREE</span>
@@ -603,221 +434,36 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
             </button>
           </div>
         </div>
-        <!-- Model Dropdown -->
-        <div class="model-dd" id="mDD">
-          <div class="mg">Google Gemini</div>
-          <div class="mo act" data-mid="gemini-2.0-flash" data-prov="gemini" data-cost="0" data-label="Gemini 2.0 Flash" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-            <div><div class="mo-n">Gemini 2.0 Flash</div><div class="mo-s">Stable · Fast · Vision</div></div>
-            <span class="mb f">FREE</span>
-          </div>
-          <div class="mo" data-mid="gemini-2.5-flash-lite" data-prov="gemini" data-cost="1" data-label="Gemini 2.5 Flash Lite" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-            <div><div class="mo-n">Gemini 2.5 Flash Lite</div><div class="mo-s">Fast · Thinking</div></div>
-            <span class="mb s">1 CR</span>
-          </div>
-          <div class="mo" data-mid="gemini-2.5-flash" data-prov="gemini" data-cost="2" data-label="Gemini 2.5 Flash" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-            <div><div class="mo-n">Gemini 2.5 Flash</div><div class="mo-s">Smart · Thinking</div></div>
-            <span class="mb s">2 CR</span>
-          </div>
-          <div class="mo" data-mid="gemini-2.5-pro" data-prov="gemini" data-cost="5" data-label="Gemini 2.5 Pro" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-            <div><div class="mo-n">Gemini 2.5 Pro</div><div class="mo-s">Most Capable Google</div></div>
-            <span class="mb s">5 CR</span>
-          </div>
-          <div class="mo" data-mid="gemini-3-flash-preview" data-prov="gemini" data-cost="7" data-label="Gemini 3 Flash" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-            <div><div class="mo-n">Gemini 3 Flash</div><div class="mo-s">Extra Fast · Thinking</div></div>
-            <span class="mb s">7 CR</span>
-          </div>
-          <div class="mo" data-mid="gemini-3.1-flash-lite-preview" data-prov="gemini" data-cost="6" data-label="Gemini 3.1 Flash Lite" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-            <div><div class="mo-n">Gemini 3.1 Flash Lite</div><div class="mo-s">Preview · Thinking</div></div>
-            <span class="mb s">6 CR</span>
-          </div>
-          <div class="mo" data-mid="gemini-3.1-pro-preview" data-prov="gemini" data-cost="12" data-label="Gemini 3.1 Pro" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-            <div><div class="mo-n">Gemini 3.1 Pro</div><div class="mo-s">Pro · Super Capable</div></div>
-            <span class="mb s">12 CR</span>
-          </div>
-          <div class="mg">Meta Llama (Free)</div>
-          <div class="mo" data-mid="meta-llama/llama-3.3-70b-instruct:free" data-prov="openrouter" data-cost="0" data-label="Llama 3.3 70B" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/meta.png" alt="M"></div>
-            <div><div class="mo-n">Llama 3.3 70B</div><div class="mo-s">Meta · Fast</div></div>
-            <span class="mb f">FREE</span>
-          </div>
-          <div class="mo" data-mid="meta-llama/llama-4-scout:free" data-prov="openrouter" data-cost="0" data-label="Llama 4 Scout" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/meta.png" alt="M"></div>
-            <div><div class="mo-n">Llama 4 Scout</div><div class="mo-s">Latest Meta</div></div>
-            <span class="mb f">FREE</span>
-          </div>
-          <div class="mo" data-mid="meta-llama/llama-4-maverick:free" data-prov="openrouter" data-cost="0" data-label="Llama 4 Maverick" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/meta.png" alt="M"></div>
-            <div><div class="mo-n">Llama 4 Maverick</div><div class="mo-s">Meta · Vision · Free</div></div>
-            <span class="mb f">FREE</span>
-          </div>
-          <div class="mg">xAI Grok</div>
-          <div class="mo" data-mid="x-ai/grok-3-mini-beta" data-prov="openrouter" data-cost="1" data-label="Grok 3 Mini" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/grok.png" alt="X"></div>
-            <div><div class="mo-n">Grok 3 Mini</div><div class="mo-s">xAI · Fast · Reasoning</div></div>
-            <span class="mb s">1 CR</span>
-          </div>
-          <div class="mo" data-mid="x-ai/grok-3-beta" data-prov="openrouter" data-cost="4" data-label="Grok 3" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/grok.png" alt="X"></div>
-            <div><div class="mo-n">Grok 3</div><div class="mo-s">xAI · Powerful</div></div>
-            <span class="mb s">4 CR</span>
-          </div>
-          <div class="mg">Anthropic Claude</div>
-          <div class="mo" data-mid="claude-haiku-4-5" data-prov="claude" data-cost="3" data-label="Claude Haiku 4.5" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/claude.png" alt="C"></div>
-            <div><div class="mo-n">Claude Haiku 4.5</div><div class="mo-s">Fast · Smart</div></div>
-            <span class="mb s">3 CR</span>
-          </div>
-          <div class="mo" data-mid="claude-sonnet-4-6" data-prov="claude" data-cost="7" data-label="Claude Sonnet 4.6" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/claude.png" alt="C"></div>
-            <div><div class="mo-n">Claude Sonnet 4.6</div><div class="mo-s">Powerful · Vision</div></div>
-            <span class="mb s">7 CR</span>
-          </div>
-          <div class="mg">OpenAI ChatGPT</div>
-          <div class="mo" data-mid="gpt-4o-mini" data-prov="openai" data-cost="0" data-label="GPT-4o Mini" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
-            <div><div class="mo-n">GPT-4o Mini</div><div class="mo-s">Fast · Economical</div></div>
-            <span class="mb f">FREE</span>
-          </div>
-          <div class="mo" data-mid="gpt-4o" data-prov="openai" data-cost="3" data-label="GPT-4o" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
-            <div><div class="mo-n">GPT-4o</div><div class="mo-s">Vision · Powerful</div></div>
-            <span class="mb s">3 CR</span>
-          </div>
-          <div class="mo" data-mid="o4-mini" data-prov="openai" data-cost="4" data-label="o4 Mini" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
-            <div><div class="mo-n">o4 Mini</div><div class="mo-s">Reasoning · Latest</div></div>
-            <span class="mb s">4 CR</span>
-          </div>
-          <div class="mo" data-mid="gpt-4.1" data-prov="openai" data-cost="5" data-label="GPT-4.1" onclick="selModel(this)">
-            <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
-            <div><div class="mo-n">GPT-4.1</div><div class="mo-s">Latest · Most Capable</div></div>
-            <span class="mb s">5 CR</span>
-          </div>
-          <div class="mg">DeepSeek (Free)</div>
-          <div class="mo" data-mid="deepseek/deepseek-r1:free" data-prov="openrouter" data-cost="0" data-label="DeepSeek R1" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#2563eb;color:white;font-size:8px;font-weight:700;">DS</div>
-            <div><div class="mo-n">DeepSeek R1</div><div class="mo-s">Reasoning · Free</div></div>
-            <span class="mb f">FREE</span>
-          </div>
-          <div class="mo" data-mid="deepseek/deepseek-chat-v3-0324:free" data-prov="openrouter" data-cost="0" data-label="DeepSeek V3" onclick="selModel(this)">
-            <div class="mo-icon" style="background:#2563eb;color:white;font-size:8px;font-weight:700;">DS</div>
-            <div><div class="mo-n">DeepSeek V3</div><div class="mo-s">Chat · Free</div></div>
-            <span class="mb f">FREE</span>
-          </div>
-        </div>
+        <!-- Model Dropdown - fixed position, populated by JS -->
+        <div class="model-dd" id="mDD"></div>
       </div>
     </div>
 
-    <!-- ─ GUI BUILDER TAB ─ -->
+    <!-- GUI BUILDER TAB -->
     <div id="guiTab">
       <div class="gui-toolbar">
         <span style="font-size:10px;color:var(--dim);">Add:</span>
-        <button class="gui-btn" onclick="addEl('Frame')">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Frame
-        </button>
-        <button class="gui-btn" onclick="addEl('TextLabel')">
-          <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>Label
-        </button>
-        <button class="gui-btn" onclick="addEl('TextButton')">
-          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="3"/></svg>Button
-        </button>
-        <button class="gui-btn" onclick="addEl('TextBox')">
-          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="7" y1="12" x2="17" y2="12"/></svg>Input
-        </button>
-        <button class="gui-btn" onclick="addEl('ImageLabel')">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Image
-        </button>
+        <button class="gui-btn" onclick="addEl('Frame')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Frame</button>
+        <button class="gui-btn" onclick="addEl('TextLabel')"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>Label</button>
+        <button class="gui-btn" onclick="addEl('TextButton')"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="3"/></svg>Button</button>
+        <button class="gui-btn" onclick="addEl('TextBox')"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="7" y1="12" x2="17" y2="12"/></svg>Input</button>
+        <button class="gui-btn" onclick="addEl('ImageLabel')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Image</button>
         <div style="margin-left:auto;display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
-          <!-- Model selector untuk GUI Builder -->
-          <div style="position:relative;z-index:998;">
-            <div class="inp-model" id="guiModelBtn" onclick="toggleGuiMDD()" style="max-width:140px;" title="Model AI untuk GUI Builder">
+          <div class="gui-model-wrap">
+            <div class="inp-model" id="guiModelBtn" onclick="toggleGuiMDD(event)" style="max-width:155px;" title="Pilih model AI">
               <img id="guiMIcon" src="" alt="" onerror="this.style.display='none'" style="width:14px;height:14px;border-radius:3px;">
               <span class="inp-model-name" id="guiMName">Gemini 2.0 Flash</span>
               <span class="inp-model-badge" id="guiMBadge" style="color:var(--green);">FREE</span>
               <svg width="8" height="8" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="color:var(--dim);flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
-            <!-- GUI Model Dropdown - same as chat -->
-            <div class="model-dd" id="guiMDD" style="position:absolute;bottom:calc(100% + 4px);left:0;right:auto;min-width:240px;z-index:9999;max-height:350px;overflow-y:auto;">
-              <div class="mg">Google Gemini</div>
-              <div class="mo act" data-gmid="gemini-2.0-flash" data-gprov="gemini" data-gcost="0" data-glabel="Gemini 2.0 Flash" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-                <div><div class="mo-n">Gemini 2.0 Flash</div><div class="mo-s">Fast · Free</div></div><span class="mb f">FREE</span>
-              </div>
-              <div class="mo" data-gmid="gemini-2.5-flash-lite" data-gprov="gemini" data-gcost="1" data-glabel="Gemini 2.5 Flash Lite" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-                <div><div class="mo-n">Gemini 2.5 Flash Lite</div><div class="mo-s">Fast · Thinking</div></div><span class="mb s">1 CR</span>
-              </div>
-              <div class="mo" data-gmid="gemini-2.5-flash" data-gprov="gemini" data-gcost="2" data-glabel="Gemini 2.5 Flash" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-                <div><div class="mo-n">Gemini 2.5 Flash</div><div class="mo-s">Smart · Thinking</div></div><span class="mb s">2 CR</span>
-              </div>
-              <div class="mo" data-gmid="gemini-2.5-pro" data-gprov="gemini" data-gcost="5" data-glabel="Gemini 2.5 Pro" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-                <div><div class="mo-n">Gemini 2.5 Pro</div><div class="mo-s">Most Capable</div></div><span class="mb s">5 CR</span>
-              </div>
-              <div class="mo" data-gmid="gemini-3-flash-preview" data-gprov="gemini" data-gcost="7" data-glabel="Gemini 3 Flash" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-                <div><div class="mo-n">Gemini 3 Flash</div><div class="mo-s">Extra Fast</div></div><span class="mb s">7 CR</span>
-              </div>
-              <div class="mo" data-gmid="gemini-3.1-pro-preview" data-gprov="gemini" data-gcost="12" data-glabel="Gemini 3.1 Pro" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/gemini.png" alt="G"></div>
-                <div><div class="mo-n">Gemini 3.1 Pro</div><div class="mo-s">Pro · Super Capable</div></div><span class="mb s">12 CR</span>
-              </div>
-              <div class="mg">OpenAI</div>
-              <div class="mo" data-gmid="gpt-4o-mini" data-gprov="openai" data-gcost="0" data-glabel="GPT-4o Mini" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
-                <div><div class="mo-n">GPT-4o Mini</div><div class="mo-s">Fast · Free</div></div><span class="mb f">FREE</span>
-              </div>
-              <div class="mo" data-gmid="gpt-4o" data-gprov="openai" data-gcost="3" data-glabel="GPT-4o" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
-                <div><div class="mo-n">GPT-4o</div><div class="mo-s">Vision · Powerful</div></div><span class="mb s">3 CR</span>
-              </div>
-              <div class="mo" data-gmid="gpt-4.1" data-gprov="openai" data-gcost="5" data-glabel="GPT-4.1" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/chatgpt.png" alt="GPT"></div>
-                <div><div class="mo-n">GPT-4.1</div><div class="mo-s">Latest OpenAI</div></div><span class="mb s">5 CR</span>
-              </div>
-              <div class="mg">Meta Llama (Free)</div>
-              <div class="mo" data-gmid="meta-llama/llama-4-maverick:free" data-gprov="openrouter" data-gcost="0" data-glabel="Llama 4 Maverick" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/meta.png" alt="M"></div>
-                <div><div class="mo-n">Llama 4 Maverick</div><div class="mo-s">Free · Vision</div></div><span class="mb f">FREE</span>
-              </div>
-              <div class="mg">DeepSeek</div>
-              <div class="mo" data-gmid="deepseek/deepseek-r1:free" data-gprov="openrouter" data-gcost="0" data-glabel="DeepSeek R1" onclick="selGuiModel(this)">
-                <div class="mo-icon" style="background:#2563eb;color:white;font-size:8px;font-weight:700;">DS</div>
-                <div><div class="mo-n">DeepSeek R1</div><div class="mo-s">Reasoning · Free</div></div><span class="mb f">FREE</span>
-              </div>
-              <div class="mg">Anthropic</div>
-              <div class="mo" data-gmid="claude-haiku-4-5" data-gprov="claude" data-gcost="3" data-glabel="Claude Haiku 4.5" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/claude.png" alt="C"></div>
-                <div><div class="mo-n">Claude Haiku 4.5</div><div class="mo-s">Fast · Smart</div></div><span class="mb s">3 CR</span>
-              </div>
-              <div class="mo" data-gmid="claude-sonnet-4-6" data-gprov="claude" data-gcost="7" data-glabel="Claude Sonnet 4.6" onclick="selGuiModel(this)">
-                <div class="mo-icon"><img src="icon/claude.png" alt="C"></div>
-                <div><div class="mo-n">Claude Sonnet 4.6</div><div class="mo-s">Powerful</div></div><span class="mb s">7 CR</span>
-              </div>
-                        </div>
+            <div class="gui-model-dd" id="guiMDD"></div>
           </div>
           <button class="gui-ai-btn" onclick="openGuiAIChat()">
-            <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            AI Build
+            <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>AI Build
           </button>
-          <button class="gui-btn" onclick="clearCanvas()">
-            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Clear
-          </button>
-          <button class="gui-gen-btn" onclick="generateGuiCode()">
-            <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:4px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            Export Script
-          </button>
-          <button class="gui-gen-btn" id="guiToPlaceBtn" onclick="sendGuiToPlace()" 
-            style="background:linear-gradient(135deg,var(--green),var(--cyan));opacity:0.5;cursor:not-allowed;" 
-            title="Hubungkan plugin dulu">
+          <button class="gui-btn" onclick="clearCanvas()"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Clear</button>
+          <button class="gui-gen-btn" onclick="generateGuiCode()"><svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:4px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Export Script</button>
+          <button class="gui-gen-btn" id="guiToPlaceBtn" onclick="sendGuiToPlace()" style="background:linear-gradient(135deg,var(--green),var(--cyan));opacity:0.5;cursor:not-allowed;">
             <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:4px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             <span id="guiToPlaceTxt">Kirim ke Place</span>
           </button>
@@ -828,78 +474,44 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
           <div class="gui-canvas-inner" id="guiCanvasInner">
             <div class="gui-empty-hint" id="guiEmpty">
               <svg width="32" height="32" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-              <div>Tambah elemen atau klik "AI Build"</div>
+              <div id="guiEmptyTxt">Tambah elemen atau klik "AI Build"</div>
             </div>
           </div>
-          <div class="gui-loading" id="guiLoading">
-            <div class="tspin" style="width:20px;height:20px;border-width:3px;"></div>
-            <span>AI sedang membangun GUI...</span>
-          </div>
+          <div class="gui-loading" id="guiLoading"><div class="tspin" style="width:20px;height:20px;border-width:3px;"></div><span>AI sedang membangun GUI...</span></div>
         </div>
-        <div class="gui-props" id="guiProps">
-          <div style="font-size:10px;color:var(--dim);text-align:center;padding:20px 0;">Pilih elemen</div>
-        </div>
+        <div class="gui-props" id="guiProps"><div style="font-size:10px;color:var(--dim);text-align:center;padding:20px 0;">Pilih elemen</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════ MODALS ══════ -->
-
-<!-- Install Modal -->
+<!-- MODALS -->
 <div class="ov" id="installModal">
   <div class="modal">
-    <div class="modal-t">
-      <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Cara Install Plugin NEXUS AI
-    </div>
+    <div class="modal-t"><svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Cara Install Plugin NEXUS AI</div>
     <div class="modal-b">
-      <div class="install-step">
-        <div class="install-num">1</div>
-        <div class="install-txt">Download file plugin <code>nexusai_plugin_v5.lua</code> dari link yang disediakan</div>
-      </div>
-      <div class="install-step">
-        <div class="install-num">2</div>
-        <div class="install-txt">Simpan ke: <code>C:\Users\[NamaKamu]\AppData\Local\Roblox\Plugins\</code></div>
-      </div>
-      <div class="install-step">
-        <div class="install-num">3</div>
-        <div class="install-txt">Buka Roblox Studio → <strong>Game Settings</strong> → <strong>Security</strong> → aktifkan <strong>Allow HTTP Requests</strong></div>
-      </div>
-      <div class="install-step">
-        <div class="install-num">4</div>
-        <div class="install-txt">Klik tombol <strong>NEXUS AI</strong> di toolbar Roblox Studio → Klik <strong>CONNECT TO CLOUD</strong></div>
-      </div>
-      <div class="install-step">
-        <div class="install-num">5</div>
-        <div class="install-txt">Status akan berubah menjadi <span style="color:var(--green)">CONNECTED [GEMINI]</span> dan Studio badge di web menjadi hijau</div>
-      </div>
-      <div class="install-step">
-        <div class="install-num">6</div>
-        <div class="install-txt">Sekarang chat di web ini — AI akan langsung build di place kamu!</div>
-      </div>
+      <div class="install-step"><div class="install-num">1</div><div class="install-txt">Download file plugin <code>nexusai_plugin_v5.lua</code> dari Discord NEXUS STUDIO</div></div>
+      <div class="install-step"><div class="install-num">2</div><div class="install-txt">Simpan ke: <code>C:\Users\[NamaKamu]\AppData\Local\Roblox\Plugins\</code></div></div>
+      <div class="install-step"><div class="install-num">3</div><div class="install-txt">Buka Roblox Studio → <strong>Game Settings</strong> → <strong>Security</strong> → aktifkan <strong>Allow HTTP Requests</strong></div></div>
+      <div class="install-step"><div class="install-num">4</div><div class="install-txt">Klik tombol <strong>NEXUS AI</strong> di toolbar Roblox Studio → Klik <strong>CONNECT</strong></div></div>
+      <div class="install-step"><div class="install-num">5</div><div class="install-txt">Status berubah hijau → Chat di web ini → AI langsung build di place kamu!</div></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn-modal primary" onclick="closeModal('installModal')">MENGERTI</button>
-    </div>
+    <div class="modal-footer"><button class="btn-modal primary" onclick="closeModal('installModal')">MENGERTI</button></div>
   </div>
 </div>
 
-<!-- Settings Modal -->
 <div class="ov" id="settingsModal">
   <div class="modal" style="width:520px;">
-    <div class="modal-t">
-      <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      Settings
-    </div>
+    <div class="modal-t"><svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</div>
     <div class="settings-section">
-      <div class="settings-title">Akun</div>
+      <div class="settings-title">Akun Roblox</div>
       <div class="settings-row"><span style="color:white;font-weight:600;" id="settingsUsername">-</span><span id="settingsBadge" style="font-size:9px;padding:2px 7px;border-radius:10px;background:rgba(0,229,255,.1);color:var(--cyan);"></span></div>
       <div class="settings-row"><span>Credits</span><span id="settingsCredits" style="color:var(--yellow);font-weight:700;">-</span></div>
       <div class="settings-row"><span>Plan</span><span id="settingsPlan" style="color:var(--green);">Free</span></div>
+      <div class="settings-row"><span>Roblox ID</span><span id="settingsRobloxId" style="color:var(--dim);font-size:10px;">-</span></div>
     </div>
     <div class="settings-section">
-      <div class="settings-title" id="settingsDailyTitle">Daily Credits</div>
+      <div class="settings-title">Daily Credits</div>
       <div class="settings-row"><span>Free Plan</span><span style="color:var(--green);">+2 CR / hari</span></div>
       <div class="settings-row"><span>Pro Plan</span><span style="color:var(--cyan);">+25 CR / hari</span></div>
       <div class="settings-row">
@@ -910,7 +522,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <div class="settings-section">
       <div class="settings-title">Bahasa</div>
       <div class="settings-row">
-        <span id="settingsLangLabel">Bahasa Interface & AI</span>
+        <span>Bahasa Interface & AI</span>
         <select class="settings-select" id="langSelector" onchange="changeLang(this.value)">
           <option value="id">Bahasa Indonesia</option>
           <option value="en">English</option>
@@ -921,13 +533,10 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       </div>
     </div>
     <div class="settings-section">
-      <div class="settings-title" id="settingsReportTitle">Laporkan Masalah</div>
+      <div class="settings-title">Laporkan Masalah</div>
       <textarea class="report-ta" id="reportTa" placeholder="Deskripsikan masalahnya..."></textarea>
       <div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
-        <button class="settings-btn" onclick="sendReport()" id="reportBtn">
-          <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Kirim Report
-        </button>
+        <button class="settings-btn" onclick="sendReport()" id="reportBtn">Kirim Report</button>
         <span id="reportStatus" style="font-size:10px;color:var(--green);"></span>
       </div>
     </div>
@@ -949,125 +558,147 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     </div>
     <div class="settings-section">
       <div class="settings-title">Personalisasi</div>
-      <div class="settings-row"><span>Tema Warna</span>
+      <div class="settings-row"><span>Tema</span>
         <select class="settings-select" id="themeSelect" onchange="applyTheme(this.value)">
           <option value="cyan">Cyan (Default)</option><option value="purple">Purple</option>
           <option value="green">Green</option><option value="pink">Pink</option><option value="gold">Gold</option>
-        </select>
-      </div>
-      <div class="settings-row"><span>Animasi UI</span>
-        <select class="settings-select" id="animSelect" onchange="setAnimSpeed(this.value)">
-          <option value="normal">Normal</option><option value="fast">Cepat</option><option value="off">Mati</option>
         </select>
       </div>
     </div>
     <div class="settings-section">
       <div class="settings-title">Download Plugin</div>
       <div class="settings-row" style="flex-direction:column;gap:5px;align-items:flex-start;">
-        <div style="font-size:10px;color:var(--dim);">Instal NEXUS AI Plugin di Roblox Studio</div>
+        <div style="font-size:10px;color:var(--dim);">Install NEXUS AI Plugin di Roblox Studio untuk fitur inject otomatis</div>
         <button class="settings-btn" onclick="window.open('https://discord.gg/TeefZk37','_blank')">Download via Discord</button>
       </div>
     </div>
     <div class="settings-section">
-      <div class="settings-title" id="settingsAccountTitle">Akun</div>
-      <div class="settings-row"><span>Ganti Akun</span><button class="settings-btn" onclick="switchAccount()">Ganti</button></div>
+      <div class="settings-title">Akun</div>
       <div class="settings-row"><span>Logout</span><button class="settings-btn danger" onclick="logout()">Logout</button></div>
     </div>
     <div class="modal-footer"><button class="btn-modal primary" onclick="closeModal('settingsModal')">TUTUP</button></div>
   </div>
 </div>
 
-<!-- Shop Modal -->
 <div class="ov" id="shopModal">
   <div class="modal">
-    <div class="modal-t">
-      <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      Beli Credits
-    </div>
+    <div class="modal-t"><svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Beli Credits</div>
     <div class="credit-plans">
-      <div class="credit-plan">
-        <div class="credit-plan-name">FREE</div>
-        <div class="credit-plan-price">$0<span>/bulan</span></div>
-        <div class="credit-plan-features">30 credits saat daftar<br>+2 credits / hari<br>Model AI gratis</div>
-      </div>
-      <div class="credit-plan popular">
-        <div class="credit-plan-name">PRO</div>
-        <div class="credit-plan-price">$9.99<span>/bulan</span></div>
-        <div class="credit-plan-features">200 credits saat daftar<br>+25 credits / hari<br>Semua model AI</div>
-        <button class="btn-modal secondary" style="margin-top:8px;font-size:9px;width:100%;" onclick="toast('Pro plan segera hadir!')">Upgrade Soon</button>
-      </div>
+      <div class="credit-plan"><div class="credit-plan-name">FREE</div><div class="credit-plan-price">$0<span>/bulan</span></div><div class="credit-plan-features">30 credits saat daftar<br>+2 credits / hari<br>Model AI gratis</div></div>
+      <div class="credit-plan popular"><div class="credit-plan-name">PRO</div><div class="credit-plan-price">$9.99<span>/bulan</span></div><div class="credit-plan-features">200 credits saat daftar<br>+25 credits / hari<br>Semua model AI</div><button class="btn-modal secondary" style="margin-top:8px;font-size:9px;width:100%;" onclick="toast('Pro plan segera hadir!')">Upgrade Soon</button></div>
     </div>
     <div style="font-size:11px;color:var(--dim);margin-bottom:10px;">Credit Packs</div>
     <div class="credit-packages">
-      <div class="credit-pack" onclick="toast('Segera hadir! Rp 79K / $4.99')"><div class="credit-pack-price">21 CR</div><div class="credit-pack-credits">Small</div><div class="credit-pack-idr">Rp 79K / $4.99</div></div>
-      <div class="credit-pack pop" onclick="toast('Segera hadir! Rp 299K / $19.99')"><div class="credit-pack-price">86 CR</div><div class="credit-pack-credits">Popular</div><div class="credit-pack-idr">Rp 299K / $19.99</div></div>
-      <div class="credit-pack" onclick="toast('Segera hadir! Rp 1.5M / $99.99')"><div class="credit-pack-price">438 CR</div><div class="credit-pack-credits">Mega</div><div class="credit-pack-idr">Rp 1.5M / $99.99</div></div>
+      <div class="credit-pack" onclick="toast('Segera hadir! Rp 79K')"><div class="credit-pack-price">21 CR</div><div class="credit-pack-credits">Small</div><div class="credit-pack-idr">Rp 79K</div></div>
+      <div class="credit-pack pop" onclick="toast('Segera hadir! Rp 299K')"><div class="credit-pack-price">86 CR</div><div class="credit-pack-credits">Popular</div><div class="credit-pack-idr">Rp 299K</div></div>
+      <div class="credit-pack" onclick="toast('Segera hadir! Rp 1.5M')"><div class="credit-pack-price">438 CR</div><div class="credit-pack-credits">Mega</div><div class="credit-pack-idr">Rp 1.5M</div></div>
     </div>
     <div class="modal-footer" style="margin-top:14px;"><button class="btn-modal secondary" onclick="closeModal('shopModal')">Tutup</button></div>
   </div>
 </div>
 
-<!-- GUI Code Modal -->
 <div class="ov" id="guiCodeModal">
   <div class="modal" style="width:640px;">
-    <div class="modal-t">
-      <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      Generated GUI Script
-    </div>
+    <div class="modal-t"><svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Generated GUI Script</div>
     <div class="modal-b"><pre id="guiCodeOutput" style="max-height:400px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;font-size:10.5px;color:var(--text);"></pre></div>
     <div class="modal-footer">
-      <button class="btn-modal primary" onclick="copyGuiCode()">
-        <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-        Copy
-      </button>
-      <button class="btn-modal secondary" onclick="downloadGuiCode()">
-        <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download .lua
-      </button>
+      <button class="btn-modal primary" onclick="copyGuiCode()">Copy</button>
+      <button class="btn-modal secondary" onclick="downloadGuiCode()">Download .lua</button>
       <button class="btn-modal secondary" onclick="closeModal('guiCodeModal')">Tutup</button>
     </div>
   </div>
 </div>
 
-<!-- GUI AI Chat Modal -->
 <div class="ov" id="guiAIChatModal">
   <div class="modal" style="width:520px;">
     <div class="modal-t">AI GUI Builder</div>
     <div class="modal-b" style="margin-bottom:8px;">
       <p style="margin-bottom:6px;font-size:11px;">Deskripsikan GUI yang kamu inginkan. AI akan membangunnya di canvas + generate Lua script lengkap.</p>
-      <p style="margin-bottom:10px;font-size:10px;color:var(--dim);">Model: <span id="guiModalModelLabel" style="color:var(--cyan);">Gemini 2.0 Flash</span> — Ganti model di toolbar GUI Builder</p>
+      <p style="margin-bottom:10px;font-size:10px;color:var(--dim);">Model: <span id="guiModalModelLabel" style="color:var(--cyan);">Gemini 2.0 Flash</span></p>
       <textarea id="guiAIPrompt" style="width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:10px;color:white;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;resize:vertical;min-height:90px;" placeholder="contoh: Shop GUI dengan 3 kartu item, scroll list, tombol beli hijau..."></textarea>
     </div>
     <div class="modal-footer">
-      <button class="btn-modal primary" onclick="updateGuiModalLabel();generateGuiFromAI()">Bangun dengan AI</button>
+      <button class="btn-modal primary" onclick="generateGuiFromAI()">Bangun dengan AI</button>
       <button class="btn-modal secondary" onclick="closeModal('guiAIChatModal')">Batal</button>
     </div>
   </div>
 </div>
 
 <script>
+'use strict';
+// ═══════════════════════════════════════
+//  MODEL LIST (shared between chat & GUI builder)
+// ═══════════════════════════════════════
+var MODEL_LIST = [
+  {group:'Google Gemini'},
+  {id:'gemini-2.0-flash',prov:'gemini',cost:0,label:'Gemini 2.0 Flash',sub:'Stable · Fast · Vision',icon:'icon/gemini.png'},
+  {id:'gemini-2.5-flash-lite',prov:'gemini',cost:1,label:'Gemini 2.5 Flash Lite',sub:'Fast · Thinking',icon:'icon/gemini.png'},
+  {id:'gemini-2.5-flash',prov:'gemini',cost:2,label:'Gemini 2.5 Flash',sub:'Smart · Thinking',icon:'icon/gemini.png'},
+  {id:'gemini-2.5-pro',prov:'gemini',cost:5,label:'Gemini 2.5 Pro',sub:'Most Capable Google',icon:'icon/gemini.png'},
+  {id:'gemini-3-flash-preview',prov:'gemini',cost:7,label:'Gemini 3 Flash',sub:'Extra Fast · Thinking',icon:'icon/gemini.png'},
+  {id:'gemini-3.1-flash-lite-preview',prov:'gemini',cost:6,label:'Gemini 3.1 Flash Lite',sub:'Preview · Thinking',icon:'icon/gemini.png'},
+  {id:'gemini-3.1-pro-preview',prov:'gemini',cost:12,label:'Gemini 3.1 Pro',sub:'Pro · Super Capable',icon:'icon/gemini.png'},
+  {group:'Meta Llama (Free)'},
+  {id:'meta-llama/llama-3.3-70b-instruct:free',prov:'openrouter',cost:0,label:'Llama 3.3 70B',sub:'Meta · Fast',icon:'icon/meta.png'},
+  {id:'meta-llama/llama-4-scout:free',prov:'openrouter',cost:0,label:'Llama 4 Scout',sub:'Latest Meta',icon:'icon/meta.png'},
+  {id:'meta-llama/llama-4-maverick:free',prov:'openrouter',cost:0,label:'Llama 4 Maverick',sub:'Meta · Vision · Free',icon:'icon/meta.png'},
+  {group:'xAI Grok'},
+  {id:'x-ai/grok-3-mini-beta',prov:'openrouter',cost:1,label:'Grok 3 Mini',sub:'xAI · Fast · Reasoning',icon:'icon/grok.png'},
+  {id:'x-ai/grok-3-beta',prov:'openrouter',cost:4,label:'Grok 3',sub:'xAI · Powerful',icon:'icon/grok.png'},
+  {group:'Anthropic Claude'},
+  {id:'claude-haiku-4-5',prov:'claude',cost:3,label:'Claude Haiku 4.5',sub:'Fast · Smart',icon:'icon/claude.png'},
+  {id:'claude-sonnet-4-6',prov:'claude',cost:7,label:'Claude Sonnet 4.6',sub:'Powerful · Vision',icon:'icon/claude.png'},
+  {group:'OpenAI ChatGPT'},
+  {id:'gpt-4o-mini',prov:'openai',cost:0,label:'GPT-4o Mini',sub:'Fast · Economical',icon:'icon/chatgpt.png'},
+  {id:'gpt-4o',prov:'openai',cost:3,label:'GPT-4o',sub:'Vision · Powerful',icon:'icon/chatgpt.png'},
+  {id:'o4-mini',prov:'openai',cost:4,label:'o4 Mini',sub:'Reasoning · Latest',icon:'icon/chatgpt.png'},
+  {id:'gpt-4.1',prov:'openai',cost:5,label:'GPT-4.1',sub:'Latest · Most Capable',icon:'icon/chatgpt.png'},
+  {group:'DeepSeek (Free)'},
+  {id:'deepseek/deepseek-r1:free',prov:'openrouter',cost:0,label:'DeepSeek R1',sub:'Reasoning · Free',icon:null,iconText:'DS',iconBg:'#2563eb'},
+  {id:'deepseek/deepseek-chat-v3-0324:free',prov:'openrouter',cost:0,label:'DeepSeek V3',sub:'Chat · Free',icon:null,iconText:'DS',iconBg:'#2563eb'},
+];
+
+// Build model dropdown HTML
+function buildModelDDHtml(activeId, prefix) {
+  prefix = prefix || '';
+  var html = '';
+  MODEL_LIST.forEach(function(m) {
+    if (m.group) {
+      html += '<div class="mg">'+m.group+'</div>';
+    } else {
+      var iconHtml = m.icon
+        ? '<div class="mo-icon"><img src="'+m.icon+'" alt=""></div>'
+        : '<div class="mo-icon" style="background:'+m.iconBg+';color:white;font-size:8px;font-weight:700;">'+m.iconText+'</div>';
+      var badgeCls = m.cost===0?'f':'s';
+      var badgeTxt = m.cost===0?'FREE':m.cost+' CR';
+      var actCls = m.id===activeId?' act':'';
+      html += '<div class="mo'+actCls+'" data-mid="'+m.id+'" data-prov="'+m.prov+'" data-cost="'+m.cost+'" data-label="'+m.label+'" onclick="selModel'+prefix+'(this)">'+
+        iconHtml+'<div><div class="mo-n">'+m.label+'</div><div class="mo-s">'+m.sub+'</div></div>'+
+        '<span class="mb '+badgeCls+'">'+badgeTxt+'</span>'+
+      '</div>';
+    }
+  });
+  return html;
+}
+
 // ═══════════════════════════════════════
 //  CONSTANTS
 // ═══════════════════════════════════════
 var API_URL    = '/api/control';
 var REPORT_URL = '/api/report';
 var OWNER_USERS = ['FIINYTID25','fiinytid25'];
-var OWNER_PW   = 'arif1n12';
-var OR_KEY     = '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';
-var K          = { gemini:'', claude:'', openai:'', grok:'' };
+var OR_KEY = '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';
+var K = { gemini:'', claude:'', openai:'', grok:'' };
 var keysLoaded = false;
 var studioConnected = false;
 var studioPollInterval = null;
 
-// ═══════════════════════════════════════
-//  SAFE MARKED
-// ═══════════════════════════════════════
 function safeMarked(text) {
   try {
     var t = String(text || '');
-    if (typeof marked === 'undefined') return '<p>' + t.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</p>';
+    if (typeof marked === 'undefined') return '<p>'+t.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</p>';
     return marked.parse ? marked.parse(t) : marked(t);
-  } catch(e) { return '<p>' + String(text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</p>'; }
+  } catch(e) { return '<p>'+String(text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</p>'; }
 }
 
 // ═══════════════════════════════════════
@@ -1079,20 +710,17 @@ var SESSION = null;
     var s = localStorage.getItem('nexus_session');
     if (!s) { window.location.replace('/login'); return; }
     var parsed = JSON.parse(s);
-    // Validate session has all required fields
-    if (!parsed || !parsed.user || !parsed.user.username || !parsed.loginTime) {
+    if (!parsed || !parsed.user || !parsed.user.username || !parsed.user.robloxId || !parsed.loginTime) {
       localStorage.removeItem('nexus_session');
       window.location.replace('/login');
       return;
     }
-    // Check expiry
     if ((Date.now() - parsed.loginTime) >= 86400000 * 7) {
       localStorage.removeItem('nexus_session');
       window.location.replace('/login');
       return;
     }
     SESSION = parsed;
-    // Ensure data object exists
     if (!SESSION.data) SESSION.data = {};
     document.getElementById('app').classList.remove('hidden');
   } catch(e) {
@@ -1102,15 +730,19 @@ var SESSION = null;
 })();
 
 // ═══════════════════════════════════════
-//  STUDIO INTEGRATION
+//  STUDIO - PER USER CHECK
 // ═══════════════════════════════════════
 async function checkStudio() {
+  if (!SESSION) return false;
   try {
-    var r = await fetch(API_URL + '?check=1', { signal: AbortSignal.timeout(3000) });
+    var username = SESSION.user.username.toLowerCase();
+    var url = API_URL + '?check=1&user=' + encodeURIComponent(username);
+    var r = await fetch(url, { signal: AbortSignal.timeout(4000) });
     if (r.ok) {
       var d = await r.json();
-      setStudioStatus(d._pluginConnected === true);
-      return d._pluginConnected === true;
+      var connected = d._pluginConnected === true;
+      setStudioStatus(connected);
+      return connected;
     }
   } catch(e) {}
   setStudioStatus(false);
@@ -1126,49 +758,47 @@ function setStudioStatus(online) {
   var banner = document.getElementById('plugBanner');
   var bannerTxt = document.getElementById('plugBannerTxt');
   if (online) {
-    badge.className = 'status-badge on';
-    txt.textContent = 'Studio: ON';
-    dot.classList.remove('pulse');
-    banner.className = 'plug-banner connected';
-    bannerTxt.textContent = 'Plugin terhubung — AI siap build di place kamu!';
+    if(badge) badge.className = 'status-badge on';
+    if(txt) txt.textContent = 'Studio: ON';
+    if(dot) dot.classList.remove('pulse');
+    if(banner) banner.className = 'plug-banner connected';
+    if(bannerTxt) bannerTxt.textContent = 'Plugin terhubung — AI siap build di place kamu!';
   } else {
-    badge.className = 'status-badge off';
-    txt.textContent = 'Studio: OFF';
-    dot.classList.add('pulse');
-    banner.className = 'plug-banner';
-    bannerTxt.textContent = 'Plugin belum terhubung —';
+    if(badge) badge.className = 'status-badge off';
+    if(txt) txt.textContent = 'Studio: OFF';
+    if(dot) dot.classList.add('pulse');
+    if(banner) banner.className = 'plug-banner';
+    if(bannerTxt) bannerTxt.textContent = 'Plugin belum terhubung —';
   }
 }
 
 function retryStudio() {
   toast('Mengecek koneksi Studio...');
   checkStudio().then(function(ok) {
-    toast(ok ? 'Studio terhubung!' : 'Studio offline. Pastikan plugin sudah di-connect.');
+    toast(ok ? '✅ Studio terhubung!' : '❌ Studio offline. Pastikan plugin sudah di-connect.');
   });
 }
 
-// Send command to Studio via /api/control
 async function sendToStudio(command) {
-  if (!command || command.action === 'none') return;
+  if (!command || command.action === 'none') return null;
   try {
     var r = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...command, _user: SESSION ? SESSION.user.username : 'web' })
+      body: JSON.stringify({
+        ...command,
+        _user: SESSION ? SESSION.user.username : 'web',
+        _target_user: SESSION ? SESSION.user.username.toLowerCase() : '',
+      })
     });
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    var d = await r.json();
-    if (d.status === 'ok') {
-      setStudioStatus(true);
-    }
-    return d;
+    return await r.json();
   } catch(e) {
     console.warn('Studio send:', e.message);
     return null;
   }
 }
 
-// Poll studio status periodically
 function startStudioPoll() {
   if (studioPollInterval) clearInterval(studioPollInterval);
   checkStudio();
@@ -1179,126 +809,22 @@ function startStudioPoll() {
 //  LANGUAGE
 // ═══════════════════════════════════════
 var LANGS = {
-  id: {
-    lang:'Bahasa Indonesia', placeholder:'Tanya NEXUS AI tentang Roblox...', noConv:'Belum ada percakapan',
-    newChat:'Percakapan Baru', recent:'Riwayat Chat',
-    welcome:'AI Roblox cerdas — tulis Lua, debug script, buat GUI. Connect plugin untuk kirim script langsung ke Studio!',
-    aiLang:'Selalu balas dalam Bahasa Indonesia. Gunakan bahasa yang santai dan mudah dipahami.',
-    clearConfirm:'Hapus semua pesan?', cancel:'Batal', guiSendPlace:'Kirim ke Place',
-    studioOn:'Studio: ON', studioOff:'Studio: OFF',
-    settingsTitle:'Pengaturan', dailyCredits:'Kredit Harian', claimDaily:'Klaim Harian',
-    langLabel:'Bahasa Interface & AI', reportTitle:'Laporkan Masalah', reportBtn:'Kirim Report',
-    logout:'Keluar', switchAccount:'Ganti Akun', accountTitle:'Akun',
-    copied:'Disalin!', stopped:'Dihentikan.', addElemHint:'Tambah elemen atau klik "AI Build"',
-    selectElem:'Pilih elemen', deleteElem:'Hapus', thinking:'NEXUS AI sedang bekerja...',
-    steps:['Membaca struktur place...','Merancang komponen...','Menulis kode...','Finalisasi...'],
-    stepsFast:['Menganalisis...','Memproses AI...','Menulis kode...','Menyiapkan...'],
-    stepsDebug:['Membaca script...','Mencari error...','Memperbaiki...','Verifikasi...'],
-    stepsGui:['Merancang GUI...','Menulis LocalScript...','Menyiapkan Events...','Finalisasi...'],
-  },
-  en: {
-    lang:'English', placeholder:'Ask NEXUS AI about Roblox...', noConv:'No conversations yet',
-    newChat:'New Conversation', recent:'Recent Chats',
-    welcome:'Smart Roblox AI — write Lua, debug scripts, build GUIs. Connect plugin to send scripts directly to Studio!',
-    aiLang:'Always respond in English.',
-    clearConfirm:'Clear all messages?', cancel:'Cancel', guiSendPlace:'Send to Place',
-    studioOn:'Studio: ON', studioOff:'Studio: OFF',
-    settingsTitle:'Settings', dailyCredits:'Daily Credits', claimDaily:'Claim Daily',
-    langLabel:'Interface & AI Language', reportTitle:'Report Issue', reportBtn:'Send Report',
-    logout:'Logout', switchAccount:'Switch Account', accountTitle:'Account',
-    copied:'Copied!', stopped:'Stopped.', addElemHint:'Add elements or click "AI Build"',
-    selectElem:'Select an element', deleteElem:'Delete', thinking:'NEXUS AI is working...',
-    steps:['Reading place structure...','Designing components...','Writing code...','Finalizing...'],
-    stepsFast:['Analyzing...','Processing AI...','Writing code...','Preparing...'],
-    stepsDebug:['Reading script...','Finding error...','Fixing code...','Verifying...'],
-    stepsGui:['Designing GUI...','Writing LocalScript...','Setting up Events...','Finalizing...'],
-  },
-  ja: {
-    lang:'日本語', placeholder:'RobloxについてNEXUS AIに聞く...', noConv:'まだ会話がありません',
-    newChat:'新しい会話', recent:'最近のチャット', welcome:'スマートRoblox AI',
-    aiLang:'常に日本語で返答してください。',
-    clearConfirm:'このチャットを削除しますか？', cancel:'キャンセル', guiSendPlace:'Placeに送信',
-    studioOn:'Studio: ON', studioOff:'Studio: OFF',
-    settingsTitle:'設定', dailyCredits:'デイリークレジット', claimDaily:'デイリー受け取る',
-    langLabel:'言語設定', reportTitle:'問題を報告', reportBtn:'レポート送信',
-    logout:'ログアウト', switchAccount:'アカウント切替', accountTitle:'アカウント',
-    copied:'コピー済み！', stopped:'停止しました。', addElemHint:'要素を追加またはAI Buildをクリック',
-    selectElem:'要素を選択', deleteElem:'削除', thinking:'NEXUS AIが作業中...',
-    steps:['構造を読み込み中...','コンポーネント設計中...','コード作成中...','仕上げ中...'],
-    stepsFast:['分析中...','AI処理中...','コード作成中...','準備中...'],
-    stepsDebug:['スクリプト読込中...','エラー検索中...','修正中...','確認中...'],
-    stepsGui:['GUI設計中...','LocalScript作成中...','イベント設定中...','仕上げ中...'],
-  },
-  ko: {
-    lang:'한국어', placeholder:'NEXUS AI에게 질문...', noConv:'아직 대화 없음',
-    newChat:'새 대화', recent:'최근 채팅', welcome:'스마트 Roblox AI',
-    aiLang:'항상 한국어로 답하세요.',
-    clearConfirm:'모든 메시지를 삭제할까요?', cancel:'취소', guiSendPlace:'Place에 전송',
-    studioOn:'Studio: ON', studioOff:'Studio: OFF',
-    settingsTitle:'설정', dailyCredits:'일일 크레딧', claimDaily:'일일 수령',
-    langLabel:'언어 설정', reportTitle:'문제 보고', reportBtn:'보고서 전송',
-    logout:'로그아웃', switchAccount:'계정 전환', accountTitle:'계정',
-    copied:'복사됨!', stopped:'중지됨.', addElemHint:'요소 추가 또는 AI Build 클릭',
-    selectElem:'요소 선택', deleteElem:'삭제', thinking:'NEXUS AI 작업 중...',
-    steps:['구조 읽는 중...','컴포넌트 설계 중...','코드 작성 중...','마무리 중...'],
-    stepsFast:['분석 중...','AI 처리 중...','코드 작성 중...','준비 중...'],
-    stepsDebug:['스크립트 읽는 중...','오류 찾는 중...','수정 중...','확인 중...'],
-    stepsGui:['GUI 설계 중...','LocalScript 작성 중...','이벤트 설정 중...','마무리 중...'],
-  },
-  zh: {
-    lang:'中文', placeholder:'向NEXUS AI提问...', noConv:'暂无对话',
-    newChat:'新对话', recent:'最近聊天', welcome:'智能Roblox AI',
-    aiLang:'请始终用中文回答。',
-    clearConfirm:'清除所有消息？', cancel:'取消', guiSendPlace:'发送到Place',
-    studioOn:'Studio: ON', studioOff:'Studio: OFF',
-    settingsTitle:'设置', dailyCredits:'每日积分', claimDaily:'领取每日积分',
-    langLabel:'界面和AI语言', reportTitle:'报告问题', reportBtn:'发送报告',
-    logout:'退出', switchAccount:'切换账户', accountTitle:'账户',
-    copied:'已复制！', stopped:'已停止。', addElemHint:'添加元素或点击"AI Build"',
-    selectElem:'选择元素', deleteElem:'删除', thinking:'NEXUS AI工作中...',
-    steps:['读取结构中...','设计组件中...','编写代码中...','最终处理中...'],
-    stepsFast:['分析中...','AI处理中...','编写代码中...','准备中...'],
-    stepsDebug:['读取脚本中...','查找错误中...','修复中...','验证中...'],
-    stepsGui:['设计GUI中...','编写LocalScript中...','设置事件中...','最终处理中...'],
-  },
+  id:{lang:'Bahasa Indonesia',placeholder:'Tanya NEXUS AI tentang Roblox...',noConv:'Belum ada percakapan',newChat:'Percakapan Baru',recent:'Riwayat Chat',welcome:'AI Roblox cerdas — tulis Lua, debug script, buat GUI. Connect plugin untuk kirim script langsung ke Studio!',aiLang:'Selalu balas dalam Bahasa Indonesia yang santai dan mudah dipahami.',clearConfirm:'Hapus semua pesan?',cancel:'Batal',steps:['Membaca konteks...','Merancang solusi...','Menulis kode...','Finalisasi...'],stepsGui:['Merancang GUI...','Menulis LocalScript...','Menyiapkan Events...','Finalisasi...'],stepsDebug:['Membaca script...','Mencari error...','Memperbaiki...','Verifikasi...'],stepsFast:['Menganalisis...','Memproses...','Menulis kode...','Selesai...']},
+  en:{lang:'English',placeholder:'Ask NEXUS AI about Roblox...',noConv:'No conversations yet',newChat:'New Conversation',recent:'Recent Chats',welcome:'Smart Roblox AI — write Lua, debug scripts, build GUIs. Connect plugin to send scripts directly to Studio!',aiLang:'Always respond in English.',clearConfirm:'Clear all messages?',cancel:'Cancel',steps:['Reading context...','Designing solution...','Writing code...','Finalizing...'],stepsGui:['Designing GUI...','Writing LocalScript...','Setting up Events...','Finalizing...'],stepsDebug:['Reading script...','Finding error...','Fixing code...','Verifying...'],stepsFast:['Analyzing...','Processing...','Writing code...','Done...']},
+  ja:{lang:'日本語',placeholder:'RobloxについてNEXUS AIに聞く...',noConv:'まだ会話がありません',newChat:'新しい会話',recent:'最近のチャット',welcome:'スマートRoblox AI',aiLang:'常に日本語で返答してください。',clearConfirm:'このチャットを削除しますか？',cancel:'キャンセル',steps:['コンテキストを読み込み...','解決策を設計...','コードを作成...','最終処理...'],stepsGui:['GUI設計...','LocalScript作成...','イベント設定...','最終処理...'],stepsDebug:['スクリプト読込...','エラー検索...','修正...','確認...'],stepsFast:['分析...','処理...','コード作成...','完了...']},
+  ko:{lang:'한국어',placeholder:'NEXUS AI에게 질문...',noConv:'아직 대화 없음',newChat:'새 대화',recent:'최근 채팅',welcome:'스마트 Roblox AI',aiLang:'항상 한국어로 답하세요.',clearConfirm:'모든 메시지를 삭제할까요?',cancel:'취소',steps:['컨텍스트 읽기...','솔루션 설계...','코드 작성...','마무리...'],stepsGui:['GUI 설계...','LocalScript 작성...','이벤트 설정...','마무리...'],stepsDebug:['스크립트 읽기...','오류 찾기...','수정...','확인...'],stepsFast:['분석...','처리...','코드 작성...','완료...']},
+  zh:{lang:'中文',placeholder:'向NEXUS AI提问...',noConv:'暂无对话',newChat:'新对话',recent:'最近聊天',welcome:'智能Roblox AI',aiLang:'请始终用中文回答。',clearConfirm:'清除所有消息？',cancel:'取消',steps:['读取上下文...','设计解决方案...','编写代码...','最终处理...'],stepsGui:['设计GUI...','编写LocalScript...','设置事件...','最终处理...'],stepsDebug:['读取脚本...','查找错误...','修复...','验证...'],stepsFast:['分析...','处理...','编写代码...','完成...']},
 };
 var curLang = 'id';
 
-function changeLang(l) { curLang = l; S.language = l; saveS(); applyLang(); toast('Bahasa: ' + (LANGS[l]||LANGS.id).lang); }
+function changeLang(l) { curLang=l; S.language=l; saveS(); applyLang(); toast('Bahasa: '+(LANGS[l]||LANGS.id).lang); }
 function applyLang() {
-  var t = LANGS[curLang] || LANGS.id;
-  // Input placeholder
-  var inp = document.getElementById('inp'); if (inp) inp.placeholder = t.placeholder;
-  // Sidebar
-  var nc = document.getElementById('newChatLbl'); if (nc) nc.textContent = t.newChat;
-  var rl = document.getElementById('recentLbl'); if (rl) rl.textContent = t.recent;
-  var wt = document.getElementById('welcomeText'); if (wt) wt.textContent = t.welcome;
-  // Lang selector
-  var ls = document.getElementById('langSelector'); if (ls) ls.value = curLang;
-  // Studio badge
-  var st = document.getElementById('studioTxt');
-  if (st) st.textContent = studioConnected ? (t.studioOn||'Studio: ON') : (t.studioOff||'Studio: OFF');
-  // GUI builder
-  var gtp = document.getElementById('guiToPlaceTxt');
-  if (gtp) gtp.textContent = t.guiSendPlace || 'Send to Place';
-  var ge = document.getElementById('guiEmpty');
-  if (ge) { var div=ge.querySelector('div'); if(div) div.textContent = t.addElemHint||'Add elements or click "AI Build"'; }
-  // Settings modal
-  function setTxt(id,val){ var el=document.getElementById(id); if(el&&val) el.textContent=val; }
-  setTxt('settingsLangLabel', t.langLabel);
-  setTxt('settingsReportTitle', t.reportTitle);
-  setTxt('settingsDailyTitle', t.dailyCredits);
-  setTxt('settingsAccountTitle', t.accountTitle);
-  // Buttons with IDs
-  var reportBtnEl = document.getElementById('reportBtn');
-  if (reportBtnEl) {
-    // Keep SVG, just update text node
-    var svgs = reportBtnEl.querySelectorAll('svg');
-    reportBtnEl.textContent = t.reportBtn || 'Send Report';
-    svgs.forEach(function(s){ reportBtnEl.insertBefore(s, reportBtnEl.firstChild); });
-  }
-  var claimBtnEl = document.getElementById('claimDailyBtn');
-  if (claimBtnEl) claimBtnEl.textContent = t.claimDaily || 'Claim Daily';
+  var t=LANGS[curLang]||LANGS.id;
+  var el=document.getElementById('inp'); if(el) el.placeholder=t.placeholder;
+  var nc=document.getElementById('newChatLbl'); if(nc) nc.textContent=t.newChat;
+  var rl=document.getElementById('recentLbl'); if(rl) rl.textContent=t.recent;
+  var wt=document.getElementById('welcomeText'); if(wt) wt.textContent=t.welcome;
+  var ls=document.getElementById('langSelector'); if(ls) ls.value=curLang;
   renderConvs();
 }
 
@@ -1310,90 +836,65 @@ var S = {
   model:{id:'gemini-2.0-flash',provider:'gemini',cost:0,label:'Gemini 2.0 Flash'},
   attachments:[], draftText:{}, draftAttach:{},
   lastClaim:null, plan:'free', language:'id', roles:[],
-  cancelCtrl:null, gen:false
+  cancelCtrl:null, gen:false, theme:'cyan',
 };
 
-// Tambahkan kata kunci 'async' di sini
+// Load state from server (source of truth = Roblox account on server)
 async function loadS() {
   if (!SESSION) return;
-  
-  // Load data dari server terlebih dahulu
+  var username = SESSION.user.username.toLowerCase();
   try {
-    var sr = await fetch('/api/sync?user=' + encodeURIComponent(SESSION.user.username.toLowerCase()));
-    if (sr.ok) { 
-      var sd = await sr.json(); 
-      if (sd && sd.credits !== undefined) { 
-        SESSION.data = Object.assign(SESSION.data || {}, sd); 
-        localStorage.setItem('nexus_session', JSON.stringify(SESSION)); 
-      } 
+    var r = await fetch('/api/sync?user=' + encodeURIComponent(username));
+    if (r.ok) {
+      var sd = await r.json();
+      if (sd && sd.credits !== undefined) {
+        // Server data is THE source of truth — always use it
+        SESSION.data = sd;
+        localStorage.setItem('nexus_session', JSON.stringify(SESSION));
+      }
     }
-  } catch(e) {
-    console.error("Gagal memuat data dari server:", e); // Sebaiknya jangan biarkan catch kosong agar mudah di-debug
-  }
-  
+  } catch(e) { console.warn('loadS error:', e.message); }
+
   try {
     var d = SESSION.data || {};
-    S.credits     = d.credits !== undefined ? parseFloat(d.credits) : 30;
-    S.convs       = d.convs || [];
+    S.credits     = (d.credits !== undefined) ? parseFloat(d.credits) : 30;
+    S.convs       = Array.isArray(d.convs) ? d.convs : [];
     S.lastClaim   = d.lastClaim || null;
     S.plan        = d.plan || 'free';
     S.draftText   = d.draftText || {};
     S.draftAttach = d.draftAttach || {};
     S.language    = d.language || localStorage.getItem('nexus_lang') || 'id';
     S.theme       = d.theme || 'cyan';
-    S.animSpeed   = d.animSpeed || 'normal';
     S.roles       = d.roles || (isOwner() ? ['owner'] : []);
-    
     if (d.model && d.model.id) S.model = d.model;
-    
     curLang = S.language;
-  } catch(e) {
-    console.error("Gagal memuat data sesi:", e);
-  }
+  } catch(e) { console.warn('loadS parse error:', e.message); }
 }
 
 function saveS() {
   if (!SESSION) return;
   try {
     var d = {
-      credits: S.credits, 
-      convs: S.convs, 
-      lastClaim: S.lastClaim,
-      plan: S.plan, 
-      draftText: S.draftText, 
-      draftAttach: S.draftAttach,
-      model: S.model, 
-      language: S.language, 
-      roles: S.roles, 
-      theme: S.theme, 
-      animSpeed: S.animSpeed,
-      avatar: SESSION.user.avatar
+      credits: S.credits, convs: S.convs, lastClaim: S.lastClaim,
+      plan: S.plan, draftText: S.draftText, draftAttach: S.draftAttach,
+      model: S.model, language: S.language, roles: S.roles, theme: S.theme,
+      avatar: SESSION.user.avatar,
+      robloxId: SESSION.user.robloxId,
     };
     SESSION.data = d;
     localStorage.setItem('nexus_session', JSON.stringify(SESSION));
     localStorage.setItem('nexus_lang', S.language);
-    
-    try {
-      // Perhatikan: Karena fetch ini tidak menggunakan await, ia akan berjalan di latar belakang (fire-and-forget)
-      fetch('/api/sync', {
-        method: 'POST', 
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({user: SESSION.user.username.toLowerCase(), data: d})
-      }).catch(err => console.error("Gagal sinkronisasi ke server:", err)); 
-    } catch(e) {}
-    
-  } catch(e) {
-    console.error("Gagal menyimpan data:", e);
-  }
+    // Async fire-and-forget to server
+    fetch('/api/sync', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({user: SESSION.user.username.toLowerCase(), data: d})
+    }).catch(function(){});
+  } catch(e) { console.warn('saveS error:', e.message); }
 }
 
-function isOwner() { 
-  return SESSION && OWNER_USERS.indexOf(SESSION.user.username) !== -1; 
-}
-
-function isAdmin() { 
-  return isOwner() || (SESSION && S.roles && S.roles.indexOf('admin') !== -1); 
-}
+function isOwner() { return SESSION && OWNER_USERS.indexOf(SESSION.user.username) !== -1; }
+function isAdmin() { return isOwner() || (SESSION && S.roles && S.roles.indexOf('admin') !== -1); }
 
 // ═══════════════════════════════════════
 //  LOAD API KEYS
@@ -1410,183 +911,196 @@ async function loadKeys() {
       K.grok   = d.grok   || '';
       if (K.gemini || K.claude || K.openai) keysLoaded = true;
     }
-  } catch(e) {
-    console.warn('loadKeys error:', e.message);
-  }
+  } catch(e) { console.warn('loadKeys error:', e.message); }
 }
 
 // ═══════════════════════════════════════
-//  SYSTEM PROMPT (Enhanced)
+//  SYSTEM PROMPT — EXPANDED AI RULES
 // ═══════════════════════════════════════
 function buildSysPrompt() {
-  var langInst = (LANGS[curLang] || LANGS.id).aiLang;
+  var t = LANGS[curLang] || LANGS.id;
   var u = SESSION ? SESSION.user : {username:'Unknown'};
   var now = new Date();
   var connected = studioConnected;
+  var username = u.username;
 
-  return `Kamu adalah NEXUS AI, asisten AI terkuat untuk developer game Roblox.
+  return `Kamu adalah NEXUS AI, asisten AI paling canggih untuk developer Roblox dan Minecraft.
 Dibuat oleh NEXUS STUDIO. Lead developer: FIINYTID25. YouTube: NEXUS STUDIO.
 Website: nexusai-com.vercel.app
 
-USER: "${u.username}" | Plan: ${S.plan} | Credits: ${parseFloat(S.credits).toFixed(2)} CR | Time: ${now.toLocaleString()}
-STUDIO CONNECTED: ${connected}
+===== INFO USER =====
+Username Roblox: "${username}"
+Plan: ${S.plan} | Credits: ${parseFloat(S.credits).toFixed(2)} CR
+Waktu: ${now.toLocaleString()}
+Studio Plugin: ${connected ? 'TERHUBUNG ✅' : 'OFFLINE ❌'}
 
-LANGUAGE RULE (WAJIB): ${langInst}
-Panggil user sebagai "${u.username}" secara natural dalam percakapan.
+===== BAHASA =====
+${t.aiLang}
+Panggil user sebagai "${username}". Gunakan gaya ramah & profesional.
 
-IDENTITAS: Kamu adalah NEXUS AI buatan NEXUS STUDIO (FIINYTID25).
-Kamu expert di ROBLOX STUDIO, LUA, dan MINECRAFT SCRIPTING.
-Bersemangat, profesional, langsung kerjakan tanpa list tugas.
+===== IDENTITAS & KEPRIBADIAN =====
+Kamu adalah developer expert yang sangat berpengalaman. Kamu:
+- Langsung action tanpa basa-basi berlebihan
+- Expert di Roblox Studio, Lua scripting, plugin development
+- Bisa buat GUI kompleks, sistem game, plugin berbayar level pro
+- Bisa debug error dari console output
+- Jago buat script yang clean, efficient, dan production-ready
+- Jangan pernah katakan "kamu tidak bisa" untuk hal Roblox
 
-PENTING - JANGAN TAMPILKAN LIST TUGAS ATAU RENCANA:
-Langsung output kode/jawaban. Jangan tulis "yang akan saya lakukan:" atau langkah-langkah dulu.
+===== ATURAN KODE WAJIB =====
+1. SELALU output kode LENGKAP — TIDAK BOLEH ada "..." atau "-- lanjutan" atau "-- dst"
+2. Script 200 baris → output 200 baris penuh. Script 500+ baris → output semua 500+ baris
+3. Gunakan task.wait() bukan wait() | task.spawn() bukan spawn()
+4. SELALU wrap DataStore dalam pcall()
+5. SELALU cek nil dengan :FindFirstChild() sebelum gunakan object
+6. WaitForChild("Name", 10) dengan timeout untuk client-side
+7. Jangan potong kode apapun alasannya. Ini aturan #1 yang tidak bisa dilanggar.
+8. Jika ada beberapa file, output semua file secara terpisah dengan label jelas
 
-ROBLOX STUDIO (EXPERT):
-• Services: game:GetService() untuk semua service
-• Workspace, ServerScriptService, StarterGui, StarterPlayerScripts
-• ReplicatedStorage, ServerStorage, Players, Lighting, Teams
-• TweenService, DataStoreService, PathfindingService, MarketplaceService
-• RemoteEvent/RemoteFunction: server-client communication
-• BindableEvent/BindableFunction: same-side communication
-• PhysicsService, CollectionService, RunService, UserInputService
+===== PENEMPATAN SCRIPT =====
+- Script (server) → ServerScriptService
+- LocalScript (client) → StarterGui atau StarterPlayerScripts
+- ModuleScript (shared) → ReplicatedStorage
+- Loading screen → ReplicatedFirst (LocalScript)
+- Tool script → StarterPack atau langsung di Tool
 
-MINECRAFT SCRIPTING (EXPERT):
-Bedrock Edition:
-• Behavior Packs: entity/*.json, items/*.json, blocks/*.json, recipes/*.json
-• Script API: @minecraft/server, @minecraft/server-ui, @minecraft/server-gametest
-• manifest.json structure: format_version, header{name,uuid,version}, modules[], dependencies[]
-• GameEvents, world.afterEvents, world.beforeEvents, system.runInterval
-• Entity components: minecraft:health, minecraft:movement, minecraft:behavior.*
-• Item components: minecraft:food, minecraft:durability, minecraft:wearable
-• mcfunction files, tick.json, load.json, pack_manifest.json
-
-Java Edition:
-• Forge: @Mod annotation, FMLJavaModLoadingContext, event bus, @SubscribeEvent
-• Fabric: FabricMod interface, ModInitializer, Registry.register
-• Mixins: @Mixin, @Inject, @Overwrite, CallbackInfo
-• Gradle build configs, mixin.json, fabric.mod.json
-
-Untuk Minecraft addon: buat SEMUA file lengkap yang bisa langsung download dan pakai.
-
-ATURAN KODE WAJIB (JANGAN PERNAH DILANGGAR):
-1. SELALU tulis kode LENGKAP — JANGAN pernah potong dengan "..." atau "-- lanjutan"
-   Untuk Minecraft addon: output SEMUA file (manifest.json + script files + entity JSON, dll)
-2. Gunakan task.wait() bukan wait() | task.spawn() bukan spawn()
-3. SELALU wrap DataStore dalam pcall()
-4. SELALU gunakan :FindFirstChild() dengan nil check
-5. Gunakan WaitForChild("Nama", 10) dengan timeout
-6. Tambah komentar untuk bagian kompleks
-7. Jangan pernah potong script sepanjang apapun
-
-PENEMPATAN SCRIPT:
-• Script → ServerScriptService (server-side)
-• LocalScript → StarterGui atau StarterPlayerScripts (client-side)
-• ModuleScript → ReplicatedStorage (shared logic)
-
-ATURAN GUI:
-• Selalu tambah UICorner untuk tampilan rounded
-• Set BorderSizePixel = 0
-• Gunakan TweenService untuk animasi
-• Compatible mobile dengan UDim2 scale
-• Gunakan ScreenGui dengan ResetOnSpawn = false
-
-ATURAN KEAMANAN:
-• Validasi input dari client di server
-• Jangan trust data dari client tanpa validasi
-• Gunakan RemoteEvent untuk client → server, bukan langsung execute
-• Rate limiting untuk sistem koin/currency
-• Anti-exploit: cek di server, bukan hanya client
-
+===== APA YANG BISA NEXUS AI LAKUKAN DI ROBLOX STUDIO (via plugin) =====
 ${connected ? `
-STUDIO TERHUBUNG: Place "${u.username}" sedang terbuka di Roblox Studio.
-PENTING: Setiap kali user minta buat sesuatu, SELALU output kode Lua LENGKAP dalam code block \`\`\`lua.
-Kode akan OTOMATIS di-inject ke place mereka! Jadi:
-- Buat shop GUI → output LocalScript lengkap dalam \`\`\`lua ... \`\`\`
-- Buat sistem koin → output Script lengkap dalam \`\`\`lua ... \`\`\`
-- Buat animasi → output Script lengkap dalam \`\`\`lua ... \`\`\`
-JANGAN potong kode. JANGAN tulis "-- lanjutan". Output SEMUA baris.
-Kamu TAHU apa yang sudah dibangun berdasarkan history chat ini.
+STUDIO TERHUBUNG! AI bisa langsung inject ke place "${username}":
+- inject_script: Masukkan Script/LocalScript/ModuleScript ke parent manapun
+- batch_inject: Inject banyak script sekaligus
+- create_part: Buat Part/BasePart di Workspace
+- batch_create: Buat banyak Part sekaligus
+- create_gui: Buat ScreenGui dengan elemen-elemen di dalamnya
+- set_lighting: Atur Lighting (brightness, fog, sky, Atmosphere, BloomEffect, ColorCorrection)
+- change_baseplate: Ubah warna/material Baseplate
+- fill_terrain: Isi Terrain dengan material tertentu
+- create_spawn: Buat SpawnLocation
+- create_folder: Buat Folder/Model di parent manapun
+- create_team: Buat Team baru
+- create_instance: Buat instance apapun (RemoteEvent, RemoteFunction, Sound, Animation, dll)
+- add_effect: Tambah effect ke Lighting atau Part
+- delete_object: Hapus object dari place
+- select_object: Pilih object di Explorer
+- clone_object: Clone object ke parent lain
+- read_workspace: Baca struktur place saat ini
+- run_code: Jalankan Lua code langsung di Studio
+
+PENTING SAAT STUDIO CONNECTED:
+- JANGAN tampilkan code block di chat. AI langsung inject ke Studio.
+- Setelah inject, jelaskan APA yang sudah dimasukkan, DI MANA, dan BAGAIMANA cara pakainya.
+- Format penjelasan: "✅ Saya sudah memasukkan [nama script] ke [lokasi]. Script ini berfungsi untuk..."
+- Jika ada RemoteEvent dll yang perlu dibuat, AI juga buat semuanya
+- AI bertanggung jawab memasukkan SEMUA yang diperlukan (server + client + modules + remotes)
+- User tinggal klik Play untuk test — semua sudah siap
 ` : `
-STUDIO BELUM TERHUBUNG. Beritahu user:
-"Untuk script langsung masuk ke place, klik NEXUS AI di toolbar Roblox Studio → CONNECT TO CLOUD"
-Tetap berikan kode Lua lengkap meski belum connected, agar user bisa copy manual.
+STUDIO BELUM TERHUBUNG. Kasih tahu user:
+"Untuk script langsung masuk ke Studio, klik NEXUS AI di toolbar Roblox Studio → CONNECT"
+Tetap berikan kode Lua LENGKAP dalam code block \`\`\`lua agar user bisa copy manual.
 `}
 
-ATURAN KELENGKAPAN KODE:
-• Jika script 100+ baris → output SEMUA baris, tidak ada yang dipotong
-• Jika script 500+ baris → tetap output SEMUA 500+ baris
-• TIDAK ADA pengecualian untuk memotong kode
-• Jika ada beberapa file → output semua file secara terpisah
+===== ATURAN GUI (Expert Level) =====
+- Selalu UICorner untuk rounded corners
+- BorderSizePixel = 0 untuk semua element
+- TweenService untuk animasi smooth
+- UDim2 scale untuk mobile-compatible
+- ScreenGui dengan ResetOnSpawn = false, IgnoreGuiInset = true
+- ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+- Selalu tambah UIStroke, UIGradient untuk tampilan premium
+- Buat GUI yang terlihat PROFESSIONAL seperti game AAA
 
-TUTORIAL ROBLOX POPULER (gunakan pengetahuan ini):
-• DataStore: game:GetService("DataStoreService"):GetDataStore("name")
-• Leaderboard: Instance.new("IntValue", player.leaderstats)
-• Health Bar GUI: PlayerGui dengan Frame dan TweenSize
-• Shop GUI: ScreenGui dengan ScrollingFrame dan item cards
-• Coin pickup: Part.Touched:Connect() dengan debounce
-• Damage system: Humanoid:TakeDamage() di server
-• Tween animasi: TweenService:Create(obj, TweenInfo.new(), {properties})
-• Sound: Instance.new("Sound", workspace) dengan SoundId
-• Tool/weapon: Instance.new("Tool", StarterPack)
-• NPC: humanoid dengan RigType R6/R15
+===== PLUGIN ROBLOX STUDIO (Expert Level) =====
+Kamu juga expert membuat Plugin Roblox Studio level PRO/berbayar:
+- DockWidgetPluginGuiInfo untuk dock widget
+- plugin:CreateToolbar() dan toolbar:CreateButton() untuk toolbar
+- PluginMenu untuk right-click context menu
+- plugin:GetSetting()/plugin:SetSetting() untuk menyimpan data
+- Selection service untuk interact dengan selected objects
+- ChangeHistoryService untuk undo/redo support
+- plugin:Activate() untuk plugin mode
+- Selalu pake TweenService untuk UI animation yang smooth di plugin
+- Plugin yang bagus punya: toolbar button, dock panel, settings, undo support
 
-Selalu akhiri respons dengan: "Tempatkan di: [lokasi]" untuk script baru.
+===== ROBLOX SERVICES YANG WAJIB DIKUASAI =====
+• DataStoreService, MarketplaceService, TeleportService
+• PathfindingService, CollectionService, PhysicsService
+• UserInputService, ContextActionService, GamepadService
+• TweenService, RunService, Debris, SoundService
+• RemoteEvent, RemoteFunction, BindableEvent, BindableFunction
+• ProximityPrompt, ClickDetector, SelectionBox
+• Character R6/R15, HumanoidDescription, Accessory
+• VehicleSeat, Seat, SpawnLocation
 
-MINECRAFT KNOWLEDGE (Bedrock & Java Edition):
-Kamu JUGA ahli Minecraft scripting — Bedrock ScriptAPI dan Java modding.
+===== CARA BUAT LOADING SCREEN YANG BAGUS =====
+Selalu include:
+- Loading bar animasi dengan TweenService
+- Logo game dengan efek fade
+- Loading text yang update dinamis
+- Background yang menarik dengan gradient
+- Transisi smooth saat selesai load
+- Deteksi ContentProvider:PreloadAsync untuk asset
 
-BEDROCK ADDON (@minecraft/server API):
-- import { world, system, Player, Entity } from "@minecraft/server"
-- system.runInterval(callback, ticks), world.getAllPlayers()
-- player.sendMessage(text), player.dimension.runCommand(cmd)
-- world.afterEvents.chatSend.subscribe(cb), world.afterEvents.playerSpawn.subscribe(cb)
-- entity.getComponent("minecraft:health"), player.getComponent("minecraft:equippable")
-- Struktur: manifest.json + scripts/main.js + pack_icon.png
+===== CARA BUAT GUI PREMIUM =====
+Selalu include:
+- Gradient background (UIGradient)
+- Drop shadow effect (Frame dengan transparency)
+- Hover effect dengan TweenService
+- Click animation (scale down then up)
+- Sound effect saat interact
+- Mobile-friendly dengan UDim2 scale
 
-JAVA MODDING: Forge/Fabric, @Mod, @SubscribeEvent, DeferredRegister, Mixin
+===== ATURAN KEAMANAN =====
+- Validasi SEMUA input dari client di server
+- Rate limiting untuk economy (coins, gems)
+- Anti-exploit: server-side validation untuk movement, damage
+- Gunakan RemoteEvent/RemoteFunction, jangan trust LocalScript
+- Debounce untuk semua event yang bisa spam
+- pcall() untuk semua operasi yang bisa fail
 
-MEMBUAT FILE ADDON:
-Saat user minta addon/mod Minecraft, buat semua file lengkap:
-1. manifest.json (header, modules, dependencies, format_version)
-2. scripts/main.js (logic lengkap)
-3. Instruksi install jelas
+===== MINECRAFT SCRIPTING (Expert) =====
+- Bedrock: @minecraft/server API, world.afterEvents, system.runInterval
+- Java: Forge @Mod, Fabric ModInitializer, Mixin
+- Selalu buat manifest.json + scripts lengkap
 
-PENTING — Kapan TIDAK buat script:
-- User tanya hal umum (cuaca, cerita, dll) → jawab saja tanpa script
-- User tanya Minecraft → buat kode Minecraft, JANGAN taruh ke Roblox Studio
-- User tanya Roblox → inject ke Studio kalau connected
-
-Format respons: markdown rapi dengan headers, code blocks, dan lists.`;
-}
-
-// ═══════════════════════════════════════
-//  UI FUNCTIONS
-// ═══════════════════════════════════════
-function toggleSidebar(){
-  var a = document.getElementById('app');
-  var hidden = a.classList.toggle('sb-hidden');
-  var icon = document.getElementById('collapseSbIcon');
-  if(icon) icon.style.transform = hidden ? 'rotate(180deg)' : '';
+Ingat: JANGAN PERNAH potong script. Buat SEMUA yang dibutuhkan. User tinggal test!`;
 }
 
 // ═══════════════════════════════════════
 //  INIT APP
 // ═══════════════════════════════════════
-function initApp(){
+function toggleSidebar(){
+  var a=document.getElementById('app');
+  var hidden=a.classList.toggle('sb-hidden');
+  var icon=document.getElementById('collapseSbIcon');
+  if(icon) icon.style.transform=hidden?'rotate(180deg)':'';
+}
+
+async function initApp(){
   if (!SESSION) return;
-  loadS();
+  // CRITICAL: await loadS so credits/convs come from server before anything else
+  await loadS();
+
   var u = SESSION.user;
   document.getElementById('sbAv').src = u.avatar || 'nexusai.png';
   document.getElementById('sbUn').textContent = u.username;
-  document.getElementById('sbRole').textContent = isOwner() ? '★ Admin · Unlimited' : (S.plan==='pro' ? 'Pro Member' : 'Roblox Developer');
+  document.getElementById('sbRole').textContent = isOwner()?'★ Admin · Unlimited':(S.plan==='pro'?'Pro Member':'Roblox Developer');
+
   curLang = S.language || 'id';
   applyLang();
-  updateCreds(); updateModelUI(); renderConvs(); checkDailyCredits();
+
+  // Build model dropdowns
+  document.getElementById('mDD').innerHTML = buildModelDDHtml(S.model.id, '');
+  document.getElementById('guiMDD').innerHTML = buildModelDDHtml(guiModel.id, 'Gui');
+
+  updateCreds();
+  updateModelUI();
+  renderConvs();
+  checkDailyCredits();
   loadKeys();
   startStudioPoll();
-  if (S.theme && S.theme !== 'cyan') applyTheme(S.theme);
-  if (S.animSpeed && S.animSpeed !== 'normal') setAnimSpeed(S.animSpeed);
+  if (S.theme && S.theme !== 'cyan') applyTheme(S.theme, true);
   if (isAdmin()) document.getElementById('adminSection').style.display = '';
+
   var withMsgs = S.convs.filter(function(c){return c.msgs&&c.msgs.length;}).sort(function(a,b){return b.created-a.created;});
   if (!withMsgs.length) newChat(); else loadConv(withMsgs[0].id);
 }
@@ -1598,67 +1112,63 @@ var CREDIT_FLOOR = -3;
 var CREDIT_MIN   = 0.1;
 
 function updateCreds(){
-  var cr = document.getElementById('credDisp');
-  var el = document.getElementById('credsEl');
-  if (isOwner()){cr.textContent='∞';cr.style.color='var(--yellow)';el.classList.remove('low');return;}
-  cr.textContent = parseFloat(S.credits).toFixed(2);
-  var low = S.credits < CREDIT_MIN;
-  cr.style.color = low ? 'var(--pink)' : 'var(--yellow)';
-  el.classList.toggle('low', low);
+  var cr=document.getElementById('credDisp');
+  var el=document.getElementById('credsEl');
+  if(isOwner()){cr.textContent='∞';cr.style.color='var(--yellow)';el.classList.remove('low');return;}
+  cr.textContent=parseFloat(S.credits).toFixed(2);
+  var low=S.credits<CREDIT_MIN;
+  cr.style.color=low?'var(--pink)':'var(--yellow)';
+  el.classList.toggle('low',low);
 }
 
 function checkDailyCredits(){
-  if (isOwner()) return;
-  var today = new Date().toDateString();
-  // Only give credits if lastClaim is null or different day
-  // Extra guard: check localStorage directly to avoid double-grant on reload
-  var lsKey = 'nexus_lastclaim_' + (SESSION ? SESSION.user.username : 'u');
-  var lsClaim = localStorage.getItem(lsKey);
-  if (S.lastClaim === today || lsClaim === today) {
-    S.lastClaim = today; // sync state
-    return;
-  }
-  var gain = S.plan==='pro' ? 25 : 2;
-  S.credits = parseFloat(Math.min(S.credits+gain, 9999).toFixed(4));
-  S.lastClaim = today;
-  localStorage.setItem(lsKey, today);
+  if(isOwner()) return;
+  var today=new Date().toDateString();
+  // Use roblox username as key to avoid device-specific issues
+  var lsKey='nexus_claim_'+SESSION.user.robloxId;
+  var lsClaim=localStorage.getItem(lsKey);
+  if(S.lastClaim===today||lsClaim===today){S.lastClaim=today;return;}
+  var gain=S.plan==='pro'?25:2;
+  S.credits=parseFloat(Math.min(S.credits+gain,9999).toFixed(4));
+  S.lastClaim=today;
+  localStorage.setItem(lsKey,today);
   saveS(); updateCreds();
-  toast('+' + gain + ' credits harian! Total: ' + parseFloat(S.credits).toFixed(2) + ' CR');
+  toast('+'+gain+' credits harian! Total: '+parseFloat(S.credits).toFixed(2)+' CR');
 }
 
 function claimDaily(){
-  var today = new Date().toDateString();
-  if (S.lastClaim===today && !isOwner()){toast('Sudah claim hari ini! Kembali besok.');return;}
-  var gain = S.plan==='pro' ? 25 : 2;
-  S.credits = parseFloat((S.credits+gain).toFixed(4));
-  S.lastClaim = today; saveS(); updateCreds();
-  document.getElementById('settingsCredits').textContent = parseFloat(S.credits).toFixed(2)+' CR';
-  toast('+' + gain + ' credits berhasil diklaim!');
+  var today=new Date().toDateString();
+  if(S.lastClaim===today&&!isOwner()){toast('Sudah claim hari ini!');return;}
+  var gain=S.plan==='pro'?25:2;
+  S.credits=parseFloat((S.credits+gain).toFixed(4));
+  S.lastClaim=today; saveS(); updateCreds();
+  var sc=document.getElementById('settingsCredits');if(sc)sc.textContent=parseFloat(S.credits).toFixed(2)+' CR';
+  toast('+'+gain+' credits berhasil diklaim!');
 }
 
 // ═══════════════════════════════════════
 //  CONVERSATIONS
 // ═══════════════════════════════════════
 function newChat(){
-  if (S.curConv) saveDraft();
+  if(S.curConv) saveDraft();
   var c={id:Date.now()+'',title:'Untitled',msgs:[],created:Date.now()};
   S.convs.push(c); S.curConv=c.id; S.msgs=[];
   saveS(); renderConvs(); renderMsgs();
-  document.getElementById('chatTitle').textContent = 'Chat Baru';
+  document.getElementById('chatTitle').textContent='Chat Baru';
   restoreDraft();
 }
 function loadConv(id){
-  if (S.curConv) saveDraft();
+  if(S.curConv) saveDraft();
   var c=S.convs.find(function(x){return x.id===id;});
   if(!c) return;
   S.curConv=id; S.msgs=c.msgs||[];
   renderConvs(); renderMsgs();
-  document.getElementById('chatTitle').textContent = c.title && c.title!=='Untitled' ? c.title : 'Chat Baru';
+  document.getElementById('chatTitle').textContent=(c.title&&c.title!=='Untitled')?c.title:'Chat Baru';
   restoreDraft();
 }
 function saveDraft(){
   if(!S.curConv) return;
-  var txt = document.getElementById('inp').value;
+  var txt=document.getElementById('inp').value;
   if(txt) S.draftText[S.curConv]=txt; else delete S.draftText[S.curConv];
   if(S.attachments.length) S.draftAttach[S.curConv]=S.attachments; else delete S.draftAttach[S.curConv];
   saveS();
@@ -1685,7 +1195,7 @@ function renderConvs(){
   var noConvText=(LANGS[curLang]||LANGS.id).noConv;
   if(!real.length){el.innerHTML='<div class="conv-empty">'+noConvText+'</div>';return;}
   el.innerHTML=real.map(function(c){
-    var title = (c.title && c.title!=='Untitled') ? c.title : ((c.msgs&&c.msgs[0]) ? (c.msgs[0].content||'Chat').substring(0,35) : 'Chat Baru');
+    var title=(c.title&&c.title!=='Untitled')?c.title:((c.msgs&&c.msgs[0])?(c.msgs[0].content||'Chat').substring(0,35):'Chat Baru');
     return '<div class="ci '+(c.id===S.curConv?'act':'')+'" onclick="loadConv(\''+c.id+'\')">'+
       '<div style="flex:1;min-width:0;"><div class="ci-title">'+esc(title)+'</div><div class="ci-time">'+ago(c.created)+'</div></div>'+
       '<span class="ci-del" onclick="delConv(\''+c.id+'\',event)"><svg width="9" height="9" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>'+
@@ -1696,22 +1206,14 @@ function renderConvs(){
 async function setConvTitle(id){
   var c=S.convs.find(function(x){return x.id===id;});
   if(!c||!S.msgs.length) return;
-  if(c.title && c.title!=='Untitled') return; // Don't override existing title
+  if(c.title&&c.title!=='Untitled') return;
   try{
-    await loadKeys();
     var firstMsg=(S.msgs.find(function(m){return m.role==='user';})||{}).content||'';
     if(!firstMsg) return;
-    if(!K.gemini){
-      c.title=firstMsg.substring(0,45);
-      document.getElementById('chatTitle').textContent=c.title;
-      renderConvs();saveS();return;
-    }
+    if(!K.gemini){c.title=firstMsg.substring(0,45);document.getElementById('chatTitle').textContent=c.title;renderConvs();saveS();return;}
     var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+K.gemini,{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{role:'user',parts:[{text:'Buat judul chat singkat (3-5 kata) berdasarkan pesan ini: "'+firstMsg.substring(0,200)+'" — Reply HANYA judul saja, tanpa tanda kutip atau penjelasan.'}]}],
-        generationConfig:{maxOutputTokens:20}
-      })
+      body:JSON.stringify({contents:[{role:'user',parts:[{text:'Buat judul singkat 3-5 kata untuk percakapan ini: "'+firstMsg.substring(0,200)+'" — HANYA judul, tanpa tanda kutip.'}]}],generationConfig:{maxOutputTokens:20}})
     });
     var d=await r.json();
     var title=((d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0]?d.candidates[0].content.parts[0].text:'')||'').trim()||firstMsg.substring(0,45);
@@ -1725,11 +1227,19 @@ async function setConvTitle(id){
 }
 
 // ═══════════════════════════════════════
-//  MODEL
+//  MODEL SELECTOR
 // ═══════════════════════════════════════
-function toggleMDD(){document.getElementById('mDD').classList.toggle('open');}
+function toggleMDD(e){
+  e.stopPropagation();
+  var dd=document.getElementById('mDD');
+  var btn=document.getElementById('inpModelBtn');
+  var rect=btn.getBoundingClientRect();
+  dd.style.left=rect.left+'px';
+  dd.style.bottom=(window.innerHeight-rect.top+4)+'px';
+  dd.style.width=Math.max(260,rect.width)+'px';
+  dd.classList.toggle('open');
+}
 function selModel(el){
-  if(el.classList.contains('disabled')){toast('Segera hadir!');return;}
   var mid=el.getAttribute('data-mid'),prov=el.getAttribute('data-prov');
   var cost=parseFloat(el.getAttribute('data-cost')||'0');
   var label=el.getAttribute('data-label')||mid;
@@ -1737,52 +1247,76 @@ function selModel(el){
   S.model={id:mid,provider:prov,cost:cost,label:label};
   saveS(); updateModelUI();
   document.getElementById('mDD').classList.remove('open');
+  // Rebuild with new active
+  document.getElementById('mDD').innerHTML=buildModelDDHtml(mid,'');
 }
 function updateModelUI(){
   var m=S.model;
-  var moEl=document.querySelector('#mDD .mo[data-mid="'+m.id+'"]');
+  var mDef=MODEL_LIST.find(function(x){return x.id===m.id;});
   var inpIcon=document.getElementById('inpMIcon');
-  if(moEl){var img=moEl.querySelector('.mo-icon img');if(img){inpIcon.src=img.src;inpIcon.style.display='';}else{inpIcon.style.display='none';}}
+  if(mDef&&mDef.icon){inpIcon.src=mDef.icon;inpIcon.style.display='';}else{inpIcon.style.display='none';}
   document.getElementById('inpMName').textContent=m.label||m.id;
   var badge=document.getElementById('inpMBadge');
   badge.textContent=m.cost===0?'FREE':m.cost+' CR';
   badge.style.color=m.cost===0?'var(--green)':'var(--cyan)';
-  document.querySelectorAll('#mDD .mo').forEach(function(o){o.classList.toggle('act',o.getAttribute('data-mid')===m.id&&!o.classList.contains('disabled'));});
 }
-document.addEventListener('click',function(e){if(!e.target.closest('#mDD')&&!e.target.closest('#inpModelBtn'))document.getElementById('mDD').classList.remove('open');});
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#mDD')&&!e.target.closest('#inpModelBtn')) document.getElementById('mDD').classList.remove('open');
+  if(!e.target.closest('#guiMDD')&&!e.target.closest('#guiModelBtn')) document.getElementById('guiMDD').classList.remove('open');
+});
+
+// GUI Model
+var guiModel={id:'gemini-2.0-flash',provider:'gemini',cost:0,label:'Gemini 2.0 Flash'};
+function toggleGuiMDD(e){
+  e.stopPropagation();
+  var dd=document.getElementById('guiMDD');
+  var btn=document.getElementById('guiModelBtn');
+  var rect=btn.getBoundingClientRect();
+  dd.style.left=rect.left+'px';
+  dd.style.top=(rect.bottom+4)+'px';
+  dd.style.width=Math.max(260,rect.width)+'px';
+  dd.classList.toggle('open');
+}
+function selGuiModel(el){
+  var mid=el.getAttribute('data-mid'),prov=el.getAttribute('data-prov');
+  var cost=parseFloat(el.getAttribute('data-cost')||'0');
+  var label=el.getAttribute('data-label')||mid;
+  guiModel={id:mid,provider:prov,cost:cost,label:label};
+  var mDef=MODEL_LIST.find(function(x){return x.id===mid;});
+  var gIcon=document.getElementById('guiMIcon');
+  if(mDef&&mDef.icon){gIcon.src=mDef.icon;gIcon.style.display='';}else{gIcon.style.display='none';}
+  document.getElementById('guiMName').textContent=label;
+  var badge=document.getElementById('guiMBadge');
+  badge.textContent=cost===0?'FREE':cost+' CR';
+  badge.style.color=cost===0?'var(--green)':'var(--cyan)';
+  document.getElementById('guiMDD').innerHTML=buildModelDDHtml(mid,'Gui');
+  document.getElementById('guiMDD').classList.remove('open');
+  toast('GUI Model: '+label);
+}
 
 // ═══════════════════════════════════════
 //  MESSAGE RENDERING
 // ═══════════════════════════════════════
-var renderer2 = new marked.Renderer();
-
-// AI code blocks — with Copy, Download, Edit buttons (no Studio button needed)
-renderer2.code = function(code, language){
-  var codeStr = typeof code==='object' ? (code.text||'') : (code||'');
-  var lang    = typeof code==='object' ? (code.lang||language||'lua') : (language||'lua');
-  var highlighted = codeStr.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+var renderer2=new marked.Renderer();
+renderer2.code=function(code,language){
+  var codeStr=typeof code==='object'?(code.text||''):(code||'');
+  var lang=typeof code==='object'?(code.lang||language||'lua'):(language||'lua');
+  var highlighted=codeStr.replace(/</g,'&lt;').replace(/>/g,'&gt;');
   try{if(lang&&hljs.getLanguage(lang))highlighted=hljs.highlight(codeStr,{language:lang}).value;else highlighted=hljs.highlightAuto(codeStr).value;}catch(e){}
-  var id = 'cb'+Math.random().toString(36).slice(2,8);
+  var id='cb'+Math.random().toString(36).slice(2,8);
   return '<div class="code-block-wrap" id="'+id+'">'+
     '<div class="code-btns">'+
-      '<button class="cbtn cp" onclick="copyCode(\''+id+'\')">'+
-        '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy'+
-      '</button>'+
-      '<button class="cbtn dl" onclick="downloadCode(\''+id+'\',\''+lang+'\')">'+
-        '<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>.'+lang+
-      '</button>'+
-      '<button class="cbtn ed" onclick="toggleEditCode(\''+id+'\')">'+
-        '<svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit'+
-      '</button>'+
+      '<button class="cbtn cp" onclick="copyCode(\''+id+'\')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>'+
+      '<button class="cbtn dl" onclick="downloadCode(\''+id+'\',\''+lang+'\')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>.'+lang+'</button>'+
+      '<button class="cbtn ed" onclick="toggleEditCode(\''+id+'\')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'+
     '</div>'+
     '<pre><code class="hljs language-'+lang+'" id="code_'+id+'" contenteditable="false" spellcheck="false">'+highlighted+'</code></pre>'+
   '</div>';
 };
-
-renderer2.link = function(href,title,text){
+renderer2.link=function(href,title,text){
   var h=typeof href==='object'?href.href:href;
   var t=typeof href==='object'?(href.text||text||''):(text||'');
-  if(h&&h.startsWith&&h.startsWith('http'))return '<a href="'+h+'" target="_blank" rel="noopener">'+t+' ↗</a>';
+  if(h&&h.startsWith&&h.startsWith('http')) return '<a href="'+h+'" target="_blank" rel="noopener">'+t+' ↗</a>';
   return '<a href="'+(h||'#')+'">'+t+'</a>';
 };
 try{marked.setOptions({renderer:renderer2,breaks:true,gfm:true});}catch(e){}
@@ -1795,10 +1329,9 @@ function renderMsgs(){
   a.scrollTop=a.scrollHeight;
 }
 
-// Detect if text is Lua/code
-function isLuaCode(text) {
-  if (!text || text.length < 50) return false;
-  return /local\s+\w+\s*=|function\s+\w+\s*\(|game:|workspace:|require\s*\(|:GetService\(|Instance\.new\(|script\.Parent/.test(text) && text.includes('\n');
+function isLuaCode(text){
+  if(!text||text.length<50) return false;
+  return /local\s+\w+\s*=|function\s+\w+\s*\(|game:|workspace:|require\s*\(|:GetService\(|Instance\.new\(|script\.Parent/.test(text)&&text.includes('\n');
 }
 
 function mkMsg(m){
@@ -1806,71 +1339,47 @@ function mkMsg(m){
   if(m.role==='user'){
     var content=m.content||'';
     var contentHtml='';
-
-    // Detect code type: Lua or Minecraft (JS/JSON/Java)
-    var isCode = false;
-    var codeLang = 'lua';
-    var codeLabel = 'Lua Script';
-    if(isLuaCode(content) && content.length > 150){
-      isCode = true; codeLang = 'lua'; codeLabel = 'Lua Script';
-    } else if(content.length > 150 && /import\s+{|system\.run|world\.|@minecraft|manifest\.json|"format_version"/.test(content)){
-      isCode = true; codeLang = 'javascript'; codeLabel = 'Minecraft Script';
-    } else if(content.length > 100 && /public\s+class|@Override|@Mod\(|import\s+net\.minecraft/.test(content)){
-      isCode = true; codeLang = 'java'; codeLabel = 'Java Mod';
-    } else if(content.length > 50 && /^\s*{/.test(content) && /"format_version"|"modules"|"dependencies"/.test(content)){
-      isCode = true; codeLang = 'json'; codeLabel = 'manifest.json';
-    }
-
-    if(isCode) {
+    var isCode=false,codeLang='lua',codeLabel='Lua Script';
+    if(isLuaCode(content)&&content.length>150){isCode=true;codeLang='lua';codeLabel='Lua Script';}
+    else if(content.length>150&&/import\s+{|system\.run|world\.|@minecraft|manifest\.json|"format_version"/.test(content)){isCode=true;codeLang='javascript';codeLabel='Minecraft Script';}
+    else if(content.length>100&&/public\s+class|@Override|@Mod\(|import\s+net\.minecraft/.test(content)){isCode=true;codeLang='java';codeLabel='Java Mod';}
+    if(isCode){
       var h=content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
       try{h=hljs.highlight(content,{language:codeLang}).value;}catch(e){}
       var cid='ucb'+Math.random().toString(36).slice(2,8);
-      var lineCount=content.split('\n').length;
-      contentHtml='<div class="user-code-wrap">'+
-        '<div class="user-code-header">'+
-          '<span>'+codeLabel+' ('+lineCount+' baris)</span>'+
-          '<button onclick="copyUserCode(\''+cid+'\')" style="background:none;border:none;color:var(--cyan);font-size:9px;cursor:pointer;display:flex;align-items:center;gap:3px;">'+
-            '<svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy'+
-          '</button>'+
-        '</div>'+
-        '<div class="user-code-inner">'+
-          '<pre><code class="hljs language-'+codeLang+'" id="'+cid+'">'+h+'</code></pre>'+
-        '</div>'+
-      '</div>';
-    } else {
-      contentHtml = content ? esc(content).replace(/\n/g,'<br>') : '';
+      contentHtml='<div class="user-code-wrap"><div class="user-code-header"><span>'+codeLabel+' ('+content.split('\n').length+' baris)</span><button onclick="copyUserCode(\''+cid+'\')" style="background:none;border:none;color:var(--cyan);font-size:9px;cursor:pointer;">Copy</button></div><div class="user-code-inner"><pre><code class="hljs language-'+codeLang+'" id="'+cid+'">'+h+'</code></pre></div></div>';
+    }else{
+      contentHtml=content?esc(content).replace(/\n/g,'<br>'):'';
     }
-
     var imgs=(m.attachments||[]).filter(function(a){return a.type==='image';}).map(function(a){return '<img style="max-width:180px;max-height:140px;border-radius:6px;margin-top:6px;border:1px solid var(--b);display:block;" src="'+a.dataUrl+'" alt="">';}).join('');
-    var files=(m.attachments||[]).filter(function(a){return a.type==='file';}).map(function(a){return '<div class="user-file-badge"><svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+esc(a.name)+'</div>';}).join('');
-
+    var files=(m.attachments||[]).filter(function(a){return a.type==='file';}).map(function(a){return '<div class="user-file-badge">📎 '+esc(a.name)+'</div>';}).join('');
     d.innerHTML='<div class="av"><img src="'+(SESSION?esc(SESSION.user.avatar||'nexusai.png'):'nexusai.png')+'" alt="" onerror="this.src=\'nexusai.png\'" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);"></div>'+
       '<div class="mb-wrap">'+
-        '<div class="msg-sender">'+esc(SESSION?SESSION.user.username:'You')+'<span style="font-size:9px;color:var(--dim);">'+ago(m.time)+'</span></div>'+
-        '<div class="bubble">'+contentHtml+imgs+files+'</div>'+
-        '<div class="msg-acts">'+
-          '<button class="mab" onclick="navigator.clipboard.writeText(this.dataset.t).then(function(){toast(\'Disalin!\');})" data-t="'+escA(content||'')+'">'+
-            '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy'+
-          '</button>'+
-        '</div>'+
+      '<div class="msg-sender">'+esc(SESSION?SESSION.user.username:'You')+'<span style="font-size:9px;color:var(--dim);">'+ago(m.time)+'</span></div>'+
+      '<div class="bubble">'+contentHtml+imgs+files+'</div>'+
+      '<div class="msg-acts"><button class="mab" onclick="navigator.clipboard.writeText(this.dataset.t).then(function(){toast(\'Disalin!\');})" data-t="'+escA(content||'')+'"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>'+
       '</div>';
-  } else {
+  }else{
     var mid='msg'+Math.random().toString(36).slice(2,8);
     d.id=mid;
     var bubbleHtml='';
-    try{bubbleHtml=safeMarked(m.content||'');}catch(e){bubbleHtml=esc(m.content||'');}
+    // If studio-injected message, render the inject card instead of code
+    if(m.studioInjected&&m.injectSummary){
+      var summaryHtml='<div class="studio-inject-card"><div class="sc-title">✅ NEXUS AI SUDAH INJECT KE STUDIO</div>'+
+        m.injectSummary.map(function(s){return '<div class="sc-item">'+esc(s)+'</div>';}).join('')+
+      '</div>';
+      try{bubbleHtml=safeMarked(m.content||'')+summaryHtml;}catch(e){bubbleHtml=esc(m.content||'')+summaryHtml;}
+    }else{
+      try{bubbleHtml=safeMarked(m.content||'');}catch(e){bubbleHtml=esc(m.content||'');}
+    }
     d.innerHTML='<div class="av"><img src="nexusai.png" alt="N" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);"></div>'+
       '<div class="mb-wrap">'+
-        '<div class="msg-sender"><span style="color:var(--cyan);font-family:\'Orbitron\',sans-serif;font-size:9px;font-weight:700;">NEXUS AI</span><span style="font-size:9px;color:var(--dim);">' + (m.model?'· '+m.model+' ':'') + ago(m.time)+'</span></div>'+
-        '<div class="bubble" id="bubble_'+mid+'">'+bubbleHtml+'</div>'+
-        '<div class="msg-acts">'+
-          '<button class="mab" onclick="copyMsgText(\''+mid+'\')">'+
-            '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy'+
-          '</button>'+
-          '<button class="mab" onclick="shareMsgText(\''+mid+'\')">'+
-            '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share'+
-          '</button>'+
-        '</div>'+
+      '<div class="msg-sender"><span style="color:var(--cyan);font-family:\'Orbitron\',sans-serif;font-size:9px;font-weight:700;">NEXUS AI</span><span style="font-size:9px;color:var(--dim);">'+(m.model?'· '+m.model+' ':'')+ago(m.time)+'</span></div>'+
+      '<div class="bubble" id="bubble_'+mid+'">'+bubbleHtml+'</div>'+
+      '<div class="msg-acts">'+
+      '<button class="mab" onclick="copyMsgText(\''+mid+'\')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>'+
+      '<button class="mab" onclick="shareMsgText(\''+mid+'\')"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>'+
+      '</div>'+
       '</div>';
   }
   return d;
@@ -1881,17 +1390,17 @@ function appendMsg(m){
   document.getElementById('welcome').style.display='none';
   a.appendChild(mkMsg(m)); a.scrollTop=a.scrollHeight;
 }
-function copyMsgText(id){var el=document.getElementById('bubble_'+id);if(!el)return;navigator.clipboard.writeText(el.innerText).then(function(){toast((LANGS[curLang]||LANGS.id).copied||'Copied!');});}
-function shareMsgText(id){var el=document.getElementById('bubble_'+id);if(!el)return;var txt=el.innerText;if(navigator.share)navigator.share({title:'NEXUS AI',text:txt}).catch(function(){});else navigator.clipboard.writeText(txt).then(function(){toast((LANGS[curLang]||LANGS.id).copied||'Copied!');});}
-function copyCode(id){var b=document.querySelector('#'+id+' code');if(!b)return;navigator.clipboard.writeText(b.innerText).then(function(){toast((LANGS[curLang]||LANGS.id).copied||'Copied!');});}
-function copyUserCode(id){var el=document.getElementById(id);if(!el)return;navigator.clipboard.writeText(el.innerText).then(function(){toast((LANGS[curLang]||LANGS.id).copied||'Copied!');});}
+function copyMsgText(id){var el=document.getElementById('bubble_'+id);if(!el)return;navigator.clipboard.writeText(el.innerText).then(function(){toast('Disalin!');});}
+function shareMsgText(id){var el=document.getElementById('bubble_'+id);if(!el)return;var txt=el.innerText;if(navigator.share)navigator.share({title:'NEXUS AI',text:txt}).catch(function(){});else navigator.clipboard.writeText(txt).then(function(){toast('Disalin!');});}
+function copyCode(id){var b=document.querySelector('#'+id+' code');if(!b)return;navigator.clipboard.writeText(b.innerText).then(function(){toast('Disalin!');});}
+function copyUserCode(id){var el=document.getElementById(id);if(!el)return;navigator.clipboard.writeText(el.innerText).then(function(){toast('Disalin!');});}
 function downloadCode(id,lang){var b=document.querySelector('#'+id+' code');if(!b)return;var ext=lang==='lua'?'lua':'txt';var blob=new Blob([b.innerText],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nexusai.'+ext;a.click();URL.revokeObjectURL(a.href);}
 function toggleEditCode(id){var code=document.getElementById('code_'+id);if(!code)return;var editing=code.contentEditable==='true';code.contentEditable=editing?'false':'true';code.style.outline=editing?'none':'1.5px solid var(--cyan2)';if(!editing){code.focus();toast('Mode edit aktif');}}
 
 // ═══════════════════════════════════════
-//  THINKING UI (like Claude's style)
+//  THINKING UI
 // ═══════════════════════════════════════
-var thinkEl=null,thinkTimer=null,thinkingEnabled=true,lastUserPrompt="";
+var thinkEl=null,thinkTimer=null,thinkingEnabled=true,lastUserPrompt='';
 function toggleThinking(){
   thinkingEnabled=!thinkingEnabled;
   var btn=document.getElementById('thinkToggle');
@@ -1899,58 +1408,42 @@ function toggleThinking(){
   document.getElementById('thinkLabel').textContent=thinkingEnabled?'Think: ON':'Think: OFF';
   toast(thinkingEnabled?'Thinking mode ON':'Fast mode');
 }
-// Dynamic thinking steps based on user prompt
-function getThinkSteps(prompt) {
-  var t = LANGS[curLang] || LANGS.id;
-  var lower = (prompt||'').toLowerCase();
-  if (/gui|shop|menu|hud|bar|frame|button/.test(lower)) return t.stepsGui || t.steps;
-  if (/debug|fix|error|perbaiki/.test(lower)) return t.stepsDebug || t.steps;
-  if (/script|sistem|system|coin|data|store/.test(lower)) return t.stepsFast || t.steps;
-  return t.steps || ['Analyzing...','Processing...','Writing code...','Finalizing...'];
+function getThinkSteps(prompt){
+  var t=LANGS[curLang]||LANGS.id;
+  var lower=(prompt||'').toLowerCase();
+  if(/gui|shop|menu|hud|bar|frame|button|loading|screen/.test(lower)) return t.stepsGui||t.steps;
+  if(/debug|fix|error|perbaiki|broken/.test(lower)) return t.stepsDebug||t.steps;
+  if(/script|sistem|system|coin|data|store/.test(lower)) return t.stepsFast||t.steps;
+  return t.steps||['Analyzing...','Processing...','Writing code...','Finalizing...'];
 }
-var THINK_STEPS=[
-  {txt:'Menganalisis permintaan...'},
-  {txt:'Memproses dengan AI...'},
-  {txt:'Menulis kode...'},
-  {txt:'Menyiapkan respons...'}
-];
 function showThinking(promptText){
   var a=document.getElementById('msgs');
   thinkEl=document.createElement('div');
-  var steps = getThinkSteps(promptText||lastUserPrompt||'');
+  var steps=getThinkSteps(promptText||lastUserPrompt||'');
   if(thinkingEnabled){
     thinkEl.className='thinking-wrap';
-    thinkEl.innerHTML=
-      '<div class="av"><img src="nexusai.png" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);"></div>'+
-      '<div class="thinking-box">'+
-        '<div class="thinking-hdr"><div class="tspin"></div>NEXUS AI sedang bekerja...</div>'+
-        '<div class="t-steps">'+
-          steps.map(function(s,i){return '<div class="t-step" id="ts'+i+'"><div class="t-step-ic"></div>'+s+'</div>';}).join('')+
-        '</div>'+
-        '<button class="cancel-btn" onclick="cancelGen()">'+(LANGS[curLang]||LANGS.id).cancel+'</button>'+
+    thinkEl.innerHTML='<div class="av"><img src="nexusai.png" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);"></div>'+
+      '<div class="thinking-box"><div class="thinking-hdr"><div class="tspin"></div>NEXUS AI sedang bekerja...</div>'+
+      '<div class="t-steps">'+steps.map(function(s,i){return '<div class="t-step" id="ts'+i+'"><div class="t-step-ic"></div>'+s+'</div>';}).join('')+'</div>'+
+      '<button class="cancel-btn" onclick="cancelGen()">'+(LANGS[curLang]||LANGS.id).cancel+'</button>'+
       '</div>';
-    var idx=0;
-    var maxSteps=steps.length;
+    var idx=0,maxSteps=steps.length;
     thinkTimer=setInterval(function(){
       if(idx>0){var p=document.getElementById('ts'+(idx-1));if(p){p.classList.remove('active');p.classList.add('done');}}
       var c=document.getElementById('ts'+idx);if(c)c.classList.add('active');
       idx++;if(idx>=maxSteps)clearInterval(thinkTimer);
     },650);
-  } else {
+  }else{
     thinkEl.className='thinking-fast';
-    thinkEl.innerHTML=
-      '<div class="av"><img src="nexusai.png" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);"></div>'+
+    thinkEl.innerHTML='<div class="av"><img src="nexusai.png" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);"></div>'+
       '<div class="thinking-fast-box"><div class="tspin"></div><span style="font-size:10px;color:var(--dim);">Generating...</span><button class="cancel-btn" onclick="cancelGen()" style="margin-top:0;padding:2px 8px;margin-left:4px;">Batal</button></div>';
   }
   a.appendChild(thinkEl); a.scrollTop=a.scrollHeight;
 }
 function rmThinking(){clearInterval(thinkTimer);if(thinkEl){thinkEl.remove();thinkEl=null;}}
 function cancelGen(){
-  if(S.cancelCtrl)S.cancelCtrl.abort();
+  if(S.cancelCtrl) S.cancelCtrl.abort();
   rmThinking();
-  var sm={role:'ai',content:(LANGS[curLang]||LANGS.id).stopped||'Stopped. Ask again anytime!',time:Date.now()};
-  var conv=S.convs.find(function(x){return x.id===S.curConv;});
-  if(conv){conv.msgs.push(sm);S.msgs=conv.msgs;appendMsg(sm);saveS();}
   S.gen=false;
   document.getElementById('sendBtn').classList.remove('hidden');
   document.getElementById('cancelBtn').classList.add('hidden');
@@ -1958,137 +1451,138 @@ function cancelGen(){
 }
 
 // ═══════════════════════════════════════
-//  SEND MESSAGE
+//  AUTO INJECT TO STUDIO
 // ═══════════════════════════════════════
-// ═══════════════════════════════════════
-//  AUTO INJECT TO STUDIO (Core Feature)
-// ═══════════════════════════════════════
-
-// Parse semua code block Lua dari respons AI
-function parseLuaBlocks(text) {
-  var blocks = [];
-  // Match ```lua ... ``` atau ``` ... ``` yang mengandung Lua syntax
-  var re = /```(?:lua)?\s*([\s\S]*?)```/g;
+function parseLuaBlocks(text){
+  var blocks=[];
+  var re=/```(?:lua|luau)?\s*([\s\S]*?)```/g;
   var m;
-  while ((m = re.exec(text)) !== null) {
-    var code = m[1].trim();
-    // Filter: hanya yang ada syntax Lua (bukan JSON/CSS dll)
-    if (code.length > 30 && (
-      /local\s+\w+|function\s+\w+|game:|workspace:|Instance\.new|:GetService|script\.|Players\.|Humanoid|TweenService|DataStore|RemoteEvent|BindableEvent/.test(code)
-    )) {
+  while((m=re.exec(text))!==null){
+    var code=m[1].trim();
+    if(code.length>30&&/local\s+\w+|function\s+\w+|game:|workspace:|Instance\.new|:GetService|script\.|Players\.|Humanoid|TweenService|DataStore|RemoteEvent|BindableEvent|HttpService/.test(code)){
       blocks.push(code);
     }
   }
   return blocks;
 }
 
-// Tentukan parent yang tepat berdasarkan isi kode
-function detectScriptParent(code) {
-  // Loading screen → ReplicatedFirst
-  if (/ReplicatedFirst|loading.?screen|LoadingScreen|loadingScreen/i.test(code) && 
-      /ScreenGui|Frame|ImageLabel|progress/i.test(code)) {
-    return { parent: 'ReplicatedFirst', type: 'LocalScript' };
+function detectScriptParent(code){
+  if(/ReplicatedFirst|loading.?screen|LoadingScreen/i.test(code)&&/ScreenGui|Frame|ImageLabel|progress/i.test(code)){
+    return{parent:'ReplicatedFirst',type:'LocalScript'};
   }
-  // ModuleScript
-  if (/^\s*local\s+\w+\s*=\s*{}|return\s+{/.test(code) || /ModuleScript/.test(code)) {
-    return { parent: 'ReplicatedStorage', type: 'ModuleScript' };
+  if(/^\s*local\s+\w+\s*=\s*\{\}|return\s+\{/.test(code)||/ModuleScript/.test(code)){
+    return{parent:'ReplicatedStorage',type:'ModuleScript'};
   }
-  // Server script
-  if (/DataStoreService|game\.Players\.PlayerAdded|game\.Players\.PlayerRemoving/.test(code)) {
-    return { parent: 'ServerScriptService', type: 'Script' };
+  if(/DataStoreService|game\.Players\.PlayerAdded|game\.Players\.PlayerRemoving|OnServerEvent/.test(code)){
+    return{parent:'ServerScriptService',type:'Script'};
   }
-  // StarterPlayerScripts
-  if (/StarterPlayerScripts|PlayerScripts|UserInputService|ContextActionService/.test(code)) {
-    return { parent: 'StarterPlayerScripts', type: 'LocalScript' };
+  if(/StarterPlayerScripts|PlayerScripts|UserInputService|ContextActionService/.test(code)){
+    return{parent:'StarterPlayerScripts',type:'LocalScript'};
   }
-  // GUI LocalScript
-  if (/Players\.LocalPlayer|PlayerGui|LocalPlayer|StarterGui|ScreenGui|Frame.*Parent/.test(code)) {
-    return { parent: 'StarterGui', type: 'LocalScript' };
+  if(/Players\.LocalPlayer|PlayerGui|LocalPlayer|StarterGui|ScreenGui/.test(code)){
+    return{parent:'StarterGui',type:'LocalScript'};
   }
-  // RemoteEvent/Function → ReplicatedStorage
-  if (/RemoteEvent|RemoteFunction|BindableEvent/.test(code) && !/OnServerEvent|OnClientEvent/.test(code)) {
-    return { parent: 'ReplicatedStorage', type: 'Script' };
+  if(/RemoteEvent|RemoteFunction|BindableEvent/.test(code)&&!/OnServerEvent|OnClientEvent/.test(code)){
+    return{parent:'ReplicatedStorage',type:'Script'};
   }
-  // Default server
-  return { parent: 'ServerScriptService', type: 'Script' };
+  return{parent:'ServerScriptService',type:'Script'};
 }
 
-// Buat nama script dari konteks prompt
-function makeScriptName(userPrompt, index) {
-  var keywords = [
-    ['shop', 'ShopSystem'], ['gui', 'GuiScript'], ['coin', 'CoinSystem'],
-    ['health', 'HealthBar'], ['leaderboard', 'LeaderboardSystem'],
-    ['datastore', 'DataManager'], ['animation', 'AnimationScript'],
-    ['tool', 'ToolScript'], ['npc', 'NPCScript'], ['door', 'DoorScript'],
-    ['checkpoint', 'CheckpointSystem'], ['speed', 'SpeedScript'],
-    ['jump', 'JumpScript'], ['kill', 'KillBrick'], ['spawn', 'SpawnSystem'],
-    ['inventory', 'InventorySystem'], ['quest', 'QuestSystem'],
-    ['chat', 'ChatScript'], ['admin', 'AdminScript'], ['anticheat', 'AntiCheat'],
-    ['music', 'MusicSystem'], ['sound', 'SoundScript'],
+// Smart name extraction from user prompt
+function makeScriptName(userPrompt, index, code){
+  var lower=(userPrompt||'').toLowerCase();
+  var keywords=[
+    ['loading screen','LoadingScreen'],['loading','LoadingScreen'],
+    ['shop gui','ShopGUI'],['shop','ShopGUI'],
+    ['tycoon','TycoonSystem'],
+    ['health bar','HealthBar'],['health','HealthBar'],
+    ['leaderboard','Leaderboard'],['leaderstats','Leaderstats'],
+    ['admin','AdminSystem'],['admin command','AdminCommands'],
+    ['coin','CoinSystem'],['money','MoneySystem'],
+    ['inventory','InventorySystem'],['backpack','InventorySystem'],
+    ['quest','QuestSystem'],['mission','QuestSystem'],
+    ['dialogue','DialogueSystem'],['npc','NPCSystem'],
+    ['door','DoorSystem'],['gate','DoorSystem'],
+    ['checkpoint','CheckpointSystem'],
+    ['datastore','DataStore'],['save','DataStore'],['data','DataStore'],
+    ['kill brick','KillBrick'],['kill','KillSystem'],
+    ['jump','JumpSystem'],['speed','SpeedSystem'],
+    ['music','MusicSystem'],['sound','SoundSystem'],
+    ['timer','TimerSystem'],['countdown','CountdownTimer'],
+    ['pet','PetSystem'],['weapon','WeaponSystem'],
+    ['tool','ToolSystem'],['sword','SwordSystem'],
+    ['gun','GunSystem'],['shooting','ShootingSystem'],
+    ['vehicle','VehicleSystem'],['car','CarSystem'],
+    ['trade','TradeSystem'],['chat','ChatSystem'],
+    ['team','TeamSystem'],['party','PartySystem'],
+    ['round','RoundSystem'],['gamemode','GamemodeSystem'],
+    ['anticheat','AntiCheat'],['anti cheat','AntiCheat'],
+    ['ui','UIScript'],['gui','GUIScript'],['menu','MenuSystem'],
+    ['rebirth','RebirthSystem'],['prestige','PrestigeSystem'],
+    ['sprint','SprintSystem'],['dash','DashSystem'],
+    ['ability','AbilitySystem'],['skill','SkillSystem'],
+    ['animation','AnimationSystem'],
+    ['plugin','PluginScript'],
+    ['lobby','LobbySystem'],
   ];
-  var lower = (userPrompt || '').toLowerCase();
-  for (var i = 0; i < keywords.length; i++) {
-    if (lower.includes(keywords[i][0])) {
-      return keywords[i][1] + (index > 0 ? '_' + (index+1) : '');
+  for(var i=0;i<keywords.length;i++){
+    if(lower.includes(keywords[i][0])){
+      return keywords[i][1]+(index>0?'_'+(index+1):'');
     }
   }
-  return 'NexusAI_Script' + (index > 0 ? '_' + (index+1) : '');
+  // Try to detect from code
+  if(code){
+    var cLower=code.toLowerCase();
+    if(cLower.includes('loadingscreen')||cLower.includes('loading screen')) return 'LoadingScreen';
+    if(cLower.includes('shopgui')||cLower.includes('shop')) return 'ShopGUI'+(index>0?'_'+(index+1):'');
+    if(cLower.includes('leaderstats')) return 'Leaderstats'+(index>0?'_'+(index+1):'');
+  }
+  return 'Script_'+Date.now().toString(36).slice(-4)+(index>0?'_'+(index+1):'');
 }
 
-// Main function: parse respons AI → inject ke Studio
-async function autoInjectToStudio(aiResponse, userPrompt) {
-  if (!studioConnected) return;
+// Inject to Studio and return summary
+async function autoInjectToStudio(aiResponse, userPrompt){
+  if(!studioConnected) return null;
+  var blocks=parseLuaBlocks(aiResponse);
+  if(blocks.length===0) return null;
 
-  var blocks = parseLuaBlocks(aiResponse);
-  if (blocks.length === 0) return;
-
-  // Log di chat bahwa akan inject
-  addStudioLog('Mengirim ' + blocks.length + ' script ke Studio...');
-
-  var injected = 0;
-  for (var i = 0; i < blocks.length; i++) {
-    var code = blocks[i];
-    var info = detectScriptParent(code);
-    var scriptName = makeScriptName(userPrompt, i);
-
-    var cmd = {
-      action: 'inject_script',
-      name:   scriptName,
-      parent: info.parent,
-      script_type: info.type,
-      code:   code,
-      _user:  SESSION ? SESSION.user.username : 'web',
-      _target_user: SESSION ? SESSION.user.username.toLowerCase() : '',
+  var summary=[];
+  var injected=0;
+  for(var i=0;i<blocks.length;i++){
+    var code=blocks[i];
+    var info=detectScriptParent(code);
+    var scriptName=makeScriptName(userPrompt,i,code);
+    var cmd={
+      action:'inject_script',
+      name:scriptName,
+      parent:info.parent,
+      script_type:info.type,
+      code:code,
     };
-
-    var result = await sendToStudio(cmd);
-    if (result && result.status === 'ok') {
+    var result=await sendToStudio(cmd);
+    if(result&&result.status==='ok'){
       injected++;
-      addStudioLog('Script "' + scriptName + '" → ' + info.parent);
+      summary.push(scriptName+' ('+info.type+') → '+info.parent+' ['+code.split('\n').length+' baris]');
     }
-
-    // Delay kecil antar inject
-    if (blocks.length > 1) await new Promise(function(r){setTimeout(r,400);});
+    if(blocks.length>1) await new Promise(function(r){setTimeout(r,400);});
   }
-
-  if (injected > 0) {
-    toast(injected + ' script berhasil dikirim ke Studio!');
+  if(injected>0){
+    toast(injected+' script berhasil dikirim ke Studio!');
+    setStudioStatus(true);
   }
+  return summary.length>0?summary:null;
 }
 
-// Tambah log kecil di area chat (tidak ganggu UI)
-function addStudioLog(msg) {
-  // Console log saja, tidak perlu UI tambahan
-  console.log('[NEXUS STUDIO]', msg);
-}
-
+// ═══════════════════════════════════════
+//  SEND MESSAGE
+// ═══════════════════════════════════════
 async function send(){
   if(S.gen) return;
   var txt=document.getElementById('inp').value.trim();
   var attachments=S.attachments.slice();
   if(!txt&&!attachments.length) return;
 
-  if(!isOwner()&&S.credits<CREDIT_MIN){toast('Perlu minimal '+CREDIT_MIN+' CR untuk chat. Claim daily credits!');openShop();return;}
+  if(!isOwner()&&S.credits<CREDIT_MIN){toast('Perlu minimal '+CREDIT_MIN+' CR untuk chat!');openShop();return;}
   if(!isOwner()&&S.model.cost>0&&S.credits<S.model.cost){toast('Perlu '+S.model.cost+' CR untuk model ini. Saat ini: '+parseFloat(S.credits).toFixed(2)+' CR');openShop();return;}
 
   await loadKeys();
@@ -2112,13 +1606,31 @@ async function send(){
     var sendModel=Object.assign({},S.model);
     var sys=buildSysPrompt();
 
-    if(sendModel.provider==='gemini')       r=await callGemini(sendModel.id,attachments,sig,sys);
-    else if(sendModel.provider==='claude')  r=await callClaude(sendModel.id,attachments,sig,sys);
-    else if(sendModel.provider==='openai')  r=await callOpenAI(sendModel.id,attachments,sig,sys);
-    else                                    r=await callOpenRouter(sendModel.id,attachments,sig,sys);
+    if(sendModel.provider==='gemini')      r=await callGemini(sendModel.id,attachments,sig,sys);
+    else if(sendModel.provider==='claude') r=await callClaude(sendModel.id,attachments,sig,sys);
+    else if(sendModel.provider==='openai') r=await callOpenAI(sendModel.id,attachments,sig,sys);
+    else                                   r=await callOpenRouter(sendModel.id,attachments,sig,sys);
 
     rmThinking();
-    var am={role:'ai',content:r,model:sendModel.label,time:Date.now()};
+
+    // Try auto-inject if studio connected
+    var injectSummary=null;
+    if(studioConnected){
+      injectSummary=await autoInjectToStudio(r,txt);
+    }
+
+    // If injected, strip code blocks from displayed message and show summary card
+    var displayContent=r;
+    var studioInjected=false;
+    if(injectSummary&&injectSummary.length>0){
+      studioInjected=true;
+      // Remove code blocks from display (they're already in Studio)
+      displayContent=r.replace(/```(?:lua|luau)?([\s\S]*?)```/g,'').trim();
+      // Clean up multiple blank lines
+      displayContent=displayContent.replace(/\n{3,}/g,'\n\n').trim();
+    }
+
+    var am={role:'ai',content:displayContent,model:sendModel.label,time:Date.now(),studioInjected:studioInjected,injectSummary:injectSummary};
     var sendConv=S.convs.find(function(x){return x.id===sendConvId;});
     if(sendConv){sendConv.msgs.push(am);if(S.curConv===sendConvId){S.msgs=sendConv.msgs;appendMsg(am);}}
 
@@ -2128,8 +1640,8 @@ async function send(){
         var complexity=txt.length>500?1.2:txt.length>200?0.8:txt.length>80?0.5:0.25;
         var deduct=parseFloat((sendModel.cost*complexity).toFixed(4));
         S.credits=parseFloat(Math.max(CREDIT_FLOOR,S.credits-deduct).toFixed(4));
-      } else {
-        var isCode=/gui|script|code|build|create|function|sistem|buat|debug|fix/i.test(txt);
+      }else{
+        var isCode=/gui|script|code|build|create|function|sistem|buat|debug|fix|loading|shop|tycoon|admin/i.test(txt);
         if(isCode) S.credits=parseFloat(Math.max(CREDIT_FLOOR,S.credits-0.02).toFixed(4));
       }
       updateCreds();
@@ -2139,11 +1651,6 @@ async function send(){
     await setConvTitle(sendConvId);
     renderConvs();
 
-    // ⭐ AUTO INJECT KE STUDIO setelah AI jawab
-    if (studioConnected) {
-      toast('Script terdeteksi, mengirim ke Studio...');
-      await autoInjectToStudio(r, txt);
-    }
   }catch(e){
     rmThinking();
     if(e.name==='AbortError') return;
@@ -2165,7 +1672,7 @@ function buildMsgs(){
     var content=m.content||'';
     var files=(m.attachments||[]).filter(function(a){return a.type==='file'&&a.content;});
     if(files.length) content+='\n\n'+files.map(function(f){return '[File: '+f.name+']\n```lua\n'+f.content.substring(0,12000)+'\n```';}).join('\n\n');
-    return {role:m.role==='ai'?'assistant':'user',content:content};
+    return{role:m.role==='ai'?'assistant':'user',content:content};
   });
 }
 
@@ -2173,14 +1680,14 @@ function buildMsgs(){
 //  API CALLERS
 // ═══════════════════════════════════════
 async function callGemini(model,attachments,signal,sys){
-  if(!K.gemini) throw new Error('Gemini API key belum dikonfigurasi di server (/api/main)');
+  if(!K.gemini) throw new Error('Gemini API key belum dikonfigurasi di server');
   var ms=buildMsgs();
   var contents=ms.map(function(m){return{role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]};});
   var imgs=attachments.filter(function(a){return a.type==='image';});
   if(imgs.length&&contents.length>0){var l=contents[contents.length-1];if(l.role==='user')imgs.forEach(function(a){l.parts.push({inline_data:{mime_type:a.mime||'image/jpeg',data:a.dataUrl.split(',')[1]}});});}
   var body={contents:contents,systemInstruction:{parts:[{text:sys}]},generationConfig:{maxOutputTokens:65536,temperature:0.7}};
   var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+K.gemini,{method:'POST',signal:signal,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!r.ok){var e=await r.json().catch(function(){return{};});throw new Error((e.error&&e.error.message)||'Gemini '+r.status);}
+  if(!r.ok){var e=await r.json().catch(function(){return{};});throw new Error((e.error&&e.error.message)||'Gemini HTTP '+r.status);}
   var d=await r.json();
   var text=d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0]?d.candidates[0].content.parts[0].text:'';
   if(text) return text;
@@ -2196,7 +1703,7 @@ async function callClaude(model,attachments,signal,sys){
   var r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',signal:signal,headers:{'Content-Type':'application/json','x-api-key':K.claude,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:cleanModel,max_tokens:8192,system:sys,messages:ms})});
   if(!r.ok){var e=await r.json().catch(function(){return{};});throw new Error((e.error&&e.error.message)||'Claude '+r.status);}
   var d=await r.json();
-  if(d.content&&d.content[0]&&d.content[0].text)return d.content[0].text;
+  if(d.content&&d.content[0]&&d.content[0].text) return d.content[0].text;
   throw new Error('Respons Claude kosong');
 }
 
@@ -2211,7 +1718,7 @@ async function callOpenAI(model,attachments,signal,sys){
   var r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',signal:signal,headers:{'Content-Type':'application/json','Authorization':'Bearer '+K.openai},body:JSON.stringify(body)});
   if(!r.ok){var e=await r.json().catch(function(){return{};});throw new Error((e.error&&e.error.message)||'OpenAI '+r.status);}
   var d=await r.json();
-  if(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)return d.choices[0].message.content;
+  if(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content) return d.choices[0].message.content;
   throw new Error('Respons OpenAI kosong');
 }
 
@@ -2225,7 +1732,7 @@ async function callOpenRouter(model,attachments,signal,sys){
   });
   if(!r.ok){var e=await r.json().catch(function(){return{};});throw new Error((e.error&&e.error.message)||'OpenRouter '+r.status);}
   var d=await r.json();
-  if(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)return d.choices[0].message.content;
+  if(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content) return d.choices[0].message.content;
   throw new Error('Respons OpenRouter kosong');
 }
 
@@ -2236,10 +1743,10 @@ function renderAttachRow(){
   var row=document.getElementById('attachRow');
   if(!S.attachments.length){row.innerHTML='';return;}
   row.innerHTML=S.attachments.map(function(a,i){
-    var rmBtn='<button class="attach-rm" onclick="removeAttach('+i+')"><svg width="8" height="8" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+    var rmBtn='<button class="attach-rm" onclick="removeAttach('+i+')">×</button>';
     return a.type==='image'
       ?'<div class="attach-item"><img src="'+a.dataUrl+'" alt="">'+rmBtn+'</div>'
-      :'<div class="attach-item"><div class="attach-file"><svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+esc(a.name)+'</div>'+rmBtn+'</div>';
+      :'<div class="attach-item"><div class="attach-file">📎 '+esc(a.name)+'</div>'+rmBtn+'</div>';
   }).join('');
 }
 function removeAttach(i){S.attachments.splice(i,1);renderAttachRow();}
@@ -2257,7 +1764,7 @@ async function handleFile(e){
   if(S.attachments.length) toast(files.length+' file terlampir');
 }
 document.addEventListener('paste',function(e){
-  var items=e.clipboardData&&e.clipboardData.items;if(!items)return;
+  var items=e.clipboardData&&e.clipboardData.items; if(!items) return;
   for(var i=0;i<items.length;i++){
     if(items[i].type.startsWith('image/')){
       var item=items[i];var rd=new FileReader();
@@ -2270,45 +1777,6 @@ document.addEventListener('paste',function(e){
 // ═══════════════════════════════════════
 //  GUI BUILDER
 // ═══════════════════════════════════════
-
-// State model khusus GUI Builder
-var guiModel = { id:'gemini-2.0-flash', provider:'gemini', cost:0, label:'Gemini 2.0 Flash' };
-
-function toggleGuiMDD() {
-  document.getElementById('guiMDD').classList.toggle('open');
-}
-function selGuiModel(el) {
-  var mid   = el.getAttribute('data-gmid');
-  var prov  = el.getAttribute('data-gprov');
-  var cost  = parseFloat(el.getAttribute('data-gcost') || '0');
-  var label = el.getAttribute('data-glabel') || mid;
-  guiModel  = { id: mid, provider: prov, cost: cost, label: label };
-
-  // Update UI
-  var icon = el.querySelector('.mo-icon img');
-  var gIcon = document.getElementById('guiMIcon');
-  if (icon) { gIcon.src = icon.src; gIcon.style.display = ''; }
-  else { gIcon.style.display = 'none'; }
-  document.getElementById('guiMName').textContent = label;
-  var badge = document.getElementById('guiMBadge');
-  badge.textContent  = cost === 0 ? 'FREE' : cost + ' CR';
-  badge.style.color  = cost === 0 ? 'var(--green)' : 'var(--cyan)';
-
-  // Mark active
-  document.querySelectorAll('#guiMDD .mo').forEach(function(o) {
-    o.classList.toggle('act', o.getAttribute('data-gmid') === mid);
-  });
-  document.getElementById('guiMDD').classList.remove('open');
-  toast('GUI Model: ' + label);
-}
-// Tutup dropdown saat klik di luar
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('#guiMDD') && !e.target.closest('#guiModelBtn')) {
-    var dd = document.getElementById('guiMDD');
-    if (dd) dd.classList.remove('open');
-  }
-});
-
 var guiEls=[],selEl=null,elC=0;
 var GUI_DEF={
   Frame:{bg:'#1a2040',text:'',border:'#00e5ff',textColor:'#fff',w:200,h:100,x:50,y:50,opacity:1,fontSize:14,anchorX:0,anchorY:0,cornerRadius:0},
@@ -2325,18 +1793,18 @@ function addEl(type){
 }
 function renderGuiEl(el){
   var cv=document.getElementById('guiCanvasInner');
-  var ex=document.getElementById('gui_'+el.id);if(ex)ex.remove();
+  var ex=document.getElementById('gui_'+el.id); if(ex) ex.remove();
   var d=document.createElement('div'); d.className='gui-el'; d.id='gui_'+el.id;
   d.style.cssText='left:'+el.x+'px;top:'+el.y+'px;width:'+el.w+'px;height:'+el.h+'px;background:'+(el.bg==='transparent'?'transparent':el.bg)+';border:1px solid '+(el.border==='transparent'?'transparent':el.border)+';color:'+el.textColor+';font-size:'+el.fontSize+'px;opacity:'+el.opacity+';border-radius:'+(el.cornerRadius||0)+'px;';
   if(el.text) d.textContent=el.text;
-  var rs=document.createElement('div');rs.className='gui-resize';rs.id='res_'+el.id;d.appendChild(rs);
+  var rs=document.createElement('div'); rs.className='gui-resize'; rs.id='res_'+el.id; d.appendChild(rs);
   d.addEventListener('mousedown',function(e){if(e.target.id==='res_'+el.id)return;selGuiEl(el.id);startDrag(e,el);});
   rs.addEventListener('mousedown',function(e){e.stopPropagation();selGuiEl(el.id);startResize(e,el);});
   cv.appendChild(d);
 }
 function selGuiEl(id){
   document.querySelectorAll('.gui-el').forEach(function(e){e.classList.remove('selected');});
-  var el=guiEls.find(function(e){return e.id===id;});if(!el)return;
+  var el=guiEls.find(function(e){return e.id===id;}); if(!el) return;
   selEl=el; document.getElementById('gui_'+id).classList.add('selected'); renderGuiProps(el);
 }
 function startDrag(e,el){
@@ -2349,7 +1817,7 @@ function startDrag(e,el){
   document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',onUp);
 }
 function startResize(e,el){
-  e.preventDefault();var sx=e.clientX,sy=e.clientY,sw=el.w,sh=el.h;
+  e.preventDefault(); var sx=e.clientX,sy=e.clientY,sw=el.w,sh=el.h;
   var d=document.getElementById('gui_'+el.id);
   var onMove=function(ev){el.w=Math.max(40,sw+(ev.clientX-sx));el.h=Math.max(20,sh+(ev.clientY-sy));d.style.width=el.w+'px';d.style.height=el.h+'px';renderGuiProps(el);};
   var onUp=function(){document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);};
@@ -2360,8 +1828,7 @@ function renderGuiProps(el){
   function row(label,type,key,extra){extra=extra||'';
     return '<div><div class="gui-prop-label">'+label+'</div>'+
       '<input type="'+type+'" class="gui-prop-input" value="'+esc(String(el[key]))+'" '+extra+
-      ' oninput="updProp(\''+key+'\',this.value,\''+type+'\')"'+
-      ' onchange="updProp(\''+key+'\',this.value,\''+type+'\')"></div>';
+      ' oninput="updProp(\''+key+'\',this.value,\''+type+'\')" onchange="updProp(\''+key+'\',this.value,\''+type+'\')"></div>';
   }
   p.innerHTML='<div style="font-family:\'Orbitron\',sans-serif;font-size:10px;color:var(--cyan);margin-bottom:8px;">'+el.type+'</div>'+
     row('Nama','text','name')+row('Teks','text','text')+
@@ -2374,88 +1841,60 @@ function renderGuiProps(el){
     row('Opacity','number','opacity','step="0.05" min="0" max="1"')+
     row('Background','color','bg')+row('Warna Teks','color','textColor')+row('Border','color','border')+
     '<div style="margin-top:8px;"><button class="gui-btn" style="width:100%;color:var(--pink);border-color:rgba(255,45,107,.3);" onclick="delGuiEl(\''+el.id+'\')">'+
-      '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Hapus'+
-    '</button></div>';
+    '<svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Hapus</button></div>';
 }
 function updProp(key,val,type){if(!selEl)return;selEl[key]=type==='number'?parseFloat(val)||0:val;renderGuiEl(selEl);var e=document.getElementById('gui_'+selEl.id);if(e)e.classList.add('selected');}
-function delGuiEl(id){guiEls=guiEls.filter(function(e){return e.id!==id;});var e=document.getElementById('gui_'+id);if(e)e.remove();selEl=null;document.getElementById('guiProps').innerHTML='<div style="font-size:10px;color:var(--dim);text-align:center;padding:20px 0;">'+(LANGS[curLang]||LANGS.id).selectElem+'</div>';if(!guiEls.length)document.getElementById('guiEmpty').style.display='';}
-function clearCanvas(){guiEls=[];selEl=null;document.getElementById('guiCanvasInner').querySelectorAll('.gui-el').forEach(function(e){e.remove();});document.getElementById('guiEmpty').style.display='';document.getElementById('guiProps').innerHTML='<div style="font-size:10px;color:var(--dim);text-align:center;padding:20px 0;">'+(LANGS[curLang]||LANGS.id).selectElem+'</div>';}
+function delGuiEl(id){guiEls=guiEls.filter(function(e){return e.id!==id;});var e=document.getElementById('gui_'+id);if(e)e.remove();selEl=null;document.getElementById('guiProps').innerHTML='<div style="font-size:10px;color:var(--dim);text-align:center;padding:20px 0;">Pilih elemen</div>';if(!guiEls.length)document.getElementById('guiEmpty').style.display='';}
+function clearCanvas(){guiEls=[];selEl=null;document.getElementById('guiCanvasInner').querySelectorAll('.gui-el').forEach(function(e){e.remove();});document.getElementById('guiEmpty').style.display='';document.getElementById('guiProps').innerHTML='<div style="font-size:10px;color:var(--dim);text-align:center;padding:20px 0;">Pilih elemen</div>';}
 
 function generateGuiCode(){
-  if(!guiEls.length){toast((LANGS[curLang]||LANGS.id).addElemHint||'Add elements first!');return;}
-  var code='-- NEXUS AI Generated GUI Script\n-- Tempatkan di LocalScript → StarterPlayerScripts\n-- Generated: '+new Date().toLocaleString()+'\n\nlocal Players = game:GetService("Players")\nlocal TweenService = game:GetService("TweenService")\nlocal player = Players.LocalPlayer\nlocal PlayerGui = player:WaitForChild("PlayerGui", 10)\n\nlocal screenGui = Instance.new("ScreenGui")\nscreenGui.Name = "NexusAI_GUI"\nscreenGui.ResetOnSpawn = false\nscreenGui.IgnoreGuiInset = true\nscreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling\nscreenGui.Parent = PlayerGui\n\n';
+  if(!guiEls.length){toast('Tambah elemen dulu!');return;}
+  var code='-- NEXUS AI GUI Script\n-- Tempatkan di LocalScript → StarterPlayerScripts\n-- Generated: '+new Date().toLocaleString()+'\n\nlocal Players=game:GetService("Players")\nlocal TweenService=game:GetService("TweenService")\nlocal player=Players.LocalPlayer\nlocal PlayerGui=player:WaitForChild("PlayerGui",10)\n\nlocal screenGui=Instance.new("ScreenGui")\nscreenGui.Name="NexusAI_GUI"\nscreenGui.ResetOnSpawn=false\nscreenGui.IgnoreGuiInset=true\nscreenGui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling\nscreenGui.Parent=PlayerGui\n\n';
   guiEls.forEach(function(el){
-    var cls=el.type;
-    code+='-- '+(el.name||el.type)+'\nlocal '+el.name+' = Instance.new("'+cls+'")\n';
-    code+=el.name+'.Name = "'+el.name+'"\n';
-    code+=el.name+'.Size = UDim2.new(0, '+Math.round(el.w)+', 0, '+Math.round(el.h)+')\n';
-    code+=el.name+'.Position = UDim2.new(0, '+Math.round(el.x)+', 0, '+Math.round(el.y)+')\n';
-    code+=el.name+'.AnchorPoint = Vector2.new('+(el.anchorX||0)+', '+(el.anchorY||0)+')\n';
+    code+='-- '+el.name+'\nlocal '+el.name+'=Instance.new("'+el.type+'")\n';
+    code+=el.name+'.Name="'+el.name+'"\n';
+    code+=el.name+'.Size=UDim2.new(0,'+Math.round(el.w)+',0,'+Math.round(el.h)+')\n';
+    code+=el.name+'.Position=UDim2.new(0,'+Math.round(el.x)+',0,'+Math.round(el.y)+')\n';
+    code+=el.name+'.AnchorPoint=Vector2.new('+(el.anchorX||0)+','+(el.anchorY||0)+')\n';
     var bg=hexRgb(el.bg);
-    if(bg)code+=el.name+'.BackgroundColor3 = Color3.fromRGB('+bg.r+', '+bg.g+', '+bg.b+')\n';
-    else code+=el.name+'.BackgroundTransparency = 1\n';
-    code+=el.name+'.BorderSizePixel = 0\n';
-    if(el.opacity!==1)code+=el.name+'.BackgroundTransparency = '+parseFloat((1-el.opacity).toFixed(2))+'\n';
-    if(el.cornerRadius>0){code+='local _c'+elC+' = Instance.new("UICorner")\n_c'+elC+'.CornerRadius = UDim.new(0, '+Math.round(el.cornerRadius)+')\n_c'+elC+'.Parent = '+el.name+'\n';}
-    if(el.text&&['TextLabel','TextButton','TextBox'].indexOf(el.type)!==-1){var tc=hexRgb(el.textColor);code+=el.name+'.Text = "'+el.text.replace(/"/g,'\\"')+'"\n';if(tc)code+=el.name+'.TextColor3 = Color3.fromRGB('+tc.r+', '+tc.g+', '+tc.b+')\n';code+=el.name+'.TextSize = '+Math.round(el.fontSize)+'\n'+el.name+'.Font = Enum.Font.GothamBold\n'+el.name+'.TextScaled = false\n';}
-    code+=el.name+'.Parent = screenGui\n';
-    if(el.type==='TextButton')code+='\n'+el.name+'.MouseButton1Click:Connect(function()\n\t-- TODO: Tambah aksi\n\tprint("'+el.name+' diklik!")\nend)\n';
+    if(bg)code+=el.name+'.BackgroundColor3=Color3.fromRGB('+bg.r+','+bg.g+','+bg.b+')\n';
+    else code+=el.name+'.BackgroundTransparency=1\n';
+    code+=el.name+'.BorderSizePixel=0\n';
+    if(el.opacity!==1)code+=el.name+'.BackgroundTransparency='+parseFloat((1-el.opacity).toFixed(2))+'\n';
+    if(el.cornerRadius>0){code+='local _c'+elC+'=Instance.new("UICorner")\n_c'+elC+'.CornerRadius=UDim.new(0,'+Math.round(el.cornerRadius)+')\n_c'+elC+'.Parent='+el.name+'\n';}
+    if(el.text&&['TextLabel','TextButton','TextBox'].indexOf(el.type)!==-1){var tc=hexRgb(el.textColor);code+=el.name+'.Text="'+el.text.replace(/"/g,'\\"')+'"\n';if(tc)code+=el.name+'.TextColor3=Color3.fromRGB('+tc.r+','+tc.g+','+tc.b+')\n';code+=el.name+'.TextSize='+Math.round(el.fontSize)+'\n'+el.name+'.Font=Enum.Font.GothamBold\n';}
+    code+=el.name+'.Parent=screenGui\n';
+    if(el.type==='TextButton')code+='\n'+el.name+'.MouseButton1Click:Connect(function()\n\tprint("'+el.name+' diklik!")\nend)\n';
     code+='\n';
   });
-  code+='print("NexusAI_GUI loaded!")\n';
+  code+='print("GUI loaded!")\n';
   document.getElementById('guiCodeOutput').textContent=code;
   document.getElementById('guiCodeModal').classList.add('show');
 }
-function copyGuiCode(){navigator.clipboard.writeText(document.getElementById('guiCodeOutput').textContent).then(function(){toast((LANGS[curLang]||LANGS.id).copied||'Copied!');});}
-
-async function sendGuiToPlace() {
-  if (!studioConnected) { toast('Hubungkan plugin dulu!'); return; }
-  var code = document.getElementById('guiCodeOutput').textContent;
-  if (!code || code.length < 10) { generateGuiCode(); return; }
-  var btn = document.getElementById('guiToPlaceBtn');
-  btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed';
-  var scriptName = 'GuiScript_' + Date.now().toString(36);
-  var cmd = {
-    action: 'inject_script',
-    name: scriptName,
-    parent: 'StarterGui',
-    script_type: 'LocalScript',
-    code: code,
-    _user: SESSION ? SESSION.user.username : 'web',
-    _target_user: SESSION ? SESSION.user.username.toLowerCase() : '',
-  };
-  var result = await sendToStudio(cmd);
-  if (result && result.status === 'ok') {
-    toast('GUI berhasil dikirim ke place!');
-    closeModal('guiCodeModal');
-  } else {
-    toast('Gagal kirim, coba lagi');
-  }
-}
-
-// Update GUI to place button state based on studio connection
-function updateGuiPlaceBtn() {
-  var btn = document.getElementById('guiToPlaceBtn');
-  var txt = document.getElementById('guiToPlaceTxt');
-  if (!btn) return;
-  if (studioConnected) {
-    btn.style.opacity = '1'; btn.style.cursor = 'pointer';
-    if (txt) txt.textContent = 'Kirim ke Place';
-    btn.title = 'Kirim GUI ke place kamu';
-  } else {
-    btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed';
-    if (txt) txt.textContent = 'Kirim ke Place';
-    btn.title = 'Hubungkan plugin dulu';
-  }
-}
+function copyGuiCode(){navigator.clipboard.writeText(document.getElementById('guiCodeOutput').textContent).then(function(){toast('Disalin!');});}
 function downloadGuiCode(){var blob=new Blob([document.getElementById('guiCodeOutput').textContent],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='NexusAI_GUI.lua';a.click();URL.revokeObjectURL(a.href);}
-function openGuiAIChat(){
-  document.getElementById('guiModalModelLabel').textContent = guiModel.label;
-  document.getElementById('guiAIChatModal').classList.add('show');
+
+async function sendGuiToPlace(){
+  if(!studioConnected){toast('Hubungkan plugin dulu!');return;}
+  var code=document.getElementById('guiCodeOutput').textContent;
+  if(!code||code.length<10){generateGuiCode();return;}
+  var scriptName='GUI_'+makeScriptName('gui',0,code)+'_'+Date.now().toString(36).slice(-3);
+  var cmd={action:'inject_script',name:scriptName,parent:'StarterGui',script_type:'LocalScript',code:code};
+  var result=await sendToStudio(cmd);
+  if(result&&result.status==='ok'){toast('GUI berhasil dikirim ke Studio!');closeModal('guiCodeModal');}
+  else toast('Gagal kirim, coba lagi');
 }
-function updateGuiModalLabel(){
-  var el = document.getElementById('guiModalModelLabel');
-  if(el) el.textContent = guiModel.label;
+
+function updateGuiPlaceBtn(){
+  var btn=document.getElementById('guiToPlaceBtn');
+  if(!btn) return;
+  if(studioConnected){btn.style.opacity='1';btn.style.cursor='pointer';btn.title='Kirim GUI ke place kamu';}
+  else{btn.style.opacity='0.4';btn.style.cursor='not-allowed';btn.title='Hubungkan plugin dulu';}
+}
+
+function openGuiAIChat(){
+  document.getElementById('guiModalModelLabel').textContent=guiModel.label;
+  document.getElementById('guiAIChatModal').classList.add('show');
 }
 
 async function generateGuiFromAI(){
@@ -2463,43 +1902,19 @@ async function generateGuiFromAI(){
   if(!prompt){toast('Deskripsikan GUI dulu!');return;}
   closeModal('guiAIChatModal');
   await loadKeys();
-
-  // Cek kredit
-  if(!isOwner() && guiModel.cost > 0 && S.credits < guiModel.cost) {
-    toast('Perlu '+guiModel.cost+' CR untuk '+guiModel.label);
-    openShop(); return;
-  }
-
+  if(!isOwner()&&guiModel.cost>0&&S.credits<guiModel.cost){toast('Perlu '+guiModel.cost+' CR untuk '+guiModel.label);openShop();return;}
   document.getElementById('guiLoading').classList.add('show');
-  var guiSys='Kamu adalah NEXUS AI GUI Builder untuk Roblox.\nBuat GUI berdasarkan deskripsi user.\n\nRespond HANYA dengan 2 bagian:\n1. Blok ```json dengan array elements\n2. Blok ```lua dengan Lua script LENGKAP (jangan potong)\n\nFormat JSON:\n```json\n{"title":"Nama GUI","elements":[{"type":"Frame","name":"MainFrame","x":200,"y":150,"w":400,"h":300,"bg":"#0d1a2e","border":"#00e5ff","text":"","textColor":"#ffffff","fontSize":14,"cornerRadius":10,"opacity":0.97,"anchorX":0.5,"anchorY":0.5}]}\n```\n\nType tersedia: Frame, TextLabel, TextButton, TextBox, ImageLabel\nCanvas 800x600px.\nScript Lua harus LENGKAP, tidak boleh dipotong.\n\nUser minta: '+prompt;
-
+  var guiSys='Kamu adalah NEXUS AI GUI Builder untuk Roblox.\nBuat GUI berdasarkan deskripsi user.\n\nRespond HANYA dengan 2 bagian:\n1. Blok ```json dengan data elements\n2. Blok ```lua dengan Lua script LENGKAP\n\nFormat JSON:\n```json\n{"title":"Nama GUI","elements":[{"type":"Frame","name":"MainFrame","x":200,"y":150,"w":400,"h":300,"bg":"#0d1a2e","border":"#00e5ff","text":"","textColor":"#ffffff","fontSize":14,"cornerRadius":10,"opacity":0.97,"anchorX":0.5,"anchorY":0.5}]}\n```\n\nType: Frame, TextLabel, TextButton, TextBox, ImageLabel. Canvas 800x600px. Script Lua HARUS LENGKAP.\n\nUser minta: '+prompt;
   try{
-    var response = '';
-
-    // Gunakan model yang dipilih di GUI Builder
-    if (guiModel.provider === 'gemini') {
-      response = await callGemini(guiModel.id, [], null, guiSys);
-    } else if (guiModel.provider === 'openai') {
-      // Override system prompt untuk OpenAI
-      var savedMsgs = S.msgs;
-      S.msgs = [{ role:'user', content: prompt }];
-      response = await callOpenAI(guiModel.id, [], null, guiSys);
-      S.msgs = savedMsgs;
-    } else if (guiModel.provider === 'claude') {
-      var savedMsgs2 = S.msgs;
-      S.msgs = [{ role:'user', content: prompt }];
-      response = await callClaude(guiModel.id, [], null, guiSys);
-      S.msgs = savedMsgs2;
-    } else {
-      var savedMsgs3 = S.msgs;
-      S.msgs = [{ role:'user', content: prompt }];
-      response = await callOpenRouter(guiModel.id, [], null, guiSys);
-      S.msgs = savedMsgs3;
-    }
-
+    var response='';
+    var savedMsgs=S.msgs;
+    S.msgs=[{role:'user',content:prompt}];
+    if(guiModel.provider==='gemini') response=await callGemini(guiModel.id,[],null,guiSys);
+    else if(guiModel.provider==='openai') response=await callOpenAI(guiModel.id,[],null,guiSys);
+    else if(guiModel.provider==='claude') response=await callClaude(guiModel.id,[],null,guiSys);
+    else response=await callOpenRouter(guiModel.id,[],null,guiSys);
+    S.msgs=savedMsgs;
     document.getElementById('guiLoading').classList.remove('show');
-
-    // Parse JSON elements
     var jsonMatch=response.match(/```json\s*([\s\S]*?)```/);
     if(jsonMatch){
       try{
@@ -2514,50 +1929,37 @@ async function generateGuiFromAI(){
             guiEls.push(newEl);renderGuiEl(newEl);
           });
           document.getElementById('guiEmpty').style.display='none';
-          toast(guiData.elements.length+' elemen dibuat dengan '+guiModel.label+'!');
+          toast(guiData.elements.length+' elemen dibuat!');
         }
-      }catch(pe){toast('Gagal parse JSON GUI: '+pe.message);}
+      }catch(pe){toast('Parse JSON error: '+pe.message);}
     }
-
-    // Parse Lua script
-    var luaMatch=response.replace(/```json[\s\S]*?```/,'').match(/```lua\s*([\s\S]*?)```/);
-    if(!luaMatch)luaMatch=response.replace(/```json[\s\S]*?```/,'').match(/```\s*([\s\S]*?)```/);
-    if(luaMatch){
-      document.getElementById('guiCodeOutput').textContent=luaMatch[1];
-      setTimeout(function(){document.getElementById('guiCodeModal').classList.add('show');},300);
-    }
-
-    // Kurangi kredit
-    if(!isOwner()){
-      var cost = guiModel.cost > 0 ? guiModel.cost * 0.5 : 0.5;
-      S.credits=parseFloat(Math.max(CREDIT_FLOOR,S.credits-cost).toFixed(4));
-      updateCreds();
-    }
+    var luaMatch=response.replace(/```json[\s\S]*?```/,'').match(/```(?:lua|luau)?\s*([\s\S]*?)```/);
+    if(luaMatch){document.getElementById('guiCodeOutput').textContent=luaMatch[1];setTimeout(function(){document.getElementById('guiCodeModal').classList.add('show');},300);}
+    if(!isOwner()){var cost2=guiModel.cost>0?guiModel.cost*0.5:0.5;S.credits=parseFloat(Math.max(CREDIT_FLOOR,S.credits-cost2).toFixed(4));updateCreds();}
     saveS();
   }catch(e){
     document.getElementById('guiLoading').classList.remove('show');
     toast('AI Build gagal: '+e.message);
   }
 }
+
 function hexRgb(hex){if(!hex||hex==='transparent')return null;var r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);return r?{r:parseInt(r[1],16),g:parseInt(r[2],16),b:parseInt(r[3],16)}:null;}
 
 // ═══════════════════════════════════════
 //  SETTINGS
 // ═══════════════════════════════════════
 function openSettings(){
-  document.getElementById('settingsUsername').textContent=SESSION?SESSION.user.username:'-';
-  // Restore theme/anim selectors
-  var ts = document.getElementById('themeSelect');
-  if (ts && S.theme) ts.value = S.theme;
-  var as_ = document.getElementById('animSelect');
-  if (as_ && S.animSpeed) as_.value = S.animSpeed;
+  if(!SESSION) return;
+  document.getElementById('settingsUsername').textContent=SESSION.user.username;
+  document.getElementById('settingsRobloxId').textContent=SESSION.user.robloxId||'-';
+  var ts=document.getElementById('themeSelect'); if(ts&&S.theme) ts.value=S.theme;
   var badge=document.getElementById('settingsBadge');
-  if(badge){badge.textContent=isOwner()?'Admin':(S.plan==='pro'?'Pro':'Free');badge.style.background=isOwner()?'rgba(255,214,0,.15)':(S.plan==='pro'?'rgba(0,229,255,.1)':'rgba(0,255,170,.08)');badge.style.color=isOwner()?'var(--yellow)':(S.plan==='pro'?'var(--cyan)':'var(--green)');}
+  if(badge){badge.textContent=isOwner()?'Admin':(S.plan==='pro'?'Pro':'Free');badge.style.color=isOwner()?'var(--yellow)':(S.plan==='pro'?'var(--cyan)':'var(--green)');}
   document.getElementById('settingsCredits').textContent=isOwner()?'Unlimited':parseFloat(S.credits).toFixed(2)+' CR';
   document.getElementById('settingsPlan').textContent=isOwner()?'Admin':(S.plan==='pro'?'Pro':'Free');
   document.getElementById('lastClaimInfo').textContent=S.lastClaim===new Date().toDateString()?'Sudah claim hari ini':'Belum claim hari ini';
   document.getElementById('langSelector').value=curLang;
-  if(isAdmin())document.getElementById('adminSection').style.display='';
+  if(isAdmin()) document.getElementById('adminSection').style.display='';
   document.getElementById('settingsModal').classList.add('show');
 }
 
@@ -2567,21 +1969,40 @@ async function sendReport(){
   var btn=document.getElementById('reportBtn'); btn.disabled=true; btn.textContent='Mengirim...';
   try{
     var r=await fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({from:SESSION?SESSION.user.username:'Unknown',message:txt,time:new Date().toISOString(),plan:S.plan,credits:S.credits,userId:SESSION?SESSION.user.id:'0'})});
-    if(r.ok){
-      document.getElementById('reportStatus').textContent='Laporan terkirim!';
-      document.getElementById('reportTa').value='';
-      toast('Laporan berhasil dikirim!');
-    } else throw new Error('HTTP '+r.status);
-  }catch(e){
-    document.getElementById('reportStatus').textContent='Tersimpan lokal';
-    toast('Laporan tersimpan lokal (akan sync saat online)');
-  }finally{
-    btn.disabled=false; btn.textContent='Kirim Report';
-    setTimeout(function(){document.getElementById('reportStatus').textContent='';},4000);
-  }
+    if(r.ok){document.getElementById('reportStatus').textContent='Laporan terkirim!';document.getElementById('reportTa').value='';toast('Laporan berhasil dikirim!');}
+    else throw new Error('HTTP '+r.status);
+  }catch(e){document.getElementById('reportStatus').textContent='Tersimpan lokal';toast('Tersimpan (akan sync saat online)');}
+  finally{btn.disabled=false;btn.textContent='Kirim Report';setTimeout(function(){document.getElementById('reportStatus').textContent='';},4000);}
 }
-
 function openShop(){document.getElementById('shopModal').classList.add('show');}
+
+// ═══════════════════════════════════════
+//  REDEEM
+// ═══════════════════════════════════════
+async function redeemCode(){
+  var code=(document.getElementById('redeemInput').value||'').trim().toUpperCase();
+  var statusEl=document.getElementById('redeemStatus');
+  if(!code){statusEl.textContent='Masukkan kode dulu!';statusEl.style.color='var(--pink)';return;}
+  var btn=document.getElementById('redeemBtn'); btn.disabled=true; btn.textContent='...';
+  statusEl.textContent='';
+  try{
+    var r=await fetch('/api/redeem',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,user:SESSION?SESSION.user.username.toLowerCase():'unknown'})});
+    var data=await r.json();
+    if(!r.ok||data.error){statusEl.textContent=data.error||'Kode tidak valid!';statusEl.style.color='var(--pink)';}
+    else{
+      if(data.credits>0){S.credits=parseFloat((S.credits+data.credits).toFixed(4));updateCreds();}
+      if(data.plan) S.plan=data.plan;
+      saveS();
+      document.getElementById('redeemInput').value='';
+      statusEl.textContent=data.message||('+'+data.credits+' CR berhasil!');
+      statusEl.style.color='var(--green)';
+      toast(data.message||('+'+data.credits+' CR dari kode '+code+'!'));
+      var sc=document.getElementById('settingsCredits');if(sc)sc.textContent=isOwner()?'Unlimited':parseFloat(S.credits).toFixed(2)+' CR';
+    }
+  }catch(e){statusEl.textContent='Gagal: '+e.message;statusEl.style.color='var(--pink)';}
+  btn.disabled=false;btn.textContent='Redeem';
+  setTimeout(function(){statusEl.textContent='';},5000);
+}
 
 // ═══════════════════════════════════════
 //  ADMIN CONSOLE
@@ -2598,132 +2019,66 @@ function consoleLog(msg,type){
   var line=document.createElement('div');line.className='console-line '+type;
   line.textContent=(type==='cmd'?'> ':'')+msg;
   box.appendChild(line); box.scrollTop=box.scrollHeight;
-  while(box.children.length>80)box.removeChild(box.firstChild);
+  while(box.children.length>80) box.removeChild(box.firstChild);
 }
 function runConsoleCmd(cmd){
-  if(!cmd.trim())return;
+  if(!cmd.trim()) return;
   consoleHistory.unshift(cmd);
   consoleLog(cmd,'cmd');
-  var parts=cmd.trim().split(' ');var command=parts[0].toLowerCase();
-  if(command==='/help'){
-    ['Commands:','/give-credits <user> <amount>','/give-plan <user> <free|pro>','/my-info','/reset-credits <user>','/clear'].forEach(function(s){consoleLog(s,'info');});
-  }else if(command==='/give-credits'){
-    var user=parts[1],amount=parseFloat(parts[2]);
-    if(!user||isNaN(amount)){consoleLog('Usage: /give-credits <user> <amount>','err');return;}
-    if(SESSION&&user.toLowerCase()===SESSION.user.username.toLowerCase()){S.credits=parseFloat((S.credits+amount).toFixed(4));updateCreds();saveS();consoleLog('Gave '+amount+' CR to '+user+'. Total: '+S.credits,'ok');}
-    else consoleLog('Remote user update: '+user,'info');
-  }else if(command==='/my-info'){
-    if(SESSION){consoleLog('Username: '+SESSION.user.username,'info');consoleLog('Plan: '+S.plan,'info');consoleLog('Credits: '+parseFloat(S.credits).toFixed(2),'info');}
-  }else if(command==='/reset-credits'){
-    S.credits=30;updateCreds();saveS();consoleLog('Credits reset ke 30','ok');
-  }else if(command==='/clear'){
-    document.getElementById('consoleBox').innerHTML='';
-    consoleLog('Console cleared','info');
-  }else{consoleLog('Unknown: '+command+'. Ketik /help','err');}
+  var parts=cmd.trim().split(' '); var command=parts[0].toLowerCase();
+  if(command==='/help'){['/give-credits <user> <amount>','/my-info','/reset-credits','/clear'].forEach(function(s){consoleLog(s,'info');});}
+  else if(command==='/give-credits'){
+    var amount=parseFloat(parts[2]);
+    if(!isNaN(amount)&&SESSION&&parts[1].toLowerCase()===SESSION.user.username.toLowerCase()){S.credits=parseFloat((S.credits+amount).toFixed(4));updateCreds();saveS();consoleLog('Gave '+amount+' CR. Total: '+S.credits,'ok');}
+    else consoleLog('User tidak ditemukan atau invalid','err');
+  }else if(command==='/my-info'){if(SESSION){consoleLog('User: '+SESSION.user.username+' | Plan: '+S.plan+' | Credits: '+parseFloat(S.credits).toFixed(2),'info');}}
+  else if(command==='/reset-credits'){S.credits=30;updateCreds();saveS();consoleLog('Reset ke 30 CR','ok');}
+  else if(command==='/clear'){document.getElementById('consoleBox').innerHTML='';consoleLog('Cleared','info');}
+  else{consoleLog('Unknown: '+command,'err');}
+}
+
+// ═══════════════════════════════════════
+//  THEME
+// ═══════════════════════════════════════
+var THEMES={
+  cyan:{'--cyan':'#00e5ff','--purple':'#8800ff','--green':'#00ffaa','--pink':'#ff2d6b'},
+  purple:{'--cyan':'#bb86fc','--purple':'#6200ea','--green':'#03dac6','--pink':'#cf6679'},
+  green:{'--cyan':'#00ffaa','--purple':'#00e5ff','--green':'#69f0ae','--pink':'#ff5252'},
+  pink:{'--cyan':'#ff80ab','--purple':'#ea80fc','--green':'#b9f6ca','--pink':'#ff5252'},
+  gold:{'--cyan':'#ffd600','--purple':'#ff6d00','--green':'#00e676','--pink':'#ff1744'},
+};
+function applyTheme(name,silent){
+  var t=THEMES[name]||THEMES.cyan;
+  var root=document.documentElement;
+  Object.keys(t).forEach(function(k){root.style.setProperty(k,t[k]);});
+  S.theme=name; if(!silent){saveS();toast('Tema: '+name);}
 }
 
 // ═══════════════════════════════════════
 //  MISC
 // ═══════════════════════════════════════
-// ═══════════════════════════════════════
-//  REDEEM CODES
-// ═══════════════════════════════════════
-var REDEEM_CODES = {
-  // Codes are checked server-side in production
-  // Local demo codes:
-  'NEXUS2026': {credits: 50, expires: '2026-12-31'},
-  'DISCORD100': {credits: 100, expires: '2026-12-31'},
-};
-
-async function redeemCode() {
-  var code = (document.getElementById('redeemInput').value || '').trim().toUpperCase();
-  var statusEl = document.getElementById('redeemStatus');
-  if (!code) { statusEl.textContent = 'Masukkan kode dulu!'; statusEl.style.color = 'var(--pink)'; return; }
-  var btn = document.getElementById('redeemBtn');
-  btn.disabled = true; btn.textContent = '...';
-  statusEl.textContent = ''; 
-  try {
-    var r = await fetch('/api/redeem', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code: code, user: SESSION ? SESSION.user.username.toLowerCase() : 'unknown' })
-    });
-    var data = await r.json();
-    if (!r.ok || data.error) {
-      statusEl.textContent = data.error || 'Kode tidak valid!';
-      statusEl.style.color = 'var(--pink)';
-    } else {
-      if (data.credits > 0) { S.credits = parseFloat((S.credits + data.credits).toFixed(4)); updateCreds(); }
-      if (data.plan) S.plan = data.plan;
-      saveS();
-      document.getElementById('redeemInput').value = '';
-      statusEl.textContent = data.message || ('+' + data.credits + ' CR berhasil!');
-      statusEl.style.color = 'var(--green)';
-      toast(data.message || ('+' + data.credits + ' CR dari kode ' + code + '!'));
-      var sc = document.getElementById('settingsCredits'); if(sc) sc.textContent = isOwner()?'Unlimited':parseFloat(S.credits).toFixed(2)+' CR';
-      var sp = document.getElementById('settingsPlan'); if(sp) sp.textContent = isOwner()?'Admin':(S.plan==='pro'?'Pro':'Free');
-    }
-  } catch(e) {
-    statusEl.textContent = 'Gagal: ' + e.message;
-    statusEl.style.color = 'var(--pink)';
-  }
-  btn.disabled = false; btn.textContent = 'Redeem';
-  setTimeout(function(){ statusEl.textContent = ''; }, 5000);
-}
-
-// ═══════════════════════════════════════
-//  THEME SYSTEM
-// ═══════════════════════════════════════
-var THEMES = {
-  cyan:   { '--cyan':'#00e5ff', '--purple':'#8800ff', '--green':'#00ffaa', '--pink':'#ff2d6b' },
-  purple: { '--cyan':'#bb86fc', '--purple':'#6200ea', '--green':'#03dac6', '--pink':'#cf6679' },
-  green:  { '--cyan':'#00ffaa', '--purple':'#00e5ff', '--green':'#69f0ae', '--pink':'#ff5252' },
-  pink:   { '--cyan':'#ff80ab', '--purple':'#ea80fc', '--green':'#b9f6ca', '--pink':'#ff5252' },
-  gold:   { '--cyan':'#ffd600', '--purple':'#ff6d00', '--green':'#00e676', '--pink':'#ff1744' },
-};
-function applyTheme(name) {
-  var t = THEMES[name] || THEMES.cyan;
-  var root = document.documentElement;
-  Object.keys(t).forEach(function(k){ root.style.setProperty(k, t[k]); });
-  S.theme = name; saveS(); toast('Tema: ' + name);
-}
-function setAnimSpeed(v) {
-  var sheet = document.documentElement.style;
-  if (v === 'fast') { sheet.setProperty('--anim-speed','0.08s'); }
-  else if (v === 'off') { sheet.setProperty('--anim-speed','0s'); }
-  else { sheet.setProperty('--anim-speed','0.15s'); }
-  S.animSpeed = v; saveS();
-}
-
 function switchTab(tab,btn){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('act');});btn.classList.add('act');
   document.getElementById('chatTab').style.display=tab==='chat'?'flex':'none';
-  if(tab==='chat')document.getElementById('chatTab').style.flexDirection='column';
+  if(tab==='chat') document.getElementById('chatTab').style.flexDirection='column';
   document.getElementById('guiTab').style.display=tab==='gui'?'flex':'none';
 }
 function clearChat(){
-  var lc=LANGS[curLang]||LANGS.id; if(!confirm(lc.clearConfirm||'Hapus semua pesan?')) return;
+  if(!confirm((LANGS[curLang]||LANGS.id).clearConfirm||'Hapus semua?')) return;
   S.msgs=[];
   var c=S.convs.find(function(x){return x.id===S.curConv;});
   if(c){c.msgs=[];c.title='Untitled';}
-  // Ensure curConv is still valid - don't reset it
-  if(!S.curConv){
-    var c2={id:Date.now()+'',title:'Untitled',msgs:[],created:Date.now()};
-    S.convs.push(c2); S.curConv=c2.id;
-  }
   saveS(); renderMsgs();
   document.getElementById('chatTitle').textContent='Chat Baru';
 }
 function useSugg(txt){document.getElementById('inp').value=txt;document.getElementById('inp').focus();}
 function showInstall(){document.getElementById('installModal').classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
-function logout(){if(!confirm('Logout dari NEXUS AI?'))return;saveS();localStorage.removeItem('nexus_session');window.location.replace('/login');}
-function switchAccount(){closeModal('settingsModal');logout();}
-
+function logout(){if(!confirm('Logout?'))return;saveS();localStorage.removeItem('nexus_session');window.location.replace('/login');}
 function toast(msg){
   document.querySelectorAll('.toast-el').forEach(function(x){x.remove();});
   var t=document.createElement('div'); t.className='toast-el';
-  t.style.cssText='position:fixed;bottom:22px;right:22px;background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:10px 14px;font-size:11px;color:var(--text);z-index:9999;animation:toastIn .25s ease;box-shadow:var(--gc);max-width:300px;word-break:break-word;';
+  t.style.cssText='position:fixed;bottom:22px;right:22px;background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:10px 14px;font-size:11px;color:var(--text);z-index:9999;animation:toastIn .25s ease;box-shadow:var(--gc);max-width:320px;word-break:break-word;';
   t.textContent=msg; document.body.appendChild(t); setTimeout(function(){t.remove();},3500);
 }
 function esc(s){if(!s&&s!==0)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -2733,17 +2088,16 @@ function ago(ts){if(!ts)return'';var d=Date.now()-ts;if(d<60000)return'baru saja
 // Input events
 document.getElementById('inp').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,130)+'px';});
 document.getElementById('inp').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
-
-// Close modals
 document.querySelectorAll('.ov').forEach(function(ov){ov.addEventListener('click',function(e){if(e.target===ov)ov.classList.remove('show');});});
 
 // ═══════════════════════════════════════
 //  STARTUP
 // ═══════════════════════════════════════
 if(SESSION){
-  initApp();
-  loadKeys();
-  setInterval(function(){renderConvs();},60000);
+  initApp().then(function(){
+    loadKeys();
+    setInterval(function(){renderConvs();},60000);
+  });
 }
 </script>
 </body>
