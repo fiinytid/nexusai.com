@@ -1221,6 +1221,11 @@ var S = {
 
 function loadS() {
   if (!SESSION) return;
+  // Load data dari server terlebih dahulu
+try {
+  var sr = await fetch('/api/sync?user=' + encodeURIComponent(SESSION.user.username.toLowerCase()));
+  if (sr.ok) { var sd = await sr.json(); if (sd && sd.credits !== undefined) { SESSION.data = Object.assign(SESSION.data || {}, sd); localStorage.setItem('nexus_session', JSON.stringify(SESSION)); } }
+} catch(e) {}
   try {
     var d = SESSION.data || {};
     S.credits   = d.credits  !== undefined ? parseFloat(d.credits)  : 30;
