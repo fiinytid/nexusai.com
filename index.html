@@ -1068,7 +1068,7 @@ Website: nexusai-com.vercel.app
 Username Roblox: "${username}"
 Plan: ${S.plan} | Credits: ${parseFloat(S.credits).toFixed(2)} CR
 Waktu: ${now.toLocaleString()}
-Studio Plugin: ${connected ? 'TERHUBUNG ✅' : 'OFFLINE ❌'}
+Studio Plugin: "${connected}" 'TERHUBUNG ✅' : 'OFFLINE ❌'}
 
 ===== BAHASA =====
 ${t.aiLang}
@@ -1101,7 +1101,7 @@ Kamu adalah developer expert yang sangat berpengalaman. Kamu:
 - Tool script → StarterPack atau langsung di Tool
 
 ===== APA YANG BISA NEXUS AI LAKUKAN DI ROBLOX STUDIO (via plugin) =====
-${connected ? `
+"${connected}"
 STUDIO TERHUBUNG! AI bisa langsung inject ke place "${username}":
 - inject_script: Masukkan Script/LocalScript/ModuleScript ke parent manapun
 - batch_inject: Inject banyak script sekaligus
