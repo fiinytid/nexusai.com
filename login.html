@@ -55,10 +55,22 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .p{position:absolute;border-radius:50%;pointer-events:none;animation:float linear infinite;}
 @keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.6}90%{opacity:.4}100%{transform:translateY(-10vh) scale(1.2);opacity:0}}
 @media(max-width:480px){.box{padding:28px 18px;}.logo{font-size:22px;}}
+/* Loading overlay — shown after Roblox login success */
+.loading-overlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+.loading-overlay.show{display:flex;}
+.loading-logo{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:4px;}
+.loading-spinner{width:40px;height:40px;border:3px solid var(--b);border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite;}
+.loading-text{font-size:11px;color:var(--dim);}
 </style>
 </head>
 <body>
 <div class="particles" id="particles"></div>
+<!-- Loading overlay shown after successful Roblox auth -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-logo">NEXUS AI</div>
+  <div class="loading-spinner"></div>
+  <div class="loading-text" id="loadingText">Menyelesaikan login...</div>
+</div>
 <div class="page">
   <div class="box">
     <div class="logo">NEXUS AI</div>
@@ -352,11 +364,18 @@ async function finishLogin(gUser, robloxUser){
     return;
   }
 
+  // Show loading overlay immediately
+  var ov = document.getElementById('loadingOverlay');
+  var lt = document.getElementById('loadingText');
+  if(ov) ov.classList.add('show');
+  if(lt) lt.textContent = 'Memuat data akun @' + robloxUser.username + '...';
+
   var username = robloxUser.username;
   var isOwner = OWNER_USERS.indexOf(username) !== -1 || OWNER_USERS.indexOf(username.toLowerCase()) !== -1;
 
   // Load existing data from server (persistent per Roblox account)
   var serverData = await loadUserDataFromServer(username);
+  if(lt) lt.textContent = 'Menyiapkan sesi...';
   var userData = serverData || {
     credits: isOwner ? 999999 : 30,
     convs: [],
@@ -364,7 +383,7 @@ async function finishLogin(gUser, robloxUser){
     lastClaim: null,
     draftText: {},
     draftAttach: {},
-    model: {id:'gemini-2.0-flash', provider:'gemini', cost:0, label:'Gemini 2.0 Flash'},
+    model: {id:'gemini-2.5-flash-lite', provider:'gemini', cost:1, label:'Gemini 2.5 Flash Lite'},
     language: curLang,
     roles: isOwner ? ['owner'] : [],
     loginMethod: 'roblox',
@@ -396,12 +415,12 @@ async function finishLogin(gUser, robloxUser){
     version: 2,
   };
 
-  // Store session (minimal - just for auth)
+  // Store session
   localStorage.setItem('nexus_session', JSON.stringify(session));
   localStorage.setItem('nexus_lang', curLang);
   localStorage.removeItem('nexus_google_tmp');
 
-  // Sync to server (data keyed by Roblox username)
+  // Sync to server
   try{
     await fetch('/api/sync', {
       method: 'POST',
@@ -410,7 +429,12 @@ async function finishLogin(gUser, robloxUser){
     });
   }catch(e){}
 
-  window.location.replace('/');
+  if(lt) lt.textContent = 'Berhasil! Mengalihkan ke NEXUS AI...';
+
+  // Short delay so user sees the success state, then redirect
+  setTimeout(function(){
+    window.location.replace('/');
+  }, 800);
 }
 
 (async function init(){
