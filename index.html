@@ -1141,19 +1141,17 @@ function buildSysPrompt() {
       '',
       'FOR GUI: ALWAYS write a LocalScript/Script that builds GUI via Instance.new()',
       'UIScale is REQUIRED for AutoScaled GUIs. Add it like:',
-      '  local UIScale = Instance.new("UIScale")',
-      '  UIScale.Scale = 1',
-      '  UIScale.Parent = screenGui',
-    ].join('
-');
-  } else {
+        '    local UIScale = Instance.new("UIScale")',
+        '    UIScale.Scale = 1',
+        '    UIScale.Parent = screenGui',
+    ].join('\n');
+} else {
     studioSection = [
       'STUDIO NOT CONNECTED. Tell user:',
-      '"To inject scripts directly to Studio, click NEXUS AI in Roblox Studio toolbar → CONNECT"',
-      'Still provide COMPLETE Lua code in ```lua code blocks so user can copy manually.',
-    ].join('
-');
-  }
+      '"To inject scripts directly to Studio, click NEXUS AI in Roblox Studio toolbar -> CONNECT"',
+        'Still provide COMPLETE Lua code in ```lua code blocks so user can copy manually.',
+    ].join('\n');
+}
 
   var prompt = [
     'You are NEXUS AI, the most advanced AI assistant for Roblox and Minecraft developers.',
