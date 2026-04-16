@@ -324,7 +324,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       </div>
       <div>
         <div class="sb-logo-text">NEXUS AI</div>
-        <div class="sb-logo-sub">v5.2 · Roblox Dev</div>
+        <div class="sb-logo-sub">v6.0 · Roblox Dev</div>
       </div>
     </div>
     <div class="sb-user">
@@ -490,22 +490,24 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 <!-- Discord Gate Modal -->
 <div class="ov" id="discordGateModal" style="z-index:9998;">
   <div class="modal" style="max-width:420px;text-align:center;">
-    <div style="font-size:36px;margin-bottom:12px;">🎮</div>
-    <div class="modal-t" style="justify-content:center;font-size:15px;margin-bottom:4px;">Bergabung ke Discord Dulu!</div>
-    <div style="font-size:11px;color:var(--dim);margin-bottom:20px;line-height:1.7;">Untuk menggunakan NEXUS AI gratis, kamu perlu bergabung ke Discord server kami terlebih dahulu. Dapatkan redeem code, update terbaru, dan support di sana!</div>
-    <div style="background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:14px;margin-bottom:20px;">
-      <div style="font-size:10px;color:var(--dim);margin-bottom:8px;">Server Discord NEXUS STUDIO:</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:14px;color:var(--cyan);font-weight:700;">discord.gg/TeefZk37</div>
+    <img src="icon/discord.png" alt="Discord" style="width:56px;height:56px;border-radius:12px;margin-bottom:14px;object-fit:contain;" onerror="this.innerHTML='<div style=font-size:36px>🎮</div>'">
+    <div class="modal-t" style="justify-content:center;font-size:15px;margin-bottom:4px;">Join Discord First!</div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:20px;line-height:1.7;">To use NEXUS AI for free, you need to join our Discord server first. Get redeem codes, latest updates, and support there!</div>
+    <div style="background:var(--bg3);border:1px solid rgba(88,101,242,.4);border-radius:8px;padding:14px;margin-bottom:16px;">
+      <div style="font-size:10px;color:var(--dim);margin-bottom:6px;">NEXUS STUDIO Discord Server:</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:16px;color:#5865F2;font-weight:700;letter-spacing:1px;">discord.gg/HuGtbRvD</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:8px;">
-      <button class="btn-modal primary" onclick="openDiscordAndConfirm()" style="padding:12px;font-size:11px;">
-        🚀 Bergabung ke Discord
+      <button class="btn-modal primary" onclick="openDiscordAndConfirm()" style="padding:12px;font-size:11px;background:linear-gradient(135deg,#5865F2,#7289DA);">
+        <img src="icon/discord.png" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;object-fit:contain;" onerror="this.style.display='none'">
+        Join Discord Server
       </button>
-      <button class="btn-modal secondary" onclick="confirmDiscordJoined()" style="font-size:10px;padding:8px;">
-        ✅ Saya sudah bergabung
+      <button class="btn-modal secondary" id="discordJoinedBtn" onclick="confirmDiscordJoined()" style="font-size:10px;padding:8px;opacity:0.4;cursor:not-allowed;" disabled>
+        ✅ I have already joined
       </button>
     </div>
-    <div style="margin-top:12px;font-size:9px;color:var(--dim);">Setelah bergabung, klik "Saya sudah bergabung" untuk lanjut</div>
+    <div style="margin-top:12px;font-size:9px;color:var(--dim);">After joining, the button above will enable. Click to confirm and continue.</div>
+    <div style="margin-top:6px;font-size:9px;color:var(--dim);">Already a member? <button onclick="confirmDiscordJoined()" style="background:none;border:none;color:var(--cyan);cursor:pointer;font-size:9px;text-decoration:underline;">Click here</button></div>
   </div>
 </div>
 <!-- Avatar Modal -->
@@ -524,9 +526,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
   <div class="modal">
     <div class="modal-t"><svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Cara Install Plugin NEXUS AI</div>
     <div class="modal-b">
-      <div class="install-step"><div class="install-num">1</div><div class="install-txt">Download file plugin <code>nexusai_plugin_v5.lua</code> dari Discord NEXUS STUDIO</div></div>
+      <div class="install-step"><div class="install-num">1</div><div class="install-txt">Download file plugin <code>nexusai_plugin_v6.lua</code> dari Discord NEXUS STUDIO</div></div>
       <div class="install-step"><div class="install-num">2</div><div class="install-txt">Simpan ke: <code>C:\Users\[NamaKamu]\AppData\Local\Roblox\Plugins\</code></div></div>
-      <div class="install-step"><div class="install-num">3</div><div class="install-txt">Buka Roblox Studio → <strong>Plugin Manager</strong> → install plugin, atau simpan file .lua ke folder Plugins. Pastikan <strong>Allow HTTP Requests</strong> aktif di Plugins → Permissons</div></div>
+      <div class="install-step"><div class="install-num">3</div><div class="install-txt">Buka Roblox Studio → <strong>Plugin Manager</strong> → install plugin, atau simpan file .lua ke folder Plugins. Pastikan <strong>Allow HTTP Requests</strong> aktif di Game Settings → Security</div></div>
       <div class="install-step"><div class="install-num">4</div><div class="install-txt">Klik tombol <strong>NEXUS AI</strong> di toolbar Roblox Studio → Klik <strong>CONNECT</strong></div></div>
       <div class="install-step"><div class="install-num">5</div><div class="install-txt">Status berubah hijau → Chat di web ini → AI langsung build di place kamu!</div></div>
     </div>
@@ -585,7 +587,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <div class="settings-section">
       <div class="settings-title">Redeem Code</div>
       <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:6px;">
-        <div style="font-size:10px;color:var(--dim);">Dapatkan code di Discord: <a href="https://discord.gg/TeefZk37" target="_blank" style="color:var(--cyan);">discord.gg/TeefZk37</a></div>
+        <div style="font-size:10px;color:var(--dim);">Dapatkan code di Discord: <a href="https://discord.gg/HuGtbRvD" target="_blank" style="color:var(--cyan);">discord.gg/HuGtbRvD</a></div>
         <div style="display:flex;gap:8px;width:100%;"><input type="text" id="redeemInput" class="settings-select" style="flex:1;padding:6px 10px;" placeholder="Masukkan kode..."><button class="settings-btn" onclick="redeemCode()" id="redeemBtn">Redeem</button></div>
         <span id="redeemStatus" style="font-size:10px;color:var(--green);"></span>
       </div>
@@ -603,7 +605,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       <div class="settings-title">Download Plugin</div>
       <div class="settings-row" style="flex-direction:column;gap:5px;align-items:flex-start;">
         <div style="font-size:10px;color:var(--dim);">Install NEXUS AI Plugin di Roblox Studio untuk fitur inject otomatis</div>
-        <button class="settings-btn" onclick="window.open('https://discord.gg/TeefZk37','_blank')">Download via Discord</button>
+        <button class="settings-btn" onclick="window.open('https://discord.gg/HuGtbRvD','_blank')">Download via Discord</button>
       </div>
     </div>
     <div class="settings-section">
@@ -629,7 +631,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       <div class="credit-pack" onclick="goToPayment('438','1500000','438 CR Mega')"><div class="credit-pack-price">438 CR</div><div class="credit-pack-credits">Mega</div><div class="credit-pack-idr">Rp 1.5M</div></div>
     </div>
     <div class="modal-footer" style="margin-top:14px;">
-      <button class="btn-modal primary" onclick="window.location.href='/payment'">Buka Halaman Pembayaran</button>
+      <button class="btn-modal primary" onclick="window.location.href='/payment'">🛒 Open Payment Page</button>
       <button class="btn-modal secondary" onclick="closeModal('shopModal')">Tutup</button>
     </div>
   </div>
@@ -818,10 +820,21 @@ function setStudioStatus(online) {
 }
 
 function retryStudio() {
-  toast('Mengecek koneksi Studio...');
-  checkStudio().then(function(ok) {
-    toast(ok ? '✅ Studio terhubung!' : '❌ Studio offline. Pastikan plugin sudah di-connect.');
-  });
+  // Set offline first, then reconnect after 5s
+  setStudioStatus(false);
+  toast('Reconnecting...');
+  var countdown = 5;
+  var ct = document.getElementById('plugBannerTxt');
+  var timer = setInterval(function(){
+    countdown--;
+    if(ct) ct.textContent = 'Reconnecting in ' + countdown + 's...';
+    if(countdown<=0){
+      clearInterval(timer);
+      checkStudio().then(function(ok){
+        toast(ok ? '✅ Studio connected!' : '❌ Studio offline. Make sure plugin is connected.');
+      });
+    }
+  }, 1000);
 }
 
 async function sendToStudio(command) {
@@ -848,7 +861,7 @@ async function sendToStudio(command) {
 function startStudioPoll() {
   if (studioPollInterval) clearInterval(studioPollInterval);
   checkStudio();
-  studioPollInterval = setInterval(checkStudio, 6000);
+  studioPollInterval = setInterval(checkStudio, 8000); // 8s to reduce network spam
 }
 
 // ═══════════════════════════════════════
@@ -1077,167 +1090,162 @@ async function loadKeys() {
 // ═══════════════════════════════════════
 function buildSysPrompt() {
   var t = LANGS[curLang] || LANGS.id;
-  var u = SESSION ? SESSION.user : {username:'Unknown'};
+  var u = SESSION ? SESSION.user : {username:'Unknown', displayName:'Unknown'};
   var now = new Date();
   var connected = studioConnected;
-  var username = u.username;
+  var displayName = u.displayName || u.username || 'Developer';
+  var username = u.username || 'Unknown';
+  var lang = t.aiLang || 'Always respond in the same language as the user.';
 
-  return `Kamu adalah NEXUS AI, asisten AI paling canggih untuk developer Roblox dan Minecraft.
-Dibuat oleh NEXUS STUDIO. Lead developer: FIINYTID25. YouTube: NEXUS STUDIO.
-Website: nexusai-com.vercel.app
+  // Build studio section WITHOUT nested template literals
+  var studioSection;
+  if (connected) {
+    studioSection = [
+      'STUDIO CONNECTED! AI can directly inject into ' + username + "'s place:",
+      '- inject_script: Insert Script/LocalScript/ModuleScript to any parent',
+      '- batch_inject: Inject multiple scripts at once',
+      '- create_part: Create Part/BasePart in Workspace',
+      '- batch_create: Create multiple Parts at once',
+      '- create_gui: Create ScreenGui with elements inside it',
+      '- set_lighting: Adjust Lighting (brightness, fog, sky, Atmosphere, Bloom, ColorCorrection)',
+      '- change_baseplate: Change Baseplate color/material',
+      '- fill_terrain: Fill Terrain with a material',
+      '- create_spawn: Create SpawnLocation',
+      '- create_folder: Create Folder/Model in any parent',
+      '- create_team: Create a new Team',
+      '- create_instance: Create any instance (RemoteEvent, RemoteFunction, Sound, Animation, etc)',
+      '- add_effect: Add effect to Lighting or Part',
+      '- delete_object: Delete object from place',
+      '- select_object: Select object in Explorer',
+      '- clone_object: Clone object to another parent',
+      '- read_workspace: Read current place structure',
+      '- run_code: Run Lua code directly in Studio',
+      '',
+      'CRITICAL RULES WHEN STUDIO CONNECTED:',
+      '⚠️ OUTPUT ONLY LUA CODE, NEVER JSON:',
+      '- NEVER output JSON commands or structured data',
+      '- NEVER write format: {"command":"inject_script",...}',
+      '- ALWAYS output code in ```lua ... ``` code blocks',
+      '- System will auto-parse lua blocks and inject to Studio',
+      '',
+      'HOW IT WORKS:',
+      '1. Write complete Lua code in ```lua ... ``` blocks',
+      '2. System auto-detects and injects to the correct location',
+      '3. Explain WHAT was injected after the code',
+      '',
+      'AFTER CODE IS INJECTED:',
+      '- Say: "✅ I have inserted [ScriptName] into [location]. It does: ..."',
+      '- Mention how to use it, how to test, and if Play is needed',
+      '- AI is responsible for ALL required parts (server + client + modules + remotes)',
+      '- User just clicks Play to test — everything is ready',
+      '',
+      'FOR GUI: ALWAYS write a LocalScript/Script that builds GUI via Instance.new()',
+      'UIScale is REQUIRED for AutoScaled GUIs. Add it like:',
+      '  local UIScale = Instance.new("UIScale")',
+      '  UIScale.Scale = 1',
+      '  UIScale.Parent = screenGui',
+    ].join('
+');
+  } else {
+    studioSection = [
+      'STUDIO NOT CONNECTED. Tell user:',
+      '"To inject scripts directly to Studio, click NEXUS AI in Roblox Studio toolbar → CONNECT"',
+      'Still provide COMPLETE Lua code in ```lua code blocks so user can copy manually.',
+    ].join('
+');
+  }
 
-===== INFO USER =====
-Username Roblox: "${username}"
-Plan: ${S.plan} | Credits: ${parseFloat(S.credits).toFixed(2)} CR
-Waktu: ${now.toLocaleString()}
-Studio Plugin: ${connected ? 'TERHUBUNG ✅' : 'OFFLINE ❌'}
+  var prompt = [
+    'You are NEXUS AI, the most advanced AI assistant for Roblox and Minecraft developers.',
+    'Created by NEXUS STUDIO. Lead developer: FIINYTID25. YouTube: NEXUS STUDIO.',
+    'Website: nexusai-com.vercel.app',
+    '',
+    '===== USER INFO =====',
+    'Display Name: "' + displayName + '"',
+    'Roblox Username: "' + username + '"',
+    'Plan: ' + S.plan + ' | Credits: ' + parseFloat(S.credits).toFixed(2) + ' CR',
+    'Time: ' + now.toLocaleString(),
+    'Studio Plugin: ' + (connected ? 'CONNECTED ✅' : 'OFFLINE ❌'),
+    '',
+    '===== LANGUAGE =====',
+    lang,
+    'Call user as "' + displayName + '". Use friendly & professional style.',
+    '',
+    '===== IDENTITY & PERSONALITY =====',
+    'You are an expert developer with deep experience. You:',
+    '- Take action immediately without excessive preamble',
+    '- Expert in Roblox Studio, Lua scripting, plugin development',
+    '- Can build complex GUIs, game systems, pro-level paid plugins',
+    '- Can debug errors from console output',
+    '- Make clean, efficient, production-ready scripts',
+    '- Never say "you cannot" for Roblox-related things',
+    '',
+    '===== MANDATORY CODE RULES =====',
+    '1. ALWAYS output COMPLETE code — NO "..." or "-- continues" or "-- etc"',
+    '2. 200-line script → output all 200 lines. 500+ lines → output all 500+ lines',
+    '3. Use task.wait() not wait() | task.spawn() not spawn()',
+    '4. ALWAYS wrap DataStore in pcall()',
+    '5. ALWAYS check nil with :FindFirstChild() before using objects',
+    '6. WaitForChild("Name", 10) with timeout for client-side',
+    '7. NEVER truncate code for any reason. This is rule #1.',
+    '8. If multiple files, output ALL files separately with clear labels',
+    '',
+    '===== SCRIPT PLACEMENT =====',
+    '- Script (server) → ServerScriptService',
+    '- LocalScript (client) → StarterGui or StarterPlayerScripts',
+    '- ModuleScript (shared) → ReplicatedStorage',
+    '- Loading screen → ReplicatedFirst (LocalScript)',
+    '- Tool script → StarterPack or directly in Tool',
+    '',
+    '===== STUDIO CAPABILITIES =====',
+    studioSection,
+    '',
+    '===== GUI RULES (Expert Level) =====',
+    'REQUIRED for all GUI:',
+    '- UICorner for rounded corners (CornerRadius = UDim.new(0, 8) or more)',
+    '- BorderSizePixel = 0 for all elements',
+    '- TweenService for smooth animations (hover, click, open/close)',
+    '- UIScale REQUIRED inside ScreenGui for AutoScaled',
+    '- ScreenGui: ResetOnSpawn = false, IgnoreGuiInset = true',
+    '- ZIndexBehavior = Enum.ZIndexBehavior.Sibling',
+    '- UIStroke and UIGradient for AAA premium look',
+    '- ALL sizes use UDim2 scale or scale+offset combination',
+    '- Build PROFESSIONAL GUIs - gradient, shadow, smooth animation',
+    '- Minimum 200+ lines for complex GUIs',
+    '',
+    '===== PLAY BUTTON / MAIN MENU =====',
+    'When asked to create a Play button or Main Menu, ALWAYS:',
+    '1. Create a ScreenGui in StarterGui',
+    '2. Add a main Frame covering the screen (Size = UDim2.new(1,0,1,0))',
+    '3. Add Play button connected to TeleportService or game start logic',
+    '4. Add Settings button that opens a settings frame with:',
+    '   - Graphics Quality (Potato/Low/Medium/High/Ultra)',
+    '   - Music Volume slider',
+    '   - SFX Volume slider',
+    '5. All buttons must have working click events, not just visual',
+    '',
+    '===== ROBLOX SERVICES MASTERY =====',
+    '• DataStoreService, MarketplaceService, TeleportService',
+    '• PathfindingService, CollectionService, PhysicsService',
+    '• UserInputService, ContextActionService, GamepadService',
+    '• TweenService, RunService, Debris, SoundService',
+    '• RemoteEvent, RemoteFunction, BindableEvent, BindableFunction',
+    '• ProximityPrompt, ClickDetector, SelectionBox',
+    '• Character R6/R15, HumanoidDescription, Accessory',
+    '',
+    '===== SECURITY RULES =====',
+    '- Validate ALL client input on server',
+    '- Rate limiting for economy (coins, gems)',
+    '- Anti-exploit: server-side validation for movement, damage',
+    '- Use RemoteEvent/RemoteFunction, never trust LocalScript',
+    '- Debounce for all spammable events',
+    '- pcall() for all operations that can fail',
+    '',
+    'Remember: NEVER truncate scripts. Build EVERYTHING needed. User just clicks Play!',
+  ].join('
+');
 
-===== BAHASA =====
-${t.aiLang}
-Panggil user sebagai "${username}". Gunakan gaya ramah & profesional.
-
-===== IDENTITAS & KEPRIBADIAN =====
-Kamu adalah developer expert yang sangat berpengalaman. Kamu:
-- Langsung action tanpa basa-basi berlebihan
-- Expert di Roblox Studio, Lua scripting, plugin development
-- Bisa buat GUI kompleks, sistem game, plugin berbayar level pro
-- Bisa debug error dari console output
-- Jago buat script yang clean, efficient, dan production-ready
-- Jangan pernah katakan "kamu tidak bisa" untuk hal Roblox
-
-===== ATURAN KODE WAJIB =====
-1. SELALU output kode LENGKAP — TIDAK BOLEH ada "..." atau "-- lanjutan" atau "-- dst"
-2. Script 200 baris → output 200 baris penuh. Script 500+ baris → output semua 500+ baris
-3. Gunakan task.wait() bukan wait() | task.spawn() bukan spawn()
-4. SELALU wrap DataStore dalam pcall()
-5. SELALU cek nil dengan :FindFirstChild() sebelum gunakan object
-6. WaitForChild("Name", 10) dengan timeout untuk client-side
-7. Jangan potong kode apapun alasannya. Ini aturan #1 yang tidak bisa dilanggar.
-8. Jika ada beberapa file, output semua file secara terpisah dengan label jelas
-
-===== PENEMPATAN SCRIPT =====
-- Script (server) → ServerScriptService
-- LocalScript (client) → StarterGui atau StarterPlayerScripts
-- ModuleScript (shared) → ReplicatedStorage
-- Loading screen → ReplicatedFirst (LocalScript)
-- Tool script → StarterPack atau langsung di Tool
-
-===== APA YANG BISA NEXUS AI LAKUKAN DI ROBLOX STUDIO (via plugin) =====
-${connected ? 'TERHUBUNG ✅' : 'OFFLINE ❌'}
-STUDIO TERHUBUNG! AI bisa langsung inject ke place "${username}":
-- inject_script: Masukkan Script/LocalScript/ModuleScript ke parent manapun
-- batch_inject: Inject banyak script sekaligus
-- create_part: Buat Part/BasePart di Workspace
-- batch_create: Buat banyak Part sekaligus
-- create_gui: Buat ScreenGui dengan elemen-elemen di dalamnya
-- set_lighting: Atur Lighting (brightness, fog, sky, Atmosphere, BloomEffect, ColorCorrection)
-- change_baseplate: Ubah warna/material Baseplate
-- fill_terrain: Isi Terrain dengan material tertentu
-- create_spawn: Buat SpawnLocation
-- create_folder: Buat Folder/Model di parent manapun
-- create_team: Buat Team baru
-- create_instance: Buat instance apapun (RemoteEvent, RemoteFunction, Sound, Animation, dll)
-- add_effect: Tambah effect ke Lighting atau Part
-- delete_object: Hapus object dari place
-- select_object: Pilih object di Explorer
-- clone_object: Clone object ke parent lain
-- read_workspace: Baca struktur place saat ini
-- run_code: Jalankan Lua code langsung di Studio
-
-PENTING SAAT STUDIO CONNECTED:
-⚠️ ATURAN KRITIS - OUTPUT HANYA LUA, BUKAN JSON:
-- JANGAN PERNAH output JSON commands atau structured data
-- JANGAN tulis format: {"command":"inject_script",...} atau apapun yang mirip JSON
-- SELALU output kode dalam format: (backtick x3)lua ... (backtick x3) code block biasa
-- Sistem akan otomatis parse lua blocks dan inject ke Studio
-
-CARA KERJA:
-1. Tulis kode Lua lengkap dalam code block lua
-2. Sistem otomatis detect dan inject ke lokasi yang tepat
-3. Jelaskan APA yang sudah dimasukkan setelah kode
-
-SETELAH KODE DIINJECT:
-- Jelaskan: "✅ Saya sudah memasukkan [NamaScript] ke [lokasi]. Fungsinya: ..."
-- Sebutkan cara pakai, cara test, dan apakah perlu Play dulu
-- AI bertanggung jawab memasukkan SEMUA (server + client + modules + remotes)
-- User tinggal klik Play untuk test — semua sudah siap
-
-PENTING: Untuk GUI di Studio, SELALU buat "lua LocalScript/Script yang membangun GUI via Instance.new() bukan JSON config. UIScale wajib ditambahkan untuk AutoScaled! :
-
-STUDIO BELUM TERHUBUNG. Kasih tahu user:
-"Untuk script langsung masuk ke Studio, klik NEXUS AI di toolbar Roblox Studio → CONNECT"
-Tetap berikan kode Lua LENGKAP dalam code block lua agar user bisa copy manual.
-
-===== ATURAN GUI (Expert Level) =====
-WAJIB untuk semua GUI:
-- UICorner untuk rounded corners (CornerRadius = UDim.new(0, 8) atau lebih)
-- BorderSizePixel = 0 untuk semua element
-- TweenService untuk animasi smooth (hover, click, open/close)
-- UIScale WAJIB di dalam ScreenGui untuk AutoScaled:
-  local uiScale = Instance.new("UIScale")
-  uiScale.Scale = 1
-  uiScale.Parent = screenGui
-- ScreenGui: ResetOnSpawn = false, IgnoreGuiInset = true
-- ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-- UIStroke dan UIGradient untuk tampilan premium AAA
-- SEMUA ukuran pakai UDim2 scale atau kombinasi scale+offset
-- Buat GUI yang PROFESIONAL - gradient, shadow, animasi smooth
-- Minimal 200+ baris untuk GUI yang kompleks
-
-===== PLUGIN ROBLOX STUDIO (Expert Level) =====
-Kamu juga expert membuat Plugin Roblox Studio level PRO/berbayar:
-- DockWidgetPluginGuiInfo untuk dock widget
-- plugin:CreateToolbar() dan toolbar:CreateButton() untuk toolbar
-- PluginMenu untuk right-click context menu
-- plugin:GetSetting()/plugin:SetSetting() untuk menyimpan data
-- Selection service untuk interact dengan selected objects
-- ChangeHistoryService untuk undo/redo support
-- plugin:Activate() untuk plugin mode
-- Selalu pake TweenService untuk UI animation yang smooth di plugin
-- Plugin yang bagus punya: toolbar button, dock panel, settings, undo support
-
-===== ROBLOX SERVICES YANG WAJIB DIKUASAI =====
-• DataStoreService, MarketplaceService, TeleportService
-• PathfindingService, CollectionService, PhysicsService
-• UserInputService, ContextActionService, GamepadService
-• TweenService, RunService, Debris, SoundService
-• RemoteEvent, RemoteFunction, BindableEvent, BindableFunction
-• ProximityPrompt, ClickDetector, SelectionBox
-• Character R6/R15, HumanoidDescription, Accessory
-• VehicleSeat, Seat, SpawnLocation
-
-===== CARA BUAT LOADING SCREEN YANG BAGUS =====
-Selalu include:
-- Loading bar animasi dengan TweenService
-- Logo game dengan efek fade
-- Loading text yang update dinamis
-- Background yang menarik dengan gradient
-- Transisi smooth saat selesai load
-- Deteksi ContentProvider:PreloadAsync untuk asset
-
-===== CARA BUAT GUI PREMIUM =====
-Selalu include:
-- Gradient background (UIGradient)
-- Drop shadow effect (Frame dengan transparency)
-- Hover effect dengan TweenService
-- Click animation (scale down then up)
-- Sound effect saat interact
-- Mobile-friendly dengan UDim2 scale
-
-===== ATURAN KEAMANAN =====
-- Validasi SEMUA input dari client di server
-- Rate limiting untuk economy (coins, gems)
-- Anti-exploit: server-side validation untuk movement, damage
-- Gunakan RemoteEvent/RemoteFunction, jangan trust LocalScript
-- Debounce untuk semua event yang bisa spam
-- pcall() untuk semua operasi yang bisa fail
-
-===== MINECRAFT SCRIPTING (Expert) =====
-- Bedrock: @minecraft/server API, world.afterEvents, system.runInterval
-- Java: Forge @Mod, Fabric ModInitializer, Mixin
-- Selalu buat manifest.json + scripts lengkap
-
-Ingat: JANGAN PERNAH potong script. Buat SEMUA yang dibutuhkan. User tinggal test!`;
+  return prompt;
 }
 
 // ═══════════════════════════════════════
@@ -1393,25 +1401,50 @@ function renderConvs(){
 
 async function setConvTitle(id){
   var c=S.convs.find(function(x){return x.id===id;});
-  if(!c||!S.msgs.length) return;
-  if(c.title&&c.title!=='Untitled') return;
-  try{
-    var firstMsg=(S.msgs.find(function(m){return m.role==='user';})||{}).content||'';
-    if(!firstMsg) return;
-    if(!K.gemini){c.title=firstMsg.substring(0,45);document.getElementById('chatTitle').textContent=c.title;renderConvs();saveS();return;}
-    var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+K.gemini,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({contents:[{role:'user',parts:[{text:'Buat judul singkat 3-5 kata untuk percakapan ini: "'+firstMsg.substring(0,200)+'" — HANYA judul, tanpa tanda kutip.'}]}],generationConfig:{maxOutputTokens:20}})
-    });
-    var d=await r.json();
-    var title=((d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0]?d.candidates[0].content.parts[0].text:'')||'').trim()||firstMsg.substring(0,45);
-    c.title=title.replace(/["""*]/g,'').substring(0,55);
-    document.getElementById('chatTitle').textContent=c.title;
-    renderConvs(); saveS();
-  }catch(e){
-    var fc=S.msgs.find(function(m){return m.role==='user';});
-    if(fc&&fc.content){c.title=fc.content.substring(0,45);renderConvs();saveS();}
+  if(!c||c.msgs.length<2) return;
+  var firstUser=c.msgs.find(function(m){return m.role==='user';});
+  var firstAI=c.msgs.find(function(m){return m.role==='ai';});
+  if(!firstUser) return;
+  // Generate smart title from AI response content (not user's raw text)
+  try {
+    var aiContent = firstAI ? firstAI.content.substring(0,200) : '';
+    var userTxt = firstUser.content.substring(0,100);
+    // Detect intent from user message for title
+    var lower = userTxt.toLowerCase();
+    var titleMap = [
+      [/loading screen/,'Loading Screen'],
+      [/shop gui|toko/,'Shop GUI'],
+      [/leaderboard|leaderstats/,'Leaderboard System'],
+      [/admin command/,'Admin System'],
+      [/datastore|data store/,'DataStore System'],
+      [/obby|obstacle/,'Obby System'],
+      [/tycoon/,'Tycoon System'],
+      [/main menu|menu utama/,'Main Menu'],
+      [/play button/,'Play Button'],
+      [/inventory/,'Inventory System'],
+      [/pet system/,'Pet System'],
+      [/weapon|sword|gun/,'Weapon System'],
+      [/vehicle|car/,'Vehicle System'],
+      [/quest|mission/,'Quest System'],
+      [/coin|money|cash/,'Economy System'],
+      [/chat|dialog/,'Chat System'],
+      [/hallo|hello|hai|hey|hi/,'Welcome Chat'],
+      [/apa|what|bagaimana|how/,'AI Consultation'],
+    ];
+    var title = null;
+    for (var i=0;i<titleMap.length;i++) {
+      if (titleMap[i][0].test(lower)) { title=titleMap[i][1]; break; }
+    }
+    if (!title) {
+      // Fallback: clean up user text
+      title = userTxt.replace(/[^a-zA-Z0-9\sÀ-ɏ]/g,' ').trim().substring(0,40);
+      if (!title) title = 'New Chat';
+    }
+    c.title = title;
+  } catch(e) {
+    c.title = firstUser.content.substring(0,40);
   }
+  renderConvs();
 }
 
 // ═══════════════════════════════════════
@@ -2211,11 +2244,20 @@ async function sendReport(){
 }
 function openShop(){document.getElementById('shopModal').classList.add('show');}
 function openDiscordAndConfirm(){
-  window.open('https://discord.gg/TeefZk37','_blank');
-  // Show confirm button after a delay
+  window.open('https://discord.gg/HuGtbRvD','_blank');
+  // Enable the joined button after user clicks join
   setTimeout(function(){
-    toast('Setelah bergabung, klik "Saya sudah bergabung"','var(--cyan)');
-  }, 2000);
+    var btn = document.getElementById('discordJoinedBtn');
+    if (btn) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+      btn.style.background = 'rgba(0,255,170,.1)';
+      btn.style.borderColor = 'rgba(0,255,170,.4)';
+      btn.style.color = 'var(--green)';
+    }
+    toast('After joining, click "I have already joined"', 'var(--green)');
+  }, 3500);
 }
 function confirmDiscordJoined(){
   localStorage.setItem('nexus_discord_joined','true');
