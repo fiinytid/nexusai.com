@@ -14,7 +14,7 @@ function parseIds(envStr) {
 function getOwnerIds() {
   // From env var OWNER_IDS (comma-separated Roblox user IDs)
   const fromEnv = parseIds(process.env.OWNER_IDS);
-  return fromEnv.length ? fromEnv : ['128649548']; // fallback: FIINYTID25's user ID
+  return fromEnv.length ? fromEnv : ['9979111444']; // fallback: FIINYTID25's user ID
 }
 
 function getAdminIds() {
