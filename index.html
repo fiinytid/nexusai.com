@@ -1021,7 +1021,7 @@ async function loadS() {
       S.roles.push('admin');
     }
     // Load admin IDs from server
-    loadAdminIds();
+    await loadAdminIds();
     if (d.model && d.model.id) {
       // Validate the saved model is still in the active list (not COMING SOON)
       var savedModelValid = MODEL_LIST.find(function(m){ return m.id === d.model.id && !m.group && !m.soon; });
@@ -1076,18 +1076,25 @@ function saveS() {
 
 async function loadAdminIds() {
   try {
-    var r = await fetch('/api/admin?list=1&token=' + (window.ADMIN_TOKEN || ''));
+    // Load owner IDs from env via /api/admin (public endpoint for owner IDs)
+    var r = await fetch('/api/admin?publicList=1');
     if (r.ok) {
       var d = await r.json();
-      if (d && d.owners) OWNER_IDS = d.owners;
-      if (d && d.admins) ADMIN_IDS = d.admins;
+      if (d && Array.isArray(d.owners)) OWNER_IDS = d.owners;
+      if (d && Array.isArray(d.admins)) ADMIN_IDS = d.admins;
     }
-  } catch(e) { /* silent - use defaults */ }
+  } catch(e) { /* silent - use local defaults */ }
 }
 function isOwner() {
   if (!SESSION) return false;
+  // Method 1: Check by userId
   var uid = String(SESSION.user.robloxId || SESSION.user.id || '');
-  return uid && OWNER_IDS.indexOf(uid) !== -1;
+  if (uid && OWNER_IDS.indexOf(uid) !== -1) return true;
+  // Method 2: Check server-assigned roles (sync.js sets roles=['owner','admin'] for owners)
+  if (S.roles && (S.roles.indexOf('owner') !== -1)) return true;
+  // Method 3: Check plan set by server
+  if (S.plan === 'owner') return true;
+  return false;
 }
 function isAdmin() {
   if (isOwner()) return true;
@@ -1096,7 +1103,8 @@ function isAdmin() {
   // Check server-loaded admin IDs
   if (uid && ADMIN_IDS.indexOf(uid) !== -1) return true;
   // Check roles from server
-  return SESSION && S.roles && (S.roles.indexOf('admin') !== -1 || S.roles.indexOf('owner') !== -1);
+  if (S.roles && (S.roles.indexOf('admin') !== -1 || S.roles.indexOf('owner') !== -1)) return true;
+  return false;
 }
 
 // ═══════════════════════════════════════
@@ -1295,8 +1303,17 @@ async function initApp(){
   var u = SESSION.user;
   document.getElementById('sbAv').src = u.avatar || 'nexusai.png';
   document.getElementById('sbUn').textContent = u.username;
-  var roleText = isOwner() ? '⭐ Owner · Unlimited' : (isAdmin() ? '🛡 Admin · Unlimited' : (S.plan==='pro' ? '💎 Pro Member' : 'Roblox Developer'));
-  document.getElementById('sbRole').textContent = roleText;
+  // Update role after server data and admin IDs are loaded
+  function updateRoleDisplay() {
+    var roleText;
+    if (isOwner()) roleText = '⭐ Owner · Unlimited';
+    else if (isAdmin()) roleText = '🛡 Admin · Unlimited';
+    else if (S.plan === 'pro') roleText = '💎 Pro Member';
+    else roleText = 'Roblox Developer';
+    document.getElementById('sbRole').textContent = roleText;
+    updateCreds();
+  }
+  updateRoleDisplay();
 
   curLang = S.language || 'id';
   applyLang();
