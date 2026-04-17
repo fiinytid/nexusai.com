@@ -36,7 +36,7 @@ function lastPoll(user) {
   try { return parseInt(readFileSync(getPollFile(user), 'utf8') || '0'); } catch(_) { return 0; }
 }
 function isConnected(user) {
-  return (Date.now() - lastPoll(user)) < 8000;
+  return (Date.now() - lastPoll(user)) < 6000; // 6s: plugin polls every 2s, 3 missed = disconnected
 }
 
 // Shared logs (admin only)
@@ -96,8 +96,9 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const pluginUser = sanitizeUser(req.query.user || req.query.u || '');
 
-    // Plugin alive ping
-    if (pluginUser) bumpPoll(pluginUser);
+    // Plugin alive ping — ONLY bump if this is an actual plugin poll (not a web check)
+    // The plugin polls WITHOUT ?check=1; the web uses ?check=1 to verify
+    if (pluginUser && !req.query.check) bumpPoll(pluginUser);
 
     // Check endpoint — used by web to see if plugin is connected
     if (req.query.check) {
