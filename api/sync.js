@@ -76,11 +76,20 @@ function getAdminIds() {
 }
 
 function isOwnerById(userId) {
-  return getOwnerIds().some(o => o.id === String(userId));
+  const uid = String(userId).trim();
+  return getOwnerIds().some(o => {
+    const oid = String(o.id || o).trim();
+    return oid === uid;
+  });
 }
 
 function isAdminById(userId) {
-  return isOwnerById(userId) || getAdminIds().some(a => a.id === String(userId));
+  if (isOwnerById(userId)) return true;
+  const uid = String(userId).trim();
+  return getAdminIds().some(a => {
+    const aid = String(a.id || a).trim();
+    return aid === uid;
+  });
 }
 
 module.exports = async (req, res) => {
