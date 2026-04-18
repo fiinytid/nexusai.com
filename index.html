@@ -61,6 +61,14 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .ci-del:hover{color:var(--pink);}
 .conv-empty{padding:14px;text-align:center;color:var(--dim);font-size:11px;}
 .sb-footer{padding:6px 12px;font-size:8px;color:var(--dim);text-align:center;border-top:1px solid var(--b);flex-shrink:0;line-height:1.8;}
+  <div id="discordAppLink" style="display:none;margin:4px 12px;">
+  <a href="/discord-app" style="color:var(--discord);font-size:9px;text-decoration:none;display:flex;align-items:center;gap:4px;">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="#5865F2" stroke="none">
+      <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515..."/>
+    </svg>
+    Discord Setup Panel
+  </a>
+</div>
 .collapse-sb{position:absolute;left:249px;top:50%;transform:translateY(-50%);width:18px;height:40px;background:var(--bg2);border:1px solid var(--b);border-radius:0 6px 6px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--dim);z-index:10;transition:.15s;}
 .collapse-sb:hover{color:var(--cyan);}
 #app.sb-hidden .collapse-sb{left:0;}
@@ -2349,15 +2357,28 @@ function openSettings(){
   document.getElementById('settingsUsername').textContent=SESSION.user.username;
   document.getElementById('settingsRobloxId').textContent=SESSION.user.robloxId||'-';
   var ts=document.getElementById('themeSelect'); if(ts&&S.theme) ts.value=S.theme;
-  var badge=document.getElementById('settingsBadge');
-  if(badge){badge.textContent=isOwner()?'Admin':(S.plan==='pro'?'Pro':'Free');badge.style.color=isOwner()?'var(--yellow)':(S.plan==='pro'?'var(--cyan)':'var(--green)');}
-  document.getElementById('settingsCredits').textContent=isOwner()?'Unlimited':parseFloat(S.credits).toFixed(2)+' CR';
-  document.getElementById('settingsPlan').textContent=isOwner()?'Admin':(S.plan==='pro'?'Pro':'Free');
-  document.getElementById('lastClaimInfo').textContent=S.lastClaim===new Date().toDateString()?'Sudah claim hari ini':'Belum claim hari ini';
-  document.getElementById('langSelector').value=curLang;
-  if(isAdmin()) document.getElementById('adminSection').style.display='';
-  document.getElementById('settingsModal').classList.add('show');
+  var badge = document.getElementById('settingsBadge');
+if (badge) {
+  if (isOwner()) {
+    badge.textContent = 'Owner';
+    badge.style.color = 'var(--yellow)';
+    badge.style.background = 'rgba(255,214,0,.1)';
+    badge.style.borderColor = 'rgba(255,214,0,.3)';
+  } else if (isAdmin()) {
+    badge.textContent = 'Admin';
+    badge.style.color = 'var(--cyan)';
+    badge.style.background = 'rgba(0,229,255,.08)';
+    badge.style.borderColor = 'var(--b)';
+  } else if (S.plan === 'pro') {
+    badge.textContent = 'Pro';
+    badge.style.color = 'var(--green)';
+  } else {
+    badge.textContent = 'Free';
+    badge.style.color = 'var(--dim)';
+  }
 }
+document.getElementById('settingsCredits').textContent = isOwner() || isAdmin() ? 'Unlimited' : parseFloat(S.credits).toFixed(2) + ' CR';
+document.getElementById('settingsPlan').textContent = isOwner() ? 'Owner' : isAdmin() ? 'Admin' : (S.plan === 'pro' ? 'Pro' : 'Free');
 
 async function sendReport(){
   var txt=document.getElementById('reportTa').value.trim();
