@@ -1150,9 +1150,9 @@ async function loadKeys() {
 }
 
 // ═══════════════════════════════════════════════════════════
-//  NEXUS AI — SYSTEM PROMPT V8.2 FIXED+
-//  Fixes: JSON vs Lua mode, Remote direct placement, Parts direct,
-//         Camera animation, No scripts for objects, More commands
+//  NEXUS AI — SYSTEM PROMPT V9.1.1
+//  CRITICAL FIX: JSON commands now properly sent to Studio
+//  AI uses JSON for objects, Lua for scripts - no mixing!
 // ═══════════════════════════════════════════════════════════
 
 function buildSysPrompt() {
@@ -1329,7 +1329,7 @@ function buildSysPrompt() {
   }
 
   var prompt = [
-    'You are NEXUS AI, the most advanced AI assistant for Roblox and Minecraft developers.',
+    'You are NEXUS AI v9.1.1, the most advanced AI assistant for Roblox and Minecraft developers.',
     'Created by NEXUS STUDIO. Lead developer: FIINYTID25. YouTube: NEXUS STUDIO.',
     'Website: nexusai-com.vercel.app',
     '',
