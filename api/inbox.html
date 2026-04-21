@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Inbox — NEXUS AI</title>
+<link rel="icon" href="nexusai.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030312;--bg2:#06071a;--bg3:#0a0b22;--cyan:#00e5ff;--purple:#8800ff;--pink:#ff2d6b;--green:#00ffaa;--yellow:#ffd600;--text:#b8cfff;--dim:#3a4a7a;--b:rgba(0,229,255,.12);--r:8px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{min-height:100%;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--text);font-size:13px;}
+body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0,229,255,.012)1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.012)1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:10px;padding:10px 20px;background:rgba(3,3,18,.92);border-bottom:1px solid var(--b);backdrop-filter:blur(10px);}
+.nav-logo{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-back{margin-left:auto;background:none;border:1px solid var(--b);border-radius:5px;color:var(--dim);font-size:10px;padding:4px 10px;cursor:pointer;font-family:'JetBrains Mono',monospace;text-decoration:none;transition:.15s;}
+.nav-back:hover{color:var(--cyan);border-color:var(--cyan);}
+.main{max-width:800px;margin:0 auto;padding:24px 16px;position:relative;z-index:1;}
+.inbox-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.inbox-title{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--cyan);}
+.inbox-actions{display:flex;gap:8px;}
+.btn-sm{padding:5px 12px;border-radius:5px;font-size:9px;cursor:pointer;border:1px solid var(--b);background:rgba(0,229,255,.04);color:var(--text);transition:.15s;font-family:'JetBrains Mono',monospace;}
+.btn-sm:hover{border-color:var(--cyan);color:var(--cyan);}
+.msg-list{display:flex;flex-direction:column;gap:8px;}
+.msg-item{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:.15s;position:relative;}
+.msg-item:hover{border-color:var(--cyan);background:rgba(0,229,255,.03);}
+.msg-item.unread{border-left:3px solid var(--cyan);}
+.msg-item.unread .msg-subject{color:white;}
+.msg-from{font-size:9px;color:var(--cyan);font-family:'Orbitron',sans-serif;margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.msg-from-icon{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;}
+.msg-subject{font-size:12px;color:var(--text);margin-bottom:4px;font-weight:600;}
+.msg-preview{font-size:10px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.msg-time{position:absolute;top:14px;right:16px;font-size:9px;color:var(--dim);}
+.unread-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);display:inline-block;margin-right:4px;}
+.empty-state{text-align:center;padding:60px 20px;color:var(--dim);}
+.empty-icon{font-size:48px;margin-bottom:16px;}
+.empty-title{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--text);margin-bottom:8px;}
+/* Detail view */
+.detail-view{display:none;}
+.detail-view.show{display:block;}
+.list-view.hidden{display:none!important;}
+.detail-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--b);}
+.detail-back{background:none;border:1px solid var(--b);border-radius:5px;color:var(--dim);font-size:10px;padding:4px 10px;cursor:pointer;}
+.detail-back:hover{color:var(--cyan);border-color:var(--cyan);}
+.detail-subject{font-family:'Orbitron',sans-serif;font-size:14px;color:white;flex:1;}
+.detail-from{font-size:10px;color:var(--dim);margin-bottom:4px;}
+.detail-time{font-size:9px;color:var(--dim);}
+.detail-content{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:20px;font-size:12px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+.type-badge{display:inline-block;padding:2px 7px;border-radius:3px;font-size:8px;font-weight:700;margin-left:8px;}
+.type-general{background:rgba(0,229,255,.1);color:var(--cyan);}
+.type-announcement{background:rgba(255,214,0,.1);color:var(--yellow);}
+.type-payment{background:rgba(0,255,170,.1);color:var(--green);}
+.type-warning{background:rgba(255,45,107,.1);color:var(--pink);}
+@media(max-width:600px){.main{padding:16px 10px;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <img src="nexusai.png" style="width:22px;height:22px;border-radius:5px;" onerror="this.style.display=\'none\'">
+  <span class="nav-logo">NEXUS AI</span>
+  <a class="nav-back" href="/">← Back to Chat</a>
+</nav>
+<div class="main">
+  <div id="listView">
+    <div class="inbox-header">
+      <div class="inbox-title" id="inboxTitle">Inbox</div>
+      <div class="inbox-actions">
+        <button class="btn-sm" onclick="markAllRead()" id="markReadBtn">Mark all read</button>
+        <button class="btn-sm" onclick="loadMessages()" id="refreshBtn">Refresh</button>
+      </div>
+    </div>
+    <div class="msg-list" id="msgList"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title" id="loadingTxt">Loading...</div></div></div>
+  </div>
+  <div class="detail-view" id="detailView">
+    <div class="detail-header">
+      <button class="detail-back" onclick="showList()" id="backBtn">← Back</button>
+      <div>
+        <div class="detail-subject" id="detailSubject">-</div>
+        <div class="detail-from" id="detailFrom">-</div>
+        <div class="detail-time" id="detailTime">-</div>
+      </div>
+    </div>
+    <div class="detail-content" id="detailContent">-</div>
+  </div>
+</div>
+<script>
+'use strict';
+var SESSION=null,messages=[],currentLang='en';
+(function(){
+  try{
+    var s=localStorage.getItem('nexus_session');
+    if(!s){window.location.replace('/login');return;}
+    SESSION=JSON.parse(s);
+    if(!SESSION||!SESSION.user){window.location.replace('/login');return;}
+    currentLang=SESSION.data&&SESSION.data.language||localStorage.getItem('nexus_lang')||'en';
+    if(currentLang==='id'){
+      document.getElementById('inboxTitle').textContent='Kotak Masuk';
+      document.getElementById('markReadBtn').textContent='Tandai semua dibaca';
+      document.getElementById('refreshBtn').textContent='Refresh';
+      document.getElementById('backBtn').textContent='← Kembali';
+    }
+    loadMessages();
+  }catch(e){window.location.replace('/login');}
+})();
+async function loadMessages(){
+  var listEl=document.getElementById('msgList');
+  try{
+    var r=await fetch('/api/inbox?user='+encodeURIComponent(SESSION.user.username.toLowerCase()));
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    var data=await r.json();messages=data.messages||[];
+    if(!messages.length){
+      listEl.innerHTML='<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">'+(currentLang==='id'?'Tidak ada pesan':'No messages yet')+'</div><div style="font-size:10px;color:var(--dim);margin-top:8px;">'+(currentLang==='id'?'NEXUS AI akan mengirimkan notifikasi dan pengumuman di sini.':'NEXUS AI will send notifications and announcements here.')+'</div></div>';
+    }else{
+      listEl.innerHTML=messages.map(function(m){
+        var typeCls='type-'+(m.type||'general');
+        return'<div class="msg-item'+(m.read?'':' unread')+'" onclick="openMsg(\''+m.id+'\')">'+
+          '<div class="msg-from"><div class="msg-from-icon">N</div><span>'+esc(m.from||'NEXUS AI')+'</span><span class="type-badge '+typeCls+'">'+(m.type||'general').toUpperCase()+'</span></div>'+
+          '<div class="msg-subject">'+(m.read?'':'<span class="unread-dot"></span>')+esc(m.subject||'Message')+'</div>'+
+          '<div class="msg-preview">'+esc((m.content||'').substring(0,100))+'</div>'+
+          '<div class="msg-time">'+ago(m.ts)+'</div>'+
+        '</div>';
+      }).join('');
+    }
+  }catch(e){listEl.innerHTML='<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error loading messages</div><div style="font-size:10px;color:var(--dim);">'+e.message+'</div></div>';}
+}
+function openMsg(id){
+  var msg=messages.find(function(m){return m.id===id;});if(!msg)return;
+  document.getElementById('detailSubject').textContent=msg.subject||'Message';
+  document.getElementById('detailFrom').textContent='From: '+(msg.from||'NEXUS AI');
+  document.getElementById('detailTime').textContent=new Date(msg.ts).toLocaleString();
+  document.getElementById('detailContent').textContent=msg.content||'';
+  document.getElementById('listView').classList.add('hidden');
+  document.getElementById('detailView').classList.add('show');
+  if(!msg.read){
+    fetch('/api/inbox',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:SESSION.user.username.toLowerCase(),id:id})}).catch(function(){});
+    msg.read=true;
+  }
+}
+function showList(){document.getElementById('detailView').classList.remove('show');document.getElementById('listView').classList.remove('hidden');}
+async function markAllRead(){
+  try{await fetch('/api/inbox',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:SESSION.user.username.toLowerCase(),action:'read_all'})});}catch(e){}
+  messages.forEach(function(m){m.read=true;});loadMessages();
+}
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function ago(ts){if(!ts)return'';var d=Date.now()-ts;if(d<60000)return currentLang==='id'?'baru saja':'just now';if(d<3600000)return Math.floor(d/60000)+'m ago';if(d<86400000)return Math.floor(d/3600000)+'h ago';return Math.floor(d/86400000)+'d ago';}
+</script>
+</body>
+</html>
