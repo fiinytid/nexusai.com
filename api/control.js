@@ -1,9 +1,8 @@
-// api/control.js — NEXUS AI RELAY v10.2 (Queue System)
+// api/control.js — NEXUS AI RELAY v8 (Queue System)
+// FIXED: better error handling, batch_commands support, output safety
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
 const TMP = '/tmp';
-export const REQUIRED_PLUGIN_VERSION = 'V10.2';
-export const WEB_VERSION = 'V10.2';
 
 function san(user) {
   return (user || 'default').replace(/[^a-zA-Z0-9_\-]/g, '_').toLowerCase().substring(0, 40);
@@ -29,14 +28,18 @@ function pushQueue(u, cmd) {
   q.push({ ...cmd, _ts: Date.now() });
   saveQueue(u, q);
 }
-function clearQueue(u) { saveQueue(u, []); }
+function clearQueue(u) {
+  saveQueue(u, []);
+}
 function bumpPoll(u) {
   try { writeFileSync(pollFile(u), String(Date.now())); } catch(_) {}
 }
 function lastPoll(u) {
   try { return parseInt(readFileSync(pollFile(u), 'utf8') || '0'); } catch(_) { return 0; }
 }
-function isOnline(u) { return (Date.now() - lastPoll(u)) < 7000; }
+function isOnline(u) {
+  return (Date.now() - lastPoll(u)) < 7000;
+}
 function saveOutput(u, arr) {
   try { writeFileSync(outFile(u), JSON.stringify({ outputs: arr, ts: Date.now() })); } catch(_) {}
 }
@@ -46,6 +49,7 @@ function getOutputData(u) {
   } catch(_) {}
   return { outputs: [] };
 }
+
 function pushLog(e) {
   try {
     let l = existsSync(LOG_FILE) ? JSON.parse(readFileSync(LOG_FILE, 'utf8')) : [];
@@ -75,6 +79,7 @@ const VALID = new Set([
   'create_spawn', 'set_value', 'create_value', 'create_remote', 'batch_remote',
   'print_output', 'get_output', 'read_workspace', 'workspace_data',
   'set_game_info', 'modify_humanoid', 'batch_commands',
+  // NEW V8.2+ actions
   'create_wedge', 'create_cylinder', 'create_sphere', 'create_truss',
   'move_object', 'rotate_object', 'resize_object',
   'place_decal', 'place_texture', 'create_trail', 'create_beam',
@@ -96,18 +101,7 @@ export default async function handler(req, res) {
   // ── GET ─────────────────────────────────────────────────────
   if (req.method === 'GET') {
 
-    // ── Version check endpoint (for plugin update detection) ──
-    if (req.query.version === '1') {
-      return res.status(200).json({
-        ok: true,
-        required_plugin_version: REQUIRED_PLUGIN_VERSION,
-        web_version: WEB_VERSION,
-        update_url: 'https://discord.gg/HuGtbRvD',
-        changelog: `V10.2: Version sync, improved JSON executor, UI fixes`,
-      });
-    }
-
-    // ── Proxy userinfo ─────────────────────────────────────────
+    // Proxy userinfo (plugin cannot call roblox.com directly)
     if (req.query.userinfo === '1') {
       const uid = parseInt(req.query.userId || '0');
       if (!uid || uid <= 0) return res.status(400).json({ ok: false, error: 'Invalid userId' });
@@ -129,7 +123,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // ── Check plugin online status ─────────────────────────────
+    // Check plugin online status (web polling — do NOT bump poll here)
     if (req.query.check) {
       const u = san(req.query.user || '');
       return res.status(200).json({
@@ -137,8 +131,6 @@ export default async function handler(req, res) {
         _lastPoll: lastPoll(u),
         user: u,
         queueLength: getQueue(u).length,
-        required_plugin_version: REQUIRED_PLUGIN_VERSION,
-        web_version: WEB_VERSION,
       });
     }
 
@@ -155,42 +147,32 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: false, error: 'No workspace data' });
     }
 
-    // ── Plugin polling — bump poll AND return queue ─────────────
+    // Plugin polling — bump poll AND return queue
     const pu = san(req.query.user || req.query.u || '');
     if (!pu) return res.status(400).json({ error: 'user required', queue: [] });
     bumpPoll(pu);
     const q = getQueue(pu);
-    return res.status(200).json({
-      queue: q,
-      count: q.length,
-      required_plugin_version: REQUIRED_PLUGIN_VERSION,
-      web_version: WEB_VERSION,
-    });
+    return res.status(200).json({ queue: q, count: q.length });
   }
 
   // ── POST ────────────────────────────────────────────────────
   if (req.method === 'POST') {
     const body = req.body || {};
 
-    // ── Reset queue ────────────────────────────────────────────
+    // Reset queue
     if (body.type === 'reset' || (body.action === 'none' && body.type)) {
       const u = san(body._user || body.user || '');
       if (u) clearQueue(u);
       return res.status(200).json({ status: 'ok' });
     }
 
-    // ── Status check ───────────────────────────────────────────
+    // Status check
     if (body.type === 'status') {
       const u = san(body.user || '');
-      return res.status(200).json({
-        connected: isOnline(u),
-        lastPoll: lastPoll(u),
-        required_plugin_version: REQUIRED_PLUGIN_VERSION,
-        web_version: WEB_VERSION,
-      });
+      return res.status(200).json({ connected: isOnline(u), lastPoll: lastPoll(u) });
     }
 
-    // ── Workspace data from plugin ─────────────────────────────
+    // Workspace data from plugin
     if (body.action === 'workspace_data') {
       const u = san(body._user || '');
       pushLog({ action: 'workspace_read', user: u });
@@ -198,14 +180,14 @@ export default async function handler(req, res) {
       return res.status(200).json({ status: 'ok' });
     }
 
-    // ── Output data from plugin ────────────────────────────────
+    // Output data from plugin
     if (body.action === 'output_data') {
       const u = san(body._user || '');
       saveOutput(u, body.outputs || []);
       return res.status(200).json({ status: 'ok' });
     }
 
-    // ── Get logs ───────────────────────────────────────────────
+    // Get logs
     if (body.type === 'get_logs') {
       try {
         return res.status(200).json({
@@ -214,7 +196,7 @@ export default async function handler(req, res) {
       } catch(_) { return res.status(200).json({ logs: [] }); }
     }
 
-    // ── Get history ────────────────────────────────────────────
+    // Get history
     if (body.type === 'get_history') {
       try {
         return res.status(200).json({
@@ -223,7 +205,7 @@ export default async function handler(req, res) {
       } catch(_) { return res.status(200).json({ history: [] }); }
     }
 
-    // ── Batch commands ─────────────────────────────────────────
+    // Batch commands
     if (body.type === 'batch_commands' && Array.isArray(body.commands)) {
       const target = san(body.target || body._target_user || '');
       if (!target) return res.status(400).json({ error: 'target required' });
@@ -244,68 +226,10 @@ export default async function handler(req, res) {
         pushed,
         pluginConnected: isOnline(target),
         queueLength: getQueue(target).length,
-        required_plugin_version: REQUIRED_PLUGIN_VERSION,
       });
     }
 
-    // ── JSON executor — parse JSON blocks from AI response ──────
-    // Allows web to POST raw AI response text containing ```json blocks
-    if (body.type === 'execute_json' && body.text) {
-      const target = san(body._target_user || body._user || '');
-      if (!target) return res.status(400).json({ error: '_target_user required' });
-      
-      // Parse all ```json ... ``` blocks from text
-      const jsonBlockRe = /```json\s*([\s\S]*?)```/g;
-      let match;
-      let pushed = 0;
-      const errors = [];
-      
-      while ((match = jsonBlockRe.exec(body.text)) !== null) {
-        try {
-          const parsed = JSON.parse(match[1].trim());
-          const cmds = Array.isArray(parsed) ? parsed : [parsed];
-          
-          for (const cmd of cmds) {
-            if (!cmd.action) continue;
-            
-            // Handle batch_commands specially
-            if (cmd.action === 'batch_commands' && Array.isArray(cmd.commands)) {
-              for (const subCmd of cmd.commands) {
-                if (!subCmd.action || !VALID.has(subCmd.action)) continue;
-                pushQueue(target, {
-                  ...subCmd,
-                  _user: String(body._user || 'web').substring(0, 50),
-                  _target_user: target,
-                  _apiKey: undefined,
-                });
-                pushed++;
-              }
-            } else if (VALID.has(cmd.action)) {
-              pushQueue(target, {
-                ...cmd,
-                _user: String(body._user || 'web').substring(0, 50),
-                _target_user: target,
-                _apiKey: undefined,
-              });
-              pushed++;
-            }
-          }
-        } catch(e) {
-          errors.push(e.message);
-        }
-      }
-      
-      pushLog({ action: 'execute_json', user: body._user || 'web', target, count: pushed });
-      return res.status(200).json({
-        status: 'ok',
-        pushed,
-        errors,
-        pluginConnected: isOnline(target),
-        queueLength: getQueue(target).length,
-      });
-    }
-
-    // ── Single command ──────────────────────────────────────────
+    // Single command
     if (body.action) {
       if (!VALID.has(body.action)) {
         return res.status(400).json({ error: 'Invalid action: ' + body.action });
@@ -337,11 +261,10 @@ export default async function handler(req, res) {
         target,
         pluginConnected: isOnline(target),
         queueLength: getQueue(target).length,
-        required_plugin_version: REQUIRED_PLUGIN_VERSION,
       });
     }
 
-    // ── Prompt log ─────────────────────────────────────────────
+    // Prompt log
     if (body.type === 'prompt') {
       pushLog({ action: 'prompt', user: body.user || 'web', msg: (body.msg || '').substring(0, 100) });
       return res.status(200).json({ status: 'ok' });
