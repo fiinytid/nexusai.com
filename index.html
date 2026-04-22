@@ -1045,15 +1045,57 @@ async function autoInjectToStudio(aiResponse,userPrompt){
   var summary=[];var username=SESSION?SESSION.user.username.toLowerCase():'';
 
   // 1) Send JSON commands first (create_remote, create_part, etc.)
-  // These execute DIRECTLY in Studio — plugin handles them
-  var jsonCmds=parseJsonBlocks(aiResponse);
-  if(jsonCmds.length>0){
-    try{
-      var r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({type:'batch_commands',commands:jsonCmds,_user:SESSION?SESSION.user.username:'web',_target_user:username,target:username})});
-      if(r.ok){var rd=await r.json();if(rd.pushed>0){var cmds2=jsonCmds;cmds2.forEach(function(cmd){var nm=cmd.name||'';var par=cmd.parent||'ReplicatedStorage';var a2=cmd.action||'';if(a2==='create_remote'){summary.push('+'+(cmd.remote_type||'RemoteEvent')+': '+nm+' → '+par);}else if(a2==='create_part'){summary.push('+Part: '+(nm||'Part')+' → workspace');}else if(a2==='create_folder'){summary.push('+Folder: '+nm+' → '+par);}else if(a2==='create_gui'){summary.push('+ScreenGui: '+nm+' created in Studio');}else if(a2==='set_lighting'){summary.push('+Lighting updated');}else if(a2==='create_instance'){summary.push('+'+(cmd.class_name||cmd.class||'Instance')+': '+nm);}else if(a2==='batch_commands'){(cmd.commands||[]).forEach(function(c2){var n2=c2.name||'';var a3=c2.action||'';if(a3==='create_remote')summary.push('+'+(c2.remote_type||'RemoteEvent')+': '+n2+' → '+(c2.parent||'ReplicatedStorage'));else if(a3==='create_part')summary.push('+Part: '+n2);else if(a3==='create_folder')summary.push('+Folder: '+n2);else if(a3==='create_gui')summary.push('+ScreenGui: '+n2);else if(a3!=='none')summary.push('+'+a3+(n2?': '+n2:''));});}else if(a2!=='none'&&a2!=='batch_commands'){summary.push('+'+a2+(nm?': '+nm:''));}});}}
-    }catch(e){console.warn('JSON inject:',e.message);}
+// These execute DIRECTLY in Studio — plugin handles them
+var jsonCmds = parseJsonBlocks(aiResponse);
+if (jsonCmds.length > 0) {
+  try {
+    var r = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'batch_commands', commands: jsonCmds, _user: SESSION ? SESSION.user.username : 'web', _target_user: username, target: username })
+    });
+    
+    if (r.ok) {
+      var rd = await r.json();
+      if (rd.pushed > 0) {
+        var cmds2 = jsonCmds;
+        cmds2.forEach(function(cmd) {
+          var nm = cmd.name || '';
+          var par = cmd.parent || 'ReplicatedStorage';
+          var a2 = cmd.action || '';
+          
+          if (a2 === 'create_remote') {
+            summary.push('+' + (cmd.remote_type || 'RemoteEvent') + ': ' + nm + ' → ' + par);
+          } else if (a2 === 'create_part') {
+            summary.push('+Part: ' + (nm || 'Part') + ' → workspace');
+          } else if (a2 === 'create_folder') {
+            summary.push('+Folder: ' + nm + ' → ' + par);
+          } else if (a2 === 'create_gui') {
+            summary.push('+ScreenGui: ' + nm + ' created in Studio');
+          } else if (a2 === 'set_lighting') {
+            summary.push('+Lighting updated');
+          } else if (a2 === 'create_instance') {
+            summary.push('+' + (cmd.class_name || cmd.class || 'Instance') + ': ' + nm);
+          } else if (a2 === 'batch_commands') {
+            (cmd.commands || []).forEach(function(c2) {
+              var n2 = c2.name || '';
+              var a3 = c2.action || '';
+              if (a3 === 'create_remote') summary.push('+' + (c2.remote_type || 'RemoteEvent') + ': ' + n2 + ' → ' + (c2.parent || 'ReplicatedStorage'));
+              else if (a3 === 'create_part') summary.push('+Part: ' + n2);
+              else if (a3 === 'create_folder') summary.push('+Folder: ' + n2);
+              else if (a3 === 'create_gui') summary.push('+ScreenGui: ' + n2);
+              else if (a3 !== 'none') summary.push('+' + a3 + (n2 ? ': ' + n2 : ''));
+            });
+          } else if (a2 !== 'none' && a2 !== 'batch_commands') {
+            summary.push('+' + a2 + (nm ? ': ' + nm : ''));
+          }
+        });
+      }
+    }
+  } catch(e) {
+    console.warn('JSON inject:', e.message);
   }
+}
 
   // 2) Send Lua scripts
   var blocks=parseLuaBlocks(aiResponse);
