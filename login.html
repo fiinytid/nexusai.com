@@ -372,7 +372,7 @@ async function finishLogin(gUser, robloxUser){
   if(lt) lt.textContent = 'Memuat data akun @' + robloxUser.username + '...';
 
   var username = robloxUser.username;
-  var isOwner = OWNER_USERS.indexOf(username) !== -1 || OWNER_USERS.indexOf(username.toLowerCase()) !== -1;
+  var isOwner = OWNER_USERS.chatsOf(username) !== -1 || OWNER_USERS.chatsOf(username.toLowerCase()) !== -1;
 
   // Load existing data from server (persistent per Roblox account)
   var serverData = await loadUserDataFromServer(username);
