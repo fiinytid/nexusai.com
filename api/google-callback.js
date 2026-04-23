@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const base = (process.env.PRODUCTION_URL || 'https://nexusai-com.vercel.app')
+    const base = (process.env.PRODUCTION_URL || 'https://nexusai-roblox.vercel.app')
       .replace(/\/api\/google-callback\/?$/, '').replace(/\/$/, '');
     const redirectUri = base + '/api/google-callback';
 
