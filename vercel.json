@@ -5,7 +5,7 @@
     { "source": "/login",             "destination": "/login.html" },
     { "source": "/dashboard",         "destination": "/dashboard.html" },
     { "source": "/payment",           "destination": "/payment.html" },
-    { "source": "/setup-discord-app", "destination": "/discord-app.html" },
+    { "source": "/setup-discord-app", "destination": "/setup-discord-app.html" },
     { "source": "/privacy",           "destination": "/privacy.html" },
     { "source": "/terms",             "destination": "/terms.html" },
     { "source": "/admin-panel",       "destination": "/admin-panel.html" },
