@@ -8,7 +8,7 @@
     { "source": "/setup-discord-app", "destination": "/discord-app.html" },
     { "source": "/privacy",           "destination": "/privacy.html" },
     { "source": "/terms",             "destination": "/terms.html" },
-    { "source": "/admin-panel",       "destination": "/actions.html" },
+    { "source": "/admin-panel",       "destination": "/admin-panel.html" },
     { "source": "/inbox",             "destination": "/inbox.html" }
   ],
   "headers": [
