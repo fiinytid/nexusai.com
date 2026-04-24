@@ -887,17 +887,46 @@ function selGuiModel(el){
 }
 
 // ═══ MESSAGE RENDERING ═══
-var renderer2=new marked.Renderer();
-renderer2.code=function(code,language){
-  var cs=typeof code==='object'?(code.text||''):(code||'');var lang=typeof code==='object'?(code.lang||language||'lua'):(language||'lua');
-  var hl=cs.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  try{if(lang&&hljs.getLanguage(lang))hl=hljs.highlight(cs,{language:lang}).value;else hl=hljs.highlightAuto(cs).value;}catch(e){}
-  var id='cb'+Math.random().toString(36).slice(2,8);
-  return'<div class="code-block-wrap" id="'+id+'"><div class="code-btns">'+
-    '<button class="cbtn cp" onclick="copyCode(''+id+'')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>'+
-    '<button class="cbtn dl" onclick="downloadCode(''+id+'',''+lang+'')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>.'+lang+'</button>'+
-    '<button class="cbtn ed" onclick="toggleEditCode(''+id+'')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'+
-  '</div><pre><code class="hljs language-'+lang+'" id="code_'+id+'" contenteditable="false" spellcheck="false">'+hl+'</code></pre></div>';
+var renderer2 = new marked.Renderer();
+
+renderer2.code = function(code, language) {
+    // 1. Ekstraksi konten kode dan bahasa (mendukung objek marked baru atau string lama)
+    var cs = typeof code === 'object' ? (code.text || '') : (code || '');
+    var lang = typeof code === 'object' ? (code.lang || language || 'lua') : (language || 'lua');
+
+    // 2. Escape HTML untuk mencegah XSS jika highlight gagal
+    var hl = cs.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    // 3. Syntax Highlighting menggunakan highlight.js
+    try {
+        if (lang && hljs.getLanguage(lang)) {
+            hl = hljs.highlight(cs, { language: lang }).value;
+        } else {
+            hl = hljs.highlightAuto(cs).value;
+        }
+    } catch (e) {
+        console.error("Highlight error:", e);
+    }
+
+    // 4. Generate ID unik untuk elemen kode
+    var id = 'cb' + Math.random().toString(36).slice(2, 8);
+
+    // 5. Return HTML dengan perbaikan tanda kutip pada atribut onclick
+    return '<div class="code-block-wrap" id="' + id + '">' +
+        '<div class="code-btns">' +
+            // Gunakan tanda kutip ganda di luar dan kutip tunggal di dalam untuk fungsi JS
+            '<button class="cbtn cp" onclick="copyCode(\'' + id + '\')">' +
+                '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy' +
+            '</button>' +
+            '<button class="cbtn dl" onclick="downloadCode(\'' + id + '\',\'' + lang + '\')">' +
+                '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> .' + lang +
+            '</button>' +
+            '<button class="cbtn ed" onclick="toggleEditCode(\'' + id + '\')">' +
+                '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit' +
+            '</button>' +
+        '</div>' +
+        '<pre><code class="hljs language-' + lang + '" id="code_' + id + '" contenteditable="false" spellcheck="false">' + hl + '</code></pre>' +
+    '</div>';
 };
 renderer2.link=function(href,title,text){
   var h=typeof href==='object'?href.href:href;var tx=typeof href==='object'?(href.text||text||''):(text||'');
