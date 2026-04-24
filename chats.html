@@ -959,24 +959,46 @@ function isLongCode(text) {
   return hasCodePattern && lineCount > 5;
 }
 
-function mkMsg(m){
-  var d=document.createElement('div');d.className='msg '+m.role;
-  if(m.role==='user'){
-    var content=m.content||'',contentHtml='';
-    if(isLongCode(content)){
-      var h=content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      try{h=hljs.highlight(content,{language:'lua'}).value;}catch(e){}
-      var cid='ucb'+Math.random().toString(36).slice(2,8);
-      contentHtml='<div class="user-code-wrap"><div class="user-code-header"><span>Lua Script ('+content.split('\n').length+' lines)</span><button onclick="navigator.clipboard.writeText(document.getElementById(''+cid+'').innerText).then(function(){toast('Copied!')})" style="background:none;border:none;color:var(--cyan);font-size:9px;cursor:pointer;">Copy</button></div><div class="user-code-inner"><pre style="margin:0"><code class="hljs language-lua" id="'+cid+'" style="font-size:10.5px;border:none;border-radius:0">'+h+'</code></pre></div></div>';
-    }else{contentHtml=content?esc(content).replace(/n/g,'<br>'):''; }
-    var imgs=(m.attachments||[]).filter(function(a){return a.type==='image';}).map(function(a){return'<img style="max-width:180px;max-height:140px;border-radius:6px;margin-top:6px;border:1px solid var(--b);display:block;cursor:pointer;" src="'+a.dataUrl+'" onclick="viewScreenshot(this.src)" alt="">';}).join('');
-    var files=(m.attachments||[]).filter(function(a){return a.type==='file';}).map(function(a){return'<div class="user-file-badge"><svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+esc(a.name)+'</div>';}).join('');
-    d.innerHTML='<div class="av"><img src="'+(SESSION?esc(SESSION.user.avatar||'nexusai.png'):'nexusai.png')+'" alt="" onerror="this.src='nexusai.png'" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);"></div>'+
-      '<div class="mb-wrap"><div class="msg-sender">'+esc(SESSION?SESSION.user.username:'You')+'<span style="font-size:9px;color:var(--dim);">'+ago(m.time)+'</span></div>'+
-      '<div class="bubble">'+contentHtml+imgs+files+'</div>'+
-      '<div class="msg-acts"><button class="mab" onclick="navigator.clipboard.writeText(this.dataset.t).then(function(){toast('Copied!')})" data-t="'+escA(content||'')+'"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>'+
+function mkMsg(m) {
+  var d = document.createElement('div');
+  d.className = 'msg ' + m.role;
+
+  if (m.role === 'user') {
+    var content = m.content || '', contentHtml = '';
+    
+    if (isLongCode(content)) {
+      var h = content.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      try { h = hljs.highlight(content, { language: 'lua' }).value; } catch (e) { }
+      
+      var cid = 'ucb' + Math.random().toString(36).slice(2, 8);
+      
+      // PERBAIKAN: Menggunakan backslash (\') untuk tanda kutip di dalam onclick
+      contentHtml = '<div class="user-code-wrap"><div class="user-code-header">' +
+        '<span>Lua Script (' + content.split('\n').length + ' lines)</span>' +
+        '<button onclick="navigator.clipboard.writeText(document.getElementById(\'' + cid + '\').innerText).then(function(){toast(\'Copied!\')})" style="background:none;border:none;color:var(--cyan);font-size:9px;cursor:pointer;">Copy</button>' +
+        '</div><div class="user-code-inner"><pre style="margin:0"><code class="hljs language-lua" id="' + cid + '" style="font-size:10.5px;border:none;border-radius:0">' + h + '</code></pre></div></div>';
+    
+    } else {
+      // PERBAIKAN: Gunakan /\n/g (dengan backslash) agar baris baru berubah jadi <br>
+      contentHtml = content ? esc(content).replace(/\n/g, '<br>') : '';
+    }
+
+    // Render Lampiran (Gambar & File)
+    var imgs = (m.attachments || []).filter(function(a) { return a.type === 'image'; }).map(function(a) {
+      return '<img style="max-width:180px;max-height:140px;border-radius:6px;margin-top:6px;border:1px solid var(--b);display:block;cursor:pointer;" src="' + a.dataUrl + '" onclick="viewScreenshot(this.src)" alt="">';
+    }).join('');
+
+    var files = (m.attachments || []).filter(function(a) { return a.type === 'file'; }).map(function(a) {
+      return '<div class="user-file-badge"><svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' + esc(a.name) + '</div>';
+    }).join('');
+
+    // Render HTML Utama
+    d.innerHTML = '<div class="av"><img src="' + (typeof SESSION !== 'undefined' && SESSION ? esc(SESSION.user.avatar || 'nexusai.png') : 'nexusai.png') + '" alt="" onerror="this.src=\'nexusai.png\'" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--cyan2);"></div>' +
+      '<div class="mb-wrap"><div class="msg-sender">' + esc(typeof SESSION !== 'undefined' && SESSION ? SESSION.user.username : 'You') + '<span style="font-size:9px;color:var(--dim);">' + (typeof ago === 'function' ? ago(m.time) : '') + '</span></div>' +
+      '<div class="bubble">' + contentHtml + imgs + files + '</div>' +
+      '<div class="msg-acts"><button class="mab" onclick="navigator.clipboard.writeText(this.dataset.t).then(function(){toast(\'Copied!\')})" data-t="' + (typeof escA === 'function' ? escA(content) : '') + '"><svg viewBox="0 0 24 24" width="12" height="12"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy</button></div>' +
       '</div>';
-  }else{
+  } else {
     var mid='msg'+Math.random().toString(36).slice(2,8);d.id=mid;
     var bh='';
     if(m.studioInjected&&m.injectSummary){
