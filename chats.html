@@ -944,9 +944,19 @@ function renderMsgs(){
   a.scrollTop=a.scrollHeight;
 }
 
-function isLongCode(text){
-  if(!text||text.length<150)return false;
-  return /locals+w+s*=|functions+w+s*(|game:|workspace:|requires*(|:GetService(|Instance.new(/.test(text)&&(text.match(/\n/g)||[]).length>5;
+function isLongCode(text) {
+  // 1. Validasi awal: Jika teks kosong atau kurang dari 150 karakter, anggap bukan kode panjang
+  if (!text || text.length < 150) return false;
+
+  // 2. Perbaikan Regex: Menggunakan backslash \ sebelum karakter khusus ( ( , [ , . )
+  // Kita mencari pola khas Luau: local, function, game:, workspace:, require(, GetService, atau Instance.new
+  var codePattern = /local\s+\w+\s*=|function\s+\w+\s*\(|game:|workspace:|require\s*\(|:GetService\(|Instance\.new\(/;
+
+  // 3. Cek apakah pola cocok DAN memiliki lebih dari 5 baris baru (\n)
+  var hasCodePattern = codePattern.test(text);
+  var lineCount = (text.match(/\n/g) || []).length;
+
+  return hasCodePattern && lineCount > 5;
 }
 
 function mkMsg(m){
