@@ -799,14 +799,54 @@ function renderConvs(){
     '</div>';
   }).join('');
 }
-async function setConvTitle(id){
-  var c=S.convs.find(function(x){return x.id===id;});if(!c||c.msgs.length<2)return;
-  var fu=c.msgs.find(function(m){return m.role==='user';});if(!fu)return;
-  var lower=(fu.content||'').toLowerCase();
-  var tm=[[/loading.?screen/,'Loading Screen'],[/shop.?gui|toko/,'Shop GUI'],[/leaderboard/,'Leaderboard'],[/admin/,'Admin System'],[/datastore/,'DataStore'],[/tycoon/,'Tycoon'],[/main.?menu/,'Main Menu'],[/weapon|sword/,'Weapon System'],[/coin|money/,'Economy System'],[/hallo|hello|hai|hey/,curLang==='id'?'Salam':'Welcome']];
-  var title=null;for(var i=0;i<tm.length;i++){if(tm[i][0].test(lower)){title=tm[i][1];break;}}
-  if(!title)title=fu.content.replace([^a-zA-Z0-9s]/g,' ').trim().substring(0,40)||t('nc');
-  c.title=title;renderConvs();
+async function setConvTitle(id) {
+  // 1. Cari percakapan berdasarkan ID
+  var c = S.convs.find(function(x) { return x.id === id; });
+  
+  // 2. Validasi: Jika tidak ada atau pesan masih terlalu sedikit, batalkan
+  if (!c || !c.msgs || c.msgs.length < 2) return;
+
+  // 3. Cari pesan pertama dari user untuk dijadikan acuan judul
+  var fu = c.msgs.find(function(m) { return m.role === 'user'; });
+  if (!fu) return;
+
+  var lower = (fu.content || '').toLowerCase();
+  
+  // 4. Daftar pemetaan kata kunci ke Judul yang lebih rapi
+  var tm = [
+    [/loading.?screen/, 'Loading Screen'],
+    [/shop.?gui|toko/, 'Shop GUI'],
+    [/leaderboard/, 'Leaderboard'],
+    [/admin/, 'Admin System'],
+    [/datastore/, 'DataStore'],
+    [/tycoon/, 'Tycoon'],
+    [/main.?menu/, 'Main Menu'],
+    [/weapon|sword/, 'Weapon System'],
+    [/coin|money/, 'Economy System'],
+    [/hallo|hello|hai|hey/, (typeof curLang !== 'undefined' && curLang === 'id') ? 'Salam' : 'Welcome']
+  ];
+
+  var title = null;
+  
+  // 5. Cek apakah ada kata kunci yang cocok
+  for (var i = 0; i < tm.length; i++) {
+    if (tm[i][0].test(lower)) {
+      title = tm[i][1];
+      break;
+    }
+  }
+
+  // 6. Jika tidak ada keyword, bersihkan teks user (Perbaikan Error ada di sini)
+  if (!title) {
+    title = fu.content
+      .replace(/[^a-zA-Z0-9\s]/g, ' ') // Menambahkan slash / / dan memperbaiki \s
+      .trim()
+      .substring(0, 40) || (typeof t === 'function' ? t('nc') : 'New Chat');
+  }
+
+  // 7. Simpan judul baru dan render ulang UI
+  c.title = title;
+  if (typeof renderConvs === 'function') renderConvs();
 }
 
 // ═══ MODEL SELECTOR ═══
