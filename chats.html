@@ -1916,25 +1916,25 @@ document.getElementById('inp').addEventListener('input', function() {
     saveDraft();
 });
 
-// Perbaikan: gunakan e.shiftKey
 document.getElementById('inp').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey) {   // perbaikan: shiftKey
         e.preventDefault();
         send();
     }
 });
-
-// Perbaikan utama: tutup event listener dengan });
+  
+// Perbaikan utama: event listener untuk klik
 window.addEventListener('click', function(e) {
     var md5 = document.getElementById('md0');
     if (md5 && !md5.contains(e.target) && !document.getElementById('inpModelBtn').contains(e.target)) {
-        md5.classList.remove('opened');
+        md5.classList.remove('opened');   // perbaikan: classList
     }
-    var gmd5 = document.getElementById('gui000');
+    
+    var gmd5 = document.getElementById('guiModelBtn');  // perbaikan: ambil element, bukan collection
     if (gmd5 && !gmd5.contains(e.target) && !document.getElementById('guiModelBtn').contains(e.target)) {
         gmd5.classList.remove('opened');
     }
-}); // <-- ini yang kurang!
+});  // <-- tutup event listener dengan ); dan kurung kurawal
 
 // Panggil initApp setelah semua event listener terdaftar
 initApp();
