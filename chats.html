@@ -1565,40 +1565,57 @@ async function send(){
     }
     aiText='**'+(curLang==='id'?'Gagal mendapatkan respons':'Failed to get response')+'**\n\n'+e.message+'\n\n'+(curLang==='id'?'💡 Coba ganti model atau periksa koneksi internet.':'💡 Try switching the model or check your connection.');
   }
-  rmThinking();
-  if(!isOwner()&&!isAdmin()&&aiText&&!aiText.startsWith('**Gagal')&&!aiText.startsWith('**Failed')){
-    S.credits=Math.max(-10,S.credits-(S.model.cost||1));
-    updateCreds();
-  }
-  var injected = null;
-  var displayText = aItext;
+  // ... bagian sebelumnya tetap sama hingga rmThinking()
+rmThinking();
 
-if (typeof connected !== 'undefined' && connected && aItext && aItext.startsWith("***")) {
-    injected = await autoInjectToStudio(aItext, lastUserPrompt);
+// Potongan kredit (tidak berubah)
+if(!isOwner() && !isAdmin() && aiText && !aiText.startsWith('**Gagal') && !aiText.startsWith('**Failed')){
+    S.credits = Math.max(-10, S.credits - (S.model.cost || 1));
+    updateCreds();
+}
+
+// ========== PERBAIKAN MULAI DI SINI ==========
+var injected = null;
+var displayText = aiText;   // <-- FIX: gunakan aiText (bukan aItext)
+
+if (typeof connected !== 'undefined' && connected && aiText && aiText.startsWith("***")) {
+    injected = await autoInjectToStudio(aiText, lastUserPrompt);
     
-    // Hapus blok ```json ... ``` dan ```lua ... ``` dari teks yang ditampilkan ke user
-    displayText = aItext
+    // Hapus blok ```json ... ``` dan ```lua ... ```
+    displayText = aiText
         .replace(/```json[\s\S]*?```/g, '')
         .replace(/```lua[\s\S]*?```/g, '')
         .trim();
 
-    // Jika setelah strip tidak ada teks yang berarti, beri pesan default
     if (!displayText || displayText.length < 10) {
-        displayText = curLang === "id" ? 'Semua komponen telah berhasil dibuat dan dimasukkan ke Roblox Studio Anda.' : 'Done! All components have been created and injected into your Roblox Studio.';
+        displayText = curLang === "id"
+            ? 'Semua komponen telah berhasil dibuat dan dimasukkan ke Roblox Studio Anda.'
+            : 'Done! All components have been created and injected into your Roblox Studio.';
     }
 }
 
-var aiMsg = { role: 'ai', content: displayText, time: Date.now() };
+var aiMsg = {
+    role: 'ai',
+    content: displayText,
+    time: Date.now()
+};
 if (injected) aiMsg.injected = injected;
-cv.mes.push(aiMsg);
-  // Simpan full AI text (dengan JSON/Lua) untuk context percakapan berikutnya
-  var lastAiMsg=cv.msgs[cv.msgs.length-1];
-  lastAiMsg._rawContent=aiText; // untuk context AI, bukan untuk display
-  appendMsg(aiMsg);
-  S.gen=false;S.cancelCtrl=null;
-  if(sendBtn)sendBtn.classList.remove('hidden');if(cancelBtn)cancelBtn.classList.add('hidden');
-  saveS();
-}
+
+cv.msgs.push(aiMsg);   // <-- FIX: msgs (bukan mes)
+
+// Simpan full AI text (dengan JSON/Lua) untuk konteks percakapan berikutnya
+var lastAiMsg = cv.msgs[cv.msgs.length - 1];
+lastAiMsg._rawContent = aiText;
+
+appendMsg(aiMsg);
+
+S.gen = false;
+S.cancelCtrl = null;
+
+if(sendBtn) sendBtn.classList.remove('hidden');
+if(cancelBtn) cancelBtn.classList.add('hidden');
+
+saveS();
 
 // ─── ATTACHMENTS ───────────────────────────────────────────────────────────
 function handleFile(e){
