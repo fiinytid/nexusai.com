@@ -1902,23 +1902,41 @@ async function initApp(){
   }
 }
 
-// ─── EVENT LISTENERS ───────────────────────────────────────────────────────
-document.querySelectorAll('.ov').forEach(function(ov){
-  ov.addEventListener('click',function(e){if(e.target===ov)ov.classList.remove('show');});
-});
-document.getElementById('inp').addEventListener('input',function(){
-  this.style.height='auto';this.style.height=Math.min(this.scrollHeight,130)+'px';saveDraft();
-});
-document.getElementById('inp').addEventListener('keydown',function(e){
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}
-});
-window.addEventListener('click',function(e){
-  var mdd=document.getElementById('mDD');
-  if(mdd&&!mdd.contains(e.target)&&!document.getElementById('inpModelBtn').contains(e.target))mdd.classList.remove('open');
-  var gmdd=document.getElementById('guiMDD');
-  if(gmdd&&!gmdd.contains(e.target)&&!document.getElementById('guiModelBtn').contains(e.target))gmdd.classList.remove('open');
+// ========== EVENT LISTENERS ==========
+document.querySelectorAll('.ov').forEach(function(ov) {
+    ov.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
 });
 
+document.getElementById('inp').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.max(this.scrollHeight, 130) + 'px';
+    saveDraft();
+});
+
+// Perbaikan: gunakan e.shiftKey
+document.getElementById('inp').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        send();
+    }
+});
+
+// Perbaikan utama: tutup event listener dengan });
+window.addEventListener('click', function(e) {
+    var md5 = document.getElementById('md0');
+    if (md5 && !md5.contains(e.target) && !document.getElementById('inpModelBtn').contains(e.target)) {
+        md5.classList.remove('opened');
+    }
+    var gmd5 = document.getElementById('gui000');
+    if (gmd5 && !gmd5.contains(e.target) && !document.getElementById('guiModelBtn').contains(e.target)) {
+        gmd5.classList.remove('opened');
+    }
+}); // <-- ini yang kurang!
+
+// Panggil initApp setelah semua event listener terdaftar
 initApp();
   
 </script>
