@@ -611,22 +611,26 @@ var S={
 };
 
 // ─── COMPLETE MODEL LIST ───────────────────────────────────────────────────
+// AVAILABLE MODELS (aktif)
 var MODEL_LIST=[
-  {grp:'⚡ Gemini — Cepat & Hemat'},
+  {grp:'⚡ Google — Gemini Fast'},
   {id:'gemini-2.5-flash-lite',prov:'gemini',cost:1,label:'Gemini 2.5 Flash Lite',icon:'/icon/gemini.png',badge:'FAST'},
-  {id:'gemini-1.5-flash-latest',prov:'gemini',cost:1,label:'Gemini 1.5 Flash',icon:'/icon/gemini.png',badge:'FAST'},
   {id:'gemini-2.0-flash',prov:'gemini',cost:1,label:'Gemini 2.0 Flash',icon:'/icon/gemini.png',badge:'FAST'},
-  {grp:'🧠 Gemini — Cerdas'},
+  {id:'gemini-3-flash-preview',prov:'gemini',cost:3,label:'Gemini 3 Flash',icon:'/icon/gemini.png',badge:'NEW'},
+  {grp:'🧠 Google — Gemini Smart'},
   {id:'gemini-2.5-flash',prov:'gemini',cost:2,label:'Gemini 2.5 Flash',icon:'/icon/gemini.png',badge:'SMART'},
-  {id:'gemini-3-flash-preview',prov:'gemini',cost:4,label:'Gemini 3 Flash',icon:'/icon/gemini.png',badge:'PRO'},
-  {grp:'🔬 Gemini — Preview'},
   {id:'gemini-2.5-flash-preview-04-17',prov:'gemini',cost:2,label:'Gemini 2.5 Flash Preview',icon:'/icon/gemini.png'},
   {id:'gemini-2.5-pro-preview',prov:'gemini',cost:5,label:'Gemini 2.5 Pro Preview',icon:'/icon/gemini.png',badge:'BEST'},
-  {grp:'🤖 Claude / GPT / Grok (Soon)'},
+];
+// COMING SOON MODELS (terpisah — tidak ditampilkan di dropdown biasa)
+var MODEL_LIST_SOON=[
+  {grp:'🤖 Anthropic — Claude'},
   {id:'claude-haiku-4-5',prov:'claude',cost:3,label:'Claude Haiku 4.5',icon:'/icon/claude.png',soon:true},
   {id:'claude-sonnet-4-6',prov:'claude',cost:7,label:'Claude Sonnet 4.6',icon:'/icon/claude.png',soon:true},
+  {grp:'🌐 OpenAI & Grok'},
   {id:'gpt-4o-mini',prov:'openai',cost:3,label:'GPT-4o Mini',icon:'/icon/chatgpt.png',soon:true},
   {id:'x-ai/grok-3-mini-beta',prov:'openrouter',cost:3,label:'Grok 3 Mini',icon:'/icon/grok.png',soon:true},
+  {grp:'🔍 DeepSeek'},
   {id:'deepseek/deepseek-chat-v3-0324',prov:'openrouter',cost:2,label:'DeepSeek V3',icon:'',soon:true},
 ];
 
@@ -940,24 +944,33 @@ function updateModelUI(){
 }
 function buildModelDDHtml(){
   var html='';
+  // Available models
   MODEL_LIST.forEach(function(m){
     if(m.grp){html+='<div class="mg">'+esc(m.grp)+'</div>';return;}
     var isAct=m.id===S.model.id;
-    var cls='mo'+(isAct?' act':'')+(m.soon?' disabled':'');
-    var soonBadge=m.soon?'<span style="font-size:8px;color:var(--dim);margin-left:4px;">Soon</span>':'';
+    var cls='mo'+(isAct?' act':'');
     var badgeHtml='';
-    if(!m.soon&&m.badge){
-      var bc=m.badge==='FAST'?'f':m.badge==='BEST'||m.badge==='PRO'?'p':'s';
+    if(m.badge){
+      var bc=m.badge==='FAST'?'f':m.badge==='BEST'||m.badge==='NEW'?'p':'s';
       badgeHtml='<span class="mb '+bc+'">'+m.badge+'</span>';
-    }else if(!m.soon){
+    }else{
       badgeHtml='<span class="mb '+(m.cost<=1?'f':m.cost<=2?'s':'p')+'">'+m.cost+' CR</span>';
     }
     var iconHtml=m.icon?'<img src="'+m.icon+'" onerror="this.style.display=\'none\'" style="width:18px;height:18px;object-fit:contain;border-radius:3px;">':'<div style="width:18px;height:18px;border-radius:3px;background:rgba(0,229,255,.1);display:flex;align-items:center;justify-content:center;font-size:9px;">AI</div>';
-    var onclick2=m.soon?'':('onclick="selModel(\''+m.id+'\')"');
-    html+='<div class="'+cls+'" '+onclick2+'>'+
+    html+='<div class="'+cls+'" onclick="selModel(\''+m.id+'\')">' +
       '<div class="mo-icon">'+iconHtml+'</div>'+
-      '<div><div class="mo-n">'+esc(m.label||m.id)+soonBadge+'</div><div class="mo-s">'+esc(m.prov||'')+'</div></div>'+
+      '<div><div class="mo-n">'+esc(m.label||m.id)+'</div><div class="mo-s">'+esc(m.prov||'')+'</div></div>'+
       badgeHtml+'</div>';
+  });
+  // Coming soon section
+  html+='<div class="mg" style="color:rgba(255,45,107,.6);border-top:1px solid rgba(255,45,107,.15);">🔒 COMING SOON</div>';
+  MODEL_LIST_SOON.forEach(function(m){
+    if(m.grp){html+='<div class="mg" style="opacity:.5;">'+esc(m.grp)+'</div>';return;}
+    var iconHtml=m.icon?'<img src="'+m.icon+'" onerror="this.style.display=\'none\'" style="width:18px;height:18px;object-fit:contain;border-radius:3px;opacity:.4;">':'<div style="width:18px;height:18px;border-radius:3px;background:rgba(100,100,100,.1);opacity:.4;">AI</div>';
+    html+='<div class="mo disabled">'+
+      '<div class="mo-icon">'+iconHtml+'</div>'+
+      '<div><div class="mo-n" style="opacity:.4;">'+esc(m.label||m.id)+'<span style="font-size:8px;color:var(--pink);margin-left:5px;">Soon</span></div><div class="mo-s" style="opacity:.4;">'+esc(m.prov||'')+'</div></div>'+
+      '<span class="mb" style="opacity:.3;background:rgba(100,100,100,.1);color:#888;">'+m.cost+' CR</span></div>';
   });
   return html;
 }
@@ -1287,67 +1300,137 @@ function buildSysPrompt(){
   var isID=curLang==='id';
 
   var langRule=isID
-    ?'WAJIB: Selalu balas dalam Bahasa Indonesia yang profesional dan sopan. Gunakan "Anda" (bukan "kamu/lu") dan "saya" (bukan "gw"). Bersikaplah seperti expert Roblox developer profesional.'
-    :'REQUIRED: Always respond in English professionally. Use "you/I". Be like an expert Roblox developer.';
+    ?'WAJIB: Selalu balas dalam Bahasa Indonesia yang profesional dan sopan. Gunakan "Anda" dan "saya". Bersikaplah seperti expert Roblox developer profesional.'
+    :'REQUIRED: Always respond in English professionally. Be like an expert Roblox developer.';
 
-  var jsonActions=
-'── JSON ACTIONS (blok ```json) ──────────────────────────\n'+
-'inject_script   → {action,name,parent,script_type,code}\n'+
-'batch_inject    → {action,scripts:[{name,parent,script_type,code}]}\n'+
-'create_remote   → {action,name,parent,remote_type:"RemoteEvent|RemoteFunction"}\n'+
-'batch_remote    → {action,remotes:[{name,parent,remote_type}]}\n'+
-'create_part     → {action,name,color:[R,G,B],size:[x,y,z],position:[x,y,z],material,anchored}\n'+
-'batch_create    → {action,model_name,group_as_model:true,parts:[...]}\n'+
-'create_folder   → {action,name,parent,type:"Folder|Model"}\n'+
-'create_gui      → {action,name,parent,elements:[...],script_code}\n'+
-'create_npc      → {action,name,position:[x,y,z],display_name,health,walkspeed}\n'+
-'modify_part     → {action,name,parent,properties:{Color,Size,Position,Material}}\n'+
-'delete_object   → {action,name,parent}\n'+
-'set_lighting    → {action,brightness,ambient:[R,G,B],time,fog_end,shadows:bool}\n'+
-'create_sound    → {action,name,parent,sound_id,volume,looped}\n'+
-'create_fire     → {action,target,parent,size,heat,color1:[R,G,B]}\n'+
-'create_light    → {action,target,parent,light_type:"PointLight",brightness,range}\n'+
-'create_spawn    → {action,name,position:[x,y,z],color:[R,G,B]}\n'+
-'create_tool     → {action,name,parent,tooltip,script_code}\n'+
-'create_team     → {action,name,team_color,auto_assignable}\n'+
-'fill_terrain    → {action,position:[x,y,z],size:[w,h,d],material:"Grass|Water"}\n'+
-'weld_parts      → {action,part0,part1,parent}\n'+
-'run_lua         → {action,code}\n'+
-'batch_commands  → {action,commands:[...cmds]}\n'+
-'read_script     → {action,name,parent}\n'+
-'edit_script     → {action,name,parent,source,script_type}\n'+
-'list_scripts    → {action,parent}\n'+
-'scan_workspace  → {action}\n'+
-'print_output    → {action,message}';
+  var jsonFull=
+'──────────────── SEMUA JSON ACTIONS ────────────────\n'+
+'SCRIPTS:\n'+
+'  inject_script   → {action:"inject_script",name:"NamaScript",parent:"ServerScriptService",script_type:"Script|LocalScript|ModuleScript",code:"-- kode lua..."}\n'+
+'  batch_inject    → {action:"batch_inject",scripts:[{name,parent,script_type,code}]}\n'+
+'  edit_script     → {action:"edit_script",name,parent,source,script_type}\n'+
+'  read_script     → {action:"read_script",name,parent}\n'+
+'  list_scripts    → {action:"list_scripts",parent}\n'+
+'\n'+
+'REMOTES / INSTANCES:\n'+
+'  create_remote   → {action:"create_remote",name:"NamaRemote",parent:"ReplicatedStorage",remote_type:"RemoteEvent|RemoteFunction|BindableEvent"}\n'+
+'  batch_remote    → {action:"batch_remote",remotes:[{name,parent,remote_type}]}\n'+
+'  create_folder   → {action:"create_folder",name,parent,type:"Folder|Model"}\n'+
+'  create_instance → {action:"create_instance",class_name:"ClassName",name,parent,properties:{...}}\n'+
+'  create_value    → {action:"create_value",name,parent,value_type:"string|int|number|bool",value}\n'+
+'\n'+
+'PARTS / WORLD:\n'+
+'  create_part     → {action:"create_part",name,color:[R,G,B],size:[x,y,z],position:[x,y,z],material:"SmoothPlastic|Neon|Glass|...",anchored:true}\n'+
+'  create_wedge    → {action:"create_wedge",name,color:[R,G,B],size:[x,y,z],position:[x,y,z]}\n'+
+'  create_sphere   → {action:"create_sphere",name,color:[R,G,B],size:[r,r,r],position:[x,y,z]}\n'+
+'  create_cylinder → {action:"create_cylinder",name,color:[R,G,B],size:[x,y,z],position:[x,y,z]}\n'+
+'  batch_create    → {action:"batch_create",model_name:"NamaModel",group_as_model:true,parts:[{name,color,size,position,material}]}\n'+
+'  modify_part     → {action:"modify_part",name,parent,properties:{Color:[R,G,B],Size:[x,y,z],Position:[x,y,z],Material:"...",Transparency:0}}\n'+
+'  move_object     → {action:"move_object",name,parent,position:[x,y,z]}\n'+
+'  rotate_object   → {action:"rotate_object",name,parent,rotation:[rx,ry,rz]}\n'+
+'  resize_object   → {action:"resize_object",name,parent,size:[x,y,z]}\n'+
+'  delete_object   → {action:"delete_object",name,parent}\n'+
+'  delete_multiple → {action:"delete_multiple",names:[...],parent}\n'+
+'  group_parts     → {action:"group_parts",parts:[...],model_name}\n'+
+'  anchor_all      → {action:"anchor_all"}\n'+
+'  clone_object    → {action:"clone_object",name,parent,new_name,target_parent}\n'+
+'\n'+
+'GUI / UI:\n'+
+'  create_gui      → {action:"create_gui",name,parent:"StarterGui",elements:[{class:"Frame|TextLabel|TextButton|TextBox|ImageLabel|ScrollingFrame",name,properties:{Size:UDim2,Position:UDim2,BackgroundColor3:[R,G,B],Text:"...",TextColor3:[R,G,B],Font:"GothamBold",TextSize:14,BackgroundTransparency:0},children:[...]}],script_code:"-- LocalScript code"}\n'+
+'  create_billboard → {action:"create_billboard",name,parent,target:"PartName",size:[w,h],study_offset:[x,y,z],elements:[...]}\n'+
+'  create_surface_gui → {action:"create_surface_gui",name,parent,target,face:"Front|Top|Back",elements:[...]}\n'+
+'\n'+
+'LIGHTING / WORLD:\n'+
+'  set_lighting    → {action:"set_lighting",brightness:1,ambient:[R,G,B],outdoor_ambient:[R,G,B],time:14,fog_end:1000,fog_start:100,shadows:true,atmosphere:{density:0.3,haze:0.5,color:[R,G,B]}}\n'+
+'  create_sky      → {action:"create_sky",star_count:3000}\n'+
+'  fill_terrain    → {action:"fill_terrain",position:[x,y,z],size:[w,h,d],material:"Grass|Water|Rock|Sand"}\n'+
+'  clear_terrain   → {action:"clear_terrain"}\n'+
+'  change_baseplate → {action:"change_baseplate",color:[R,G,B],material:"SmoothPlastic",size:[x,y,z]}\n'+
+'\n'+
+'EFFECTS / SOUNDS:\n'+
+'  create_sound    → {action:"create_sound",name,parent,sound_id:"rbxassetid://123",volume:1,looped:false}\n'+
+'  create_fire     → {action:"create_fire",target,parent,size:5,heat:9,color1:[255,100,0],color2:[255,200,0]}\n'+
+'  create_smoke    → {action:"create_smoke",target,parent,color:[R,G,B],opacity:0.5}\n'+
+'  create_sparkles → {action:"create_sparkles",target,parent,color:[R,G,B]}\n'+
+'  create_particle → {action:"create_particle",target,parent,rate:20,color1:[R,G,B],color2:[R,G,B],lifetime:1}\n'+
+'  create_light    → {action:"create_light",target,parent,light_type:"PointLight|SpotLight|SurfaceLight",brightness:5,range:16,color:[R,G,B]}\n'+
+'  create_trail    → {action:"create_trail",target,parent,color1:[R,G,B],color2:[R,G,B],lifetime:0.5}\n'+
+'  add_effect      → {action:"add_effect",parent:"Lighting",effect_type:"BloomEffect|ColorCorrectionEffect",properties:{Intensity:1}}\n'+
+'\n'+
+'NPC / OBJECTS:\n'+
+'  create_npc      → {action:"create_npc",name,position:[x,y,z],display_name,health:100,walkspeed:16,color:[R,G,B]}\n'+
+'  create_spawn    → {action:"create_spawn",name,position:[x,y,z],color:[R,G,B]}\n'+
+'  create_tool     → {action:"create_tool",name,parent:"StarterPack",tooltip:"",can_drop:true,size:[x,y,z],color:[R,G,B],script_code:"-- tool script"}\n'+
+'  create_seat     → {action:"create_seat",name,parent,position:[x,y,z],is_vehicle:false}\n'+
+'  create_team     → {action:"create_team",name,team_color:"Bright red",auto_assignable:false}\n'+
+'  create_animation → {action:"create_animation",name,parent,animation_id:"rbxassetid://123"}\n'+
+'\n'+
+'PHYSICS / JOINTS:\n'+
+'  weld_parts      → {action:"weld_parts",part0:"NamaPart1",part1:"NamaPart2",parent}\n'+
+'  create_attachment → {action:"create_attachment",name,target,parent,position:[x,y,z]}\n'+
+'  create_proximity_prompt → {action:"create_proximity_prompt",target,parent,action_text:"Interact",object_text:"",hold_duration:0}\n'+
+'  create_click_detector → {action:"create_click_detector",target,parent,max_distance:32}\n'+
+'\n'+
+'MISC:\n'+
+'  scan_workspace  → {action:"scan_workspace"}\n'+
+'  print_output    → {action:"print_output",message:"test"}\n'+
+'  run_lua         → {action:"run_lua",code:"print(\\"hello\\")"}\n'+
+'  clear_workspace → {action:"clear_workspace"}\n'+
+'  batch_commands  → {action:"batch_commands",commands:[...semua action di atas...]}';
 
   var studioBlock=connected?(
-'STUDIO CONNECTED ✓ — JSON + Lua injection AKTIF!\n'+
+'STUDIO CONNECTED ✓ — JSON + Lua AUTO-INJECT AKTIF!\n'+
 '\n'+
-'ATURAN WAJIB SAAT STUDIO CONNECTED:\n'+
-'1. Gunakan ```json untuk create instance (Remote, Part, GUI, dll)\n'+
-'2. Gunakan ```lua untuk script dengan header WAJIB:\n'+
-'   -- name: NamaScript_Type\n'+
-'   -- parent: ServerScriptService\n'+
-'   -- script_type: Script / LocalScript / ModuleScript\n'+
-'3. JANGAN buat RemoteEvent di dalam Lua → pakai JSON create_remote\n'+
-'4. Urutan inject yang benar: ModuleScript → Script → LocalScript\n'+
-'5. Selalu buat folder/container dulu sebelum mengisi kontennya\n'+
-'6. Untuk sistem besar → pecah jadi beberapa file terpisah\n'+
+'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n'+
+'WAJIB IKUTI ATURAN INI SAAT STUDIO CONNECTED:\n'+
+'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n'+
 '\n'+
-jsonActions
+'🚫 DILARANG KERAS:\n'+
+'• JANGAN tampilkan blok ```json ke pengguna — sistem auto-inject akan memprosesnya di background!\n'+
+'• JANGAN tunjukkan technical details inject ke user\n'+
+'• JANGAN buat RemoteEvent/Function di dalam kode Lua — pakai JSON create_remote\n'+
+'\n'+
+'✅ YANG HARUS DILAKUKAN:\n'+
+'• Ketika user minta sesuatu (loading screen, GUI, sistem, dll):\n'+
+'  1. Output blok ```json berisi perintah inject (TIDAK ditampilkan ke user)\n'+
+'  2. Output blok ```lua berisi script yang harus diisi (TIDAK ditampilkan ke user)\n'+
+'  3. Berikan PENJELASAN SINGKAT & RAMAH ke user: apa saja yang telah dibuat,\n'+
+'     bagaimana menggunakannya, dan apa yang perlu dikonfigurasi\n'+
+'• Selalu ucapkan dengan bahasa natural apa saja yang sudah dimasukkan ke Studio\n'+
+'• Contoh respon yang benar: "✅ Berhasil! Saya telah membuat Loading Screen di ReplicatedFirst.\n'+
+'  Tampilannya berisi progress bar dengan animasi dan 5 tips acak. Anda bisa ubah warna\n'+
+'  di baris 12 dan tips di tabel TIPS_LIST."\n'+
+'\n'+
+'📋 FORMAT OUTPUT WAJIB:\n'+
+'• JSON inject → ```json [perintah action] ``` (auto-diproses, tidak tampil ke user)\n'+
+'• Script content → ```lua [kode lengkap dengan header] ``` (auto-diinject, tidak tampil)\n'+
+'• Penjelasan untuk user → teks biasa yang ramah dan informatif\n'+
+'\n'+
+'Header Lua WAJIB:\n'+
+'-- name: NamaScript_Client\n'+
+'-- parent: StarterGui\n'+
+'-- script_type: LocalScript\n'+
+'\n'+
+'Urutan inject: ModuleScript → Script → LocalScript\n'+
+'\n'+
+jsonFull
   ):(
 'STUDIO OFFLINE — Plugin belum terhubung.\n'+
-'Tulis kode Lua LENGKAP dalam blok ```lua dengan header:\n'+
+'Saat offline, tulis SEMUA kode Lua lengkap dalam blok ```lua dengan header:\n'+
 '-- name: NamaScript\n'+
 '-- parent: ServiceName\n'+
 '-- script_type: Script/LocalScript/ModuleScript\n'+
 '\n'+
-'Untuk sistem multi-file, output setiap file dalam blok ```lua terpisah.'
+'Untuk sistem multi-file, output setiap file dalam blok ```lua terpisah.\n'+
+'Sertakan komentar untuk memandu user meletakkan script di mana.\n'+
+'\n'+
+'JSON Actions reference (untuk ketika Studio terhubung):\n'+
+jsonFull
   );
 
   return [
     '╔══════════════════════════════════════════════════╗',
-    '║  NEXUS AI V10.4 — ROBLOX STUDIO EXPERT AI       ║',
+    '║  NEXUS AI — ROBLOX STUDIO EXPERT AI             ║',
     '╚══════════════════════════════════════════════════╝',
     'User   : "'+dn+'" (@'+un+') | Plan: '+S.plan+' | Credits: '+cr+' CR',
     'Studio : '+(connected?'✓ CONNECTED':'✗ OFFLINE')+' | '+now.toLocaleString(),
@@ -1355,43 +1438,50 @@ jsonActions
     '── BAHASA ───────────────────────────────────────────',
     langRule,
     '',
-    '── IDENTITAS ────────────────────────────────────────',
-    'Kamu adalah NEXUS AI V10.4 — AI spesialis Roblox Studio terbaik di dunia.',
-    'Keahlian utama: Lua/Luau, Roblox API lengkap, DataStore, GUI Design,',
+    '── IDENTITAS NEXUS AI ───────────────────────────────',
+    'Kamu adalah NEXUS AI — AI spesialis Roblox Studio nomor 1 di dunia.',
+    'Dibuat oleh NEXUS STUDIO (FIINYTID25).',
+    'Keahlian: Lua/Luau, Roblox API penuh, DataStore, GUI Design,',
     'Game Systems, NPC AI, Physics, Networking, Anti-Exploit, Monetisasi.',
     '',
     '── ATURAN KODE WAJIB ────────────────────────────────',
-    '1.  Kode SELALU LENGKAP 100% — JANGAN dipotong, JANGAN tulis "-- etc"',
-    '2.  Script 500+ baris = tetap tulis SEMUA tanpa singkatan',
-    '3.  Gunakan task.wait() bukan wait() (deprecated di Roblox)',
-    '4.  Gunakan task.spawn() untuk async operations',
-    '5.  Selalu pcall() untuk operasi yang bisa gagal (DataStore, HTTP, dll)',
-    '6.  Gunakan :WaitForChild() untuk assets yang mungkin belum ada',
+    '1.  Kode SELALU LENGKAP 100% — JANGAN dipotong atau tulis "-- etc / -- more code"',
+    '2.  Script 500+ baris = tetap tulis SEMUA tanpa singkatan apapun',
+    '3.  Gunakan task.wait() bukan wait() (wait() deprecated di Roblox modern)',
+    '4.  Gunakan task.spawn()/task.delay() untuk async operations',
+    '5.  Selalu pcall() untuk DataStore, HTTP, RemoteEvent yang berisiko',
+    '6.  Gunakan :WaitForChild(timeout) untuk assets yang mungkin belum ready',
     '7.  Header script WAJIB: -- name:, -- parent:, -- script_type:',
-    '8.  Nama script DESKRIPTIF: LoadingScreen_Client, ShopSystem_Server',
-    '9.  JANGAN sebutkan JSON/proses internal inject ke user',
-    '10. Beberapa file = output dalam blok kode TERPISAH dengan header',
-    '11. Services: pakai GetService() bukan game.ServiceName',
-    '12. Validate SEMUA input dari client di server (anti-exploit)',
-    '13. DataStore: selalu pcall + retry pattern untuk keamanan data',
-    '14. GUI: TweenService untuk animasi, bukan wait()',
-    '15. Jika perbaiki script → EDIT yang ada, jangan buat ulang dari nol',
+    '8.  Nama script DESKRIPTIF: LoadingScreen_Client, ShopSystem_Server, CoinModule',
+    '9.  Services: SELALU pakai game:GetService() bukan game.ServiceName',
+    '10. Validate SEMUA input dari client di server (penting anti-exploit!)',
+    '11. DataStore: selalu pcall + retry + yield pattern',
+    '12. GUI animasi: WAJIB pakai TweenService, JANGAN task.wait() untuk animasi',
+    '13. Jika debug/perbaiki → EDIT yang ada, jangan buat ulang dari nol',
+    '14. Untuk loading screen: LocalScript di ReplicatedFirst',
+    '15. Untuk server sistem: Script di ServerScriptService',
+    '16. Untuk shared modules: ModuleScript di ReplicatedStorage',
     '',
-    '── LUA BEST PRACTICES ───────────────────────────────',
-    '• RemoteEvent pattern: Server .OnServerEvent, Client :FireServer()',
-    '• DataStore: local ok,data = pcall(ds.GetAsync, ds, key)',
-    '• Tween: TweenService:Create(obj,TweenInfo.new(t,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{})',
-    '• NPC AI: PathfindingService dengan async waypoints',
-    '• Collections: CollectionService:GetTagged() untuk mass operations',
-    '• Cleanup: script.Destroying:Connect() untuk cleanup connections',
-    '• Type hints: --!strict mode untuk kode yang lebih aman',
+    '── ROBLOX LUA BEST PRACTICES ────────────────────────',
+    '• RemoteEvent: Server .OnServerEvent:Connect(func), Client :FireServer(data)',
+    '• RemoteFunction: Server .OnServerInvoke = func, Client :InvokeServer()',
+    '• DataStore pattern:',
+    '  local ok, data = pcall(store.GetAsync, store, key)',
+    '  if not ok then task.wait(1); ok, data = pcall(...) end',
+    '• Tween: TweenService:Create(obj, TweenInfo.new(t, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {props})',
+    '• NPC Movement: PathfindingService:CreatePath() + path:ComputeAsync()',
+    '• Cleanup: use :Disconnect() and script.Destroying:Connect()',
+    '• BindToClose: game:BindToClose(function() — save data sebelum shutdown)',
+    '• Tagging: CollectionService:AddTag()/GetTagged() untuk mass management',
     '',
     '── STUDIO CAPABILITIES ──────────────────────────────',
     studioBlock,
     '',
-    '── KAMU ADALAH NEXUS AI V10.4 ───────────────────────',
-    'Selalu berikan solusi yang production-ready, bukan prototype.',
-    'Kode kamu harus siap dipakai langsung di game Roblox nyata.',
+    '── KARAKTER NEXUS AI ────────────────────────────────',
+    'Selalu beri solusi production-ready, bukan prototype.',
+    'Kode siap pakai di game Roblox nyata dengan ratusan/ribuan player.',
+    'Kalau Studio CONNECTED: langsung inject, lalu jelaskan dengan bahasa ramah.',
+    'Kalau Studio OFFLINE: tulis kode lengkap + panduan cara pasangnya.',
   ].join('\n');
 }
 
@@ -1400,7 +1490,9 @@ function buildMsgs(){
   var cv=S.convs.find(function(x){return x.id===S.curConv;});
   if(!cv)return[];
   return(cv.msgs||[]).slice(-28).map(function(m){
-    var content=m.content||'';
+    // Gunakan _rawContent (versi lengkap dengan JSON/Lua) untuk context AI
+    // bukan content yang sudah distrip
+    var content=m._rawContent||m.content||'';
     if(Array.isArray(m.content)){return{role:m.role==='user'?'user':'model',content:m.content};}
     return{role:m.role==='user'?'user':'model',content:String(content)};
   });
@@ -1479,12 +1571,31 @@ async function send(){
     updateCreds();
   }
   var injected=null;
+  var displayText=aiText;
   if(studioConnected&&aiText&&!aiText.startsWith('**')){
     injected=await autoInjectToStudio(aiText,lastUserPrompt);
+    // Hapus blok ```json dan ```lua dari teks yang ditampilkan ke user
+    // karena sudah di-inject ke Studio secara otomatis
+    displayText=aiText
+      .replace(/```json[\s\S]*?```/g,'')
+      .replace(/```lua[\s\S]*?```/g,'')
+      .replace(/```luau[\s\S]*?```/g,'')
+      .replace(/
+{3,}/g,'\n\n')
+      .trim();
+    // Jika setelah strip tidak ada teks yang berarti, beri pesan default
+    if(!displayText||displayText.length<10){
+      displayText=curLang==='id'
+        ?'✅ Selesai! Semua komponen telah berhasil dibuat dan dimasukkan ke Roblox Studio Anda.'
+        :'✅ Done! All components have been created and injected into your Roblox Studio.';
+    }
   }
-  var aiMsg={role:'ai',content:aiText,time:Date.now()};
+  var aiMsg={role:'ai',content:displayText,time:Date.now()};
   if(injected)aiMsg.injected=injected;
   cv.msgs.push(aiMsg);
+  // Simpan full AI text (dengan JSON/Lua) untuk context percakapan berikutnya
+  var lastAiMsg=cv.msgs[cv.msgs.length-1];
+  lastAiMsg._rawContent=aiText; // untuk context AI, bukan untuk display
   appendMsg(aiMsg);
   S.gen=false;S.cancelCtrl=null;
   if(sendBtn)sendBtn.classList.remove('hidden');if(cancelBtn)cancelBtn.classList.add('hidden');
@@ -1538,7 +1649,7 @@ function openAvatarModal(){
   document.getElementById('avatarModal').classList.add('show');
 }
 function closeModal(id){var el=document.getElementById(id);if(el)el.classList.remove('show');}
-function logout(){localStorage.removeItem('nexus_session');localStorage.removeItem('nexus_google_tmp');window.location.replace('/');}
+function logout(){localStorage.removeItem('nexus_session');localStorage.removeItem('nexus_google_tmp');window.location.replace('/login');}
 function useSugg(q){var inp=document.getElementById('inp');if(inp){inp.value=q;inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,130)+'px';inp.focus();}send();}
 function showInstall(){document.getElementById('installModal').classList.add('show');}
 function toggleSidebar(){
@@ -1651,7 +1762,7 @@ function clearCanvas(){
 function generateGuiCode(){
   var els=Object.values(guiElements);
   if(!els.length){toast('Tambahkan elemen dulu!','var(--yellow)');return;}
-  var lines=['-- GUI Script Generated by NEXUS AI V10.4','-- Place: LocalScript in StarterGui',
+  var lines=['-- GUI Script Generated by NEXUS AI','-- Place: LocalScript in StarterGui',
     'local Players = game:GetService("Players")',
     'local TweenService = game:GetService("TweenService")',
     'local player = Players.LocalPlayer',
