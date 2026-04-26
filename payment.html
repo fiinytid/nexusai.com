@@ -368,7 +368,6 @@ var DANA_NUMBER = '';
 var OWNER_NAME  = 'NEXUS STUDIO';
 var paymentLoaded = false;
 
-// Fetch payment config from server (numbers come from Vercel env vars)
 async function loadPaymentConfig() {
   try {
     var r = await fetch('/api/payment');
@@ -379,16 +378,14 @@ async function loadPaymentConfig() {
       OWNER_NAME  = d.owner || 'NEXUS STUDIO';
       paymentLoaded = true;
     }
-  } catch(e) { console.warn('Failed to load payment config:', e); }
+  } catch(e) {}
 }
 
-// ─── STATE ────────────────────────────────────────────────
 var sel = { pack: null, cr: 0, price: 0, priceStr: '', label: '', method: null };
 var currentView = 1;
 var SESSION = null;
 
-// ─── INIT ─────────────────────────────────────────────────
-(function(){
+(function init() {
   try {
     var s = localStorage.getItem('nexus_session');
     if (s) {
@@ -402,177 +399,176 @@ var SESSION = null;
       var credits = (SESSION.data && SESSION.data.credits !== undefined) ? parseFloat(SESSION.data.credits).toFixed(2) : '-';
       if (cr) cr.textContent = credits;
     }
-  } catch(e){}
-  // Load payment config from server
+  } catch(e) {}
   loadPaymentConfig();
 })();
 
-function goBack(){
+function goBack() {
   if (currentView > 1) goToView(currentView - 1);
   else window.location.href = '/chats';
 }
 
-function toast(msg, col){
+function toast(msg, col) {
   var t = document.createElement('div');
   t.className = 'toast-el';
   t.textContent = msg;
   t.style.color = col || 'var(--cyan)';
   document.body.appendChild(t);
-  setTimeout(function(){ t.classList.add('show'); }, 10);
-  setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 400); }, 3000);
+  setTimeout(function() { t.classList.add('show'); }, 10);
+  setTimeout(function() { t.classList.remove('show'); setTimeout(function() { t.remove(); }, 400); }, 3000);
 }
 
-function goToView(n){
-  document.getElementById('view'+currentView).classList.remove('active');
-  document.getElementById('view'+n).classList.add('active');
+function goToView(n) {
+  document.getElementById('view' + currentView).classList.remove('active');
+  document.getElementById('view' + n).classList.add('active');
   currentView = n;
-  // Update step bar
-  for (var i=1; i<=3; i++){
-    var sd = document.getElementById('sd'+i);
+  for (var i = 1; i <= 3; i++) {
+    var sd = document.getElementById('sd' + i);
     if (!sd) continue;
-    if (i < n) { sd.className = 'step-dot done'; }
-    else if (i === n) { sd.className = 'step-dot active'; }
-    else { sd.className = 'step-dot'; }
+    sd.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
     if (i < 3) {
-      var sl = document.getElementById('sl'+i);
+      var sl = document.getElementById('sl' + i);
       if (sl) sl.className = 'step-line' + (i < n ? ' done' : '');
     }
   }
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 }
 
-function selectFreePlan(){
+function selectFreePlan() {
   toast('You are already on the Free plan!', 'var(--green)');
-  return;
 }
 
-function selectProPlan(){
-  // Select Pro as a monthly subscription
-  sel.pack = 'pro';
+function selectProPlan() {
+  sel.pack = 'pro-plan';
   sel.cr = 200;
   sel.price = 150000;
-  sel.priceStr = 'Rp 150K/month';
+  sel.priceStr = 'Rp 150K';
   sel.label = 'Pro Plan (1 Month) · 200 CR + 25 CR/day';
-  // Deselect credit packs
-  ['pack50','pack80','pack150','pack500'].forEach(function(id){
+  ['pack50', 'pack80', 'pack150', 'pack500'].forEach(function(id) {
     var el = document.getElementById(id);
-    if(el) el.classList.remove('selected');
+    if (el) el.classList.remove('selected');
   });
   document.getElementById('planPro').style.borderColor = 'var(--cyan)';
   document.getElementById('btnNext1').disabled = false;
   toast('Pro Plan selected!', 'var(--cyan)');
 }
 
-function selectPack(cr, price, label){
-  // Deselect all packs and plan
-  ['pack50','pack80','pack150','pack500'].forEach(function(id){
+function selectPack(cr, price, label) {
+  ['pack50', 'pack80', 'pack150', 'pack500'].forEach(function(id) {
     document.getElementById(id).classList.remove('selected');
   });
-  document.getElementById('planPro').style.borderColor = 'var(--b)'; // reset pro border
+  document.getElementById('planPro').style.borderColor = 'var(--b)';
   var priceNum = parseInt(price);
-  sel.pack = cr;
+  sel.pack = cr;               // simpan kode paket sebagai string (e.g. '50','80','150','500')
   sel.cr = parseInt(cr);
   sel.price = priceNum;
   sel.priceStr = 'Rp ' + formatRp(priceNum);
   sel.label = label;
-  document.getElementById('pack'+cr).classList.add('selected');
+  document.getElementById('pack' + cr).classList.add('selected');
   document.getElementById('btnNext1').disabled = false;
 }
 
-function formatRp(n){
-  if (n >= 1000000) return (n/1000000).toFixed(n%1000000===0?0:1)+'M';
-  if (n >= 1000) return Math.round(n/1000)+'K';
+function formatRp(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1) + 'M';
+  if (n >= 1000) return Math.round(n / 1000) + 'K';
   return n.toString();
 }
 
-function goToPayment(){
+function goToPayment() {
   if (!sel.pack) { toast('Select a package first!', 'var(--pink)'); return; }
-  // Update summary
   document.getElementById('sumPack').textContent = sel.label;
   document.getElementById('sumCR').textContent = sel.cr + ' CR';
   document.getElementById('sumTotal').textContent = sel.priceStr;
-  document.getElementById('sumMethod').textContent = sel.method ? (sel.method==='ovo'?'OVO':'DANA') : '-';
+  document.getElementById('sumMethod').textContent = sel.method ? (sel.method === 'ovo' ? 'OVO' : 'DANA') : '-';
   goToView(2);
 }
 
-function selectPayMethod(m){
+function selectPayMethod(m) {
   sel.method = m;
-  document.getElementById('payOVO').classList.toggle('selected', m==='ovo');
-  document.getElementById('payDANA').classList.toggle('selected', m==='dana');
-  document.getElementById('sumMethod').textContent = m==='ovo'?'OVO':'DANA';
+  document.getElementById('payOVO').classList.toggle('selected', m === 'ovo');
+  document.getElementById('payDANA').classList.toggle('selected', m === 'dana');
+  document.getElementById('sumMethod').textContent = m === 'ovo' ? 'OVO' : 'DANA';
   document.getElementById('btnPay').disabled = false;
 }
 
-function showPayInst(){
+function showPayInst() {
   if (!sel.method) { toast('Select a payment method first!', 'var(--pink)'); return; }
-  if (!paymentLoaded) { 
-    toast('Loading payment configuration...', 'var(--yellow)'); 
-    loadPaymentConfig().then(function(){ if(paymentLoaded) showPayInst(); });
-    return; 
+  if (!paymentLoaded) {
+    toast('Loading payment configuration...', 'var(--yellow)');
+    loadPaymentConfig().then(function() { if (paymentLoaded) showPayInst(); });
+    return;
   }
   var isOvo = sel.method === 'ovo';
   var num = isOvo ? OVO_NUMBER : DANA_NUMBER;
   var username = SESSION && SESSION.user ? SESSION.user.username : 'USER';
 
-  document.getElementById('instTitle').textContent = 'Transfer to ' + (isOvo?'OVO':'DANA');
+  document.getElementById('instTitle').textContent = 'Transfer to ' + (isOvo ? 'OVO' : 'DANA');
   document.getElementById('instName').textContent = 'Account name: ' + OWNER_NAME;
   document.getElementById('instNumVal').textContent = num;
-  document.getElementById('instApp').textContent = isOvo ? 'OVO' : 'DANA';
+  document.getElementById('instApp').textContent = isOvo ? 'OVO' : 'DANA';   // ← pastikan "DANA" bukan "DAMA"
   document.getElementById('instAmount').textContent = sel.priceStr;
   document.getElementById('instNote').textContent = 'NEXUS-' + username + '-' + sel.cr + 'CR';
 
   document.getElementById('sumPack2').textContent = sel.label;
   document.getElementById('sumTotal2').textContent = sel.priceStr;
 
-  // Reset amount validation
-  document.getElementById('confirmAmountInput').value = '';
-  document.getElementById('amountValidMsg').textContent = '';
-  document.getElementById('btnDone').disabled = true;
+  // Reset form verifikasi
+  var inp = document.getElementById('confirmAmountInput');
+  if (inp) inp.value = '';
+  var msg = document.getElementById('amountValidMsg');
+  if (msg) msg.textContent = '';
+  var btn = document.getElementById('btnDone');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed'; }
 
   goToView(3);
 }
 
-function validatePaymentAmount(val){
+function validatePaymentAmount(val) {
   var amt = parseInt(val);
   var expected = sel.price;
   var msgEl = document.getElementById('amountValidMsg');
   var btn = document.getElementById('btnDone');
   if (!amt || amt <= 0) {
-    if(msgEl) msgEl.textContent = '';
-    if(btn) { btn.disabled=true; btn.style.opacity='0.4'; btn.style.cursor='not-allowed'; }
+    if (msgEl) msgEl.textContent = '';
+    if (btn) { btn.disabled = true; btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed'; }
     return;
   }
   if (amt === expected) {
-    if(msgEl) { msgEl.textContent = '✅ Amount matches! You can now confirm.'; msgEl.style.color='var(--green)'; }
-    if(btn) { btn.disabled=false; btn.style.opacity='1'; btn.style.cursor='pointer'; }
+    if (msgEl) { msgEl.textContent = '✅ Amount matches! You can now confirm.'; msgEl.style.color = 'var(--green)'; }
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
   } else if (Math.abs(amt - expected) < 1000) {
-    if(msgEl) { msgEl.textContent = '⚠️ Close but not exact. Expected: Rp ' + expected.toLocaleString(); msgEl.style.color='var(--yellow)'; }
-    if(btn) { btn.disabled=true; btn.style.opacity='0.4'; btn.style.cursor='not-allowed'; }
+    if (msgEl) { msgEl.textContent = '⚠️ Close but not exact. Expected: Rp ' + expected.toLocaleString(); msgEl.style.color = 'var(--yellow)'; }
+    if (btn) { btn.disabled = true; btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed'; }
   } else {
-    if(msgEl) { msgEl.textContent = '❌ Amount does not match. Expected: Rp ' + expected.toLocaleString(); msgEl.style.color='var(--pink)'; }
-    if(btn) { btn.disabled=true; btn.style.opacity='0.4'; btn.style.cursor='not-allowed'; }
+    if (msgEl) { msgEl.textContent = '❌ Amount does not match. Expected: Rp ' + expected.toLocaleString(); msgEl.style.color = 'var(--pink)'; }
+    if (btn) { btn.disabled = true; btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed'; }
   }
 }
 
-function copyNumber(){
+function copyNumber() {
   var isOvo = sel.method === 'ovo';
   var num = isOvo ? OVO_NUMBER : DANA_NUMBER;
-  navigator.clipboard.writeText(num).then(function(){
+  navigator.clipboard.writeText(num).then(function() {
     toast('Number copied!', 'var(--green)');
-  }).catch(function(){
+  }).catch(function() {
     toast(num, 'var(--cyan)');
   });
 }
 
+// ─────────────────────────────────────────────────
+// ⚡ Fungsi ini dikirim saat user klik "I Have Paid"
+// ─────────────────────────────────────────────────
 async function confirmPayment() {
   if (!SESSION) return;
   var u = SESSION.user;
 
+  // Mapping paket dari kode di frontend ke ID yang dikenali server (payment.js)
   var packIdMapping = {
-    '50':  'small',      // 50 CR  → small  (ganti jadi 21 CR jika pakai small)
-    '80':  'popular',    // 80 CR  → popular (ganti jadi 86 CR)
-    '150': 'pro',        // 150 CR → tambahkan paket 'pro' di payment.js
-    '500': 'mega'        // 500 CR → mega (ganti jadi 438 CR)
+    '50':  'small',       // 50 CR
+    '80':  'popular',     // 80 CR
+    '150': 'pro',         // 150 CR   (pastikan server punya paket 'pro')
+    '500': 'mega',        // 500 CR
+    'pro-plan': 'pro-plan' // jika user memilih Pro Plan bulanan
   };
   var packId = packIdMapping[sel.pack];
   if (!packId) {
@@ -580,7 +576,6 @@ async function confirmPayment() {
     return;
   }
 
-  // Amankan: hanya lanjut jika metode pembayaran sudah dipilih
   if (!sel.method) {
     toast('Select a payment method first', 'var(--pink)');
     return;
@@ -602,7 +597,6 @@ async function confirmPayment() {
 
     var data = await response.json();
     if (data.success) {
-      // Simpan ID transaksi agar bisa dicek statusnya nanti
       localStorage.setItem('lastPaymentId', data.transaction.id);
       toast('Payment submitted! Waiting for verification.', 'var(--green)');
       goToView(4);
