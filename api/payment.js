@@ -95,11 +95,12 @@ export default async function handler(req, res) {
       },
       owner: owner,
       // Daftar paket yang tersedia (digunakan frontend untuk menampilkan pilihan)
-      packages: [
-        { id: 'small',   cr: 21,  idr: 79000,   usd: 4.99,  label: '21 CR — Small' },
-        { id: 'popular', cr: 86,  idr: 299000,  usd: 18.99, label: '86 CR — Popular', popular: true },
-        { id: 'mega',    cr: 438, idr: 1500000, usd: 93.99, label: '438 CR — Mega' },
-      ],
+    packages: [
+        { id: 'small',   cr: 50,  idr: 38000,   usd: 2.38,  label: '50 CR — Starter' },
+        { id: 'popular', cr: 80,  idr: 50000,   usd: 3.13,  label: '80 CR — Popular', popular: true },
+        { id: 'pro',     cr: 150, idr: 120000,  usd: 7.50,  label: '150 CR — Pro' },
+        { id: 'mega',    cr: 500, idr: 1500000, usd: 93.75, label: '500 CR — Mega' },
+      ]
     });
   }
 
