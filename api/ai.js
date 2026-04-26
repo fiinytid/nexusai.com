@@ -1,8 +1,10 @@
-// api/ai.js — NEXUS AI Server-Side AI Proxy v10.6
+// api/ai.js — NEXUS AI
 
 function normalizeMessages(msgs, provider) {
+  if (!Array.isArray(msgs)) return [];
   return msgs.map(m => {
-    let role = m.role;
+    const msg = { ...m };
+    let role = msg.role;
     if (provider === 'gemini') {
       if (role === 'assistant' || role === 'ai' || role === 'model') role = 'model';
       else if (role !== 'user') role = 'user';
@@ -11,8 +13,27 @@ function normalizeMessages(msgs, provider) {
       else if (role === 'system') role = 'system';
       else role = 'user';
     }
-    return { ...m, role };
+    msg.role = role;
+    return msg;
   });
+}
+
+/**
+ * Helper untuk fetch dengan retry
+ */
+async function fetchWithRetry(url, options, retries = 1) {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 120000);
+      const response = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timeout);
+      return response;
+    } catch (e) {
+      if (i === retries) throw e;
+      await new Promise(r => setTimeout(r, 1000));
+    }
+  }
 }
 
 export default async function handler(req, res) {
@@ -20,12 +41,19 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
   try {
     const body = req.body || {};
     const { provider, model, messages, system, max_tokens } = body;
+    
     if (!provider || !model || !messages) {
       return res.status(400).json({ error: 'provider, model, messages required' });
     }
@@ -35,13 +63,11 @@ export default async function handler(req, res) {
     // ──────────────────────────────────────────────────────────
     if (provider === 'gemini') {
       const key = process.env.GEMINI_API_KEY;
-      if (!key) return res.status(503).json({ error: 'Gemini not configured' });
+      if (!key) return res.status(503).json({ error: 'Gemini not configured. Set GEMINI_API_KEY in Vercel.' });
 
       const modelFallbacks = [
         model,
         'gemini-2.5-flash-lite',
-        'gemini-2.5-flash',
-        'gemini-1.5-flash-latest',
         'gemini-1.5-flash',
       ];
       const modelsToTry = [...new Set(modelFallbacks)];
@@ -51,10 +77,10 @@ export default async function handler(req, res) {
         try {
           const normalized = normalizeMessages(messages, 'gemini');
           const contents = normalized.map(m => ({
-            role: m.role === 'assistant' ? 'model' : 'user',
+            role: m.role,
             parts: Array.isArray(m.content)
               ? m.content.map(c => c.type === 'image'
-                  ? { inline_data: { mime_type: c.source.media_type, data: c.source.data } }
+                  ? { inline_data: { mime_type: c.source?.media_type || 'image/png', data: c.source?.data || c.data || '' } }
                   : { text: c.text || '' })
               : [{ text: String(m.content || '') }],
           }));
@@ -68,20 +94,20 @@ export default async function handler(req, res) {
             },
           };
 
-          const r = await fetch(
+          const r = await fetchWithRetry(
             `https://generativelanguage.googleapis.com/v1beta/models/${tryModel}:generateContent?key=${key}`,
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(geminiBody),
-              signal: AbortSignal.timeout(120000),
             }
           );
 
           if (!r.ok) {
             const errData = await r.json().catch(() => ({}));
             const errMsg = (errData.error && errData.error.message) || `HTTP ${r.status}`;
-            if (r.status === 503 || r.status === 429 || errMsg.includes('overloaded') || errMsg.includes('high demand') || errMsg.includes('quota')) {
+            if (r.status === 503 || r.status === 429 || 
+                errMsg.includes('overloaded') || errMsg.includes('quota')) {
               lastError = errMsg;
               continue;
             }
@@ -112,10 +138,10 @@ export default async function handler(req, res) {
     // ──────────────────────────────────────────────────────────
     if (provider === 'claude') {
       const key = process.env.CLAUDE_API_KEY;
-      if (!key) return res.status(503).json({ error: 'Claude not configured' });
+      if (!key) return res.status(503).json({ error: 'Claude not configured. Set CLAUDE_API_KEY in Vercel.' });
 
       const normalized = normalizeMessages(messages, 'claude');
-      const r = await fetch('https://api.anthropic.com/v1/messages', {
+      const r = await fetchWithRetry('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +154,6 @@ export default async function handler(req, res) {
           system: system || '',
           messages: normalized,
         }),
-        signal: AbortSignal.timeout(120000),
       });
 
       if (!r.ok) {
@@ -146,25 +171,20 @@ export default async function handler(req, res) {
     // ──────────────────────────────────────────────────────────
     if (provider === 'openai') {
       const key = process.env.OPENAI_API_KEY;
-      if (!key) return res.status(503).json({ error: 'OpenAI not configured' });
+      if (!key) return res.status(503).json({ error: 'OpenAI not configured. Set OPENAI_API_KEY in Vercel.' });
 
       const normalized = normalizeMessages(messages, 'openai');
       const allMsgs = system ? [{ role: 'system', content: system }, ...normalized] : normalized;
       const bodyObj = { model, messages: allMsgs };
-      if (model.startsWith('o')) {
-        bodyObj.max_completion_tokens = max_tokens || 32768;
-      } else {
-        bodyObj.max_tokens = max_tokens || 16384;
-      }
+      bodyObj.max_tokens = max_tokens || 16384;
 
-      const r = await fetch('https://api.openai.com/v1/chat/completions', {
+      const r = await fetchWithRetry('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${key}`,
         },
         body: JSON.stringify(bodyObj),
-        signal: AbortSignal.timeout(120000),
       });
 
       if (!r.ok) {
@@ -182,12 +202,12 @@ export default async function handler(req, res) {
     // ──────────────────────────────────────────────────────────
     if (provider === 'openrouter') {
       const key = process.env.OPENROUTER_API_KEY;
-      if (!key) return res.status(503).json({ error: 'OpenRouter not configured' });
+      if (!key) return res.status(503).json({ error: 'OpenRouter not configured. Set OPENROUTER_API_KEY in Vercel.' });
 
       const normalized = normalizeMessages(messages, 'openrouter');
       const allMsgs = system ? [{ role: 'system', content: system }, ...normalized] : normalized;
 
-      const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      const r = await fetchWithRetry('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -201,7 +221,6 @@ export default async function handler(req, res) {
           max_tokens: max_tokens || 16384,
           temperature: 0.7,
         }),
-        signal: AbortSignal.timeout(120000),
       });
 
       if (!r.ok) {
@@ -219,16 +238,16 @@ export default async function handler(req, res) {
     }
 
     // ──────────────────────────────────────────────────────────
-    // 5. DEEPSEEK (native)
+    // 5. DEEPSEEK (native) + Model Reasoning (R1)
     // ──────────────────────────────────────────────────────────
     if (provider === 'deepseek') {
       const key = process.env.DEEPSEEK_API_KEY;
-      if (!key) return res.status(503).json({ error: 'DeepSeek not configured' });
+      if (!key) return res.status(503).json({ error: 'DeepSeek not configured. Set DEEPSEEK_API_KEY in Vercel.' });
 
       const normalized = normalizeMessages(messages, 'deepseek');
       const allMsgs = system ? [{ role: 'system', content: system }, ...normalized] : normalized;
 
-      const r = await fetch('https://api.deepseek.com/v1/chat/completions', {
+      const r = await fetchWithRetry('https://api.deepseek.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -240,7 +259,6 @@ export default async function handler(req, res) {
           max_tokens: max_tokens || 16384,
           temperature: 0.7,
         }),
-        signal: AbortSignal.timeout(120000),
       });
 
       if (!r.ok) {
@@ -252,9 +270,22 @@ export default async function handler(req, res) {
         return res.status(r.status).json({ error: errMsg });
       }
       const d = await r.json();
-      const t = d?.choices?.[0]?.message?.content;
-      if (!t) return res.status(500).json({ error: 'Empty DeepSeek response' });
-      return res.status(200).json({ content: t });
+      const choice = d?.choices?.[0];
+      if (!choice) return res.status(500).json({ error: 'Empty DeepSeek response' });
+
+      // Ambil konten utama dan reasoning (jika ada, dari model R1)
+      const content = choice.message?.content || '';
+      const reasoning = choice.message?.reasoning_content || '';
+
+      // Gabungkan reasoning + konten (reasoning di atas, konten di bawah)
+      let finalContent = '';
+      if (reasoning) {
+        finalContent += '🧠 **Reasoning (DeepSeek R1):**\n' + reasoning + '\n\n---\n\n';
+      }
+      finalContent += content;
+
+      if (!finalContent.trim()) return res.status(500).json({ error: 'Empty DeepSeek response' });
+      return res.status(200).json({ content: finalContent, reasoning: reasoning || undefined });
     }
 
     // ──────────────────────────────────────────────────────────
@@ -262,12 +293,12 @@ export default async function handler(req, res) {
     // ──────────────────────────────────────────────────────────
     if (provider === 'groq') {
       const key = process.env.GROQ_API_KEY;
-      if (!key) return res.status(503).json({ error: 'Groq not configured' });
+      if (!key) return res.status(503).json({ error: 'Groq not configured. Set GROQ_API_KEY in Vercel.' });
 
       const normalized = normalizeMessages(messages, 'groq');
       const allMsgs = system ? [{ role: 'system', content: system }, ...normalized] : normalized;
 
-      const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      const r = await fetchWithRetry('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -276,10 +307,9 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           model,
           messages: allMsgs,
-          max_tokens: max_tokens || 32768,
+          max_tokens: max_tokens || 16384,
           temperature: 0.7,
         }),
-        signal: AbortSignal.timeout(120000),
       });
 
       if (!r.ok) {
@@ -297,12 +327,12 @@ export default async function handler(req, res) {
     // ──────────────────────────────────────────────────────────
     if (provider === 'mistral') {
       const key = process.env.MISTRAL_API_KEY;
-      if (!key) return res.status(503).json({ error: 'Mistral not configured' });
+      if (!key) return res.status(503).json({ error: 'Mistral not configured. Set MISTRAL_API_KEY in Vercel.' });
 
       const normalized = normalizeMessages(messages, 'mistral');
       const allMsgs = system ? [{ role: 'system', content: system }, ...normalized] : normalized;
 
-      const r = await fetch('https://api.mistral.ai/v1/chat/completions', {
+      const r = await fetchWithRetry('https://api.mistral.ai/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -314,7 +344,6 @@ export default async function handler(req, res) {
           max_tokens: max_tokens || 16384,
           temperature: 0.7,
         }),
-        signal: AbortSignal.timeout(120000),
       });
 
       if (!r.ok) {
@@ -333,6 +362,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Unknown provider: ' + provider });
 
   } catch (e) {
-    return res.status(500).json({ error: e.message || 'Internal server error' });
+    console.error('AI Proxy Error:', e);
+    return res.status(500).json({ 
+      error: e.message || 'Internal server error',
+      stack: process.env.NODE_ENV === 'development' ? e.stack : undefined
+    });
   }
 }
