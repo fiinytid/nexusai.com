@@ -1049,7 +1049,7 @@ function toggleGuiMDD(e){
     if(m.badge){var bc=m.badge==='FAST'?'f':m.badge==='BEST'||m.badge==='NEW'?'p':'s';badgeHtml='<span class="mb '+bc+'">'+m.badge+'</span>';}
     else{badgeHtml='<span class="mb '+(m.cost<=1?'f':m.cost<=2?'s':'p')+'">'+m.cost+' CR</span>';}
     var iconHtml=m.icon?'<img src="'+m.icon+'" onerror="this.style.display='none'" style="width:18px;height:18px;object-fit:contain;border-radius:3px;">':'<div style="width:18px;height:18px;border-radius:3px;background:rgba(0,229,255,.1);font-size:9px;display:flex;align-items:center;justify-content:center;">AI</div>';
-    html+='<div class="'+cls+'" onclick="selGuiModel('/'+m.id+'/')">'+'<div class="mo-icon">'+iconHtml+'</div>'+'<div><div class="mo-n">'+esc(m.label||m.id)+'</div><div class="mo-s">'+esc(m.prov||'')+'</div></div>'+badgeHtml+'</div>';
+    html+='<div class="'+cls+'" onclick="selGuiModel(''+m.id+'')">'+'<div class="mo-icon">'+iconHtml+'</div>'+'<div><div class="mo-n">'+esc(m.label||m.id)+'</div><div class="mo-s">'+esc(m.prov||'')+'</div></div>'+badgeHtml+'</div>';
   });
   html+='<div class="mg" style="color:rgba(255,45,107,.6);border-top:1px solid rgba(255,45,107,.15);">COMING SOON</div>';
   MODEL_LIST_SOON.forEach(function(m){
