@@ -27,6 +27,8 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .inbox-actions{display:flex;gap:8px;}
 .btn-sm{padding:5px 12px;border-radius:5px;font-size:9px;cursor:pointer;border:1px solid var(--b);background:rgba(0,229,255,.04);color:var(--text);transition:.15s;font-family:'JetBrains Mono',monospace;}
 .btn-sm:hover{border-color:var(--cyan);color:var(--cyan);}
+.btn-sm.delete-btn{color:var(--pink);}
+.btn-sm.delete-btn:hover{border-color:var(--pink);color:var(--pink);}
 
 .msg-list{display:flex;flex-direction:column;gap:8px;}
 .msg-item{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:.15s;position:relative;}
@@ -61,6 +63,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .type-payment{background:rgba(0,255,170,.1);color:var(--green);}
 .type-warning{background:rgba(255,45,107,.1);color:var(--pink);}
 
+/* Delete button in detail */
+.detail-actions{margin-top:20px;display:flex;gap:10px;}
+
 @media(max-width:600px){.main{padding:16px 10px;}}
 </style>
 </head>
@@ -75,21 +80,21 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
   <!-- LIST VIEW -->
   <div id="listView" class="list-view">
     <div class="inbox-header">
-      <div class="inbox-title" id="inboxTitle">Inbox</div>
+      <div class="inbox-title">Inbox</div>
       <div class="inbox-actions">
-        <button class="btn-sm" onclick="markAllRead()" id="markReadBtn">Mark all read</button>
-        <button class="btn-sm" onclick="loadMessages()" id="refreshBtn">Refresh</button>
+        <button class="btn-sm" onclick="markAllRead()">Mark all read</button>
+        <button class="btn-sm" onclick="loadMessages()">Refresh</button>
       </div>
     </div>
     <div class="msg-list" id="msgList">
-      <div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title" id="loadingTxt">Loading...</div></div>
+      <div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">Loading...</div></div>
     </div>
   </div>
 
   <!-- DETAIL VIEW -->
   <div class="detail-view" id="detailView">
     <div class="detail-header">
-      <button class="detail-back" onclick="showList()" id="backBtn">← Back</button>
+      <button class="detail-back" onclick="showList()">← Back</button>
       <div style="flex:1;">
         <div class="detail-subject" id="detailSubject">-</div>
         <div class="detail-from" id="detailFrom">-</div>
@@ -97,6 +102,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       </div>
     </div>
     <div class="detail-content" id="detailContent">-</div>
+    <div class="detail-actions">
+      <button class="btn-sm delete-btn" id="deleteBtn" style="display:none;">Delete Message</button>
+    </div>
   </div>
 </div>
 
@@ -104,31 +112,11 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 'use strict';
 var SESSION = null;
 var messages = [];
-var currentLang = 'en';
+var currentMsgId = null;
 
-// Helper aman untuk ambil elemen
 function getEl(id) {
   return document.getElementById(id);
 }
-
-(function init() {
-  try {
-    var s = localStorage.getItem('nexus_session');
-    if (!s) { window.location.replace('/login'); return; }
-    SESSION = JSON.parse(s);
-    if (!SESSION || !SESSION.user) { window.location.replace('/login'); return; }
-    currentLang = (SESSION.data && SESSION.data.language) || localStorage.getItem('nexus_lang') || 'en';
-    if (currentLang === 'id') {
-      var title = getEl('inboxTitle'); if (title) title.textContent = 'Kotak Masuk';
-      var markBtn = getEl('markReadBtn'); if (markBtn) markBtn.textContent = 'Tandai semua dibaca';
-      var refBtn = getEl('refreshBtn'); if (refBtn) refBtn.textContent = 'Muat Ulang';
-      var backBtn = getEl('backBtn'); if (backBtn) backBtn.textContent = '← Kembali';
-    }
-    loadMessages();
-  } catch(e) {
-    window.location.replace('/login');
-  }
-})();
 
 function esc(str) {
   if (!str) return '';
@@ -143,28 +131,44 @@ function esc(str) {
 function timeAgo(ts) {
   if (!ts) return '';
   var diff = Date.now() - ts;
-  if (diff < 60000) return currentLang === 'id' ? 'baru saja' : 'just now';
+  if (diff < 60000) return 'just now';
   if (diff < 3600000) return Math.floor(diff / 60000) + 'm ago';
   if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
   return Math.floor(diff / 86400000) + 'd ago';
 }
 
+// ─── INIT ──────────────────────────────────────────────────
+(function init() {
+  try {
+    var s = localStorage.getItem('nexus_session');
+    if (!s) { window.location.replace('/login'); return; }
+    SESSION = JSON.parse(s);
+    if (!SESSION || !SESSION.user) { window.location.replace('/login'); return; }
+    loadMessages();
+  } catch(e) {
+    window.location.replace('/login');
+  }
+})();
+
+// ─── LOAD MESSAGES ────────────────────────────────────────
 async function loadMessages() {
   var listEl = getEl('msgList');
   if (!listEl) return;
+
   try {
     var username = (SESSION.user.username || '').toLowerCase();
     var r = await fetch('/api/inbox?user=' + encodeURIComponent(username));
     if (!r.ok) throw new Error('HTTP ' + r.status);
     var data = await r.json();
     messages = data.messages || [];
+
     if (!messages.length) {
       listEl.innerHTML =
         '<div class="empty-state">' +
           '<div class="empty-icon">📭</div>' +
-          '<div class="empty-title">' + (currentLang === 'id' ? 'Tidak ada pesan' : 'No messages yet') + '</div>' +
+          '<div class="empty-title">No messages yet</div>' +
           '<div style="font-size:10px;color:var(--dim);margin-top:8px;">' +
-            (currentLang === 'id' ? 'NEXUS AI akan mengirimkan notifikasi dan pengumuman di sini.' : 'NEXUS AI will send notifications and announcements here.') +
+            'NEXUS AI will send notifications and announcements here.' +
           '</div>' +
         '</div>';
     } else {
@@ -186,7 +190,7 @@ async function loadMessages() {
         '</div>';
       }).join('');
 
-      // Pasang event listener untuk setiap item
+      // Attach click events
       var items = listEl.querySelectorAll('.msg-item');
       items.forEach(function(item) {
         item.addEventListener('click', function() {
@@ -205,17 +209,28 @@ async function loadMessages() {
   }
 }
 
+// ─── OPEN MESSAGE DETAIL ──────────────────────────────────
 function openMsg(id) {
   var msg = messages.find(function(m) { return m.id === id; });
   if (!msg) return;
+  currentMsgId = id;
+
   var subjectEl = getEl('detailSubject');
   var fromEl = getEl('detailFrom');
   var timeEl = getEl('detailTime');
   var contentEl = getEl('detailContent');
+  var deleteBtn = getEl('deleteBtn');
+
   if (subjectEl) subjectEl.textContent = msg.subject || 'Message';
   if (fromEl) fromEl.textContent = 'From: ' + (msg.from || 'NEXUS AI');
   if (timeEl) timeEl.textContent = new Date(msg.ts).toLocaleString();
   if (contentEl) contentEl.textContent = msg.content || '';
+
+  // Show delete button
+  if (deleteBtn) {
+    deleteBtn.style.display = 'inline-block';
+    deleteBtn.onclick = function() { deleteMessage(id); };
+  }
 
   var listView = getEl('listView');
   var detailView = getEl('detailView');
@@ -238,13 +253,39 @@ function openMsg(id) {
   }
 }
 
+// ─── DELETE MESSAGE ────────────────────────────────────────
+async function deleteMessage(id) {
+  if (!confirm('Are you sure you want to delete this message?')) return;
+  try {
+    var r = await fetch('/api/inbox', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user: (SESSION.user.username || '').toLowerCase(),
+        id: id,
+        action: 'delete'
+      })
+    });
+    if (r.ok) {
+      messages = messages.filter(function(m) { return m.id !== id; });
+      showList();
+      loadMessages();
+    }
+  } catch(e) {
+    alert('Failed to delete: ' + e.message);
+  }
+}
+
+// ─── SHOW LIST VIEW ────────────────────────────────────────
 function showList() {
   var detailView = getEl('detailView');
   var listView = getEl('listView');
   if (detailView) detailView.classList.remove('show');
   if (listView) listView.classList.remove('hidden');
+  currentMsgId = null;
 }
 
+// ─── MARK ALL AS READ ──────────────────────────────────────
 async function markAllRead() {
   try {
     await fetch('/api/inbox', {
