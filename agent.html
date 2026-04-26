@@ -9,244 +9,242 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
-            --bg: #030312;
-            --bg2: #06071a;
-            --bg3: #0a0b22;
-            --card: rgba(0, 229, 255, .04);
-            --hover: rgba(0, 229, 255, .07);
-            --cyan: #00e5ff;
-            --cyan2: rgba(0, 229, 255, .35);
-            --purple: #8800ff;
-            --pink: #ff2d6b;
-            --green: #00ffaa;
-            --yellow: #ffd600;
-            --text: #b8cfff;
-            --dim: #3a4a7a;
-            --b: rgba(0, 229, 255, .12);
-            --bb: rgba(0, 229, 255, .3);
-            --r: 8px;
+            --bg: #030312; --bg2: #06071a; --bg3: #0a0b22;
+            --card: rgba(0,229,255,.04); --hover: rgba(0,229,255,.07);
+            --cyan: #00e5ff; --cyan2: rgba(0,229,255,.35);
+            --purple: #8800ff; --pink: #ff2d6b; --green: #00ffaa; --yellow: #ffd600;
+            --text: #b8cfff; --dim: #3a4a7a;
+            --b: rgba(0,229,255,.12); --r: 8px;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; font-family: 'JetBrains Mono', monospace; background: var(--bg); color: var(--text); font-size: 13px; overflow: hidden; }
-        body::before { content: ''; position: fixed; inset: 0; background: linear-gradient(rgba(0,229,255,.012) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,.012) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
-        #container { display: flex; flex-direction: column; height: 100vh; position: relative; z-index: 1; }
-        #header { padding: 12px 20px; background: var(--bg2); border-bottom: 1px solid var(--b); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-        #logo { width: 32px; height: 32px; border-radius: 8px; overflow: hidden; }
-        #logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        #title { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: var(--cyan); }
-        #closeBtn { margin-left: auto; background: rgba(255,45,107,.08); border: 1px solid rgba(255,45,107,.2); color: var(--pink); padding: 5px 14px; border-radius: var(--r); font-size: 10px; cursor: pointer; transition: .2s; }
-        #closeBtn:hover { border-color: var(--pink); background: rgba(255,45,107,.15); }
-        #chat { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
-        #chat::-webkit-scrollbar { width: 3px; }
-        #chat::-webkit-scrollbar-thumb { background: var(--b); }
-        .welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; gap: 12px; color: var(--dim); }
-        .welcome-icon { width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(0,229,255,.3); margin-bottom: 6px; }
-        .welcome-icon img { width: 100%; height: 100%; object-fit: cover; }
-        .welcome-title { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; background: linear-gradient(135deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .welcome-text { font-size: 14px; max-width: 480px; line-height: 1.7; }
-        .msg { display: flex; gap: 8px; animation: msgIn .2s ease; }
-        @keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-        .msg-avatar { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--cyan); }
-        .msg-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .msg-bubble { max-width: 80%; padding: 10px 14px; border-radius: 10px; line-height: 1.6; font-size: 12.5px; word-break: break-word; }
-        .msg.user .msg-bubble { background: linear-gradient(135deg, rgba(0,229,255,.08), rgba(136,0,255,.08)); border: 1px solid rgba(0,229,255,.15); border-radius: 10px 2px 10px 10px; color: white; margin-left: auto; }
-        .msg.ai .msg-bubble { background: var(--bg2); border: 1px solid var(--b); border-radius: 2px 10px 10px 10px; color: var(--text); }
-        .input-area { padding: 12px 16px; border-top: 1px solid var(--b); background: var(--bg2); display: flex; gap: 10px; align-items: flex-end; }
-        #userInput { flex: 1; background: var(--bg3); border: 1px solid var(--b); border-radius: 10px; padding: 10px 14px; color: white; font-family: 'JetBrains Mono', monospace; font-size: 13px; resize: none; min-height: 44px; max-height: 120px; outline: none; line-height: 1.5; }
-        #userInput::placeholder { color: var(--dim); }
-        .btn-send { width: 38px; height: 38px; background: linear-gradient(135deg, var(--cyan), var(--purple)); border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: .2s; flex-shrink: 0; }
-        .btn-send:hover { opacity: .8; transform: scale(1.05); }
-        .btn-send svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
-        .typing { display: flex; gap: 8px; animation: msgIn .2s ease; }
-        .typing-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); animation: pulse 1.2s infinite; }
-        .typing-dot:nth-child(2) { animation-delay: .2s; }
-        .typing-dot:nth-child(3) { animation-delay: .4s; }
-        @keyframes pulse { 0%, 60%, 100% { opacity: .2; } 30% { opacity: 1; } }
-        .refuse-note { background: rgba(255,45,107,.06); border: 1px solid rgba(255,45,107,.2); border-radius: var(--r); padding: 8px 12px; font-size: 10px; color: var(--pink); margin: 4px 0; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html, body { height:100%; font-family:'JetBrains Mono',monospace; background:var(--bg); color:var(--text); font-size:13px; overflow:hidden; }
+        body::before { content:''; position:fixed; inset:0; background:linear-gradient(rgba(0,229,255,.012)1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.012)1px,transparent 1px); background-size:40px 40px; pointer-events:none; z-index:0; }
+        #container { display:flex; flex-direction:column; height:100vh; position:relative; z-index:1; }
+        #header { padding:12px 16px; background:var(--bg2); border-bottom:1px solid var(--b); display:flex; align-items:center; gap:10px; flex-shrink:0; }
+        #header .logo { width:30px; height:30px; border-radius:8px; overflow:hidden; }
+        #header .logo img { width:100%; height:100%; object-fit:cover; display:block; }
+        #header .title { font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; color:var(--cyan); flex:1; }
+        #header .user-info { display:flex; align-items:center; gap:8px; margin-right:8px; }
+        #header .user-avatar { width:24px; height:24px; border-radius:50%; border:1.5px solid var(--cyan2); object-fit:cover; background:var(--bg3); }
+        #header .user-name { font-size:10px; color:white; font-weight:500; max-width:100px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        #backBtn { background:rgba(255,45,107,.08); border:1px solid rgba(255,45,107,.2); color:var(--pink); padding:5px 12px; border-radius:var(--r); font-size:10px; cursor:pointer; transition:.15s; }
+        #backBtn:hover { border-color:var(--pink); background:rgba(255,45,107,.15); }
+        #chat { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
+        #chat::-webkit-scrollbar { width:3px; }
+        #chat::-webkit-scrollbar-thumb { background:var(--b); }
+        .welcome { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; text-align:center; gap:10px; color:var(--dim); padding:20px; }
+        .welcome-avatar { width:70px; height:70px; border-radius:50%; overflow:hidden; border:2px solid rgba(0,229,255,.3); margin-bottom:6px; }
+        .welcome-avatar img { width:100%; height:100%; object-fit:cover; }
+        .welcome-title { font-family:'Orbitron',sans-serif; font-size:20px; font-weight:900; background:linear-gradient(135deg,var(--cyan),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .welcome-text { font-size:13px; max-width:400px; line-height:1.7; }
+        .msg { display:flex; gap:8px; animation:msgIn .2s ease; }
+        @keyframes msgIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+        .msg-avatar { width:28px; height:28px; border-radius:50%; overflow:hidden; flex-shrink:0; background:var(--bg3); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--cyan); }
+        .msg-avatar img { width:100%; height:100%; object-fit:cover; }
+        .msg-bubble { max-width:80%; padding:10px 14px; border-radius:10px; line-height:1.6; font-size:12.5px; word-break:break-word; }
+        .msg.user .msg-bubble { background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(136,0,255,.08)); border:1px solid rgba(0,229,255,.15); border-radius:10px 2px 10px 10px; color:white; margin-left:auto; }
+        .msg.ai .msg-bubble { background:var(--bg2); border:1px solid var(--b); border-radius:2px 10px 10px 10px; color:var(--text); }
+        .input-area { padding:12px 16px; border-top:1px solid var(--b); background:var(--bg2); display:flex; gap:10px; align-items:flex-end; }
+        #userInput { flex:1; background:var(--bg3); border:1px solid var(--b); border-radius:10px; padding:10px 14px; color:white; font-family:'JetBrains Mono',monospace; font-size:13px; resize:none; min-height:44px; max-height:120px; outline:none; line-height:1.5; }
+        #userInput::placeholder { color:var(--dim); }
+        .btn-send { width:38px; height:38px; background:linear-gradient(135deg,var(--cyan),var(--purple)); border:none; border-radius:50%; color:white; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.2s; flex-shrink:0; }
+        .btn-send:hover { opacity:.8; transform:scale(1.05); }
+        .btn-send svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; }
+        .typing { display:flex; gap:8px; animation:msgIn .2s ease; }
+        .typing-dot { width:8px; height:8px; border-radius:50%; background:var(--cyan); animation:pulse 1.2s infinite; }
+        .typing-dot:nth-child(2) { animation-delay:.2s; }
+        .typing-dot:nth-child(3) { animation-delay:.4s; }
+        @keyframes pulse { 0%,60%,100%{opacity:.2} 30%{opacity:1} }
+        @media (max-width:600px) {
+            #header { padding:8px 12px; }
+            #chat { padding:10px; }
+            .welcome-avatar { width:50px; height:50px; }
+            .welcome-title { font-size:16px; }
+            .input-area { padding:8px 10px; }
+        }
     </style>
 </head>
 <body>
-    <div id="container">
-        <div id="header">
-            <div id="logo"><img src="nexusai.png" alt="NEXUS" onerror="this.parentElement.style.background='linear-gradient(135deg,#00e5ff,#8800ff)'"></div>
-            <div id="title">NEXUS AI — Agent Bantuan</div>
-            <button id="closeBtn" onclick="window.close()||window.location.href='chats.html'">Tutup</button>
+<div id="container">
+    <div id="header">
+        <div class="logo"><img src="nexusai.png" onerror="this.style.background='linear-gradient(135deg,#00e5ff,#8800ff)'"></div>
+        <div class="title">NEXUS AI Agent</div>
+        <div class="user-info" id="userInfo">
+            <img class="user-avatar" id="userAvatar" src="nexusai.png" onerror="this.style.display='none'">
+            <span class="user-name" id="userName">-</span>
         </div>
-        <div id="chat"></div>
-        <div class="input-area">
-            <textarea id="userInput" placeholder="Deskripsikan masalahmu..." rows="1"></textarea>
-            <button class="btn-send" id="sendBtn" onclick="sendMsg()">
-                <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-        </div>
+        <button id="backBtn" onclick="window.close()||window.location.href='chats.html'">Tutup</button>
     </div>
+    <div id="chat"></div>
+    <div class="input-area">
+        <textarea id="userInput" placeholder="Deskripsikan masalahmu..." rows="1"></textarea>
+        <button class="btn-send" id="sendBtn" onclick="sendMsg()">
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+    </div>
+</div>
 
-    <script>
-        // ─── SYSTEM PROMPT (TERPISAH, BAHASA MENYESUAIKAN) ──────────────
-        const SYSTEM_PROMPT_ID = `Kamu adalah **Agent Bantuan Resmi NEXUS AI**. Tugasmu **HANYA** membantu pengguna dengan:
+<script>
+    // ─── SESSION & LANGUAGE ─────────────────────────────────
+    const SESSION = (() => { try { return JSON.parse(localStorage.getItem('nexus_session')); } catch(e){} })();
+    const user = SESSION?.user || {};
+    const username = user.username || 'Pengguna';
+    const avatarUrl = user.avatar || 'nexusai.png';
+    const lang = localStorage.getItem('nexus_lang') || 'id';
+
+    // Tampilkan info user di header
+    document.getElementById('userAvatar').src = avatarUrl;
+    document.getElementById('userName').textContent = username;
+
+    // ─── SYSTEM PROMPT (TERPISAH & DITINGKATKAN) ────────────
+    const SYSTEM_ID = `Kamu adalah Agent Bantuan Resmi NEXUS AI. Tugasmu HANYA membantu pengguna dengan:
 - Masalah teknis website NEXUS AI (chat, GUI editor, pengaturan, login, pembayaran, error).
 - Masalah plugin NEXUS AI untuk Roblox Studio (instalasi, koneksi, inject, crash, tidak muncul).
+- Kamu TIDAK BOLEH membuat script/game Lua, memberikan kode Roblox, atau membantu pengembangan game.
+- Jika diminta, tolak dengan sopan: "Maaf, saya hanya membantu masalah teknis web/plugin. Untuk coding, silakan kembali ke chat utama NEXUS AI."
+- Berikan solusi langkah demi langkah.
+- Selalu gunakan Bahasa Indonesia ramah.
+- Panggil pengguna dengan nama Roblox mereka: "${username}".`;
 
-**PENTING:**
-- JANGAN PERNAH membuat script Lua, membuat game, memberikan kode Roblox, atau membantu pengembangan game apapun.
-- Jika diminta hal tersebut, jawab dengan: "Maaf, tugas saya hanya membantu masalah teknis website/plugin NEXUS AI. Untuk membuat script atau game, silakan kembali ke chat utama NEXUS AI."
-- Berikan solusi langkah demi langkah yang jelas dan mudah diikuti.
-- Jika masalah di luar pengetahuanmu, sarankan untuk melaporkan melalui menu Pengaturan atau bergabung ke Discord NEXUS STUDIO.
-- Selalu gunakan bahasa Indonesia yang ramah dan profesional.`;
+    const SYSTEM_EN = `You are the official NEXUS AI Support Agent. Your ONLY role is to assist with:
+- Technical issues on the NEXUS AI website (chat, GUI editor, settings, login, payments, errors).
+- Issues with the NEXUS AI Roblox Studio plugin (installation, connection, injection, crashes).
+- You MUST NOT create any Lua scripts, games, or Roblox code.
+- If asked, politely refuse: "Sorry, I can only help with technical issues regarding the NEXUS AI web/plugin. For coding, please use the main NEXUS AI chat."
+- Give clear step-by-step solutions.
+- Always use polite English.
+- Address the user by their Roblox name: "${username}".`;
 
-        const SYSTEM_PROMPT_EN = `You are the **official NEXUS AI Support Agent**. Your **ONLY** role is to help with:
-- Technical issues on the NEXUS AI website (chat, GUI editor, settings, login, payment, errors).
-- Issues with the NEXUS AI Roblox Studio plugin (installation, connection, injection, crashes, missing).
+    // ─── CHAT STATE ─────────────────────────────────────────
+    const chatEl = document.getElementById('chat');
+    let isProcessing = false;
 
-**CRITICAL:**
-- NEVER create Lua scripts, build games, provide Roblox code, or assist with game development.
-- If asked, respond: "Sorry, I can only help with technical issues related to the NEXUS AI website/plugin. For scripting or game creation, please use the main NEXUS AI chat."
-- Give clear, step‑by‑step solutions.
-- If you can't solve it, suggest reporting via Settings or joining the NEXUS STUDIO Discord.
-- Always respond in polite, professional English.`;
-
-        // ─── INISIALISASI ─────────────────────────────────────────────
-        const chatEl = document.getElementById('chat');
-        let isProcessing = false;
-        let session = null;
-        try { session = JSON.parse(localStorage.getItem('nexus_session')); } catch(e) {}
-
-        function getUserLang() {
-            return localStorage.getItem('nexus_lang') || 'id';
-        }
-
-        function appendMessage(role, content) {
-            const div = document.createElement('div');
-            div.className = 'msg ' + role;
-            const avatar = document.createElement('div');
-            avatar.className = 'msg-avatar';
-            if (role === 'ai') {
-                avatar.innerHTML = '<img src="nexusai.png" alt="N" onerror="this.textContent=\'N\'; this.style.background=\'linear-gradient(135deg,#00e5ff,#8800ff)\'">';
+    // Helper: append message
+    function appendMessage(role, text) {
+        const div = document.createElement('div');
+        div.className = 'msg ' + role;
+        const avatar = document.createElement('div');
+        avatar.className = 'msg-avatar';
+        if (role === 'ai') {
+            avatar.innerHTML = '<img src="nexusai.png">';
+        } else {
+            if (avatarUrl && avatarUrl !== 'nexusai.png') {
+                avatar.innerHTML = `<img src="${avatarUrl}">`;
             } else {
-                const user = session?.user || {};
-                avatar.textContent = (user.username || 'U').charAt(0).toUpperCase();
+                avatar.textContent = username.charAt(0).toUpperCase();
             }
-            const bubble = document.createElement('div');
-            bubble.className = 'msg-bubble';
-            try { bubble.innerHTML = marked.parse(content); } catch(e) { bubble.textContent = content; }
-            div.appendChild(role === 'user' ? bubble : avatar);
-            div.appendChild(role === 'user' ? avatar : bubble);
-            chatEl.appendChild(div);
-            chatEl.scrollTop = chatEl.scrollHeight;
+        }
+        const bubble = document.createElement('div');
+        bubble.className = 'msg-bubble';
+        bubble.innerHTML = marked.parse(text);
+        div.appendChild(role === 'user' ? bubble : avatar);
+        div.appendChild(role === 'user' ? avatar : bubble);
+        chatEl.appendChild(div);
+        chatEl.scrollTop = chatEl.scrollHeight;
+    }
+
+    function showTyping() {
+        removeTyping();
+        const div = document.createElement('div');
+        div.className = 'typing';
+        div.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        chatEl.appendChild(div);
+        chatEl.scrollTop = chatEl.scrollHeight;
+    }
+
+    function removeTyping() {
+        const t = document.querySelector('.typing');
+        if (t) t.remove();
+    }
+
+    // Tampilkan welcome message (termasuk nama)
+    function showWelcome() {
+        const welcomeDiv = document.createElement('div');
+        welcomeDiv.className = 'welcome';
+        welcomeDiv.innerHTML = `
+            <div class="welcome-avatar"><img src="${avatarUrl}" onerror="this.src='nexusai.png'"></div>
+            <div class="welcome-title">NEXUS AI Agent</div>
+            <div class="welcome-text">
+                ${lang === 'id'
+                    ? `Halo, ${username}! Ada yang bisa saya bantu terkait bug web ini atau ada kesalahan teknis tentang web/plugin NEXUS AI?`
+                    : `Hello, ${username}! How can I help you with bugs on this website or technical issues regarding the NEXUS AI web/plugin?`}
+            </div>
+        `;
+        chatEl.appendChild(welcomeDiv);
+    }
+
+    // Deteksi permintaan kode / script
+    function isCodeRequest(text) {
+        const idWords = /buat(kan|lah|in|kode|script|lua|gui|game|npc|shop|loading|admin|leaderboard|datastore|tycoon|obby|simulator|module|inject|keluarkan|tulis|kodekan)/i;
+        const enWords = /create|make|build|code|script|lua|gui|game|npc|shop|loading|admin|leaderboard|datastore|tycoon|obby|simulator|module|inject|write|generate/i;
+        return lang === 'id' ? idWords.test(text) : enWords.test(text);
+    }
+
+    async function sendMsg() {
+        if (isProcessing) return;
+        const input = document.getElementById('userInput');
+        const text = input.value.trim();
+        if (!text) return;
+
+        input.value = '';
+        input.style.height = 'auto';
+
+        // Remove welcome screen
+        const welcome = document.querySelector('.welcome');
+        if (welcome) welcome.remove();
+
+        appendMessage('user', text);
+
+        // Tolak permintaan pembuatan script
+        if (isCodeRequest(text)) {
+            const refuse = lang === 'id'
+                ? 'Maaf, saya hanya bisa membantu masalah teknis website/plugin NEXUS AI. Untuk membuat script atau game, silakan kembali ke chat utama NEXUS AI.'
+                : 'Sorry, I can only help with technical issues related to the NEXUS AI website/plugin. For scripting or game creation, please use the main NEXUS AI chat.';
+            appendMessage('ai', refuse);
+            return;
         }
 
-        function showTyping() {
+        isProcessing = true;
+        showTyping();
+
+        const systemPrompt = lang === 'id' ? SYSTEM_ID : SYSTEM_EN;
+
+        try {
+            const res = await fetch('/api/ai', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    provider: 'gemini',
+                    model: 'gemini-2.5-flash-lite',
+                    messages: [{ role: 'user', content: text }],
+                    system: systemPrompt,
+                    max_tokens: 1024
+                })
+            });
+            if (!res.ok) throw new Error('Server error');
+            const data = await res.json();
+            const reply = data.content || (lang === 'id' ? 'Maaf, terjadi kesalahan.' : 'Sorry, an error occurred.');
             removeTyping();
-            const typingEl = document.createElement('div');
-            typingEl.className = 'typing';
-            typingEl.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-            chatEl.appendChild(typingEl);
-            chatEl.scrollTop = chatEl.scrollHeight;
+            appendMessage('ai', reply);
+        } catch (e) {
+            removeTyping();
+            appendMessage('ai', lang === 'id' ? '⚠️ Gagal menghubungi server.' : '⚠️ Failed to reach server.');
+        } finally {
+            isProcessing = false;
         }
+    }
 
-        function removeTyping() {
-            const typingEl = document.querySelector('.typing');
-            if (typingEl) typingEl.remove();
-        }
+    // Auto-resize textarea
+    document.getElementById('userInput').addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+    document.getElementById('userInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+    });
 
-        // Tampilkan welcome message sesuai bahasa
-        function showWelcome() {
-            const lang = getUserLang();
-            const welcomeDiv = document.createElement('div');
-            welcomeDiv.className = 'welcome';
-            welcomeDiv.innerHTML = `
-                <div class="welcome-icon"><img src="nexusai.png" onerror="this.style.background='linear-gradient(135deg,#00e5ff,#8800ff)'"></div>
-                <div class="welcome-title">NEXUS AI Agent</div>
-                <div class="welcome-text">
-                    ${lang === 'id'
-                        ? 'Ada yang bisa saya bantu terkait bug web ini atau ada kesalahan teknis tentang web ini?'
-                        : 'How can I help you with bugs on this website or technical issues regarding the NEXUS AI web?'}
-                </div>
-            `;
-            chatEl.appendChild(welcomeDiv);
-        }
-
-        // Cek apakah pertanyaan mengarah ke pembuatan script
-        function isCodeRequest(text) {
-            const indonesiaWords = /buat(kan|lah|in|kode|script|lua|gui|game|npc|shop|loading|admin|leaderboard|datastore|tycoon|obby|simulator|module|localscript|serverScript|inject|keluarkan|tulis|kodekan)/i;
-            const englishWords = /create|make|build|code|script|lua|gui|game|npc|shop|loading|admin|leaderboard|datastore|tycoon|obby|simulator|module|inject|write|generate/i;
-            const lang = getUserLang();
-            return lang === 'id' ? indonesiaWords.test(text) : englishWords.test(text);
-        }
-
-        async function sendMsg() {
-            if (isProcessing) return;
-            const input = document.getElementById('userInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            input.value = '';
-            input.style.height = 'auto';
-
-            // Hapus welcome screen jika ada
-            const welcomeScreen = document.querySelector('.welcome');
-            if (welcomeScreen) welcomeScreen.remove();
-
-            appendMessage('user', text);
-
-            // Tolak permintaan pembuatan script
-            if (isCodeRequest(text)) {
-                const lang = getUserLang();
-                const refuseMsg = lang === 'id'
-                    ? 'Maaf, tugas saya hanya membantu masalah teknis website/plugin NEXUS AI. Untuk membuat script atau game, silakan kembali ke chat utama NEXUS AI.'
-                    : 'Sorry, I can only help with technical issues related to the NEXUS AI website/plugin. For scripting or game creation, please use the main NEXUS AI chat.';
-                appendMessage('ai', refuseMsg);
-                return;
-            }
-
-            isProcessing = true;
-            showTyping();
-
-            const lang = getUserLang();
-            const systemPrompt = lang === 'id' ? SYSTEM_PROMPT_ID : SYSTEM_PROMPT_EN;
-
-            try {
-                const response = await fetch('/api/ai', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        provider: 'gemini',
-                        model: 'gemini-2.5-flash-lite',
-                        messages: [{ role: 'user', content: text }],
-                        system: systemPrompt,
-                        max_tokens: 1024
-                    })
-                });
-
-                if (!response.ok) throw new Error(`Server error ${response.status}`);
-                const data = await response.json();
-                const reply = data.content || (lang === 'id' ? 'Maaf, terjadi kesalahan.' : 'Sorry, an error occurred.');
-                removeTyping();
-                appendMessage('ai', reply);
-            } catch (err) {
-                removeTyping();
-                appendMessage('ai', lang === 'id' ? '⚠️ Gagal menghubungi server. Coba lagi nanti.' : '⚠️ Failed to reach the server. Please try again later.');
-            } finally {
-                isProcessing = false;
-            }
-        }
-
-        // Event listeners
-        document.getElementById('userInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMsg();
-            }
-        });
-
-        // Auto-resize textarea
-        document.getElementById('userInput').addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-        });
-
-        // Inisialisasi
-        showWelcome();
-    </script>
+    // Init
+    showWelcome();
+</script>
 </body>
 </html>
