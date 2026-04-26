@@ -1505,6 +1505,7 @@ function buildSysPrompt(){
     lines.push('• WAJIB: Selalu balas dalam Bahasa Indonesia profesional dan sopan.');
     lines.push('• Gunakan "Anda" dan "saya". Jadilah seperti expert Roblox developer Indonesia.');
     lines.push('• Semua penjelasan harus jelas, pedagogis, dan lengkap.');
+    lines.push('• Saat pengguna menyapa (halo, hai, selamat pagi, dll), jangan hanya membalas "halo". Balas dengan "Halo, '+dn+'! Ada yang bisa NEXUS AI bantu?"');
     lines.push('');
     lines.push('══════════════ IDENTITAS ══════════════');
     lines.push('Kamu adalah NEXUS AI, AI spesialis Roblox Studio terbaik yang pernah ada.');
@@ -1694,6 +1695,7 @@ function buildSysPrompt(){
     linesEn.push('');
     linesEn.push('👤 User : "'+dn+'" (@'+un+') | Plan: '+S.plan+' | Credits: '+cr+' CR');
     linesEn.push('🔌 Studio : '+(connected?'✓ CONNECTED':'✗ OFFLINE')+' | '+now.toLocaleString('en-US'));
+    linesEn.push('• When the user greets (hi, hello, good morning, etc.), do not just reply "hello". Reply with "Hello, '+dn+'! How can NEXUS AI help you?"');
     linesEn.push('');
     linesEn.push('══════════════ LANGUAGE ══════════════');
     linesEn.push('• REQUIRED: Always respond in English professionally and politely.');
