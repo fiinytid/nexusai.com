@@ -1,4 +1,4 @@
-// api/payment.js — NEXUS AI Payment System v3
+// api/payment.js — NEXUS AI Payment System v3.2
 // Supports: GET config, POST create transaction, PATCH confirm (admin)
 // Stores transactions in /tmp/nexus_payments.json
 // Sends beautiful HTML emails to admin
@@ -9,10 +9,11 @@ const PAYMENTS_FILE = '/tmp/nexus_payments.json';
 
 // ─── Daftar Paket Resmi (sama untuk GET dan POST) ──────────
 const PACKAGES = [
-  { id: 'small',   cr: 50,  idr: 38000,   usd: 2.38,  label: '50 CR — Starter' },
-  { id: 'popular', cr: 80,  idr: 50000,   usd: 3.13,  label: '80 CR — Popular', popular: true },
-  { id: 'pro',     cr: 150, idr: 120000,  usd: 7.50,  label: '150 CR — Pro' },
-  { id: 'mega',    cr: 500, idr: 1500000, usd: 93.75, label: '500 CR — Mega' },
+  { id: 'small',    cr: 50,  idr: 38000,   usd: 2.38,  label: '50 CR — Starter' },
+  { id: 'popular',  cr: 80,  idr: 50000,   usd: 3.13,  label: '80 CR — Popular', popular: true },
+  { id: 'pro',      cr: 150, idr: 120000,  usd: 7.50,  label: '150 CR — Pro' },
+  { id: 'mega',     cr: 500, idr: 1500000, usd: 93.75, label: '500 CR — Mega' },
+  { id: 'pro-plan', cr: 200, idr: 150000,  usd: 9.38,  label: 'Pro Plan (Monthly) · 200 CR' },
 ];
 
 // ─── Helpers ───────────────────────────────────────────────
@@ -180,7 +181,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing required fields: username, packId, method, amount' });
     }
 
-    // Cari paket di PACKAGES
+    // Cari paket di PACKAGES (pakai daftar yang sama dengan GET)
     const pkg = PACKAGES.find(p => p.id === packId);
     if (!pkg) return res.status(400).json({ error: 'Invalid package ID' });
 
