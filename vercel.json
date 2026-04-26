@@ -11,7 +11,8 @@
     { "source": "/terms",         "destination": "/terms.html" },
     { "source": "/admin-panel",   "destination": "/admin-panel.html" },
     { "source": "/inbox",         "destination": "/inbox.html" },
-    { "source": "/ui-editor",     "destination": "/chats.html" }
+    { "source": "/ui-editor",     "destination": "/chats.html" },
+    { "source": "/agent",         "destination": "/agent.html" }
   ],
   "headers": [
     {
