@@ -564,30 +564,54 @@ function copyNumber(){
   });
 }
 
-function confirmPayment(){
-  // Send report to server for admin verification
-  if (SESSION) {
-    var u = SESSION.user;
-    var note = 'NEXUS-' + u.username + '-' + sel.cr + 'CR · ' + sel.method.toUpperCase() + ' · ' + sel.priceStr;
-    fetch('/api/report', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        from: u.username,
-        userId: u.robloxId || u.id,
-        message: '💳 NEW PAYMENT:\nPackage: ' + sel.label + '\nCredits: ' + sel.cr + ' CR\nMethod: ' + sel.method.toUpperCase() + '\nTotal: ' + sel.priceStr + '\nNote: ' + note,
-        time: new Date().toISOString(),
-        plan: SESSION.data ? (SESSION.data.plan || 'free') : 'free',
-        credits: SESSION.data ? (SESSION.data.credits || 0) : 0,
-        type: 'payment',
-        paymentPack: sel.label,
-        paymentCR: sel.cr,
-        paymentMethod: sel.method,
-        paymentTotal: sel.priceStr,
-      })
-    }).catch(function(){});
+async function confirmPayment() {
+  if (!SESSION) return;
+  var u = SESSION.user;
+
+  var packIdMapping = {
+    '50':  'small',      // 50 CR  → small  (ganti jadi 21 CR jika pakai small)
+    '80':  'popular',    // 80 CR  → popular (ganti jadi 86 CR)
+    '150': 'pro',        // 150 CR → tambahkan paket 'pro' di payment.js
+    '500': 'mega'        // 500 CR → mega (ganti jadi 438 CR)
+  };
+  var packId = packIdMapping[sel.pack];
+  if (!packId) {
+    toast('Invalid package selected', 'var(--pink)');
+    return;
   }
-  goToView(4);
+
+  // Amankan: hanya lanjut jika metode pembayaran sudah dipilih
+  if (!sel.method) {
+    toast('Select a payment method first', 'var(--pink)');
+    return;
+  }
+
+  try {
+    var response = await fetch('/api/payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: u.username,
+        userId: u.robloxId || '',
+        packId: packId,
+        method: sel.method,
+        amount: sel.price,                        // nominal yang ditransfer
+        note: 'NEXUS-' + u.username + '-' + sel.cr + 'CR'
+      })
+    });
+
+    var data = await response.json();
+    if (data.success) {
+      // Simpan ID transaksi agar bisa dicek statusnya nanti
+      localStorage.setItem('lastPaymentId', data.transaction.id);
+      toast('Payment submitted! Waiting for verification.', 'var(--green)');
+      goToView(4);
+    } else {
+      toast('Payment failed: ' + (data.error || 'Please try again.'), 'var(--pink)');
+    }
+  } catch (e) {
+    toast('Network error: ' + e.message, 'var(--pink)');
+  }
 }
 </script>
 </body>
