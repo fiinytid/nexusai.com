@@ -32,25 +32,21 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .hero-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
 .hero-sub{font-size:10px;color:var(--dim);}
 
-/* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
 @media(max-width:640px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
 .stat-box{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px;text-align:center;}
 .stat-num{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--yellow);}
 .stat-label{font-size:9px;color:var(--dim);margin-top:3px;text-transform:uppercase;letter-spacing:1px;}
 
-/* GRID */
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
 @media(max-width:640px){.grid{grid-template-columns:1fr;}}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
 @media(max-width:640px){.grid-3{grid-template-columns:1fr;}}
 
-/* CARD */
 .card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:18px;margin-bottom:20px;}
 .card-title{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
 .card-title svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
 
-/* FORM */
 .form-group{margin-bottom:10px;}
 .form-label{font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;display:block;}
 .form-input{width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:7px 10px;color:white;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;transition:.15s;}
@@ -60,7 +56,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .form-textarea{width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:7px 10px;color:white;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;resize:vertical;min-height:60px;}
 .form-textarea:focus{border-color:rgba(0,229,255,.4);}
 
-/* BUTTONS */
 .btn{padding:8px 16px;border-radius:7px;border:none;font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;cursor:pointer;transition:.15s;letter-spacing:1px;display:inline-flex;align-items:center;gap:5px;}
 .btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;}
 .btn-cyan{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#030312;}
@@ -72,11 +67,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
 .btn-full{width:100%;}
 
-/* ACTION BUTTONS GRID */
 .action-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
 @media(max-width:480px){.action-grid{grid-template-columns:1fr;}}
 
-/* USER RESULT */
 .user-result{background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:12px;margin-top:10px;font-size:10px;line-height:1.8;display:none;}
 .user-result.show{display:block;}
 .user-result .row{display:flex;justify-content:space-between;border-bottom:1px solid rgba(0,229,255,.06);padding:2px 0;}
@@ -88,13 +81,11 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .user-result .val.yellow{color:var(--yellow);}
 .user-result .user-avatar{width:42px;height:42px;border-radius:50%;border:2px solid var(--cyan);margin-bottom:10px;display:block;}
 
-/* STATUS RESULT */
 .status-text{font-size:10px;margin-top:8px;min-height:16px;}
 .status-text.ok{color:var(--green);}
 .status-text.err{color:var(--pink);}
 .status-text.info{color:var(--yellow);}
 
-/* USER TABLE */
 .user-table{width:100%;border-collapse:collapse;font-size:10px;}
 .user-table th{color:var(--dim);font-size:8px;text-transform:uppercase;letter-spacing:1px;padding:5px 8px;text-align:left;border-bottom:1px solid var(--b);}
 .user-table td{padding:6px 8px;border-bottom:1px solid rgba(0,229,255,.04);color:var(--text);}
@@ -106,11 +97,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .badge-banned{background:rgba(255,45,107,.12);color:var(--pink);}
 .badge-admin{background:rgba(136,0,255,.12);color:var(--purple);}
 
-/* TOAST */
 .toast-el{position:fixed;bottom:20px;right:20px;background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:10px 16px;font-size:11px;z-index:9999;animation:toastIn .2s ease;}
 @keyframes toastIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
 
-/* LOG BOX */
 .log-box{background:rgba(0,0,0,.4);border:1px solid var(--b);border-radius:7px;padding:8px;max-height:160px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;}
 .log-line{padding:1px 0;}
 .log-ok{color:var(--green);}
@@ -118,7 +107,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .log-info{color:var(--yellow);}
 .log-dim{color:var(--dim);}
 
-/* PAGINATION */
 .page-btns{display:flex;gap:6px;margin-top:10px;justify-content:center;}
 .page-btn{background:var(--bg3);border:1px solid var(--b);border-radius:5px;color:var(--dim);font-size:9px;padding:4px 10px;cursor:pointer;font-family:'JetBrains Mono',monospace;}
 .page-btn:hover{color:var(--cyan);border-color:var(--cyan);}
@@ -155,7 +143,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <div class="stat-box"><div class="stat-num" id="stCredits">—</div><div class="stat-label">Total Credits</div></div>
   </div>
 
-  <!-- ROW 1: User Lookup + Credit Management -->
+  <!-- ROW 1 -->
   <div class="grid">
     <!-- User Lookup -->
     <div class="card">
@@ -232,7 +220,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     </div>
   </div>
 
-  <!-- ROW 2: Ban/Unban + Plan Management -->
+  <!-- ROW 2 -->
   <div class="grid">
     <!-- Ban Management -->
     <div class="card">
@@ -291,7 +279,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     </div>
   </div>
 
-  <!-- ROW 3: Send Message to Inbox -->
+  <!-- Inbox -->
   <div class="card">
     <div class="card-title">
       <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -352,7 +340,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <div class="page-btns" id="pageBtns"></div>
   </div>
 
-  <!-- Activity Log -->
+  <!-- Log -->
   <div class="card">
     <div class="card-title" style="justify-content:space-between;">
       <span style="display:flex;align-items:center;gap:6px;">
@@ -371,6 +359,12 @@ var SESSION=null, SDATA={}, isOwnerFlag=false, isAdminFlag=false;
 var allUsers=[], currentPage=1, perPage=15, filteredUsers=[];
 var currentFoundUser='', currentFoundData={};
 
+// Helper aman untuk mengambil elemen
+function getEl(id) {
+  return document.getElementById(id);
+}
+
+// IIFE
 (function(){
   try{
     var s=localStorage.getItem('nexus_session');
@@ -383,16 +377,21 @@ var currentFoundUser='', currentFoundData={};
     isOwnerFlag=plan==='owner'||roles.includes('owner');
     isAdminFlag=isOwnerFlag||roles.includes('admin');
     if(!isAdminFlag){showGuard();return;}
-    document.getElementById('mainContent').style.display='block';
-    document.getElementById('heroSub').textContent=(isOwnerFlag?'⭐ Owner':'🛡 Admin')+' — @'+SESSION.user.username;
-    document.getElementById('accessGuard').style.display='none';
+    var main = getEl('mainContent');
+    if(main) main.style.display='block';
+    var heroSub = getEl('heroSub');
+    if(heroSub) heroSub.textContent=(isOwnerFlag?'⭐ Owner':'🛡 Admin')+' — @'+SESSION.user.username;
+    var guard = getEl('accessGuard');
+    if(guard) guard.style.display='none';
     init();
   }catch(e){showGuard();}
 })();
 
 function showGuard(){
-  document.getElementById('accessGuard').style.display='flex';
-  document.getElementById('mainContent').style.display='none';
+  var guard = getEl('accessGuard');
+  if(guard) guard.style.display='flex';
+  var main = getEl('mainContent');
+  if(main) main.style.display='none';
 }
 
 function toast(msg,col){
@@ -404,7 +403,7 @@ function toast(msg,col){
 }
 
 function setStatus(id,msg,type){
-  var el=document.getElementById(id);if(!el)return;
+  var el=getEl(id);if(!el)return;
   el.textContent=msg;el.className='status-text '+(type||'info');
 }
 
@@ -425,27 +424,29 @@ async function loadStats(){
     var today=new Date().toDateString();
     var active=users.filter(([,d])=>d?._updated&&new Date(d._updated).toDateString()===today).length;
     var credits=users.reduce((s,[,d])=>s+parseFloat(d?.credits||0),0);
-    document.getElementById('stTotal').textContent=total;
-    document.getElementById('stPro').textContent=pro;
-    document.getElementById('stOnline').textContent=active;
-    document.getElementById('stCredits').textContent=credits.toFixed(0);
+    var stTotal = getEl('stTotal'); if(stTotal) stTotal.textContent=total;
+    var stPro = getEl('stPro'); if(stPro) stPro.textContent=pro;
+    var stOnline = getEl('stOnline'); if(stOnline) stOnline.textContent=active;
+    var stCredits = getEl('stCredits'); if(stCredits) stCredits.textContent=credits.toFixed(0);
     allUsers=users;filteredUsers=users;renderUsers();
   }catch(e){}
 }
 
 async function lookupUser(){
-  var username=document.getElementById('lookupUsername').value.trim().toLowerCase();
+  var username=getEl('lookupUsername').value.trim().toLowerCase();
   if(!username)return;
-  var result=document.getElementById('userResult');
+  var result=getEl('userResult');
+  if(!result) return;
   result.className='user-result';
   result.innerHTML='<div style="color:var(--dim);font-size:10px;">Searching @'+username+'...</div>';
   result.style.display='block';
   try{
     var r=await fetch('/api/sync?user='+encodeURIComponent(username));
     var d=await r.json();
+    var qa = getEl('quickActions');
     if(!d||Object.keys(d).length===0){
       result.innerHTML='<div style="color:var(--pink);font-size:10px;">User @'+username+' not found (may be offline or never logged in).</div>';
-      document.getElementById('quickActions').style.display='none';
+      if(qa) qa.style.display='none';
       return;
     }
     currentFoundUser=username;currentFoundData=d;
@@ -468,8 +469,7 @@ async function lookupUser(){
     });
     result.innerHTML=html;
     result.style.display='block';
-    document.getElementById('quickActions').style.display='grid';
-    // Update ban button text
+    if(qa) qa.style.display='grid';
     var banBtn=document.querySelector('#quickActions .btn-danger');
     if(banBtn) banBtn.textContent=d.banned?'Unban User':'Ban User';
   }catch(e){result.innerHTML='<div style="color:var(--pink);">Error: '+e.message+'</div>';}
@@ -498,9 +498,9 @@ async function quickReset(){
 }
 
 async function giveCredits(dir){
-  var u=document.getElementById('credUsername').value.trim().toLowerCase();
-  var amt=parseFloat(document.getElementById('credAmount').value);
-  var plan=document.getElementById('credPlan').value;
+  var u=getEl('credUsername').value.trim().toLowerCase();
+  var amt=parseFloat(getEl('credAmount').value);
+  var plan=getEl('credPlan').value;
   if(!u||!amt||isNaN(amt)){setStatus('credStatus','Fill in username & amount!','err');return;}
   setStatus('credStatus','Processing...','info');
   try{
@@ -515,8 +515,8 @@ async function giveCredits(dir){
 }
 
 async function banUser(isBan){
-  var u=document.getElementById('banUsername').value.trim().toLowerCase();
-  var reason=document.getElementById('banReason').value.trim()||'No reason given';
+  var u=getEl('banUsername').value.trim().toLowerCase();
+  var reason=getEl('banReason').value.trim()||'No reason given';
   if(!u){setStatus('banStatus','Fill in username!','err');return;}
   setStatus('banStatus','Processing...','info');
   try{
@@ -528,9 +528,9 @@ async function banUser(isBan){
 }
 
 async function setPlan(){
-  var u=document.getElementById('planUsername').value.trim().toLowerCase();
-  var plan=document.getElementById('planChoice').value;
-  var credits=document.getElementById('planCredits').value;
+  var u=getEl('planUsername').value.trim().toLowerCase();
+  var plan=getEl('planChoice').value;
+  var credits=getEl('planCredits').value;
   if(!u){setStatus('planStatus','Fill in username!','err');return;}
   setStatus('planStatus','Processing...','info');
   try{
@@ -546,12 +546,11 @@ async function setPlan(){
   }catch(e){setStatus('planStatus','Error: '+e.message,'err');}
 }
 
-// Inbox message sender
 async function sendInboxMsg(){
-  var to=document.getElementById('inboxTo').value.trim().toLowerCase();
-  var subject=document.getElementById('inboxSubject').value.trim();
-  var content=document.getElementById('inboxContent').value.trim();
-  var type=document.getElementById('inboxType').value;
+  var to=getEl('inboxTo').value.trim().toLowerCase();
+  var subject=getEl('inboxSubject').value.trim();
+  var content=getEl('inboxContent').value.trim();
+  var type=getEl('inboxType').value;
   if(!to||!content){setStatus('inboxStatus','Fill in username and message!','err');return;}
   setStatus('inboxStatus','Sending...','info');
   try{
@@ -570,8 +569,8 @@ async function sendInboxMsg(){
     var d=await r.json();
     if(d.status==='ok'){
       setStatus('inboxStatus','✅ Message sent to @'+to+'!','ok');
-      document.getElementById('inboxContent').value='';
-      document.getElementById('inboxSubject').value='';
+      if(getEl('inboxContent')) getEl('inboxContent').value='';
+      if(getEl('inboxSubject')) getEl('inboxSubject').value='';
       toast('Sent to @'+to,'var(--green)');
     } else {
       setStatus('inboxStatus','Error: '+(d.error||'Unknown'),'err');
@@ -579,9 +578,9 @@ async function sendInboxMsg(){
   }catch(e){setStatus('inboxStatus','Error: '+e.message,'err');}
 }
 
-// User table
 function renderUsers(){
-  var body=document.getElementById('userTableBody');
+  var body=getEl('userTableBody');
+  if(!body) return;
   var start=(currentPage-1)*perPage;
   var slice=filteredUsers.slice(start,start+perPage);
   if(!slice.length){body.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--dim);padding:20px;">No users found</td></tr>';renderPagination();return;}
@@ -604,14 +603,15 @@ function renderUsers(){
 }
 
 function filterUsers(){
-  var q=document.getElementById('searchInput').value.toLowerCase();
+  var q=getEl('searchInput').value.toLowerCase();
   filteredUsers=q?allUsers.filter(function([u]){return u.includes(q);}):allUsers;
   currentPage=1;renderUsers();
 }
 
 function renderPagination(){
   var total=Math.ceil(filteredUsers.length/perPage);
-  var btns=document.getElementById('pageBtns');
+  var btns=getEl('pageBtns');
+  if(!btns) return;
   if(total<=1){btns.innerHTML='';return;}
   var html='';
   for(var i=1;i<=Math.min(total,10);i++){
@@ -624,15 +624,18 @@ function renderPagination(){
 function goPage(p){currentPage=p;renderUsers();}
 
 function quickLookup(u){
-  document.getElementById('lookupUsername').value=u;
+  var inp = getEl('lookupUsername');
+  if(inp) inp.value=u;
   lookupUser();
-  document.getElementById('lookupUsername').scrollIntoView({behavior:'smooth'});
+  if(inp) inp.scrollIntoView({behavior:'smooth'});
 }
 
 function openInboxMsg(u){
-  document.getElementById('inboxTo').value=u;
-  document.getElementById('inboxContent').focus();
-  document.getElementById('inboxContent').scrollIntoView({behavior:'smooth'});
+  var to = getEl('inboxTo');
+  var content = getEl('inboxContent');
+  if(to) to.value=u;
+  if(content) content.focus();
+  if(content) content.scrollIntoView({behavior:'smooth'});
 }
 
 async function loadUsers(){
@@ -646,15 +649,16 @@ async function loadUsers(){
     var today=new Date().toDateString();
     var active=allUsers.filter(([,d])=>d?._updated&&new Date(d._updated).toDateString()===today).length;
     var credits=allUsers.reduce(function(s,[,d]){return s+parseFloat(d?.credits||0);},0);
-    document.getElementById('stTotal').textContent=total;
-    document.getElementById('stPro').textContent=pro;
-    document.getElementById('stOnline').textContent=active;
-    document.getElementById('stCredits').textContent=credits.toFixed(0);
+    var stTotal = getEl('stTotal'); if(stTotal) stTotal.textContent=total;
+    var stPro = getEl('stPro'); if(stPro) stPro.textContent=pro;
+    var stOnline = getEl('stOnline'); if(stOnline) stOnline.textContent=active;
+    var stCredits = getEl('stCredits'); if(stCredits) stCredits.textContent=credits.toFixed(0);
   }catch(e){}
 }
 
 async function loadLogs(){
-  var box=document.getElementById('logBox');
+  var box=getEl('logBox');
+  if(!box) return;
   try{
     var r=await fetch('/api/control',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'get_logs'})});
     var d=await r.json();
@@ -667,8 +671,9 @@ async function loadLogs(){
   }catch(e){box.innerHTML='<div class="log-err">Error: '+e.message+'</div>';}
 }
 
-// Listeners
-document.getElementById('lookupUsername')?.addEventListener('keydown',function(e){if(e.key==='Enter')lookupUser();});
+// Listener
+var lookupInput = getEl('lookupUsername');
+if(lookupInput) lookupInput.addEventListener('keydown',function(e){if(e.key==='Enter')lookupUser();});
 </script>
 </body>
 </html>
