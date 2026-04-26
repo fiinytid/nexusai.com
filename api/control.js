@@ -1,5 +1,4 @@
-// api/control.js — NEXUS AI RELAY v10.5
-// LogService + Script System + Workspace + Queue + Enhanced Validation
+// api/control.js — NEXUS AI
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
 const TMP = '/tmp';
