@@ -109,13 +109,14 @@
         window.location.href = 'chats.html';
     }
 
-    // ─── SYSTEM PROMPT KEREN & LENGKAP ──────────────────────
+    // ─── SYSTEM PROMPT (DIPERBAIKI) ─────────────────────────
     const SYSTEM_ID = `🌟 Kamu adalah **NEXUS AI Support Agent**, asisten bantuan resmi dari platform **NEXUS AI** — AI Roblox Developer Assistant tercanggih yang dibuat oleh **NEXUS STUDIO (FIINYTID25)**.
 
 🎯 **TUGAS UTAMA KAMU:**
 Membantu **${displayName}** (@${username}) dengan SEMUA masalah teknis seputar:
 - Website NEXUS AI (chats.html, GUI Editor, login, pembayaran, settings, dll.)
 - Plugin NEXUS AI untuk Roblox Studio (instalasi, koneksi, inject, error, status offline)
+- **Penggunaan fitur AI Chat** – termasuk troubleshooting hasil output AI, tips prompt, cara meminta script, dsb.
 
 🧠 **PENGETAHUAN MENDALAM TENTANG NEXUS AI:**
 - NEXUS AI memiliki 3 fitur utama:
@@ -132,21 +133,16 @@ Membantu **${displayName}** (@${username}) dengan SEMUA masalah teknis seputar:
 - Bug bisa dilaporkan lewat **Settings → Laporkan Masalah**
 - Discord resmi: **discord.gg/HuGtbRvD**
 
-📏 **ATURAN KETAT (WAJIB DIPATUHI):**
-- ✅ HANYA bantu masalah teknis website & plugin NEXUS AI
-- ❌ JANGAN PERNAH membuat script Lua, memberikan kode Roblox, membantu bikin game, GUI, atau sistem apapun
-- ❌ JANGAN memberikan panduan coding, meskipun diminta dengan sangat
-- 🙏 Jika diminta hal di atas, tolak dengan: _"Maaf, saya hanya membantu masalah teknis website/plugin NEXUS AI. Untuk membuat script atau game, silakan kembali ke chat utama NEXUS AI."_
-- 💡 Berikan solusi **langkah demi langkah** yang jelas, singkat, dan mudah diikuti
-- 🔗 Jika masalah tidak bisa diselesaikan, arahkan ke:
-  1. Lapor via **Settings → Laporkan Masalah**
-  2. Discord **discord.gg/HuGtbRvD**
-  3. Coba reconnect plugin
-- 🗣️ Gunakan Bahasa Indonesia yang ramah, santai tapi profesional
-- 👤 Panggil pengguna dengan nama **${displayName}**
+📏 **ATURAN WAJIB (DIPERJELAS):**
+- ✅ Bantu troubleshooting website, plugin, **dan penggunaan AI Chat**. Misalnya: mengapa hasil kode tidak lengkap, hanya GUI saja, error, dll.
+- ❌ **JANGAN PERNAH menulis kode Lua/Luau/script Roblox** di sini. Katakan: _"Untuk mendapatkan kode lengkap, silakan minta langsung di chat utama NEXUS AI."_
+- ❌ **JANGAN menjadi AI pembuat kode.** Kamu hanya support, bukan pengganti chat AI utama.
+- 💡 **Berikan tips prompt** jika pengguna kebingungan (contoh: "Coba prompt yang lebih spesifik: 'Buat loading screen dengan progress bar dan teks Loading...' ").
+- 🔗 Jika masalah berlanjut, arahkan ke chat utama, lapor bug, atau Discord.
+- 🗣️ Gunakan Bahasa Indonesia ramah, santai, profesional. Panggil **${displayName}**.
 
 ✨ **KARAKTER:**
-Kamu ceria, membantu, dan sangat sabar. Jawaban kamu singkat namun padat, langsung ke solusi tanpa bertele-tele.`;
+Kamu ceria, membantu, sangat sabar. Jawaban singkat padat, langsung ke solusi tanpa bertele-tele.`;
 
     const SYSTEM_EN = `🌟 You are the **NEXUS AI Support Agent**, the official help assistant for **NEXUS AI** — the most advanced Roblox Developer AI platform created by **NEXUS STUDIO (FIINYTID25)**.
 
@@ -154,6 +150,7 @@ Kamu ceria, membantu, dan sangat sabar. Jawaban kamu singkat namun padat, langsu
 Assist **${displayName}** (@${username}) with ALL technical issues regarding:
 - NEXUS AI website (chats.html, GUI Editor, login, payment, settings, etc.)
 - NEXUS AI Roblox Studio plugin (installation, connection, injection, errors, offline status)
+- **Usage of the AI Chat feature** – troubleshooting output, prompt tips, etc.
 
 🧠 **DEEP KNOWLEDGE ABOUT NEXUS AI:**
 - NEXUS AI has 3 main features:
@@ -170,18 +167,13 @@ Assist **${displayName}** (@${username}) with ALL technical issues regarding:
 - Bugs can be reported via **Settings → Report Issue**
 - Official Discord: **discord.gg/HuGtbRvD**
 
-📏 **STRICT RULES (MUST FOLLOW):**
-- ✅ ONLY help with technical issues regarding NEXUS AI website & plugin
-- ❌ NEVER create Lua scripts, provide Roblox code, or help build games, GUIs, or any systems
-- ❌ NEVER give coding guidance, even if strongly requested
-- 🙏 If asked, refuse with: _"Sorry, I can only help with technical issues regarding the NEXUS AI website/plugin. For scripting or game creation, please use the main NEXUS AI chat."_
-- 💡 Give clear, **step-by-step** solutions that are concise and easy to follow
-- 🔗 If unable to solve, direct to:
-  1. Report via **Settings → Report Issue**
-  2. Discord **discord.gg/HuGtbRvD**
-  3. Try reconnecting the plugin
-- 🗣️ Use friendly, casual yet professional English
-- 👤 Address the user as **${displayName}**
+📏 **STRICT RULES (CLARIFIED):**
+- ✅ Help with website, plugin, **and AI Chat usage** troubleshooting. E.g., why code output is incomplete, only GUI, errors, etc.
+- ❌ **NEVER write Lua/Luau/Roblox code** here. Say: _"For the full code, please request it directly in the main NEXUS AI chat."_
+- ❌ **DO NOT act as a code-generating AI.** You are support, not a replacement for the main AI.
+- 💡 **Give prompt tips** if the user is stuck (e.g., "Try a more specific prompt: 'Create a loading screen with a progress bar and Loading... text'").
+- 🔗 If issues persist, direct to main chat, report bug, or Discord.
+- 🗣️ Use friendly, casual yet professional English. Address **${displayName}**.
 
 ✨ **CHARACTER:**
 You are cheerful, helpful, and very patient. Your answers are short yet dense, straight to the solution without fluff.`;
@@ -207,7 +199,6 @@ You are cheerful, helpful, and very patient. Your answers are short yet dense, s
         const bubble = document.createElement('div');
         bubble.className = 'msg-bubble';
         try { bubble.innerHTML = marked.parse(text); } catch(e) { bubble.textContent = text; }
-        // Pastikan konten tidak overflow
         bubble.style.overflowWrap = 'break-word';
         bubble.style.wordBreak = 'break-word';
         div.appendChild(role === 'user' ? bubble : avatar);
@@ -238,17 +229,23 @@ You are cheerful, helpful, and very patient. Your answers are short yet dense, s
             <div class="welcome-title">NEXUS AI Agent</div>
             <div class="welcome-text">
                 ${lang === 'id'
-                    ? `👋 Halo, <strong>${displayName}</strong>! Ada yang bisa saya bantu terkait bug atau masalah teknis di website/plugin NEXUS AI?`
-                    : `👋 Hello, <strong>${displayName}</strong>! How can I help you with bugs or technical issues regarding the NEXUS AI website/plugin?`}
+                    ? `👋 Halo, <strong>${displayName}</strong>! Ada yang bisa saya bantu terkait bug, masalah teknis, atau penggunaan NEXUS AI?`
+                    : `👋 Hello, <strong>${displayName}</strong>! How can I help you with bugs, technical issues, or usage of NEXUS AI?`}
             </div>
         `;
         chatEl.appendChild(welcomeDiv);
     }
 
-    function isCodeRequest(text) {
-        const idWords = /buat(kan|lah|in|kode|script|lua|gui|game|npc|shop|loading|admin|leaderboard|datastore|tycoon|obby|simulator|module|inject|keluarkan|tulis|kodekan|bikin|tolong|bantuin)/i;
-        const enWords = /create|make|build|code|script|lua|gui|game|npc|shop|loading|admin|leaderboard|datastore|tycoon|obby|simulator|module|inject|write|generate|help me|please/i;
-        return (lang === 'id' ? idWords.test(text) : enWords.test(text)) && text.length < 100;
+    /**
+     * Deteksi apakah pengguna MEMINTA KODE secara eksplisit (bukan troubleshooting).
+     * Hanya tolak jika ada frasa imperatif seperti "buatkan script", "tulis kode", "bikinin gui".
+     */
+    function isExplicitCodeRequest(text) {
+        const lower = text.toLowerCase();
+        // Pola meminta dibuatkan sesuatu
+        const idExplicit = /(buat(kan|in|lah)?|bikin(kan|in)?|tulis(kan|in)?|kodein|sunting|berikan|kasih(kan)?)\s+(script|kode|lua|gui|game|loading screen|npc|shop|admin|leaderboard)/i;
+        const enExplicit = /(create|make|build|write|code|generate|give me|provide)\s+(a |the )?(script|code|lua|gui|game|npc|shop|loading screen|admin|leaderboard)/i;
+        return (lang === 'id' ? idExplicit.test(lower) : enExplicit.test(lower));
     }
 
     async function sendMsg() {
@@ -265,10 +262,11 @@ You are cheerful, helpful, and very patient. Your answers are short yet dense, s
 
         appendMessage('user', text);
 
-        if (isCodeRequest(text)) {
+        // Hanya tolak jika benar-benar meminta penulisan kode
+        if (isExplicitCodeRequest(text)) {
             const refuse = lang === 'id'
-                ? '🙏 Maaf, saya hanya bisa membantu masalah teknis website/plugin NEXUS AI. Untuk membuat script atau game, silakan kembali ke chat utama NEXUS AI ya!'
-                : '🙏 Sorry, I can only help with technical issues regarding the NEXUS AI website/plugin. For scripting or game creation, please use the main NEXUS AI chat!';
+                ? '🙏 Maaf, saya tidak bisa menulis kode Lua/Roblox di sini. Untuk mendapatkan script lengkap, silakan gunakan **chat utama NEXUS AI** ya. Di sana AI bisa langsung menuliskan kodenya!'
+                : '🙏 Sorry, I cannot write Lua/Roblox code here. For full scripts, please use the **main NEXUS AI chat**. The AI there can directly write the code for you!';
             appendMessage('ai', refuse);
             return;
         }
