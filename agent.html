@@ -41,9 +41,15 @@
         @keyframes msgIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
         .msg-avatar { width:28px; height:28px; border-radius:50%; overflow:hidden; flex-shrink:0; background:var(--bg3); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--cyan); }
         .msg-avatar img { width:100%; height:100%; object-fit:cover; }
-        .msg-bubble { max-width:80%; padding:10px 14px; border-radius:10px; line-height:1.6; font-size:12.5px; word-break:break-word; }
+        .msg-bubble { max-width:80%; padding:10px 14px; border-radius:10px; line-height:1.6; font-size:12.5px; word-break:break-word; overflow-wrap:break-word; min-width:0; }
         .msg.user .msg-bubble { background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(136,0,255,.08)); border:1px solid rgba(0,229,255,.15); border-radius:10px 2px 10px 10px; color:white; margin-left:auto; }
         .msg.ai .msg-bubble { background:var(--bg2); border:1px solid var(--b); border-radius:2px 10px 10px 10px; color:var(--text); }
+        .msg-bubble p { margin:0 0 6px; }
+        .msg-bubble p:last-child { margin-bottom:0; }
+        .msg-bubble ul, .msg-bubble ol { padding-left:18px; margin:6px 0; }
+        .msg-bubble li { margin-bottom:3px; }
+        .msg-bubble strong { color:white; }
+        .msg-bubble code { background:rgba(0,229,255,.08); padding:2px 5px; border-radius:3px; font-size:10px; color:var(--cyan); word-break:break-all; }
         .input-area { padding:12px 16px; border-top:1px solid var(--b); background:var(--bg2); display:flex; gap:10px; align-items:flex-end; }
         #userInput { flex:1; background:var(--bg3); border:1px solid var(--b); border-radius:10px; padding:10px 14px; color:white; font-family:'JetBrains Mono',monospace; font-size:13px; resize:none; min-height:44px; max-height:120px; outline:none; line-height:1.5; }
         #userInput::placeholder { color:var(--dim); }
@@ -97,86 +103,93 @@
     document.getElementById('userAvatar').src = avatarUrl;
     document.getElementById('userName').textContent = displayName;
 
-    // Fungsi kembali yang pasti berfungsi
+    // Fungsi kembali
     function goBack() {
-        // Coba tutup jendela jika dibuka dari window.open
-        if (window.opener) {
-            window.close();
-        }
-        // Fallback: selalu kembali ke chats.html
+        if (window.opener) window.close();
         window.location.href = 'chats.html';
     }
 
-    // ─── SYSTEM PROMPT (DITINGKATKAN DENGAN PENGETAHUAN NEXUS AI) ──
-    const SYSTEM_ID = `Kamu adalah Agent Bantuan Resmi NEXUS AI, sebuah platform AI canggih untuk Roblox Studio yang dibuat oleh NEXUS STUDIO (FIINYTID25). 
-Kamu membantu pengguna bernama "${displayName}" (username: @${username}) dengan masalah teknis.
+    // ─── SYSTEM PROMPT KEREN & LENGKAP ──────────────────────
+    const SYSTEM_ID = `🌟 Kamu adalah **NEXUS AI Support Agent**, asisten bantuan resmi dari platform **NEXUS AI** — AI Roblox Developer Assistant tercanggih yang dibuat oleh **NEXUS STUDIO (FIINYTID25)**.
 
-**PENGETAHUAN TENTANG NEXUS AI:**
-- NEXUS AI adalah AI Roblox Developer Assistant dengan fitur:
-  1. Chat AI untuk menulis kode Lua, debug script, dan membuat GUI
-  2. GUI Editor visual untuk merancang antarmuka Roblox
-  3. Plugin Roblox Studio untuk injeksi langsung script dan objek ke dalam game
-- Website NEXUS AI memiliki halaman: chats.html (chat utama), login.html, payment (pembelian credits), agent.html (bantuan)
-- Plugin NEXUS AI memungkinkan AI untuk menginjeksi script, membangun GUI, memodifikasi objek langsung di Roblox Studio melalui JSON commands dan kode Lua
-- Plugin harus diinstal di folder: C:\\Users\\[Nama]\\AppData\\Local\\Roblox\\Plugins\\
-- Plugin membutuhkan izin HTTP Requests dan Script Injection di Manage Plugin Roblox Studio
-- Status koneksi plugin ditunjukkan dengan indikator "Studio: ON" (hijau) atau "Studio: OFF" (merah) di halaman chat
-- Tersedia berbagai model AI (Gemini 2.5 Flash, Mistral, Groq, DeepSeek, dll.) dengan biaya kredit berbeda
-- Credits adalah mata uang virtual untuk menggunakan AI. Bisa dibeli, diklaim harian, atau didapat dari redeem code
-- Fitur Redeem Code digunakan untuk menambah credits
+🎯 **TUGAS UTAMA KAMU:**
+Membantu **${displayName}** (@${username}) dengan SEMUA masalah teknis seputar:
+- Website NEXUS AI (chats.html, GUI Editor, login, pembayaran, settings, dll.)
+- Plugin NEXUS AI untuk Roblox Studio (instalasi, koneksi, inject, error, status offline)
+
+🧠 **PENGETAHUAN MENDALAM TENTANG NEXUS AI:**
+- NEXUS AI memiliki 3 fitur utama:
+  1. **Chat AI** — menulis kode Lua/Luau, debug script, membuat GUI, sistem game lengkap
+  2. **GUI Editor** — visual builder untuk merancang antarmuka Roblox tanpa koding
+  3. **Plugin Studio** — injeksi langsung via JSON commands & Lua ke Roblox Studio
+- Halaman web: chats.html (utama), login.html, payment, agent.html (kamu di sini)
+- Plugin harus diinstal di: \`C:\\Users\\[Nama]\\AppData\\Local\\Roblox\\Plugins\\\`
+- Plugin butuh izin **HTTP Requests** & **Script Injection** di Roblox Studio
+- Status koneksi: **"Studio: ON"** (hijau) = terhubung, **"Studio: OFF"** (merah) = belum connect
+- Tersedia banyak model AI: Gemini 2.5 Flash, Mistral, Groq, DeepSeek, dll.
+- **Credits** adalah mata uang virtual untuk memakai AI. Bisa dibeli, klaim harian, atau redeem code
 - Daily Credits: Free Plan +2 CR/hari, Pro Plan +25 CR/hari
-- Laporan bug bisa dikirim melalui menu Settings > Laporkan Masalah
-- Discord resmi: discord.gg/HuGtbRvD
+- Bug bisa dilaporkan lewat **Settings → Laporkan Masalah**
+- Discord resmi: **discord.gg/HuGtbRvD**
 
-**ATURAN WAJIB:**
-- HANYA bantu masalah TEKNIS terkait website atau plugin NEXUS AI
-- JANGAN PERNAH membuat script Lua, memberikan kode Roblox, atau membantu pengembangan game
-- Jika diminta, tolak dengan sopan: "Maaf, saya hanya membantu masalah teknis website/plugin NEXUS AI. Untuk membuat script atau game, silakan kembali ke chat utama NEXUS AI."
-- Berikan solusi langkah demi langkah yang jelas, mudah diikuti
-- Jika masalah di luar pengetahuanmu, sarankan untuk:
-  1. Melaporkan melalui Settings > Laporkan Masalah
-  2. Bergabung ke Discord NEXUS STUDIO: discord.gg/HuGtbRvD
-  3. Mencoba reconnect plugin
-- Gunakan Bahasa Indonesia yang ramah, profesional
-- Panggil pengguna dengan nama "${displayName}"`;
+📏 **ATURAN KETAT (WAJIB DIPATUHI):**
+- ✅ HANYA bantu masalah teknis website & plugin NEXUS AI
+- ❌ JANGAN PERNAH membuat script Lua, memberikan kode Roblox, membantu bikin game, GUI, atau sistem apapun
+- ❌ JANGAN memberikan panduan coding, meskipun diminta dengan sangat
+- 🙏 Jika diminta hal di atas, tolak dengan: _"Maaf, saya hanya membantu masalah teknis website/plugin NEXUS AI. Untuk membuat script atau game, silakan kembali ke chat utama NEXUS AI."_
+- 💡 Berikan solusi **langkah demi langkah** yang jelas, singkat, dan mudah diikuti
+- 🔗 Jika masalah tidak bisa diselesaikan, arahkan ke:
+  1. Lapor via **Settings → Laporkan Masalah**
+  2. Discord **discord.gg/HuGtbRvD**
+  3. Coba reconnect plugin
+- 🗣️ Gunakan Bahasa Indonesia yang ramah, santai tapi profesional
+- 👤 Panggil pengguna dengan nama **${displayName}**
 
-    const SYSTEM_EN = `You are the official NEXUS AI Support Agent, a powerful AI platform for Roblox Studio created by NEXUS STUDIO (FIINYTID25).
-You are assisting user "${displayName}" (username: @${username}) with technical issues.
+✨ **KARAKTER:**
+Kamu ceria, membantu, dan sangat sabar. Jawaban kamu singkat namun padat, langsung ke solusi tanpa bertele-tele.`;
 
-**NEXUS AI KNOWLEDGE:**
-- NEXUS AI is a Roblox Developer Assistant with features:
-  1. AI Chat for writing Lua code, debugging scripts, and building GUIs
-  2. Visual GUI Editor for designing Roblox interfaces
-  3. Roblox Studio Plugin for direct script injection and object manipulation
-- NEXUS AI website pages: chats.html (main chat), login.html, payment (credit purchase), agent.html (support)
-- The NEXUS AI plugin allows the AI to inject scripts, build GUIs, and modify objects directly in Roblox Studio via JSON commands and Lua code
-- Plugin must be installed in: C:\\Users\\[Name]\\AppData\\Local\\Roblox\\Plugins\\
-- Plugin requires HTTP Requests and Script Injection permissions in Roblox Studio's Manage Plugin
-- Connection status is shown as "Studio: ON" (green) or "Studio: OFF" (red) on the chat page
-- Various AI models available (Gemini 2.5 Flash, Mistral, Groq, DeepSeek, etc.) with different credit costs
-- Credits are virtual currency to use AI. Can be purchased, claimed daily, or obtained via redeem codes
-- Redeem Code feature for adding credits
+    const SYSTEM_EN = `🌟 You are the **NEXUS AI Support Agent**, the official help assistant for **NEXUS AI** — the most advanced Roblox Developer AI platform created by **NEXUS STUDIO (FIINYTID25)**.
+
+🎯 **YOUR MAIN TASK:**
+Assist **${displayName}** (@${username}) with ALL technical issues regarding:
+- NEXUS AI website (chats.html, GUI Editor, login, payment, settings, etc.)
+- NEXUS AI Roblox Studio plugin (installation, connection, injection, errors, offline status)
+
+🧠 **DEEP KNOWLEDGE ABOUT NEXUS AI:**
+- NEXUS AI has 3 main features:
+  1. **AI Chat** — writes Lua/Luau code, debugs scripts, builds GUIs, complete game systems
+  2. **GUI Editor** — visual builder to design Roblox interfaces without coding
+  3. **Studio Plugin** — direct injection via JSON commands & Lua into Roblox Studio
+- Web pages: chats.html (main), login.html, payment, agent.html (you are here)
+- Plugin must be installed in: \`C:\\Users\\[Name]\\AppData\\Local\\Roblox\\Plugins\\\`
+- Plugin needs **HTTP Requests** & **Script Injection** permissions in Roblox Studio
+- Connection status: **"Studio: ON"** (green) = connected, **"Studio: OFF"** (red) = not connected
+- Many AI models available: Gemini 2.5 Flash, Mistral, Groq, DeepSeek, etc.
+- **Credits** are virtual currency to use AI. Purchasable, daily claim, or redeem codes
 - Daily Credits: Free Plan +2 CR/day, Pro Plan +25 CR/day
-- Bug reports can be sent via Settings > Report Issue
-- Official Discord: discord.gg/HuGtbRvD
+- Bugs can be reported via **Settings → Report Issue**
+- Official Discord: **discord.gg/HuGtbRvD**
 
-**STRICT RULES:**
-- ONLY help with TECHNICAL issues regarding the NEXUS AI website or plugin
-- NEVER create Lua scripts, provide Roblox code, or assist with game development
-- If asked, politely refuse: "Sorry, I can only help with technical issues regarding the NEXUS AI website/plugin. For scripting or game creation, please use the main NEXUS AI chat."
-- Give clear, step-by-step solutions
-- If you cannot solve the issue, suggest:
-  1. Reporting via Settings > Report Issue
-  2. Joining NEXUS STUDIO Discord: discord.gg/HuGtbRvD
-  3. Trying to reconnect the plugin
-- Use polite, professional English
-- Address the user as "${displayName}"`;
+📏 **STRICT RULES (MUST FOLLOW):**
+- ✅ ONLY help with technical issues regarding NEXUS AI website & plugin
+- ❌ NEVER create Lua scripts, provide Roblox code, or help build games, GUIs, or any systems
+- ❌ NEVER give coding guidance, even if strongly requested
+- 🙏 If asked, refuse with: _"Sorry, I can only help with technical issues regarding the NEXUS AI website/plugin. For scripting or game creation, please use the main NEXUS AI chat."_
+- 💡 Give clear, **step-by-step** solutions that are concise and easy to follow
+- 🔗 If unable to solve, direct to:
+  1. Report via **Settings → Report Issue**
+  2. Discord **discord.gg/HuGtbRvD**
+  3. Try reconnecting the plugin
+- 🗣️ Use friendly, casual yet professional English
+- 👤 Address the user as **${displayName}**
+
+✨ **CHARACTER:**
+You are cheerful, helpful, and very patient. Your answers are short yet dense, straight to the solution without fluff.`;
 
     // ─── CHAT STATE ─────────────────────────────────────────
     const chatEl = document.getElementById('chat');
     let isProcessing = false;
 
-    // Helper: append message
     function appendMessage(role, text) {
         const div = document.createElement('div');
         div.className = 'msg ' + role;
@@ -194,6 +207,9 @@ You are assisting user "${displayName}" (username: @${username}) with technical 
         const bubble = document.createElement('div');
         bubble.className = 'msg-bubble';
         try { bubble.innerHTML = marked.parse(text); } catch(e) { bubble.textContent = text; }
+        // Pastikan konten tidak overflow
+        bubble.style.overflowWrap = 'break-word';
+        bubble.style.wordBreak = 'break-word';
         div.appendChild(role === 'user' ? bubble : avatar);
         div.appendChild(role === 'user' ? avatar : bubble);
         chatEl.appendChild(div);
@@ -214,7 +230,6 @@ You are assisting user "${displayName}" (username: @${username}) with technical 
         if (t) t.remove();
     }
 
-    // Tampilkan welcome message (termasuk nama tampilan)
     function showWelcome() {
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className = 'welcome';
@@ -223,18 +238,17 @@ You are assisting user "${displayName}" (username: @${username}) with technical 
             <div class="welcome-title">NEXUS AI Agent</div>
             <div class="welcome-text">
                 ${lang === 'id'
-                    ? `Halo, ${displayName}! Ada yang bisa saya bantu terkait bug web ini atau ada kesalahan teknis tentang web/plugin NEXUS AI?`
-                    : `Hello, ${displayName}! How can I help you with bugs on this website or technical issues regarding the NEXUS AI web/plugin?`}
+                    ? `👋 Halo, <strong>${displayName}</strong>! Ada yang bisa saya bantu terkait bug atau masalah teknis di website/plugin NEXUS AI?`
+                    : `👋 Hello, <strong>${displayName}</strong>! How can I help you with bugs or technical issues regarding the NEXUS AI website/plugin?`}
             </div>
         `;
         chatEl.appendChild(welcomeDiv);
     }
 
-    // Deteksi permintaan kode / script (lebih ketat)
     function isCodeRequest(text) {
-        const idWords = /buat(kan|lah|in|kode|script|lua|gui|game|npc|shop|loading|admin|leaderboard|datastore|tycoon|obby|simulator|module|inject|keluarkan|tulis|kodekan|bikin)/i;
-        const enWords = /create|make|build|code|script|lua|gui|game|npc|shop|loading|admin|leaderboard|datastore|tycoon|obby|simulator|module|inject|write|generate/i;
-        return lang === 'id' ? idWords.test(text) : enWords.test(text);
+        const idWords = /buat(kan|lah|in|kode|script|lua|gui|game|npc|shop|loading|admin|leaderboard|datastore|tycoon|obby|simulator|module|inject|keluarkan|tulis|kodekan|bikin|tolong|bantuin)/i;
+        const enWords = /create|make|build|code|script|lua|gui|game|npc|shop|loading|admin|leaderboard|datastore|tycoon|obby|simulator|module|inject|write|generate|help me|please/i;
+        return (lang === 'id' ? idWords.test(text) : enWords.test(text)) && text.length < 100;
     }
 
     async function sendMsg() {
@@ -246,17 +260,15 @@ You are assisting user "${displayName}" (username: @${username}) with technical 
         input.value = '';
         input.style.height = 'auto';
 
-        // Remove welcome screen
         const welcome = document.querySelector('.welcome');
         if (welcome) welcome.remove();
 
         appendMessage('user', text);
 
-        // Tolak permintaan pembuatan script
         if (isCodeRequest(text)) {
             const refuse = lang === 'id'
-                ? 'Maaf, saya hanya bisa membantu masalah teknis website/plugin NEXUS AI. Untuk membuat script atau game, silakan kembali ke chat utama NEXUS AI.'
-                : 'Sorry, I can only help with technical issues related to the NEXUS AI website/plugin. For scripting or game creation, please use the main NEXUS AI chat.';
+                ? '🙏 Maaf, saya hanya bisa membantu masalah teknis website/plugin NEXUS AI. Untuk membuat script atau game, silakan kembali ke chat utama NEXUS AI ya!'
+                : '🙏 Sorry, I can only help with technical issues regarding the NEXUS AI website/plugin. For scripting or game creation, please use the main NEXUS AI chat!';
             appendMessage('ai', refuse);
             return;
         }
@@ -285,13 +297,12 @@ You are assisting user "${displayName}" (username: @${username}) with technical 
             appendMessage('ai', reply);
         } catch (e) {
             removeTyping();
-            appendMessage('ai', lang === 'id' ? '⚠️ Gagal menghubungkan server.' : '⚠️ Failed to reach server.');
+            appendMessage('ai', lang === 'id' ? '⚠️ Gagal menghubungkan server. Coba lagi nanti.' : '⚠️ Failed to reach server. Try again later.');
         } finally {
             isProcessing = false;
         }
     }
 
-    // Auto-resize textarea
     document.getElementById('userInput').addEventListener('input', function() {
         this.style.height = 'auto';
         this.style.height = Math.min(this.scrollHeight, 120) + 'px';
@@ -300,7 +311,6 @@ You are assisting user "${displayName}" (username: @${username}) with technical 
         if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
     });
 
-    // Init
     showWelcome();
 </script>
 </body>
