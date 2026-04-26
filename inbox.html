@@ -7,20 +7,27 @@
 <link rel="icon" href="nexusai.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#030312;--bg2:#06071a;--bg3:#0a0b22;--cyan:#00e5ff;--purple:#8800ff;--pink:#ff2d6b;--green:#00ffaa;--yellow:#ffd600;--text:#b8cfff;--dim:#3a4a7a;--b:rgba(0,229,255,.12);--r:8px;}
+:root{
+  --bg:#030312;--bg2:#06071a;--bg3:#0a0b22;
+  --cyan:#00e5ff;--purple:#8800ff;--pink:#ff2d6b;--green:#00ffaa;--yellow:#ffd600;
+  --text:#b8cfff;--dim:#3a4a7a;--b:rgba(0,229,255,.12);--r:8px;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{min-height:100%;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--text);font-size:13px;}
-body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0,229,255,.012)1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.012)1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-chats:0;}
-.nav{position:sticky;top:0;z-chats:100;display:flex;align-items:center;gap:10px;padding:10px 20px;background:rgba(3,3,18,.92);border-bottom:1px solid var(--b);backdrop-filter:blur(10px);}
+body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0,229,255,.012)1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.012)1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:10px;padding:10px 20px;background:rgba(3,3,18,.92);border-bottom:1px solid var(--b);backdrop-filter:blur(10px);}
 .nav-logo{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .nav-back{margin-left:auto;background:none;border:1px solid var(--b);border-radius:5px;color:var(--dim);font-size:10px;padding:4px 10px;cursor:pointer;font-family:'JetBrains Mono',monospace;text-decoration:none;transition:.15s;}
 .nav-back:hover{color:var(--cyan);border-color:var(--cyan);}
-.main{max-width:800px;margin:0 auto;padding:24px 16px;position:relative;z-chats:1;}
+
+.main{max-width:800px;margin:0 auto;padding:24px 16px;position:relative;z-index:1;}
 .inbox-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
 .inbox-title{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--cyan);}
 .inbox-actions{display:flex;gap:8px;}
 .btn-sm{padding:5px 12px;border-radius:5px;font-size:9px;cursor:pointer;border:1px solid var(--b);background:rgba(0,229,255,.04);color:var(--text);transition:.15s;font-family:'JetBrains Mono',monospace;}
 .btn-sm:hover{border-color:var(--cyan);color:var(--cyan);}
+
 .msg-list{display:flex;flex-direction:column;gap:8px;}
 .msg-item{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:.15s;position:relative;}
 .msg-item:hover{border-color:var(--cyan);background:rgba(0,229,255,.03);}
@@ -32,9 +39,11 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .msg-preview{font-size:10px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .msg-time{position:absolute;top:14px;right:16px;font-size:9px;color:var(--dim);}
 .unread-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);display:inline-block;margin-right:4px;}
+
 .empty-state{text-align:center;padding:60px 20px;color:var(--dim);}
 .empty-icon{font-size:48px;margin-bottom:16px;}
 .empty-title{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--text);margin-bottom:8px;}
+
 /* Detail view */
 .detail-view{display:none;}
 .detail-view.show{display:block;}
@@ -48,9 +57,10 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .detail-content{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:20px;font-size:12px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;}
 .type-badge{display:inline-block;padding:2px 7px;border-radius:3px;font-size:8px;font-weight:700;margin-left:8px;}
 .type-general{background:rgba(0,229,255,.1);color:var(--cyan);}
-.type-announcement{background:rgba(255,214,0,.1);color:var(--yellow);}
+.type-announcement,.type-reward{background:rgba(255,214,0,.1);color:var(--yellow);}
 .type-payment{background:rgba(0,255,170,.1);color:var(--green);}
 .type-warning{background:rgba(255,45,107,.1);color:var(--pink);}
+
 @media(max-width:600px){.main{padding:16px 10px;}}
 </style>
 </head>
@@ -60,8 +70,10 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
   <span class="nav-logo">NEXUS AI</span>
   <a class="nav-back" href="/">← Back to Chat</a>
 </nav>
+
 <div class="main">
-  <div id="listView">
+  <!-- LIST VIEW -->
+  <div id="listView" class="list-view">
     <div class="inbox-header">
       <div class="inbox-title" id="inboxTitle">Inbox</div>
       <div class="inbox-actions">
@@ -69,12 +81,16 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
         <button class="btn-sm" onclick="loadMessages()" id="refreshBtn">Refresh</button>
       </div>
     </div>
-    <div class="msg-list" id="msgList"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title" id="loadingTxt">Loading...</div></div></div>
+    <div class="msg-list" id="msgList">
+      <div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title" id="loadingTxt">Loading...</div></div>
+    </div>
   </div>
+
+  <!-- DETAIL VIEW -->
   <div class="detail-view" id="detailView">
     <div class="detail-header">
       <button class="detail-back" onclick="showList()" id="backBtn">← Back</button>
-      <div>
+      <div style="flex:1;">
         <div class="detail-subject" id="detailSubject">-</div>
         <div class="detail-from" id="detailFrom">-</div>
         <div class="detail-time" id="detailTime">-</div>
@@ -83,66 +99,166 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <div class="detail-content" id="detailContent">-</div>
   </div>
 </div>
+
 <script>
 'use strict';
-var SESSION=null,messages=[],currentLang='en';
-(function(){
-  try{
-    var s=localStorage.getItem('nexus_session');
-    if(!s){window.location.replace('/login');return;}
-    SESSION=JSON.parse(s);
-    if(!SESSION||!SESSION.user){window.location.replace('/login');return;}
-    currentLang=SESSION.data&&SESSION.data.language||localStorage.getItem('nexus_lang')||'en';
-    if(currentLang==='id'){
-      document.getElementById('inboxTitle').textContent='Kotak Masuk';
-      document.getElementById('markReadBtn').textContent='Tandai semua dibaca';
-      document.getElementById('refreshBtn').textContent='Refresh';
-      document.getElementById('backBtn').textContent='← Kembali';
+var SESSION = null;
+var messages = [];
+var currentLang = 'en';
+
+// Helper aman untuk ambil elemen
+function getEl(id) {
+  return document.getElementById(id);
+}
+
+(function init() {
+  try {
+    var s = localStorage.getItem('nexus_session');
+    if (!s) { window.location.replace('/login'); return; }
+    SESSION = JSON.parse(s);
+    if (!SESSION || !SESSION.user) { window.location.replace('/login'); return; }
+    currentLang = (SESSION.data && SESSION.data.language) || localStorage.getItem('nexus_lang') || 'en';
+    if (currentLang === 'id') {
+      var title = getEl('inboxTitle'); if (title) title.textContent = 'Kotak Masuk';
+      var markBtn = getEl('markReadBtn'); if (markBtn) markBtn.textContent = 'Tandai semua dibaca';
+      var refBtn = getEl('refreshBtn'); if (refBtn) refBtn.textContent = 'Muat Ulang';
+      var backBtn = getEl('backBtn'); if (backBtn) backBtn.textContent = '← Kembali';
     }
     loadMessages();
-  }catch(e){window.location.replace('/login');}
+  } catch(e) {
+    window.location.replace('/login');
+  }
 })();
-async function loadMessages(){
-  var listEl=document.getElementById('msgList');
-  try{
-    var r=await fetch('/api/inbox?user='+encodeURIComponent(SESSION.user.username.toLowerCase()));
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    var data=await r.json();messages=data.messages||[];
-    if(!messages.length){
-      listEl.innerHTML='<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">'+(currentLang==='id'?'Tidak ada pesan':'No messages yet')+'</div><div style="font-size:10px;color:var(--dim);margin-top:8px;">'+(currentLang==='id'?'NEXUS AI akan mengirimkan notifikasi dan pengumuman di sini.':'NEXUS AI will send notifications and announcements here.')+'</div></div>';
-    }else{
-      listEl.innerHTML=messages.map(function(m){
-        var typeCls='type-'+(m.type||'general');
-        return'<div class="msg-item'+(m.read?'':' unread')+'" onclick="openMsg(''+m.id+'')">'+
-          '<div class="msg-from"><div class="msg-from-icon">N</div><span>'+esc(m.from||'NEXUS AI')+'</span><span class="type-badge '+typeCls+'">'+(m.type||'general').toUpperCase()+'</span></div>'+
-          '<div class="msg-subject">'+(m.read?'':'<span class="unread-dot"></span>')+esc(m.subject||'Message')+'</div>'+
-          '<div class="msg-preview">'+esc((m.content||'').substring(0,100))+'</div>'+
-          '<div class="msg-time">'+ago(m.ts)+'</div>'+
+
+function esc(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function timeAgo(ts) {
+  if (!ts) return '';
+  var diff = Date.now() - ts;
+  if (diff < 60000) return currentLang === 'id' ? 'baru saja' : 'just now';
+  if (diff < 3600000) return Math.floor(diff / 60000) + 'm ago';
+  if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
+  return Math.floor(diff / 86400000) + 'd ago';
+}
+
+async function loadMessages() {
+  var listEl = getEl('msgList');
+  if (!listEl) return;
+  try {
+    var username = (SESSION.user.username || '').toLowerCase();
+    var r = await fetch('/api/inbox?user=' + encodeURIComponent(username));
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    var data = await r.json();
+    messages = data.messages || [];
+    if (!messages.length) {
+      listEl.innerHTML =
+        '<div class="empty-state">' +
+          '<div class="empty-icon">📭</div>' +
+          '<div class="empty-title">' + (currentLang === 'id' ? 'Tidak ada pesan' : 'No messages yet') + '</div>' +
+          '<div style="font-size:10px;color:var(--dim);margin-top:8px;">' +
+            (currentLang === 'id' ? 'NEXUS AI akan mengirimkan notifikasi dan pengumuman di sini.' : 'NEXUS AI will send notifications and announcements here.') +
+          '</div>' +
+        '</div>';
+    } else {
+      listEl.innerHTML = messages.map(function(m) {
+        var typeClass = 'type-' + (m.type || 'general');
+        var subj = esc(m.subject || 'Message');
+        var preview = esc((m.content || '').substring(0, 100));
+        return '<div class="msg-item' + (m.read ? '' : ' unread') + '" data-msg-id="' + esc(m.id) + '">' +
+          '<div class="msg-from">' +
+            '<div class="msg-from-icon">N</div>' +
+            '<span>' + esc(m.from || 'NEXUS AI') + '</span>' +
+            '<span class="type-badge ' + typeClass + '">' + (m.type || 'general').toUpperCase() + '</span>' +
+          '</div>' +
+          '<div class="msg-subject">' +
+            (m.read ? '' : '<span class="unread-dot"></span>') + subj +
+          '</div>' +
+          '<div class="msg-preview">' + preview + '</div>' +
+          '<div class="msg-time">' + timeAgo(m.ts) + '</div>' +
         '</div>';
       }).join('');
+
+      // Pasang event listener untuk setiap item
+      var items = listEl.querySelectorAll('.msg-item');
+      items.forEach(function(item) {
+        item.addEventListener('click', function() {
+          var id = item.getAttribute('data-msg-id');
+          openMsg(id);
+        });
+      });
     }
-  }catch(e){listEl.innerHTML='<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error loading messages</div><div style="font-size:10px;color:var(--dim);">'+e.message+'</div></div>';}
-}
-function openMsg(id){
-  var msg=messages.find(function(m){return m.id===id;});if(!msg)return;
-  document.getElementById('detailSubject').textContent=msg.subject||'Message';
-  document.getElementById('detailFrom').textContent='From: '+(msg.from||'NEXUS AI');
-  document.getElementById('detailTime').textContent=new Date(msg.ts).toLocaleString();
-  document.getElementById('detailContent').textContent=msg.content||'';
-  document.getElementById('listView').classList.add('hidden');
-  document.getElementById('detailView').classList.add('show');
-  if(!msg.read){
-    fetch('/api/inbox',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:SESSION.user.username.toLowerCase(),id:id})}).catch(function(){});
-    msg.read=true;
+  } catch(e) {
+    listEl.innerHTML =
+      '<div class="empty-state">' +
+        '<div class="empty-icon">⚠️</div>' +
+        '<div class="empty-title">Error loading messages</div>' +
+        '<div style="font-size:10px;color:var(--dim);">' + esc(e.message) + '</div>' +
+      '</div>';
   }
 }
-function showList(){document.getElementById('detailView').classList.remove('show');document.getElementById('listView').classList.remove('hidden');}
-async function markAllRead(){
-  try{await fetch('/api/inbox',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:SESSION.user.username.toLowerCase(),action:'read_all'})});}catch(e){}
-  messages.forEach(function(m){m.read=true;});loadMessages();
+
+function openMsg(id) {
+  var msg = messages.find(function(m) { return m.id === id; });
+  if (!msg) return;
+  var subjectEl = getEl('detailSubject');
+  var fromEl = getEl('detailFrom');
+  var timeEl = getEl('detailTime');
+  var contentEl = getEl('detailContent');
+  if (subjectEl) subjectEl.textContent = msg.subject || 'Message';
+  if (fromEl) fromEl.textContent = 'From: ' + (msg.from || 'NEXUS AI');
+  if (timeEl) timeEl.textContent = new Date(msg.ts).toLocaleString();
+  if (contentEl) contentEl.textContent = msg.content || '';
+
+  var listView = getEl('listView');
+  var detailView = getEl('detailView');
+  if (listView) listView.classList.add('hidden');
+  if (detailView) detailView.classList.add('show');
+
+  // Mark as read
+  if (!msg.read) {
+    msg.read = true;
+    try {
+      fetch('/api/inbox', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user: (SESSION.user.username || '').toLowerCase(),
+          id: id
+        })
+      }).catch(function() {});
+    } catch(_) {}
+  }
 }
-function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function ago(ts){if(!ts)return'';var d=Date.now()-ts;if(d<60000)return currentLang==='id'?'baru saja':'just now';if(d<3600000)return Math.floor(d/60000)+'m ago';if(d<86400000)return Math.floor(d/3600000)+'h ago';return Math.floor(d/86400000)+'d ago';}
+
+function showList() {
+  var detailView = getEl('detailView');
+  var listView = getEl('listView');
+  if (detailView) detailView.classList.remove('show');
+  if (listView) listView.classList.remove('hidden');
+}
+
+async function markAllRead() {
+  try {
+    await fetch('/api/inbox', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user: (SESSION.user.username || '').toLowerCase(),
+        action: 'read_all'
+      })
+    });
+  } catch(e) {}
+  messages.forEach(function(m) { m.read = true; });
+  loadMessages();
+}
 </script>
 </body>
 </html>
