@@ -1,10 +1,10 @@
-<!--payment.html-->
+<!-- payment.html -->
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Beli Credits — NEXUS AI</title>
+<title>Get Credits — NEXUS AI</title>
 <link rel="icon" href="nexusai.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -68,7 +68,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .plan-btn:disabled{opacity:.4;cursor:not-allowed;}
 
 /* CREDIT PACKS */
-.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px;}
+.packs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:28px;}
 .pack-card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px 12px;cursor:pointer;transition:.2s;text-align:center;position:relative;}
 .pack-card:hover{border-color:var(--cyan2);transform:translateY(-2px);}
 .pack-card.selected{border-color:var(--yellow);box-shadow:0 0 14px rgba(255,214,0,.12);}
@@ -136,7 +136,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 
 @media(max-width:540px){
   .plans{grid-template-columns:1fr 1fr;}
-  .packs{grid-template-columns:repeat(3,1fr);}
+  .packs{grid-template-columns:repeat(2,1fr);}
   .pay-methods{grid-template-columns:1fr 1fr;}
 }
 </style>
@@ -144,15 +144,15 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 <body>
 <nav class="nav">
   <a href="/chats" class="nav-logo">NEXUS AI</a>
-  <button class="nav-back" onclick="goBack()">← Kembali</button>
+  <button class="nav-back" onclick="goBack()">← Back</button>
 </nav>
 
 <div class="main">
   <!-- HERO -->
   <div class="hero">
     <div class="hero-icon">⭐</div>
-    <div class="hero-title">Beli Credits</div>
-    <div class="hero-sub">Pilih paket yang sesuai kebutuhanmu</div>
+    <div class="hero-title">Get Credits</div>
+    <div class="hero-sub">Choose a package that suits your needs</div>
   </div>
 
   <!-- STEPS -->
@@ -181,84 +181,84 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 
   <!-- VIEW 1: SELECT PACKAGE -->
   <div class="view active" id="view1">
-    <div class="sec-title">Pilih Paket</div>
+    <div class="sec-title">Select Package</div>
 
     <!-- PLANS -->
     <div class="plans">
       <!-- FREE -->
-      <div class="plan-card" id="planFree" onclick="selectPlan('free')">
+      <div class="plan-card" id="planFree" onclick="selectFreePlan()">
         <div class="plan-badge free">FREE</div>
-        <div class="plan-price">$0<sub>/bulan</sub></div>
-        <div class="plan-period">Selamanya gratis</div>
+        <div class="plan-price">$0<sub>/mo</sub></div>
+        <div class="plan-period">Forever free</div>
         <ul class="plan-features">
-          <li>30 CR saat daftar</li>
-          <li>+2 CR / hari</li>
+          <li>30 CR on signup</li>
+          <li>+2 CR daily</li>
           <li>Gemini Flash Lite</li>
-          <li class="dim">Model premium</li>
+          <li class="dim">Premium models</li>
           <li class="dim">Priority support</li>
         </ul>
-        <button class="plan-btn free-btn" disabled id="freeBtnPlan">Paket Aktif</button>
+        <button class="plan-btn free-btn" id="freeBtnPlan" disabled>Active</button>
       </div>
       <!-- PRO -->
-      <div class="plan-card" id="planPro" onclick="selectProPlan()" style="cursor:pointer;">
+      <div class="plan-card" id="planPro" onclick="selectProPlan()">
         <span class="pro-badge">HOT 🔥</span>
         <div class="plan-badge pro">PRO</div>
-        <div class="plan-price">Rp 150K<sub style="font-size:10px;color:var(--dim);">/bulan</sub></div>
-        <div class="plan-period">Per bulan · Bayar via OVO/DANA</div>
+        <div class="plan-price">Rp 150K<sub style="font-size:10px;color:var(--dim);">/mo</sub></div>
+        <div class="plan-period">Monthly · Via OVO/DANA</div>
         <ul class="plan-features">
-          <li>200 CR langsung aktif</li>
-          <li>+25 CR / hari (auto)</li>
-          <li>Semua model AI</li>
+          <li>200 CR instantly</li>
+          <li>+25 CR daily (auto)</li>
+          <li>All AI models</li>
           <li>Priority support</li>
-          <li>Akses fitur eksklusif</li>
+          <li>Exclusive features</li>
           <li>Custom AI personality</li>
         </ul>
-        <button class="plan-btn pro-btn" onclick="selectProPlan()">Langganan Pro</button>
+        <button class="plan-btn pro-btn" onclick="selectProPlan()">Subscribe Pro</button>
       </div>
     </div>
 
     <!-- CREDIT PACKS -->
-    <div class="sec-title">Credit Packs (Beli Sekali)</div>
-    <div class="packs" style="grid-template-columns:repeat(2,1fr);">
+    <div class="sec-title">One‑time Credit Packs</div>
+    <div class="packs">
       <div class="pack-card" id="pack50" onclick="selectPack('50','38000','50 CR Starter')">
         <div class="pack-cr">50</div>
         <div class="pack-label">Starter</div>
         <div class="pack-price">Rp 38K</div>
-        <div class="pack-sub" style="font-size:8px;">≈ $2.38 USD</div>
+        <div class="pack-sub">≈ $2.38 USD</div>
       </div>
       <div class="pack-card popular" id="pack80" onclick="selectPack('80','50000','80 CR Popular')">
         <div class="pack-cr">80</div>
         <div class="pack-label">Popular</div>
         <div class="pack-price">Rp 50K</div>
-        <div class="pack-sub" style="font-size:8px;">≈ $3.13 USD</div>
+        <div class="pack-sub">≈ $3.13 USD</div>
       </div>
       <div class="pack-card" id="pack150" onclick="selectPack('150','120000','150 CR Pro')">
         <div class="pack-cr">150</div>
         <div class="pack-label">Pro</div>
         <div class="pack-price">Rp 120K</div>
-        <div class="pack-sub" style="font-size:8px;">≈ $7.50 USD</div>
+        <div class="pack-sub">≈ $7.50 USD</div>
       </div>
       <div class="pack-card" id="pack500" onclick="selectPack('500','1500000','500 CR Mega')">
         <div class="pack-cr">500</div>
         <div class="pack-label">Mega</div>
         <div class="pack-price">Rp 1.5M</div>
-        <div class="pack-sub" style="font-size:8px;">≈ $93.75 USD</div>
+        <div class="pack-sub">≈ $93.75 USD</div>
       </div>
     </div>
 
-    <button class="btn-pay" id="btnNext1" onclick="goToPayment()" disabled>Lanjut ke Pembayaran →</button>
+    <button class="btn-pay" id="btnNext1" onclick="goToPayment()" disabled>Continue to Payment →</button>
   </div>
 
   <!-- VIEW 2: PAYMENT METHOD -->
   <div class="view" id="view2">
-    <div class="sec-title">Pilih Metode Pembayaran</div>
+    <div class="sec-title">Select Payment Method</div>
 
     <div class="pay-methods">
       <div class="pay-card" id="payOVO" onclick="selectPayMethod('ovo')">
         <img class="pay-icon" src="icon/ovo.png" alt="OVO" onerror="this.style.display='none'">
         <div>
           <div class="pay-name">OVO</div>
-          <div class="pay-sub">Transfer saldo OVO</div>
+          <div class="pay-sub">Transfer via OVO</div>
         </div>
         <div class="pay-check" id="ovoCheck"></div>
       </div>
@@ -266,7 +266,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
         <img class="pay-icon" src="icon/dana.png" alt="DANA" onerror="this.style.display='none'">
         <div>
           <div class="pay-name">DANA</div>
-          <div class="pay-sub">Transfer saldo DANA</div>
+          <div class="pay-sub">Transfer via DANA</div>
         </div>
         <div class="pay-check" id="danaCheck"></div>
       </div>
@@ -274,9 +274,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 
     <!-- ORDER SUMMARY -->
     <div class="order-box">
-      <div class="sec-title" style="margin-bottom:10px;">Ringkasan Pesanan</div>
+      <div class="sec-title" style="margin-bottom:10px;">Order Summary</div>
       <div class="order-row">
-        <span class="order-label">Paket</span>
+        <span class="order-label">Package</span>
         <span class="order-val" id="sumPack">-</span>
       </div>
       <div class="order-row">
@@ -284,7 +284,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
         <span class="order-val" id="sumCR" style="color:var(--yellow);">-</span>
       </div>
       <div class="order-row">
-        <span class="order-label">Metode</span>
+        <span class="order-label">Method</span>
         <span class="order-val" id="sumMethod">-</span>
       </div>
       <div class="order-row total">
@@ -294,73 +294,70 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     </div>
 
     <div style="display:flex;gap:10px;">
-      <button class="nav-back" style="flex:1;justify-content:center;padding:12px;" onclick="goToView(1)">← Kembali</button>
-      <button class="btn-pay" style="flex:2;" id="btnPay" onclick="showPayInst()" disabled>Lihat Instruksi Bayar →</button>
+      <button class="nav-back" style="flex:1;justify-content:center;padding:12px;" onclick="goToView(1)">← Back</button>
+      <button class="btn-pay" style="flex:2;" id="btnPay" onclick="showPayInst()" disabled>View Payment Instructions →</button>
     </div>
   </div>
 
   <!-- VIEW 3: PAYMENT INSTRUCTION -->
   <div class="view" id="view3">
-    <div class="sec-title">Instruksi Pembayaran</div>
+    <div class="sec-title">Payment Instructions</div>
 
     <div class="pay-instruction show" id="instBox">
-      <div class="inst-title" id="instTitle">Transfer ke OVO</div>
-      <div class="inst-name" id="instName">Atas nama: FIINYTID25</div>
+      <div class="inst-title" id="instTitle">Transfer to OVO</div>
+      <div class="inst-name" id="instName">Account name: NEXUS STUDIO</div>
       <div class="inst-number" id="instNumber" onclick="copyNumber()">
         <span id="instNumVal">-</span>
-        <span style="font-size:9px;color:var(--dim);">Tap to copy</span>
+        <span style="font-size:9px;color:var(--dim);">Tap to copy number</span>
       </div>
 
       <ul class="inst-steps">
-        <li><span class="num">1.</span> Buka aplikasi <strong id="instApp">OVO</strong> di HP kamu</li>
-        <li><span class="num">2.</span> Pilih <strong>Transfer</strong> → masukkan nomor di atas</li>
-        <li><span class="num">3.</span> Masukkan nominal <strong id="instAmount">-</strong></li>
-        <li><span class="num">4.</span> Di catatan/keterangan, tulis: <strong id="instNote">-</strong></li>
-        <li><span class="num">5.</span> Konfirmasi dan selesaikan transfer</li>
-        <li><span class="num">6.</span> Screenshot bukti transfer</li>
-        <li><span class="num">7.</span> Enter the transfer amount below to enable confirmation:</li>
+        <li><span class="num">1.</span> Open your <strong id="instApp">OVO</strong> app</li>
+        <li><span class="num">2.</span> Select <strong>Transfer</strong> → enter the number above</li>
+        <li><span class="num">3.</span> Enter amount <strong id="instAmount">-</strong></li>
+        <li><span class="num">4.</span> In the note/memo, write: <strong id="instNote">-</strong></li>
+        <li><span class="num">5.</span> Confirm and complete the transfer</li>
+        <li><span class="num">6.</span> Screenshot the proof of transfer</li>
+        <li><span class="num">7.</span> Come back here and enter the exact amount to confirm:</li>
       </ul>
       <div style="margin-top:12px;">
-        <div style="font-size:10px;color:var(--dim);margin-bottom:6px;">Enter transfer amount (Rp) to confirm:</div>
-        <input type="number" id="confirmAmountInput" placeholder="e.g. 299000" style="width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:8px 12px;color:white;font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;" oninput="validatePaymentAmount(this.value)">
+        <div style="font-size:10px;color:var(--dim);margin-bottom:6px;">Enter the transfer amount (Rp) to verify:</div>
+        <input type="number" id="confirmAmountInput" placeholder="e.g. 150000" style="width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:8px 12px;color:white;font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;" oninput="validatePaymentAmount(this.value)">
         <div style="font-size:9px;color:var(--dim);margin-top:4px;" id="amountValidMsg"></div>
       </div>
-      <ul style="list-style:none;display:none;">
-        <li><span class="num">7.</span> Klik tombol "Saya Sudah Bayar" di bawah</li>
-      </ul>
 
       <div class="inst-warn">
-        ⚠️ Credits akan ditambahkan dalam <strong>1-24 jam</strong> setelah pembayaran dikonfirmasi.
-        Simpan screenshot bukti transfer kamu!
+        ⚠️ Credits will be added within <strong>1-24 hours</strong> after payment is verified.
+        Please keep your payment screenshot.
       </div>
     </div>
 
     <!-- SUMMARY REPEAT -->
     <div class="order-box">
       <div class="order-row">
-        <span class="order-label">Paket</span>
+        <span class="order-label">Package</span>
         <span class="order-val" id="sumPack2">-</span>
       </div>
       <div class="order-row total">
-        <span class="order-label" style="color:white;font-weight:700;">Total Bayar</span>
+        <span class="order-label" style="color:white;font-weight:700;">Total to Pay</span>
         <span class="order-total-val" id="sumTotal2">-</span>
       </div>
     </div>
 
     <div style="display:flex;gap:10px;flex-direction:column;">
-      <button class="btn-pay" id="btnDone" onclick="confirmPayment()" disabled style="opacity:0.4;cursor:not-allowed;">✅ Saya Sudah Bayar</button>
-      <button class="nav-back" style="width:100%;justify-content:center;padding:10px;" onclick="goToView(2)">← Kembali</button>
+      <button class="btn-pay" id="btnDone" onclick="confirmPayment()" disabled style="opacity:0.4;cursor:not-allowed;">✅ I Have Paid</button>
+      <button class="nav-back" style="width:100%;justify-content:center;padding:10px;" onclick="goToView(2)">← Back</button>
     </div>
   </div>
 
   <!-- VIEW 4: CONFIRMED -->
   <div class="view" id="view4" style="text-align:center;padding:40px 0;">
     <div style="font-size:60px;margin-bottom:20px;">✅</div>
-    <div style="font-family:'Orbitron',sans-serif;font-size:18px;color:var(--green);margin-bottom:12px;">Pembayaran Dikonfirmasi!</div>
-    <p style="color:var(--dim);font-size:11px;margin-bottom:8px;">Credits kamu akan ditambahkan dalam 1-24 jam.</p>
-    <p style="color:var(--dim);font-size:11px;margin-bottom:28px;">Simpan screenshot bukti transfermu ya!</p>
-    <p style="color:var(--text);font-size:11px;margin-bottom:28px;">Untuk pertanyaan, hubungi:<br><strong style="color:var(--cyan);">arifiinytid@gmail.com</strong></p>
-    <button class="btn-pay" onclick="window.location.href='/chats'">← Kembali ke NEXUS AI</button>
+    <div style="font-family:'Orbitron',sans-serif;font-size:18px;color:var(--green);margin-bottom:12px;">Payment Confirmed!</div>
+    <p style="color:var(--dim);font-size:11px;margin-bottom:8px;">Your credits will be added within 1-24 hours after verification.</p>
+    <p style="color:var(--dim);font-size:11px;margin-bottom:28px;">Keep your payment screenshot for reference.</p>
+    <p style="color:var(--text);font-size:11px;margin-bottom:28px;">For inquiries, contact:<br><strong style="color:var(--cyan);">arifiinytid@gmail.com</strong></p>
+    <button class="btn-pay" onclick="window.location.href='/chats'">← Back to NEXUS AI</button>
   </div>
 </div>
 
@@ -444,17 +441,18 @@ function goToView(n){
   window.scrollTo(0,0);
 }
 
-function selectPlan(p){
-  // Free plan info
-  if (p === 'free') { toast('Kamu sudah di Free plan!', 'var(--green)'); return; }
+function selectFreePlan(){
+  toast('You are already on the Free plan!', 'var(--green)');
+  return;
 }
+
 function selectProPlan(){
-  // Select Pro as a monthly subscription pack
+  // Select Pro as a monthly subscription
   sel.pack = 'pro';
   sel.cr = 200;
   sel.price = 150000;
-  sel.priceStr = 'Rp 150K/bulan';
-  sel.label = 'Pro Plan (1 Bulan) · 200 CR + 25 CR/hari';
+  sel.priceStr = 'Rp 150K/month';
+  sel.label = 'Pro Plan (1 Month) · 200 CR + 25 CR/day';
   // Deselect credit packs
   ['pack50','pack80','pack150','pack500'].forEach(function(id){
     var el = document.getElementById(id);
@@ -462,19 +460,20 @@ function selectProPlan(){
   });
   document.getElementById('planPro').style.borderColor = 'var(--cyan)';
   document.getElementById('btnNext1').disabled = false;
-  toast('Pro Plan dipilih!', 'var(--cyan)');
+  toast('Pro Plan selected!', 'var(--cyan)');
 }
 
 function selectPack(cr, price, label){
-  // Deselect all
+  // Deselect all packs and plan
   ['pack50','pack80','pack150','pack500'].forEach(function(id){
     document.getElementById(id).classList.remove('selected');
   });
+  document.getElementById('planPro').style.borderColor = 'var(--b)'; // reset pro border
   var priceNum = parseInt(price);
   sel.pack = cr;
   sel.cr = parseInt(cr);
   sel.price = priceNum;
-  sel.priceStr = 'Rp '+formatRp(priceNum);
+  sel.priceStr = 'Rp ' + formatRp(priceNum);
   sel.label = label;
   document.getElementById('pack'+cr).classList.add('selected');
   document.getElementById('btnNext1').disabled = false;
@@ -487,7 +486,7 @@ function formatRp(n){
 }
 
 function goToPayment(){
-  if (!sel.pack) { toast('Pilih paket dulu!', 'var(--pink)'); return; }
+  if (!sel.pack) { toast('Select a package first!', 'var(--pink)'); return; }
   // Update summary
   document.getElementById('sumPack').textContent = sel.label;
   document.getElementById('sumCR').textContent = sel.cr + ' CR';
@@ -505,14 +504,18 @@ function selectPayMethod(m){
 }
 
 function showPayInst(){
-  if (!sel.method) { toast('Pilih metode pembayaran dulu!', 'var(--pink)'); return; }
-  if (!paymentLoaded) { toast('Memuat konfigurasi pembayaran...'); loadPaymentConfig().then(function(){ if(paymentLoaded) showPayInst(); }); return; }
+  if (!sel.method) { toast('Select a payment method first!', 'var(--pink)'); return; }
+  if (!paymentLoaded) { 
+    toast('Loading payment configuration...', 'var(--yellow)'); 
+    loadPaymentConfig().then(function(){ if(paymentLoaded) showPayInst(); });
+    return; 
+  }
   var isOvo = sel.method === 'ovo';
   var num = isOvo ? OVO_NUMBER : DANA_NUMBER;
   var username = SESSION && SESSION.user ? SESSION.user.username : 'USER';
 
-  document.getElementById('instTitle').textContent = 'Transfer ke ' + (isOvo?'OVO':'DANA');
-  document.getElementById('instName').textContent = 'Atas nama: ' + OWNER_NAME;
+  document.getElementById('instTitle').textContent = 'Transfer to ' + (isOvo?'OVO':'DANA');
+  document.getElementById('instName').textContent = 'Account name: ' + OWNER_NAME;
   document.getElementById('instNumVal').textContent = num;
   document.getElementById('instApp').textContent = isOvo ? 'OVO' : 'DANA';
   document.getElementById('instAmount').textContent = sel.priceStr;
@@ -520,6 +523,11 @@ function showPayInst(){
 
   document.getElementById('sumPack2').textContent = sel.label;
   document.getElementById('sumTotal2').textContent = sel.priceStr;
+
+  // Reset amount validation
+  document.getElementById('confirmAmountInput').value = '';
+  document.getElementById('amountValidMsg').textContent = '';
+  document.getElementById('btnDone').disabled = true;
 
   goToView(3);
 }
@@ -545,18 +553,19 @@ function validatePaymentAmount(val){
     if(btn) { btn.disabled=true; btn.style.opacity='0.4'; btn.style.cursor='not-allowed'; }
   }
 }
+
 function copyNumber(){
   var isOvo = sel.method === 'ovo';
   var num = isOvo ? OVO_NUMBER : DANA_NUMBER;
   navigator.clipboard.writeText(num).then(function(){
-    toast('Nomor disalin!', 'var(--green)');
+    toast('Number copied!', 'var(--green)');
   }).catch(function(){
     toast(num, 'var(--cyan)');
   });
 }
 
 function confirmPayment(){
-  // Send report to server
+  // Send report to server for admin verification
   if (SESSION) {
     var u = SESSION.user;
     var note = 'NEXUS-' + u.username + '-' + sel.cr + 'CR · ' + sel.method.toUpperCase() + ' · ' + sel.priceStr;
@@ -566,7 +575,7 @@ function confirmPayment(){
       body: JSON.stringify({
         from: u.username,
         userId: u.robloxId || u.id,
-        message: '💳 PEMBAYARAN BARU:\nPaket: ' + sel.label + '\nCredits: ' + sel.cr + ' CR\nMetode: ' + sel.method.toUpperCase() + '\nTotal: ' + sel.priceStr + '\nNote: ' + note,
+        message: '💳 NEW PAYMENT:\nPackage: ' + sel.label + '\nCredits: ' + sel.cr + ' CR\nMethod: ' + sel.method.toUpperCase() + '\nTotal: ' + sel.priceStr + '\nNote: ' + note,
         time: new Date().toISOString(),
         plan: SESSION.data ? (SESSION.data.plan || 'free') : 'free',
         credits: SESSION.data ? (SESSION.data.credits || 0) : 0,
