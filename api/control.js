@@ -107,7 +107,7 @@ function getScriptList(u) {
 }
 
 // ─── VALID ACTIONS (COMPLETE LIST) ────────────────────────
-const VALID = new Set([
+const VALID_ACTIONS = new Set([
   'none',
   // Script management
   'read_script', 'edit_script', 'list_scripts', 'scan_workspace',
@@ -178,7 +178,7 @@ const VALID = new Set([
 
 // ─── RATE LIMITING (simple per-user) ──────────────────────
 const rateLimits = new Map();
-function checkRateLimit(user, maxPerMinute = 60) {
+function checkRateLimit(user, maxPerMinute = 120) {
   const now = Date.now();
   const key = san(user);
   if (!rateLimits.has(key)) rateLimits.set(key, { count: 0, reset: now + 60000 });
@@ -428,7 +428,7 @@ export default async function handler(req, res) {
       const skipped = [];
       for (const cmd of body.commands) {
         if (!cmd.action) continue;
-        if (!VALID.has(cmd.action)) {
+        if (!VALID_ACTIONS.has(cmd.action)) {
           skipped.push(cmd.action);
           continue;
         }
@@ -466,11 +466,11 @@ export default async function handler(req, res) {
             if (!cmd.action) continue;
             if (cmd.action === 'batch_commands' && Array.isArray(cmd.commands)) {
               for (const subCmd of cmd.commands) {
-                if (!subCmd.action || !VALID.has(subCmd.action)) continue;
+                if (!subCmd.action || !VALID_ACTIONS.has(subCmd.action)) continue;
                 pushQueue(target, { ...subCmd, _user: String(body._user||'web').substring(0,50), _target_user: target, _apiKey: undefined });
                 pushed++;
               }
-            } else if (VALID.has(cmd.action)) {
+            } else if (VALID_ACTIONS.has(cmd.action)) {
               pushQueue(target, { ...cmd, _user: String(body._user||'web').substring(0,50), _target_user: target, _apiKey: undefined });
               pushed++;
             }
@@ -490,7 +490,7 @@ export default async function handler(req, res) {
       const target = san(body._target_user || body._user || '');
       if (!target) return res.status(400).json({ error: 'target required' });
       const cmd = body.command;
-      if (!cmd.action || !VALID.has(cmd.action)) {
+      if (!cmd.action || !VALID_ACTIONS.has(cmd.action)) {
         return res.status(400).json({ error: 'Invalid action: ' + (cmd.action || 'none') });
       }
       pushQueue(target, { ...cmd, _user: String(body._user||'web').substring(0,50), _target_user: target });
@@ -504,8 +504,8 @@ export default async function handler(req, res) {
 
     // ── Single command ─────────────────────────────────────
     if (body.action) {
-      if (!VALID.has(body.action)) {
-        return res.status(400).json({ error: 'Invalid action: ' + body.action, valid_actions: [...VALID] });
+      if (!VALID_ACTIONS.has(body.action)) {
+        return res.status(400).json({ error: 'Invalid action: ' + body.action, valid_actions: [...VALID_ACTIONS] });
       }
       const target = san(body._target_user || body._user || '');
       if (!target) return res.status(400).json({ error: '_target_user required' });
@@ -536,12 +536,6 @@ export default async function handler(req, res) {
         queueLength: getQueue(target).length,
         required_plugin_version: REQUIRED_PLUGIN_VERSION,
       });
-    }
-
-    // ── Prompt log ─────────────────────────────────────────
-    if (body.type === 'prompt') {
-      pushLog({ action: 'prompt', user: body.user || 'web', msg: (body.msg || '').substring(0, 100) });
-      return res.status(200).json({ status: 'ok' });
     }
 
     return res.status(400).json({ error: 'Unknown request type', body_keys: Object.keys(body) });
