@@ -559,7 +559,7 @@ async function finishLogin(gUser,robloxUser){
       body:JSON.stringify({user:username.toLowerCase(),data:userData})});
   }catch(e){}
   if(lt)lt.textContent='Success! Redirecting...';
-  setTimeout(function(){window.location.replace('/chats');},700);
+  setTimeout(function(){window.location.replace('/dashboard');},700);
 }
 
 (async function init(){
@@ -569,7 +569,7 @@ async function finishLogin(gUser,robloxUser){
     if(s){
       var p=JSON.parse(s);
       if(p&&p.user&&p.user.username&&p.user.robloxId&&p.loginTime&&(Date.now()-p.loginTime)<86400000*7){
-        window.location.replace('/chats');return;
+        window.location.replace('/dashboard');return;
       }
       localStorage.removeItem('nexus_session');
     }
