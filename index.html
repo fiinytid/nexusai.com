@@ -378,7 +378,7 @@ footer a{color:var(--cyan);text-decoration:none;}
     if (s) {
       var p = JSON.parse(s);
       if (p && p.user && p.user.username && p.loginTime && (Date.now()-p.loginTime) < 86400000*7) {
-        window.location.replace('/chats');
+        window.location.replace('/dashboard');
         return;
       }
     }
