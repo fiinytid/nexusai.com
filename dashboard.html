@@ -1,361 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard — NEXUS AI</title>
-<link rel="icon" href="nexusai.png">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-    --bg: #030312;
-    --bg2: #06071a;
-    --bg3: #0a0b22;
-    --cyan: #00e5ff;
-    --purple: #8800ff;
-    --pink: #ff2d6b;
-    --green: #00ffaa;
-    --yellow: #ffd600;
-    --text: #b8cfff;
-    --dim: #3a4a7a;
-    --b: rgba(0, 229, 255, .12);
-    --r: 12px;
-    --glass: rgba(10, 11, 34, 0.7);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'JetBrains Mono', monospace;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-    background-image: 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — NEXUS AI</title>
+  <link rel="icon" href="nexusai.png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030312;
+      --bg2: #06071a;
+      --bg3: #0a0b22;
+      --cyan: #00e5ff;
+      --purple: #8800ff;
+      --pink: #ff2d6b;
+      --green: #00ffaa;
+      --yellow: #ffd600;
+      --text: #b8cfff;
+      --dim: #3a4a7a;
+      --b: rgba(0, 229, 255, .12);
+      --r: 12px;
+      --glass: rgba(10, 11, 34, 0.7);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
         radial-gradient(circle at 50% -20%, rgba(136, 0, 255, 0.15), transparent),
         radial-gradient(circle at 0% 100%, rgba(0, 229, 255, 0.05), transparent);
-}
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: linear-gradient(rgba(0, 229, 255, .01) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(0, 229, 255, .01) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 15px 40px; background: rgba(3,3,18,0.8);
+      border-bottom: 1px solid var(--b);
+      backdrop-filter: blur(15px);
+    }
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-decoration: none; letter-spacing: 2px;
+    }
+    .user-profile {
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer; padding: 5px 10px; border-radius: 20px; transition: 0.2s;
+    }
+    .user-profile:hover { background: rgba(255,255,255,0.05); }
+    .user-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1.5px solid var(--cyan); padding: 2px; background: var(--bg3);
+    }
+    .main { max-width: 1200px; margin: 0 auto; padding: 60px 20px; position: relative; z-index: 1; }
+    .header { margin-bottom: 40px; display: flex; align-items: center; gap: 25px; }
+    .header-icon {
+      width: 80px; height: 80px; background: var(--bg2);
+      border: 1px solid var(--b); border-radius: 16px; padding: 15px;
+      box-shadow: 0 0 30px rgba(0,229,255,0.1);
+    }
+    .header-text h1 {
+      font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900;
+      margin-bottom: 5px; background: linear-gradient(to right, #fff, var(--dim));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .header-text p { color: var(--dim); font-size: 14px; }
+    .create-card {
+      background: var(--glass); border: 1px solid var(--b); border-radius: var(--r);
+      padding: 30px; margin-bottom: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative; overflow: hidden;
+    }
+    .limit-info { position: absolute; top: 15px; right: 30px; font-size: 10px; color: var(--dim); }
+    .limit-info span { color: var(--cyan); font-weight: 700; }
+    .card-title {
+      font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700;
+      color: var(--cyan); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+    }
+    .input-group { display: flex; gap: 15px; flex-wrap: wrap; }
+    .project-input {
+      flex: 1; min-width: 300px; background: rgba(0,0,0,0.3);
+      border: 1px solid var(--b); border-radius: 8px; padding: 12px 20px;
+      color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 14px;
+      outline: none; transition: 0.3s;
+    }
+    .btn-create {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #030312; border: none; border-radius: 8px; padding: 0 30px;
+      font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 900;
+      cursor: pointer; transition: 0.3s; height: 46px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-create:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+    .project-item {
+      background: var(--bg2); border: 1px solid var(--b); border-radius: var(--r);
+      padding: 25px; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden;
+    }
+    .project-item:hover { transform: translateY(-5px); border-color: var(--cyan); background: var(--bg3); }
+    .project-item h3 { font-family: 'Orbitron', sans-serif; font-size: 18px; margin-bottom: 10px; color: #fff; }
+    .project-id { font-size: 10px; color: var(--dim); }
+    .project-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .meta-item { font-size: 11px; color: var(--dim); display: flex; align-items: center; gap: 5px; }
+    .btn-del {
+      background: rgba(255,45,107,0.1); border: 1px solid rgba(255,45,107,0.2);
+      color: var(--pink); width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: 0.2s; position: absolute;
+      bottom: 25px; right: 25px; z-index: 5;
+    }
+    .btn-del:hover { background: var(--pink); color: #fff; }
+    .empty-state { text-align: center; padding: 100px 0; color: var(--dim); grid-column: 1 / -1; }
 
-body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(rgba(0, 229, 255, .01) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 229, 255, .01) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 40px;
-    background: rgba(3, 3, 18, 0.8);
-    border-bottom: 1px solid var(--b);
-    backdrop-filter: blur(15px);
-}
-
-.nav-logo {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 18px;
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--cyan), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-decoration: none;
-    letter-spacing: 2px;
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 20px;
-    transition: 0.2s;
-}
-
-.user-profile:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 1.5px solid var(--cyan);
-    padding: 2px;
-    background: var(--bg3);
-}
-
-.main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 20px;
-    position: relative;
-    z-index: 1;
-}
-
-.header {
-    margin-bottom: 40px;
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.header-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--bg2);
-    border: 1px solid var(--b);
-    border-radius: 16px;
-    padding: 15px;
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.1);
-}
-
-.header-text h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 32px;
-    font-weight: 900;
-    margin-bottom: 5px;
-    background: linear-gradient(to right, #fff, var(--dim));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.header-text p {
-    color: var(--dim);
-    font-size: 14px;
-}
-
-.create-card {
-    background: var(--glass);
-    border: 1px solid var(--b);
-    border-radius: var(--r);
-    padding: 30px;
-    margin-bottom: 50px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.limit-info {
-    position: absolute;
-    top: 15px;
-    right: 30px;
-    font-size: 10px;
-    color: var(--dim);
-}
-
-.limit-info span {
-    color: var(--cyan);
-    font-weight: 700;
-}
-
-.card-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--cyan);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.input-group {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.project-input {
-    flex: 1;
-    min-width: 300px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--b);
-    border-radius: 8px;
-    padding: 12px 20px;
-    color: #fff;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    outline: none;
-    transition: 0.3s;
-}
-
-.btn-create {
-    background: linear-gradient(135deg, var(--cyan), var(--purple));
-    color: #030312;
-    border: none;
-    border-radius: 8px;
-    padding: 0 30px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 12px;
-    font-weight: 900;
-    cursor: pointer;
-    transition: 0.3s;
-    height: 46px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.btn-create:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    filter: grayscale(1);
-}
-
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-}
-
-.project-item {
-    background: var(--bg2);
-    border: 1px solid var(--b);
-    border-radius: var(--r);
-    padding: 25px;
-    transition: 0.3s;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
-
-.project-item:hover {
-    transform: translateY(-5px);
-    border-color: var(--cyan);
-    background: var(--bg3);
-}
-
-.project-item h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #fff;
-}
-
-.project-id {
-    font-size: 10px;
-    color: var(--dim);
-}
-
-.project-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.meta-item {
-    font-size: 11px;
-    color: var(--dim);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.btn-del {
-    background: rgba(255, 45, 107, 0.1);
-    border: 1px solid rgba(255, 45, 107, 0.2);
-    color: var(--pink);
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.2s;
-    position: absolute;
-    bottom: 25px;
-    right: 25px;
-    z-index: 5;
-}
-
-.btn-del:hover {
-    background: var(--pink);
-    color: #fff;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 100px 0;
-    color: var(--dim);
-    grid-column: 1 / -1;
-}
-
-#loader {
-    position: fixed; inset: 0; background: var(--bg); z-index: 1000;
-    display: flex; align-items: center; justify-content: center;
-}
-.spinner { width: 40px; height: 40px; border: 3px solid rgba(0, 229, 255, 0.1); border-top-color: var(--cyan); border-radius: 50%; animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-</style>
+    /* tambahan untuk chat view */
+    .chat-container {
+      background: var(--bg2); border: 1px solid var(--b); border-radius: var(--r);
+      padding: 30px; min-height: 60vh; display: flex; flex-direction: column; gap: 20px;
+    }
+    .chat-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--b); padding-bottom: 15px;
+    }
+    .chat-messages {
+      flex: 1; min-height: 300px; background: rgba(0,0,0,0.2);
+      border-radius: 8px; padding: 15px; overflow-y: auto; font-size: 14px;
+    }
+    .chat-input-area { display: flex; gap: 10px; }
+    .chat-input-area input {
+      flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--b);
+      border-radius: 8px; padding: 10px 15px; color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    #loader {
+      position: fixed; inset: 0; background: var(--bg); z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid rgba(0,229,255,0.1);
+      border-top-color: var(--cyan); border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 <body>
 
 <div id="loader"><div class="spinner"></div></div>
 
 <nav class="nav">
-    <a href="/" class="nav-logo">NEXUS AI</a>
-    <div class="user-profile" onclick="openSettings()">
-        <span id="userName" style="font-size: 12px; color: var(--dim);">@...</span>
-        <img id="userAvatar" class="user-avatar" src="nexusai.png" alt="">
-    </div>
+  <a href="/dashboard" class="nav-logo">NEXUS AI</a>
+  <div class="user-profile" onclick="openSettings()">
+    <span id="userName" style="font-size: 12px; color: var(--dim);">@...</span>
+    <img id="userAvatar" class="user-avatar" src="nexusai.png" alt="">
+  </div>
 </nav>
 
-<div class="main">
-    <header class="header">
-        <img src="icon/studio.png" class="header-icon" alt="Studio Hub">
-        <div class="header-text">
-            <h1>Welcome, <span id="welcomeName" style="color: var(--cyan);">Dev</span></h1>
-            <p>Nexus AI Project Hub — Create and manage your Roblox AI sessions.</p>
-        </div>
-    </header>
-
-    <div class="create-card">
-        <div class="limit-info">Limit: <span id="projectCount">0</span>/<span id="projectLimit">3</span></div>
-        <div class="card-title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            Create New Project
-        </div>
-        <div class="input-group">
-            <input type="text" id="projectName" class="project-input" placeholder="Enter project name (e.g. Obby Game, Shop System)">
-            <button id="btnCreate" class="btn-create" onclick="createProject()">
-                CREATE PROJECT
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-        </div>
-    </div>
-
-    <div class="card-title" style="margin-bottom: 25px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-        Your Projects
-    </div>
-
-    <div id="projectsGrid" class="projects-grid"></div>
-</div>
+<!-- Container yang akan menampilkan DASHBOARD atau CHAT -->
+<div id="appContainer" class="main"></div>
 
 <script>
-let SESSION = null;
-let USER_DATA = null;
+  let SESSION = null;
+  let USER_DATA = null;
 
-async function checkAuth() {
+  // ---------- Auth & init ----------
+  async function checkAuth() {
     const sessionStr = localStorage.getItem('nexus_session');
     if (!sessionStr) { window.location.href = '/login'; return; }
     SESSION = JSON.parse(sessionStr);
@@ -363,32 +185,79 @@ async function checkAuth() {
 
     const u = SESSION.user;
     document.getElementById('userName').textContent = '@' + u.username;
-    document.getElementById('welcomeName').textContent = u.username;
-    
-    // Fix Avatar
     const av = document.getElementById('userAvatar');
     if (u.avatar) av.src = u.avatar;
     else if (u.robloxId) av.src = `https://www.roblox.com/headshot-thumbnail/image?userId=${u.robloxId}&width=150&height=150&format=png`;
 
     await loadUserData();
     document.getElementById('loader').style.display = 'none';
-}
+    // Setelah data siap, jalankan router
+    router();
+  }
 
-async function loadUserData() {
+  async function loadUserData() {
     try {
-        const res = await fetch(`/api/sync?user=${encodeURIComponent(SESSION.user.username)}`);
-        const data = await res.json();
-        USER_DATA = data || { projects: [] };
-        if (!USER_DATA.projects) USER_DATA.projects = [];
-        renderProjects();
+      const res = await fetch(`/api/sync?user=${encodeURIComponent(SESSION.user.username)}`);
+      const data = await res.json();
+      USER_DATA = data || { projects: [] };
+      if (!USER_DATA.projects) USER_DATA.projects = [];
     } catch (e) {
-        console.error(e);
-        USER_DATA = { projects: [] };
-        renderProjects();
+      console.error(e);
+      USER_DATA = { projects: [] };
     }
-}
+  }
 
-function renderProjects() {
+  // ---------- Router sederhana ----------
+  function router() {
+    const path = window.location.pathname;
+    const match = path.match(/^\/chats\/(.+)$/);
+    if (match) {
+      const projectId = match[1];
+      renderChatView(projectId);
+    } else {
+      renderDashboardView();
+    }
+  }
+
+  // ---------- Tampilan Dashboard ----------
+  function renderDashboardView() {
+    const container = document.getElementById('appContainer');
+    container.innerHTML = `
+      <header class="header">
+        <img src="icon/studio.png" class="header-icon" alt="Studio Hub">
+        <div class="header-text">
+          <h1>Welcome, <span id="welcomeName" style="color: var(--cyan);">Dev</span></h1>
+          <p>Nexus AI Project Hub — Create and manage your Roblox AI sessions.</p>
+        </div>
+      </header>
+
+      <div class="create-card">
+        <div class="limit-info">Limit: <span id="projectCount">0</span>/<span id="projectLimit">3</span></div>
+        <div class="card-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Create New Project
+        </div>
+        <div class="input-group">
+          <input type="text" id="projectName" class="project-input" placeholder="Enter project name (e.g. Obby Game, Shop System)">
+          <button id="btnCreate" class="btn-create" onclick="createProject()">
+            CREATE PROJECT
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-title" style="margin-bottom: 25px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+        Your Projects
+      </div>
+      <div id="projectsGrid" class="projects-grid"></div>
+    `;
+
+    document.getElementById('welcomeName').textContent = SESSION.user.username;
+    renderProjects();
+  }
+
+  function renderProjects() {
     const grid = document.getElementById('projectsGrid');
     const projects = USER_DATA.projects || [];
     const plan = USER_DATA.plan || 'free';
@@ -399,29 +268,69 @@ function renderProjects() {
     document.getElementById('btnCreate').disabled = projects.length >= limit;
 
     if (projects.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><p>You haven't created any projects yet.</p></div>`;
-        return;
+      grid.innerHTML = `<div class="empty-state"><p>You haven't created any projects yet.</p></div>`;
+      return;
     }
 
     grid.innerHTML = projects.map(p => `
-        <div class="project-item" onclick="openProject('${p.id}')">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px;">
-                <img src="icon/studio.png" alt="Studio" style="width:32px; height:32px; border-radius:6px; background:rgba(0,0,0,0.2); padding:4px;">
-                <span class="project-id">ID: ${p.id}</span>
-            </div>
-            <h3>${p.name}</h3>
-            <div class="project-meta">
-                <div class="meta-item">Created: <span>${new Date(p.createdAt).toLocaleDateString()}</span></div>
-                <div class="meta-item"><span style="color: var(--green)">Active</span></div>
-            </div>
-            <button class="btn-del" onclick="deleteProject(event, '${p.id}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></button>
-            </button>
+      <div class="project-item" onclick="openProject('${p.id}')">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px;">
+          <img src="icon/studio.png" alt="Studio" style="width:32px; height:32px; border-radius:6px; background:rgba(0,0,0,0.2); padding:4px;">
+          <span class="project-id">ID: ${p.id}</span>
         </div>
+        <h3>${p.name}</h3>
+        <div class="project-meta">
+          <div class="meta-item">Created: <span>${new Date(p.createdAt).toLocaleDateString()}</span></div>
+          <div class="meta-item"><span style="color: var(--green)">Active</span></div>
+        </div>
+        <button class="btn-del" onclick="deleteProject(event, '${p.id}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        </button>
+      </div>
     `).join('');
-}
+  }
 
-async function createProject() {
+  // ---------- Tampilan Chat ----------
+  function renderChatView(projectId) {
+    const project = USER_DATA.projects.find(p => p.id === projectId);
+    const projectName = project ? project.name : 'Unknown Project';
+    const container = document.getElementById('appContainer');
+    container.innerHTML = `
+      <div class="chat-container">
+        <div class="chat-header">
+          <div>
+            <h2 style="font-family:'Orbitron',sans-serif; font-size:24px; color: var(--cyan);">${projectName}</h2>
+            <small style="color: var(--dim);">Project ID: ${projectId}</small>
+          </div>
+          <button onclick="window.location.href='/dashboard'" 
+                  style="background:none; border:1px solid var(--b); color:var(--dim); padding:8px 16px; border-radius:8px; cursor:pointer;">
+            ← Back to Dashboard
+          </button>
+        </div>
+        <div id="chatMessages" class="chat-messages">
+          <p style="color: var(--dim); text-align:center;">Chat history will appear here.<br>Integration with your backend is required.</p>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendMessage()">
+          <button onclick="sendMessage()" class="btn-create" style="width: auto;">SEND</button>
+        </div>
+      </div>
+    `;
+
+    // Fungsi kirim pesan (contoh dasar, bisa dikembangkan)
+    window.sendMessage = function() {
+      const input = document.getElementById('chatInput');
+      const msg = input.value.trim();
+      if (!msg) return;
+      const messagesDiv = document.getElementById('chatMessages');
+      messagesDiv.innerHTML += `<p style="color:var(--green); margin:8px 0;"><strong>You:</strong> ${msg}</p>`;
+      input.value = '';
+      // Di sini kamu bisa panggil API AI-mu
+    };
+  }
+
+  // ---------- CRUD functions ----------
+  async function createProject() {
     const nameInput = document.getElementById('projectName');
     const name = nameInput.value.trim();
     if (!name) { alert("Please enter a project name"); return; }
@@ -429,8 +338,8 @@ async function createProject() {
     const plan = USER_DATA.plan || 'free';
     const limit = plan === 'pro' ? 10 : 3;
     if (USER_DATA.projects.length >= limit) {
-        alert(`Limit reached! ${plan === 'pro' ? 'Pro' : 'Free'} plan max projects: ${limit}`);
-        return;
+      alert(`Limit reached! ${plan === 'pro' ? 'Pro' : 'Free'} plan max projects: ${limit}`);
+      return;
     }
 
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -441,17 +350,22 @@ async function createProject() {
     USER_DATA.projects.unshift(newP);
 
     try {
-        const res = await fetch('/api/sync', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: SESSION.user.username, data: USER_DATA })
-        });
-        if (res.ok) window.location.href = `/chats/${pid}`;
-        else alert("Failed to save project.");
+      const res = await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user: SESSION.user.username, data: USER_DATA })
+      });
+      if (res.ok) {
+        // Navigasi clean (menggunakan History API agar tidak reload)
+        window.history.pushState(null, '', `/chats/${pid}`);
+        router();
+      } else {
+        alert("Failed to save project.");
+      }
     } catch (e) { alert("Error connecting to server"); }
-}
+  }
 
-async function deleteProject(e, id) {
+  async function deleteProject(e, id) {
     e.stopPropagation();
     if (!confirm("Delete this project? All chat history in this project will be hidden (not deleted).")) return;
     
@@ -459,18 +373,26 @@ async function deleteProject(e, id) {
     renderProjects();
 
     try {
-        await fetch('/api/sync', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: SESSION.user.username, data: USER_DATA })
-        });
+      await fetch('/api/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user: SESSION.user.username, data: USER_DATA })
+      });
     } catch (e) {}
-}
+  }
 
-function openProject(id) { window.location.href = `/chats/${id}`; }
-function openSettings() { window.location.href = '/chats?settings=true'; }
+  function openProject(id) {
+    window.history.pushState(null, '', `/chats/${id}`);
+    router();
+  }
 
-checkAuth();
+  function openSettings() {
+    window.location.href = '/chats?settings=true';
+  }
+
+  // ---------- Jalankan ----------
+  window.addEventListener('popstate', router); // biar tombol back/forward browser bekerja
+  checkAuth();
 </script>
 </body>
 </html>
