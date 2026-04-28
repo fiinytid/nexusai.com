@@ -7,126 +7,397 @@
 <link rel="icon" href="nexusai.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#030312;--bg2:#06071a;--bg3:#0a0b22;--cyan:#00e5ff;--cyan2:rgba(0,229,255,.35);--purple:#8800ff;--pink:#ff2d6b;--green:#00ffaa;--yellow:#ffd600;--text:#b8cfff;--dim:#3a4a7a;--b:rgba(0,229,255,.12);--gc:0 0 30px rgba(0,229,255,.2);--gp:0 0 30px rgba(136,0,255,.2);--r:8px;}
+:root{
+  --bg:#030312;--bg2:#06071a;--bg3:#0a0b22;
+  --cyan:#00e5ff;--purple:#8800ff;--pink:#ff2d6b;
+  --green:#00ffaa;--yellow:#ffd600;
+  --text:#b8cfff;--dim:#3a4a7a;
+  --b:rgba(0,229,255,.12);--r:10px;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--text);font-size:13px;}
-body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0,229,255,.015)1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.015)1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
-.page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,#0e003a 0%,var(--bg) 65%);padding:16px;}
-.particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
-.box{position:relative;width:100%;max-width:440px;background:var(--bg2);border:1px solid var(--b);border-radius:16px;padding:38px 32px 30px;text-align:center;box-shadow:var(--gc),var(--gp);animation:boxIn .5s cubic-bezier(.16,1,.3,1);z-index:1;}
-.box::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);border-radius:2px;}
-@keyframes boxIn{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
-.logo{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:4px;margin-bottom:2px;}
-.tag{font-size:9px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
-.version{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:rgba(0,229,255,.06);border:1px solid var(--b);border-radius:20px;font-size:9px;color:var(--cyan);margin-bottom:18px;}
-.vdot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pd 1.8s infinite;}
+html,body{height:100%;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--text);font-size:13px;overflow-x:hidden;}
+
+/* ── BACKGROUND ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(136,0,255,.22) 0%,transparent 55%),
+    radial-gradient(ellipse at 100% 100%,rgba(0,229,255,.07) 0%,transparent 40%),
+    radial-gradient(ellipse at 0% 60%,rgba(255,45,107,.04) 0%,transparent 35%);
+  pointer-events:none;z-index:0;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background:linear-gradient(rgba(0,229,255,.008) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.008) 1px,transparent 1px);
+  background-size:44px 44px;pointer-events:none;z-index:0;
+}
+
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.p{position:absolute;border-radius:50%;pointer-events:none;animation:pfloat linear infinite;}
+@keyframes pfloat{0%{transform:translateY(100vh) scale(0);opacity:0}8%{opacity:1}92%{opacity:.5}100%{transform:translateY(-8vh) scale(1);opacity:0}}
+
+/* ── PAGE LAYOUT ── */
+.page{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:20px;position:relative;z-index:1;
+}
+
+/* ── SPLIT LAYOUT ── */
+.login-wrap{
+  display:flex;width:100%;max-width:860px;
+  background:var(--bg2);border:1px solid var(--b);
+  border-radius:20px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,229,255,.04),0 40px 80px rgba(0,0,0,.7),0 0 80px rgba(136,0,255,.08);
+  animation:wrapIn .5s cubic-bezier(.16,1,.3,1);
+}
+@keyframes wrapIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+
+/* ── LEFT PANEL (branding) ── */
+.left-panel{
+  flex:0 0 320px;padding:44px 36px;
+  background:linear-gradient(160deg,rgba(136,0,255,.08) 0%,rgba(0,229,255,.03) 100%);
+  border-right:1px solid var(--b);
+  display:flex;flex-direction:column;gap:0;position:relative;overflow:hidden;
+}
+.left-panel::before{
+  content:'';position:absolute;top:-60px;left:-60px;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(136,0,255,.2),transparent 70%);
+  pointer-events:none;
+}
+.left-panel::after{
+  content:'';position:absolute;bottom:-40px;right:-40px;
+  width:160px;height:160px;
+  background:radial-gradient(circle,rgba(0,229,255,.1),transparent 70%);
+  pointer-events:none;
+}
+.brand-logo{
+  font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:3px;margin-bottom:4px;
+}
+.brand-tag{font-size:9px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;}
+.brand-icon-wrap{
+  width:72px;height:72px;border-radius:16px;overflow:hidden;
+  border:1.5px solid rgba(0,229,255,.2);margin-bottom:22px;
+  background:rgba(0,229,255,.04);
+}
+.brand-icon-wrap img{width:100%;height:100%;object-fit:cover;}
+.brand-desc{font-size:11.5px;color:var(--text);line-height:1.75;margin-bottom:28px;flex:1;}
+.brand-feature{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:10.5px;color:var(--dim);}
+.brand-feature::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--cyan);flex-shrink:0;opacity:.6;}
+.online-indicator{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:20px;margin-top:auto;
+  background:rgba(0,255,170,.05);border:1px solid rgba(0,255,170,.18);
+  font-size:9px;color:var(--green);
+}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pd 1.8s infinite;}
 @keyframes pd{0%,100%{opacity:1}50%{opacity:.3}}
-.step-label{font-size:11px;color:var(--dim);margin-bottom:14px;line-height:1.6;}
-.step-indicator{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;}
-.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Orbitron',sans-serif;border:1.5px solid var(--b);color:var(--dim);background:transparent;transition:.3s;}
-.step-dot.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,.06);}
-.step-dot.done{border-color:var(--green);color:var(--green);background:rgba(0,255,170,.06);}
-.step-line{flex:1;height:1px;background:var(--b);max-width:40px;}
-.step-line.done{background:var(--green);}
-.btn{width:100%;background:linear-gradient(135deg,var(--cyan),var(--purple));color:white;border:none;border-radius:var(--r);padding:12px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;cursor:pointer;transition:.2s;letter-spacing:1px;margin-bottom:8px;}
-.btn:hover{opacity:.85;transform:translateY(-1px);}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
-.btn-google{width:100%;background:white;color:#3c4043;border:1px solid #dadce0;border-radius:var(--r);padding:11px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:.2s;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:10px;}
-.btn-google:hover{background:#f8f9fa;}
+
+/* ── RIGHT PANEL (form) ── */
+.right-panel{flex:1;padding:44px 40px;display:flex;flex-direction:column;}
+.right-header{margin-bottom:28px;}
+.right-title{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:5px;}
+.right-sub{font-size:11px;color:var(--dim);line-height:1.6;}
+
+/* ── STEP INDICATOR ── */
+.step-indicator{display:flex;align-items:center;gap:0;margin-bottom:24px;}
+.step-item{display:flex;align-items:center;gap:7px;flex:1;}
+.step-num{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;
+  border:1.5px solid var(--b);color:var(--dim);background:transparent;
+  transition:.3s;flex-shrink:0;
+}
+.step-num.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,.07);box-shadow:0 0 12px rgba(0,229,255,.15);}
+.step-num.done{border-color:var(--green);color:var(--green);background:rgba(0,255,170,.07);}
+.step-txt{font-size:10px;color:var(--dim);transition:.3s;}
+.step-txt.active{color:var(--text);}
+.step-connector{height:1px;background:var(--b);flex:1;margin:0 8px;transition:.3s;}
+.step-connector.done{background:var(--green);}
+
+/* ── PANELS ── */
+#panelGoogle,#panelRoblox{flex:1;display:flex;flex-direction:column;}
+
+.section-label{font-size:10.5px;color:var(--text);margin-bottom:12px;line-height:1.65;font-weight:500;}
+
+.info-card{
+  padding:12px 14px;border-radius:8px;
+  background:rgba(0,229,255,.03);border:1px solid rgba(0,229,255,.1);
+  font-size:10.5px;color:var(--dim);line-height:1.7;margin-bottom:14px;
+}
+.info-card strong{color:var(--cyan);}
+
+.info-card.required{
+  background:rgba(255,45,107,.04);border-color:rgba(255,45,107,.18);
+}
+.info-card.required strong{color:var(--pink);}
+
+/* ── GOOGLE BUTTON ── */
+.btn-google{
+  width:100%;background:#fff;color:#3c4043;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:var(--r);padding:12px 16px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;
+  cursor:pointer;transition:.2s;margin-bottom:10px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.btn-google:hover{background:#f1f3f4;box-shadow:0 2px 12px rgba(0,0,0,.15);}
 .btn-google:disabled{opacity:.5;cursor:not-allowed;}
-.google-user-preview{display:none;padding:12px;background:rgba(0,229,255,.04);border:1px solid var(--b);border-radius:var(--r);text-align:center;margin-bottom:10px;}
-.google-user-preview.show{display:block;}
-.google-av{width:52px;height:52px;border-radius:50%;border:2px solid var(--cyan);margin:0 auto 8px;display:block;}
-.google-name{font-size:13px;color:white;font-weight:600;}
-.google-email{font-size:10px;color:var(--dim);margin-top:2px;}
-.required-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:rgba(255,45,107,.1);border:1px solid rgba(255,45,107,.3);border-radius:10px;font-size:9px;color:var(--pink);margin-bottom:12px;font-weight:700;}
-.err{display:none;color:var(--pink);font-size:10px;padding:8px 12px;background:rgba(255,45,107,.07);border-radius:5px;border:1px solid rgba(255,45,107,.18);margin-bottom:8px;text-align:left;}
+.btn-google img{width:18px;height:18px;flex-shrink:0;}
+
+/* ── ROBLOX BUTTON ── */
+.btn-roblox{
+  width:100%;border:none;border-radius:var(--r);padding:13px 16px;
+  font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;
+  cursor:pointer;transition:.2s;letter-spacing:.5px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(135deg,#e03131,#c0392b);
+  color:#fff;box-shadow:0 4px 15px rgba(192,57,43,.25);
+}
+.btn-roblox:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 20px rgba(192,57,43,.35);}
+.btn-roblox:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+.btn-roblox img{width:16px;height:16px;object-fit:contain;flex-shrink:0;}
+
+/* ── GOOGLE PREVIEW ── */
+.google-preview{
+  display:none;padding:14px;
+  background:rgba(0,255,170,.04);border:1px solid rgba(0,255,170,.18);
+  border-radius:var(--r);margin-bottom:14px;
+  flex-direction:row;align-items:center;gap:12px;
+}
+.google-preview.show{display:flex;}
+.google-av{width:44px;height:44px;border-radius:50%;border:2px solid rgba(0,255,170,.3);object-fit:cover;flex-shrink:0;}
+.google-info{flex:1;min-width:0;}
+.google-name{font-size:12px;color:#fff;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.google-email{font-size:10px;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.google-verified{font-size:9px;color:var(--green);margin-top:4px;display:flex;align-items:center;gap:4px;}
+
+/* ── CONNECTED GOOGLE BAR ── */
+.google-bar{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;margin-bottom:14px;
+  background:rgba(0,255,170,.04);border:1px solid rgba(0,255,170,.15);
+  border-radius:var(--r);
+}
+.google-bar-av{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(0,255,170,.35);flex-shrink:0;object-fit:cover;}
+.google-bar-name{flex:1;font-size:11px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.google-bar-badge{font-size:8px;color:var(--green);display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.btn-change{background:none;border:1px solid var(--b);border-radius:5px;color:var(--dim);font-size:9px;padding:3px 9px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:.15s;flex-shrink:0;}
+.btn-change:hover{color:var(--cyan);border-color:rgba(0,229,255,.3);}
+
+/* ── REQUIRED BADGE ── */
+.required-row{display:flex;align-items:center;gap:6px;margin-bottom:12px;}
+.required-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:10px;
+  background:rgba(255,45,107,.08);border:1px solid rgba(255,45,107,.25);
+  font-size:9px;color:var(--pink);font-weight:700;letter-spacing:.5px;
+}
+
+/* ── ERROR / LOADER ── */
+.err{
+  display:none;color:var(--pink);font-size:10.5px;
+  padding:9px 12px;background:rgba(255,45,107,.06);
+  border-radius:6px;border:1px solid rgba(255,45,107,.18);
+  margin-bottom:10px;line-height:1.55;
+}
 .err.show{display:block;}
-.info-box{color:var(--text);font-size:10px;padding:10px 12px;background:rgba(0,229,255,.04);border-radius:5px;border:1px solid var(--b);margin-bottom:10px;text-align:left;line-height:1.7;}
-.info-box strong{color:var(--cyan);}
-.ld{display:none;align-items:center;justify-content:center;gap:8px;color:var(--dim);font-size:10px;margin-bottom:8px;}
+.ld{display:none;align-items:center;gap:8px;color:var(--dim);font-size:10px;margin-bottom:10px;}
 .ld.show{display:flex;}
-.spin{width:14px;height:14px;border:2px solid var(--b);border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+.spin{width:14px;height:14px;border:2px solid rgba(0,229,255,.1);border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.footer{margin-top:20px;font-size:9px;color:var(--dim);text-align:center;line-height:1.8;}
-.footer span{color:var(--cyan);}
-.p{position:absolute;border-radius:50%;pointer-events:none;animation:float linear infinite;}
-@keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.6}90%{opacity:.4}100%{transform:translateY(-10vh) scale(1.2);opacity:0}}
-@media(max-width:480px){.box{padding:28px 18px;}.logo{font-size:22px;}}
-.loading-overlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+
+/* ── DIVIDER ── */
+.divider{display:flex;align-items:center;gap:12px;margin:12px 0;font-size:9px;color:var(--dim);}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--b);}
+
+/* ── FOOTER NOTE ── */
+.form-footer{margin-top:auto;padding-top:18px;font-size:9.5px;color:var(--dim);line-height:1.7;text-align:center;}
+.form-footer a{color:var(--cyan);text-decoration:none;}
+.form-footer a:hover{text-decoration:underline;}
+
+/* ── LOADING OVERLAY ── */
+.loading-overlay{
+  position:fixed;inset:0;background:rgba(3,3,18,.97);
+  z-index:9999;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:18px;
+  backdrop-filter:blur(8px);
+}
 .loading-overlay.show{display:flex;}
-.loading-logo{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:4px;}
-.loading-spinner{width:40px;height:40px;border:3px solid var(--b);border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite;}
+.loading-logo{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:3px;}
+.loading-spinner{width:42px;height:42px;border:3px solid rgba(0,229,255,.1);border-top-color:var(--cyan);border-radius:50%;animation:spin .9s linear infinite;}
 .loading-text{font-size:11px;color:var(--dim);}
+.loading-progress{width:200px;height:2px;background:rgba(0,229,255,.08);border-radius:2px;overflow:hidden;}
+.loading-progress-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:2px;animation:prog 2s ease infinite;}
+@keyframes prog{0%{width:0%;margin-left:0}50%{width:70%}100%{width:0%;margin-left:100%}}
+
+/* ── MOBILE ── */
+@media(max-width:640px){
+  .login-wrap{flex-direction:column;border-radius:16px;}
+  .left-panel{flex:none;padding:28px 24px 20px;border-right:none;border-bottom:1px solid var(--b);}
+  .brand-feature{display:none;}
+  .online-indicator{display:inline-flex;}
+  .right-panel{padding:28px 24px;}
+}
+@media(max-width:420px){
+  .page{padding:12px;}
+  .right-panel{padding:22px 18px;}
+  .left-panel{padding:22px 18px 16px;}
+  .brand-logo{font-size:22px;}
+}
 </style>
 </head>
 <body>
 <div class="particles" id="particles"></div>
+
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loading-logo">NEXUS AI</div>
   <div class="loading-spinner"></div>
+  <div class="loading-progress"><div class="loading-progress-bar"></div></div>
   <div class="loading-text" id="loadingText">Completing login...</div>
 </div>
+
 <div class="page">
-  <div class="box">
-    <div class="logo">NEXUS AI</div>
-    <div class="tag">Roblox Dev Intelligence</div>
-    <div class="version"><div class="vdot"></div> Online</div>
+  <div class="login-wrap">
 
-    <div class="step-indicator">
-      <div class="step-dot active" id="step1Dot">1</div>
-      <div class="step-line" id="stepLine1"></div>
-      <div class="step-dot" id="step2Dot">2</div>
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="brand-logo">NEXUS AI</div>
+      <div class="brand-tag">Roblox Dev Intelligence</div>
+      <div class="brand-icon-wrap">
+        <img src="nexusai.png" alt="NEXUS" onerror="this.style.opacity='.2'">
+      </div>
+      <div class="brand-desc">
+        Your smart Roblox Studio assistant. Write Lua, debug scripts, build GUIs — and inject directly into Studio.
+      </div>
+      <div class="brand-feature">AI-powered Lua code generation</div>
+      <div class="brand-feature">Direct Studio plugin injection</div>
+      <div class="brand-feature">DataStore & system design</div>
+      <div class="brand-feature">GUI builder & UI editor</div>
+      <div class="brand-feature">Anti-exploit best practices</div>
+      <div style="flex:1;"></div>
+      <div class="online-indicator">
+        <div class="online-dot"></div>
+        System Online
+      </div>
     </div>
 
-    <!-- PANEL 1: GOOGLE -->
-    <div id="panelGoogle" style="display:block;">
-      <div class="step-label">Sign in with your Google account</div>
-      <div class="info-box">
-        <strong>Step 1 of 2:</strong> Sign in with Google to verify your identity.
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="right-header">
+        <div class="right-title" id="rightTitle">Sign in to NEXUS AI</div>
+        <div class="right-sub" id="rightSub">Connect your accounts to get started</div>
       </div>
-      <div class="google-user-preview" id="googlePreview">
-        <img class="google-av" id="googleAvImg" src="" alt="" onerror="this.style.opacity='.3'">
-        <div class="google-name" id="googleName">-</div>
-        <div class="google-email" id="googleEmail">-</div>
-      </div>
-      <div class="err" id="googleErr"></div>
-      <div class="ld" id="googleLd"><div class="spin"></div><span>Connecting to Google...</span></div>
-      <button class="btn-google" id="googleSignInBtn" onclick="googleSignIn()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        Continue with Google
-      </button>
-    </div>
 
-    <!-- PANEL 2: ROBLOX -->
-    <div id="panelRoblox" style="display:none;">
-      <div class="step-label">Connect your Roblox account</div>
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:8px;background:rgba(0,255,170,.04);border-radius:8px;border:1px solid rgba(0,255,170,.2);">
-        <img id="googleSmallAv" src="" style="width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(0,255,170,.4);flex-shrink:0;" onerror="this.style.opacity='.3'">
-        <div style="min-width:0;text-align:left;flex:1;">
-          <div style="font-size:11px;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="googleSmallName">-</div>
-          <div style="font-size:9px;color:var(--green);">✓ Google Verified</div>
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step-item">
+          <div class="step-num active" id="step1Dot">1</div>
+          <span class="step-txt active" id="step1Txt">Google</span>
         </div>
-        <button onclick="logoutGoogle()" style="flex-shrink:0;background:none;border:1px solid var(--b);border-radius:4px;color:var(--dim);font-size:9px;padding:2px 8px;cursor:pointer;font-family:'JetBrains Mono',monospace;">Change</button>
+        <div class="step-connector" id="stepLine1"></div>
+        <div class="step-item" style="justify-content:flex-end;">
+          <span class="step-txt" id="step2Txt" style="text-align:right;">Roblox</span>
+          <div class="step-num" id="step2Dot">2</div>
+        </div>
       </div>
-      <div class="required-badge">⚡ ROBLOX REQUIRED</div>
-      <div class="info-box">
-        <strong>Step 2 of 2:</strong> A Roblox account is <strong>required</strong> to use NEXUS AI. All your data (credits, chat history, settings) is stored in your Roblox account — not on this device.
-      </div>
-      <div class="err" id="robloxErr"></div>
-      <div class="ld" id="robloxLd"><div class="spin"></div><span>Connecting to Roblox...</span></div>
-      <button class="btn" id="robloxLoginBtn" onclick="startRobloxOAuth()" style="background:linear-gradient(135deg,#e63737,#c0392b);display:flex;align-items:center;justify-content:center;gap:8px;">
-        <img src="icon/roblox.png" alt="" style="width:16px;height:16px;object-fit:contain;" onerror="this.style.display='none'">
-        Connect Roblox Account
-      </button>
-      <div style="font-size:9px;color:var(--dim);text-align:center;margin-top:6px;line-height:1.6;">
-        You will be redirected to the official Roblox login page.<br>Your data is safe and will not be shared with third parties.
-      </div>
-    </div>
 
-    <div class="footer">
-      Made by <span>NEXUS STUDIO</span> · YouTube: <span>NEXUS STUDIO</span><br>
-      <span style="font-size:8px;color:var(--dim);">nexusai-roblox.vercel.app</span>
+      <!-- PANEL 1: GOOGLE -->
+      <div id="panelGoogle">
+        <div class="section-label">Sign in with your Google account to continue.</div>
+
+        <div class="info-card">
+          <strong>Step 1 of 2 — Google Verification</strong><br>
+          We use Google to verify your identity. Your email is kept private and never shared.
+        </div>
+
+        <div class="google-preview" id="googlePreview">
+          <img class="google-av" id="googleAvImg" src="" alt="" onerror="this.style.opacity='.2'">
+          <div class="google-info">
+            <div class="google-name" id="googleName">-</div>
+            <div class="google-email" id="googleEmail">-</div>
+            <div class="google-verified">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Verified
+            </div>
+          </div>
+        </div>
+
+        <div class="err" id="googleErr"></div>
+        <div class="ld" id="googleLd"><div class="spin"></div><span>Connecting to Google...</span></div>
+
+        <button class="btn-google" id="googleSignInBtn" onclick="googleSignIn()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Continue with Google
+        </button>
+
+        <div class="divider">or</div>
+        <div style="text-align:center;font-size:10px;color:var(--dim);line-height:1.6;">
+          By signing in, you agree to our<br>
+          <a href="https://discord.gg/HuGtbRvD" target="_blank" style="color:var(--cyan);">Terms of Service</a> ·
+          <a href="https://discord.gg/HuGtbRvD" target="_blank" style="color:var(--cyan);">Privacy Policy</a>
+        </div>
+
+        <div class="form-footer">
+          Need help? Join <a href="https://discord.gg/HuGtbRvD" target="_blank">NEXUS STUDIO Discord</a><br>
+          Made by <span style="color:var(--cyan);">NEXUS STUDIO</span> · nexusai-roblox.vercel.app
+        </div>
+      </div>
+
+      <!-- PANEL 2: ROBLOX -->
+      <div id="panelRoblox" style="display:none;flex-direction:column;">
+        <div class="section-label">Connect your Roblox account to complete sign-in.</div>
+
+        <div class="google-bar" id="googleBar">
+          <img class="google-bar-av" id="googleSmallAv" src="" onerror="this.style.opacity='.2'">
+          <span class="google-bar-name" id="googleSmallName">-</span>
+          <div class="google-bar-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Google OK
+          </div>
+          <button class="btn-change" onclick="logoutGoogle()">Change</button>
+        </div>
+
+        <div class="required-row">
+          <div class="required-badge">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            ROBLOX REQUIRED
+          </div>
+        </div>
+
+        <div class="info-card required">
+          <strong>Step 2 of 2 — Roblox Account</strong><br>
+          A Roblox account is <strong>required</strong>. All your data — credits, chat history, settings — is stored to your Roblox account and synced across all devices.
+        </div>
+
+        <div class="err" id="robloxErr"></div>
+        <div class="ld" id="robloxLd"><div class="spin"></div><span>Connecting to Roblox...</span></div>
+
+        <button class="btn-roblox" id="robloxLoginBtn" onclick="startRobloxOAuth()">
+          <img src="icon/roblox.png" alt="" onerror="this.style.display='none'">
+          Connect Roblox Account
+        </button>
+
+        <div style="font-size:9.5px;color:var(--dim);text-align:center;margin-top:10px;line-height:1.7;">
+          You will be redirected to the official Roblox login page.<br>
+          Your credentials are safe — we never store your password.
+        </div>
+
+        <div class="form-footer">
+          Need help? Join <a href="https://discord.gg/HuGtbRvD" target="_blank">NEXUS STUDIO Discord</a><br>
+          Made by <span style="color:var(--cyan);">NEXUS STUDIO</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -134,51 +405,55 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 <script>
 'use strict';
 
-// Floating particles
 (function(){
   var p=document.getElementById('particles');
-  for(var i=0;i<18;i++){
+  for(var i=0;i<20;i++){
     var d=document.createElement('div');d.className='p';
-    var sz=Math.random()*4+1;
-    d.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+Math.random()*100+'%;background:rgba('+(Math.random()>.5?'0,229,255':'136,0,255')+','+(Math.random()*.4+.1)+');animation-duration:'+(Math.random()*12+8)+'s;animation-delay:'+(Math.random()*10)+'s;';
+    var sz=Math.random()*3+1;
+    d.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+Math.random()*100+'%;'
+      +'background:rgba('+(Math.random()>.5?'0,229,255':'136,0,255')+','+(Math.random()*.35+.08)+');'
+      +'animation-duration:'+(Math.random()*14+8)+'s;animation-delay:'+(Math.random()*12)+'s;';
     p.appendChild(d);
   }
 })();
 
-var OWNER_USERS = ['FIINYTID25','fiinytid25'];
-var GOOGLE_CLIENT_ID = '';
-var ROBLOX_CLIENT_ID = '';
+var OWNER_USERS=['FIINYTID25','fiinytid25'];
+var GOOGLE_CLIENT_ID='';
+var ROBLOX_CLIENT_ID='';
 
 async function loadConfig(){
   try{
     var r=await fetch('/api/main');
-    if(r.ok){
-      var d=await r.json();
-      GOOGLE_CLIENT_ID=d.gmail_key||'';
-      ROBLOX_CLIENT_ID=d.roblox_client_id||'';
-    }
-  }catch(e){console.warn('Config load failed:',e);}
+    if(r.ok){var d=await r.json();GOOGLE_CLIENT_ID=d.gmail_key||'';ROBLOX_CLIENT_ID=d.roblox_client_id||'';}
+  }catch(e){}
 }
 
 function setStep(step){
-  var s1=document.getElementById('step1Dot');
-  var s2=document.getElementById('step2Dot');
+  var s1=document.getElementById('step1Dot'),s2=document.getElementById('step2Dot');
+  var st1=document.getElementById('step1Txt'),st2=document.getElementById('step2Txt');
   var sl=document.getElementById('stepLine1');
+  var rt=document.getElementById('rightTitle'),rs=document.getElementById('rightSub');
   if(step===1){
-    s1.className='step-dot active';
-    s2.className='step-dot';
-    sl.className='step-line';
+    s1.className='step-num active';s2.className='step-num';
+    st1.className='step-txt active';st2.className='step-txt';
+    sl.className='step-connector';
+    if(rt)rt.textContent='Sign in to NEXUS AI';
+    if(rs)rs.textContent='Step 1 of 2 — Verify with Google';
   }else{
-    s1.className='step-dot done';
-    s1.textContent='✓';
-    s2.className='step-dot active';
-    sl.className='step-line done';
+    s1.className='step-num done';s1.textContent='✓';
+    s2.className='step-num active';
+    st1.className='step-txt';st2.className='step-txt active';
+    sl.className='step-connector done';
+    if(rt)rt.textContent='Connect Roblox';
+    if(rs)rs.textContent='Step 2 of 2 — Link your Roblox account';
   }
 }
 
 function showPanel(id){
-  document.getElementById('panelGoogle').style.display=id==='google'?'block':'none';
-  document.getElementById('panelRoblox').style.display=id==='roblox'?'block':'none';
+  var pg=document.getElementById('panelGoogle');
+  var pr=document.getElementById('panelRoblox');
+  if(pg)pg.style.display=id==='google'?'flex':'none';
+  if(pr){pr.style.display=id==='roblox'?'flex':'none';}
   setStep(id==='google'?1:2);
 }
 
@@ -190,10 +465,10 @@ function showRobloxPanel(gUser){
 
 function logoutGoogle(){
   localStorage.removeItem('nexus_google_tmp');
-  document.getElementById('googleErr').classList.remove('show');
-  document.getElementById('googleSignInBtn').disabled=false;
-  document.getElementById('googleLd').classList.remove('show');
-  document.getElementById('googlePreview').classList.remove('show');
+  var el=document.getElementById('googleErr');if(el)el.classList.remove('show');
+  var btn=document.getElementById('googleSignInBtn');if(btn)btn.disabled=false;
+  var ld=document.getElementById('googleLd');if(ld)ld.classList.remove('show');
+  var gp=document.getElementById('googlePreview');if(gp)gp.classList.remove('show');
   showPanel('google');
 }
 
@@ -204,14 +479,13 @@ function showErr(id,msg){
 
 function googleSignIn(){
   var errEl=document.getElementById('googleErr');
-  errEl.classList.remove('show');
+  if(errEl)errEl.classList.remove('show');
   if(!GOOGLE_CLIENT_ID){
-    errEl.textContent='Google Client ID not configured. Please contact the administrator.';
-    errEl.classList.add('show');
+    if(errEl){errEl.textContent='Google Client ID not configured. Please contact the administrator.';errEl.classList.add('show');}
     return;
   }
-  document.getElementById('googleLd').classList.add('show');
-  document.getElementById('googleSignInBtn').disabled=true;
+  var ld=document.getElementById('googleLd');if(ld)ld.classList.add('show');
+  var btn=document.getElementById('googleSignInBtn');if(btn)btn.disabled=true;
   var redirectUri=encodeURIComponent(window.location.origin+'/api/google-callback');
   var state=encodeURIComponent('nexus_'+Date.now());
   window.location.href='https://accounts.google.com/o/oauth2/v2/auth'
@@ -224,14 +498,13 @@ function googleSignIn(){
 function startRobloxOAuth(){
   var btn=document.getElementById('robloxLoginBtn');
   var errEl=document.getElementById('robloxErr');
-  errEl.classList.remove('show');
+  if(errEl)errEl.classList.remove('show');
   if(!ROBLOX_CLIENT_ID){
-    errEl.textContent='Roblox Client ID not configured. Please contact the administrator.';
-    errEl.classList.add('show');
+    if(errEl){errEl.textContent='Roblox Client ID not configured. Please contact the administrator.';errEl.classList.add('show');}
     return;
   }
-  btn.disabled=true;
-  document.getElementById('robloxLd').classList.add('show');
+  if(btn)btn.disabled=true;
+  var ld=document.getElementById('robloxLd');if(ld)ld.classList.add('show');
   var lang=localStorage.getItem('nexus_lang')||'en';
   var redirectUri=encodeURIComponent(window.location.origin+'/api/auth');
   var state=encodeURIComponent(lang+'_'+Date.now());
@@ -251,74 +524,46 @@ async function loadUserDataFromServer(robloxUsername){
 async function finishLogin(gUser,robloxUser){
   if(!robloxUser||!robloxUser.username){
     showPanel('roblox');
-    showErr('robloxErr','Roblox login is required. Please sign in with your Roblox account.');
+    showErr('robloxErr','Roblox login is required. Please connect your Roblox account.');
     return;
   }
-
   var ov=document.getElementById('loadingOverlay');
   var lt=document.getElementById('loadingText');
   if(ov)ov.classList.add('show');
-  if(lt)lt.textContent='Loading account data for @'+robloxUser.username+'...';
-
+  if(lt)lt.textContent='Loading account for @'+robloxUser.username+'...';
   var username=robloxUser.username;
   var isOwner=OWNER_USERS.indexOf(username)!==-1||OWNER_USERS.indexOf(username.toLowerCase())!==-1;
-
   var serverData=await loadUserDataFromServer(username);
-  if(lt)lt.textContent='Setting up session...';
-
+  if(lt)lt.textContent='Setting up your session...';
   var userData=serverData||{
-    credits:isOwner?999999:30,
-    convs:[],
-    plan:'free',
-    lastClaim:null,
-    draftText:{},
-    draftAttach:{},
+    credits:isOwner?999999:30,convs:[],plan:'free',lastClaim:null,
+    draftText:{},draftAttach:{},
     model:{id:'gemini-2.5-flash-lite',provider:'gemini',cost:0,label:'Gemini 2.5 Flash Lite'},
-    language:'en',
-    roles:isOwner?['owner']:[],
-    loginMethod:'roblox',
-    robloxId:robloxUser.id,
-    googleEmail:gUser.email||'',
-    createdAt:Date.now(),
+    language:'en',roles:isOwner?['owner']:[],loginMethod:'roblox',
+    robloxId:robloxUser.id,googleEmail:gUser.email||'',createdAt:Date.now(),
   };
-
   userData.avatar=(robloxUser.avatar)||gUser.picture||userData.avatar||'';
   userData.googleEmail=gUser.email||userData.googleEmail||'';
   userData.robloxId=robloxUser.id||userData.robloxId;
-  userData.loginMethod='roblox';
-  userData.lastSeen=Date.now();
+  userData.loginMethod='roblox';userData.lastSeen=Date.now();
   if(!userData.createdAt)userData.createdAt=Date.now();
-
   var session={
-    user:{
-      id:robloxUser.id,
-      username:username,
-      displayName:robloxUser.displayName||robloxUser.username,
-      avatar:userData.avatar,
-      email:gUser.email||'',
-      robloxId:robloxUser.id,
-      canInject:true,
-    },
-    data:userData,
-    loginTime:Date.now(),
-    version:2,
+    user:{id:robloxUser.id,username:username,displayName:robloxUser.displayName||robloxUser.username,
+      avatar:userData.avatar,email:gUser.email||'',robloxId:robloxUser.id,canInject:true},
+    data:userData,loginTime:Date.now(),version:2,
   };
-
   localStorage.setItem('nexus_session',JSON.stringify(session));
   localStorage.removeItem('nexus_google_tmp');
-
   try{
-    await fetch('/api/sync',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:username.toLowerCase(),data:userData})});
+    await fetch('/api/sync',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({user:username.toLowerCase(),data:userData})});
   }catch(e){}
-
-  if(lt)lt.textContent='Success! Redirecting to NEXUS AI...';
-  setTimeout(function(){window.location.replace('/chats');},800);
+  if(lt)lt.textContent='Success! Redirecting...';
+  setTimeout(function(){window.location.replace('/chats');},700);
 }
 
 (async function init(){
   var params=new URLSearchParams(window.location.search);
-
-  // Check existing session
   try{
     var s=localStorage.getItem('nexus_session');
     if(s){
@@ -332,7 +577,6 @@ async function finishLogin(gUser,robloxUser){
 
   await loadConfig();
 
-  // Handle Google callback
   var gup=params.get('google_user');
   if(gup){
     window.history.replaceState({},'','/login');
@@ -343,25 +587,19 @@ async function finishLogin(gUser,robloxUser){
       var avImg=document.getElementById('googleAvImg');if(avImg)avImg.src=gUser.picture||'';
       var nmEl=document.getElementById('googleName');if(nmEl)nmEl.textContent=gUser.name||gUser.email||'';
       var emEl=document.getElementById('googleEmail');if(emEl)emEl.textContent=gUser.email||'';
-      document.getElementById('googlePreview').classList.add('show');
+      var gp=document.getElementById('googlePreview');if(gp)gp.classList.add('show');
       showRobloxPanel(gUser);
-    }catch(e){
-      showErr('googleErr','Failed to process Google data: '+e.message);
-      showPanel('google');
-    }
+    }catch(e){showErr('googleErr','Failed to process Google data: '+e.message);showPanel('google');}
     return;
   }
 
-  // Handle Google error
   var gep=params.get('google_error');
   if(gep){
     window.history.replaceState({},'','/login');
     showErr('googleErr','Google sign-in failed: '+decodeURIComponent(gep));
-    showPanel('google');
-    return;
+    showPanel('google');return;
   }
 
-  // Handle Roblox callback
   var rup=params.get('roblox_user');
   if(rup){
     window.history.replaceState({},'','/login');
@@ -370,32 +608,19 @@ async function finishLogin(gUser,robloxUser){
       if(!rUser||!rUser.id)throw new Error('Invalid Roblox data');
       var gTmp=null;
       try{gTmp=JSON.parse(localStorage.getItem('nexus_google_tmp')||'null');}catch(e){}
-      if(!gTmp){
-        showPanel('google');
-        showErr('googleErr','Google session expired. Please sign in with Google first.');
-        return;
-      }
+      if(!gTmp){showPanel('google');showErr('googleErr','Google session expired. Please sign in with Google first.');return;}
       await finishLogin(gTmp,rUser);
-    }catch(e){
-      showPanel('google');
-      showErr('googleErr','Roblox login failed: '+e.message);
-    }
+    }catch(e){showPanel('google');showErr('googleErr','Roblox login failed: '+e.message);}
     return;
   }
 
-  // Handle Roblox error
   var rep=params.get('roblox_error');
   if(rep){
     window.history.replaceState({},'','/login');
     var gTmp2=null;
     try{gTmp2=JSON.parse(localStorage.getItem('nexus_google_tmp')||'null');}catch(e){}
-    if(gTmp2){
-      showRobloxPanel(gTmp2);
-      showErr('robloxErr','Roblox login failed: '+decodeURIComponent(rep)+'. Please try again.');
-    }else{
-      showPanel('google');
-      showErr('googleErr','Roblox login failed: '+decodeURIComponent(rep));
-    }
+    if(gTmp2){showRobloxPanel(gTmp2);showErr('robloxErr','Roblox login failed: '+decodeURIComponent(rep)+'. Please try again.');}
+    else{showPanel('google');showErr('googleErr','Roblox login failed: '+decodeURIComponent(rep));}
     return;
   }
 
