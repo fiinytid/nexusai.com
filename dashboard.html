@@ -439,7 +439,12 @@ async function createProject() {
         return;
     }
 
-    const projectId = '1738' + Date.now().toString().slice(-10);
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let randomStr = '';
+    for (let i = 0; i < 10; i++) {
+        randomStr += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    const projectId = 'nxs' + randomStr + Date.now().toString().slice(-4);
     const newProject = {
         id: projectId,
         name: name,
