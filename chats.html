@@ -2431,22 +2431,27 @@ function getProjectIdFromUrl() {
 
 async function initApp(){
   if(!SESSION)return;
+  
+  // Get Project ID first so loadS can filter correctly
+  S.currentProjectId = getProjectIdFromUrl();
+  
   await loadS();
   
-  const projectId = getProjectIdFromUrl();
-  if (projectId) {
-    S.currentProjectId = projectId;
-    const project = (SESSION.data && SESSION.data.projects || []).find(p => p.id === projectId);
+  if (S.currentProjectId) {
+    const project = (SESSION.data && SESSION.data.projects || []).find(p => p.id === S.currentProjectId);
     const chatTitle = document.getElementById('chatTitle');
     if (chatTitle) {
-      chatTitle.textContent = project ? `Project: ${project.name}` : `Project ID: ${projectId}`;
+      chatTitle.textContent = project ? `Project: ${project.name}` : `Project ID: ${S.currentProjectId}`;
     }
-    // Filter conversations for this project
-    S.allConvs = S.convs || [];
-    S.convs = S.allConvs.filter(c => c.projectId === projectId);
-  } else {
-    S.currentProjectId = null;
-    // Default behavior if no project ID
+  }
+
+  // Handle settings auto-open
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('settings') === 'true') {
+    setTimeout(() => {
+      var modal = document.getElementById('settingsModal');
+      if (modal) modal.style.display = 'flex';
+    }, 500);
   }
 
   var u=SESSION.user;
