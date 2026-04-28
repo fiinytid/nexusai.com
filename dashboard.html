@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — NEXUS AI</title>
+<link rel="icon" href="nexusai.png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #030312;
+    --bg2: #06071a;
+    --bg3: #0a0b22;
+    --cyan: #00e5ff;
+    --purple: #8800ff;
+    --pink: #ff2d6b;
+    --green: #00ffaa;
+    --yellow: #ffd600;
+    --text: #b8cfff;
+    --dim: #3a4a7a;
+    --b: rgba(0, 229, 255, .12);
+    --r: 12px;
+    --glass: rgba(10, 11, 34, 0.7);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 50% -20%, rgba(136, 0, 255, 0.15), transparent),
+        radial-gradient(circle at 0% 100%, rgba(0, 229, 255, 0.05), transparent);
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(rgba(0, 229, 255, .01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, .01) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 40px;
+    background: rgba(3, 3, 18, 0.8);
+    border-bottom: 1px solid var(--b);
+    backdrop-filter: blur(15px);
+}
+
+.nav-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+    letter-spacing: 2px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--cyan);
+    padding: 2px;
+}
+
+.main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.header {
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #fff, var(--dim));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    color: var(--dim);
+    font-size: 14px;
+}
+
+.create-card {
+    background: var(--glass);
+    border: 1px solid var(--b);
+    border-radius: var(--r);
+    padding: 30px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.create-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(136, 0, 255, 0.1), transparent 70%);
+    pointer-events: none;
+}
+
+.card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.project-input {
+    flex: 1;
+    min-width: 300px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--b);
+    border-radius: 8px;
+    padding: 12px 20px;
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.project-input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+}
+
+.btn-create {
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    color: #030312;
+    border: none;
+    border-radius: 8px;
+    padding: 0 30px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.3s;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-create:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 229, 255, 0.3);
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.project-item {
+    background: var(--bg2);
+    border: 1px solid var(--b);
+    border-radius: var(--r);
+    padding: 25px;
+    transition: 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--cyan);
+    background: var(--bg3);
+}
+
+.project-item h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.project-id {
+    font-size: 10px;
+    color: var(--dim);
+    margin-bottom: 20px;
+    display: block;
+}
+
+.project-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.meta-item {
+    font-size: 11px;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.meta-item span {
+    color: var(--cyan);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 100px 0;
+    color: var(--dim);
+}
+
+.empty-state svg {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.project-item {
+    animation: fadeIn 0.4s ease forwards;
+}
+
+/* Loading Overlay */
+#loader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 229, 255, 0.1);
+    border-top-color: var(--cyan);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="spinner"></div></div>
+
+<nav class="nav">
+    <a href="/" class="nav-logo">NEXUS AI</a>
+    <div class="user-profile">
+        <span id="userName" style="font-size: 12px; color: var(--dim);">Loading...</span>
+        <img id="userAvatar" class="user-avatar" src="nexusai.png" alt="">
+    </div>
+</nav>
+
+<div class="main">
+    <header class="header">
+        <h1>Welcome, <span id="welcomeName" style="color: var(--cyan);">Dev</span></h1>
+        <p>Manage your projects and AI interactions from one central hub.</p>
+    </header>
+
+    <div class="create-card">
+        <div class="card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Create New Project
+        </div>
+        <div class="input-group">
+            <input type="text" id="projectName" class="project-input" placeholder="Enter project name (e.g. Obby Game, Shop System)">
+            <button class="btn-create" onclick="createProject()">
+                CREATE PROJECT
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="card-title" style="margin-bottom: 25px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+        Your Projects
+    </div>
+
+    <div id="projectsGrid" class="projects-grid">
+        <!-- Projects will be loaded here -->
+    </div>
+</div>
+
+<script>
+let SESSION = null;
+let USER_DATA = null;
+
+async function checkAuth() {
+    const sessionStr = localStorage.getItem('nexus_session');
+    if (!sessionStr) {
+        window.location.href = '/login';
+        return;
+    }
+    
+    SESSION = JSON.parse(sessionStr);
+    if (!SESSION || !SESSION.user) {
+        window.location.href = '/login';
+        return;
+    }
+
+    document.getElementById('userName').textContent = '@' + SESSION.user.username;
+    document.getElementById('welcomeName').textContent = SESSION.user.username;
+    if (SESSION.user.robloxId) {
+        document.getElementById('userAvatar').src = `https://www.roblox.com/headshot-thumbnail/image?userId=${SESSION.user.robloxId}&width=150&height=150&format=png`;
+    }
+
+    await loadUserData();
+    document.getElementById('loader').style.display = 'none';
+}
+
+async function loadUserData() {
+    try {
+        const res = await fetch(`/api/sync?user=${SESSION.user.username}`);
+        USER_DATA = await res.json();
+        renderProjects();
+    } catch (e) {
+        console.error("Failed to load user data", e);
+    }
+}
+
+function renderProjects() {
+    const grid = document.getElementById('projectsGrid');
+    const projects = USER_DATA.projects || [];
+    
+    if (projects.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                <p>You haven't created any projects yet.</p>
+            </div>
+        `;
+        return;
+    }
+
+    grid.innerHTML = projects.map(p => `
+        <div class="project-item" onclick="openProject('${p.id}')">
+            <h3>${p.name}</h3>
+            <span class="project-id">ID: ${p.id}</span>
+            <div class="project-meta">
+                <div class="meta-item">Created: <span>${new Date(p.createdAt).toLocaleDateString()}</span></div>
+                <div class="meta-item">Status: <span style="color: var(--green)">Active</span></div>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function createProject() {
+    const nameInput = document.getElementById('projectName');
+    const name = nameInput.value.trim();
+    
+    if (!name) {
+        alert("Please enter a project name");
+        return;
+    }
+
+    const projectId = '1738' + Date.now().toString().slice(-10);
+    const newProject = {
+        id: projectId,
+        name: name,
+        createdAt: new Date().toISOString()
+    };
+
+    if (!USER_DATA) USER_DATA = { user: SESSION.user.username, data: {} };
+    if (!USER_DATA.projects) USER_DATA.projects = [];
+    USER_DATA.projects.unshift(newProject);
+
+    // Save to server
+    try {
+        const res = await fetch('/api/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user: SESSION.user.username,
+                data: USER_DATA
+            })
+        });
+        
+        if (res.ok) {
+            window.location.href = `/chats/${projectId}`;
+        } else {
+            alert("Failed to create project. Try again.");
+        }
+    } catch (e) {
+        console.error(e);
+        alert("Error connecting to server");
+    }
+}
+
+function openProject(id) {
+    window.location.href = `/chats/${id}`;
+}
+
+checkAuth();
+</script>
+</body>
+</html>
