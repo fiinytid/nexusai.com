@@ -25,7 +25,6 @@ html,body{height:100%;font-family:'JetBrains Mono',monospace;background:var(--bg
 body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0,229,255,.012)1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.012)1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
 #app{display:grid;grid-template-columns:255px 1fr;height:100vh;position:relative;z-index:1;transition:grid-template-columns .2s;}
 #app.sb-hidden{grid-template-columns:0 1fr;}
-/* ── SIDEBAR ── */
 #sb{display:flex;flex-direction:column;background:var(--bg2);border-right:1px solid var(--b);overflow:hidden;position:relative;z-index:5;}
 .sb-head{padding:11px 14px 9px;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .sb-logo{width:30px;height:30px;border-radius:7px;overflow:hidden;flex-shrink:0;}
@@ -57,7 +56,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .inbox-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
 .inbox-badge{margin-left:auto;background:var(--pink);color:white;font-size:8px;font-weight:700;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;}
 .proj-chip{margin:0 12px 5px;padding:5px 10px;background:rgba(255,170,50,.05);border:1px solid rgba(255,170,50,.2);border-radius:6px;font-size:9px;color:rgba(255,170,50,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
-.proj-chip span{color:rgba(255,170,50,.45);}
 .sec-lbl{padding:4px 14px 2px;font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:2px;flex-shrink:0;}
 .convs{flex:1;overflow-y:auto;padding:3px 7px;}
 .convs::-webkit-scrollbar{width:2px;}
@@ -75,7 +73,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .collapse-sb{position:absolute;right:-18px;top:50%;transform:translateY(-50%);width:18px;height:40px;background:var(--bg2);border:1px solid var(--b);border-left:none;border-radius:0 6px 6px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--dim);z-index:10;transition:.15s;}
 .collapse-sb:hover{color:var(--cyan);}
 .collapse-sb svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
-/* ── CHAT AREA ── */
 #chat{display:flex;flex-direction:column;overflow:hidden;position:relative;}
 .plug-banner{padding:5px 14px;background:rgba(255,45,107,.08);border-bottom:1px solid rgba(255,45,107,.2);font-size:10px;color:var(--pink);display:flex;align-items:center;gap:7px;flex-shrink:0;}
 .plug-banner svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
@@ -96,7 +93,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .tab-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
 .tab-btn.act{background:rgba(0,229,255,.08);border-color:var(--b);color:var(--cyan);}
 .tab-btn:hover:not(.act){color:var(--text);}
-/* ── MESSAGES ── */
 #msgs{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
 #msgs::-webkit-scrollbar{width:3px;}
 #msgs::-webkit-scrollbar-thumb{background:var(--b);}
@@ -119,18 +115,15 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .bubble{padding:10px 13px;border-radius:10px;line-height:1.7;font-size:12.5px;word-break:break-word;}
 .msg.user .bubble{background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(136,0,255,.08));border:1px solid rgba(0,229,255,.15);border-radius:10px 2px 10px 10px;color:white;}
 .msg.ai .bubble{background:var(--bg2);border:1px solid var(--b);border-radius:2px 10px 10px 10px;color:var(--text);}
-/* Images in messages */
 .msg-imgs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px;}
 .msg-img{max-width:160px;max-height:130px;border-radius:6px;object-fit:cover;border:1px solid var(--b);cursor:pointer;transition:.15s;}
 .msg-img:hover{border-color:var(--cyan);transform:scale(1.02);}
 .msg-file{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border:1px solid var(--b);border-radius:5px;font-size:10px;color:var(--cyan);background:rgba(0,229,255,.04);margin-bottom:5px;}
-/* Studio inject card */
 .inject-card{background:rgba(0,255,170,.04);border:1px solid rgba(0,255,170,.18);border-radius:7px;padding:9px 12px;margin:6px 0;}
 .inject-title{color:var(--green);font-weight:700;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;margin-bottom:4px;display:flex;align-items:center;gap:5px;}
 .inject-title svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.5;flex-shrink:0;}
 .inject-item{color:var(--text);padding:1px 0;font-size:10.5px;display:flex;align-items:center;gap:5px;}
 .inject-item::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
-/* Code blocks */
 .code-block-wrap{position:relative;margin:8px 0;}
 .code-block-wrap pre{margin:0;border-radius:7px;overflow:hidden;}
 .code-block-wrap pre code.hljs{font-size:11px;line-height:1.55;padding:12px 14px;border-radius:7px;border:1px solid rgba(0,229,255,.1);}
@@ -150,21 +143,18 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .bubble table{width:100%;border-collapse:collapse;margin:7px 0;font-size:11px;}
 .bubble th,.bubble td{padding:5px 9px;border:1px solid var(--b);}
 .bubble th{background:rgba(0,229,255,.06);color:var(--cyan);}
-/* Msg actions */
 .msg-acts{display:flex;gap:2px;padding:2px;flex-wrap:wrap;}
 .mab{font-size:9px;color:var(--dim);background:none;border:1px solid transparent;cursor:pointer;padding:3px 6px;border-radius:4px;transition:.12s;display:flex;align-items:center;gap:3px;}
 .mab:hover{color:var(--cyan);border-color:var(--b);background:var(--card);}
 .mab.liked{color:var(--green);border-color:rgba(0,255,170,.3);}
 .mab.disliked{color:var(--pink);border-color:rgba(255,45,107,.3);}
 .mab svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;}
-/* Attach row */
 .attach-row{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;padding:0 2px;}
 .attach-row:empty{display:none;}
 .attach-item{position:relative;}
 .attach-item img{width:52px;height:52px;border-radius:5px;object-fit:cover;border:1px solid var(--b);}
 .attach-file{padding:5px 9px;border:1px solid var(--b);border-radius:5px;font-size:10px;color:var(--cyan);background:rgba(0,229,255,.04);display:flex;align-items:center;gap:4px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .attach-rm{position:absolute;top:-5px;right:-5px;width:16px;height:16px;background:var(--pink);border:none;border-radius:50%;color:white;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
-/* Input area */
 .inp-area{padding:9px 14px;border-top:1px solid var(--b);background:var(--bg2);flex-shrink:0;position:relative;}
 .inp-box{background:var(--bg3);border:1px solid var(--b);border-radius:12px;transition:.2s;overflow:hidden;}
 .inp-box.drag-over{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,229,255,.1);}
@@ -210,12 +200,10 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .btn-send svg,.btn-cancel svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;}
 .btn-cancel{background:rgba(255,45,107,.15);border:1px solid rgba(255,45,107,.3);color:var(--pink);}
 .btn-cancel:hover{background:rgba(255,45,107,.25);}
-/* ── LEMONADE STEPS ── */
 .steps-wrap{display:flex;gap:9px;animation:mi .22s ease;}
 .steps-box{background:var(--bg2);border:1px solid var(--b);border-radius:2px 10px 10px 10px;padding:0;overflow:hidden;min-width:280px;max-width:480px;}
 .steps-hdr{padding:9px 13px 8px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--b);}
 .steps-hdr-spinner{width:11px;height:11px;border:1.5px solid rgba(0,229,255,.2);border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
-.steps-hdr-done{width:11px;height:11px;color:var(--green);flex-shrink:0;font-size:11px;}
 .steps-hdr-txt{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--cyan);letter-spacing:.5px;flex:1;}
 .steps-hdr-count{font-size:8px;color:var(--dim);}
 .steps-list{padding:4px 0;}
@@ -238,7 +226,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .steps-cancel-btn{padding:3px 12px;background:rgba(255,45,107,.08);border:1px solid rgba(255,45,107,.25);border-radius:5px;color:var(--pink);font-size:9px;cursor:pointer;transition:.1s;}
 .steps-cancel-btn:hover{background:rgba(255,45,107,.16);}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* ── GUI EDITOR ── */
 #guiTab{flex:1;overflow:hidden;display:none;flex-direction:column;}
 .gui-toolbar{padding:6px 12px;border-bottom:1px solid var(--b);background:var(--bg2);display:flex;align-items:center;gap:4px;flex-wrap:wrap;flex-shrink:0;}
 .gui-btn{padding:4px 9px;border-radius:5px;border:1px solid var(--b);background:var(--card);color:var(--text);font-size:10px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:3px;}
@@ -263,7 +250,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .gui-loading.show{display:flex;}
 .gui-empty-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:rgba(0,229,255,.12);font-size:11px;pointer-events:none;}
 .gui-empty-hint svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:1.5;}
-/* ── MODALS ── */
 .ov{position:fixed;inset:0;background:rgba(3,3,18,.93);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
 .ov.show{display:flex;}
 .modal{background:var(--bg2);border:1px solid var(--b);border-radius:13px;padding:22px;width:500px;max-width:95vw;box-shadow:0 24px 64px rgba(0,0,0,.9);max-height:90vh;overflow-y:auto;}
@@ -294,7 +280,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .badge-owner{background:linear-gradient(135deg,rgba(255,214,0,.2),rgba(255,140,0,.2));color:var(--yellow);border:1px solid rgba(255,214,0,.3);padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;font-family:'Orbitron',sans-serif;}
 .badge-admin{background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.3);padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;}
 .badge-pro{background:rgba(136,0,255,.12);color:#cc55ff;border:1px solid rgba(136,0,255,.3);padding:2px 8px;border-radius:10px;font-size:9px;font-weight:700;}
-/* Share modal */
 .share-modal-ta{width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:8px 10px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:10px;outline:none;resize:none;height:200px;margin-top:8px;}
 .hidden{display:none!important;}
 ::-webkit-scrollbar{width:2px;height:2px;}
@@ -319,7 +304,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 </head>
 <body>
 <div id="app" class="hidden">
-  <!-- ── SIDEBAR ── -->
   <div id="sb">
     <div class="sb-head">
       <div class="sb-logo"><img src="nexusai.png" alt="N" onerror="this.parentElement.style.background='linear-gradient(135deg,#00e5ff,#8800ff)';this.style.display='none'"></div>
@@ -362,7 +346,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     </div>
   </div>
 
-  <!-- ── MAIN CHAT ── -->
   <div id="chat">
     <div class="plug-banner" id="plugBanner">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -391,31 +374,19 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
           <div class="ws" id="welcomeText">AI Roblox cerdas — tulis Lua, debug script, buat GUI. Connect plugin untuk inject langsung ke Studio!</div>
           <div class="suggs">
             <div class="sugg" onclick="useSugg(this.dataset.q)" data-q="Buat loading screen profesional untuk game Roblox saya dengan animasi progress bar dan tips random">
-              <div class="sugg-title">
-                <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-                Loading Screen
-              </div>
+              <div class="sugg-title"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>Loading Screen</div>
               Loading screen keren &amp; animasi lengkap
             </div>
-            <div class="sugg" onclick="useSugg(this.dataset.q)" data-q="Buat shop GUI lengkap untuk Roblox dengan item, tombol beli, harga, coins, dan animasi smooth">
-              <div class="sugg-title">
-                <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                Shop GUI
-              </div>
+            <div class="sugg" onclick="useSugg(this.dataset.q)" data-q="Buat shop GUI lengkap dengan tombol buka tutup, item, tombol beli, harga, coins, dan animasi smooth">
+              <div class="sugg-title"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Shop GUI</div>
               Toko dengan animasi &amp; sistem coins
             </div>
             <div class="sugg" onclick="useSugg(this.dataset.q)" data-q="Buat sistem DataStore leaderboard untuk game Roblox dengan Coins, Level, dan Win menggunakan ProfileService pattern">
-              <div class="sugg-title">
-                <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                Leaderboard
-              </div>
+              <div class="sugg-title"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Leaderboard</div>
               DataStore Coins + Level + Win
             </div>
-            <div class="sugg" onclick="useSugg(this.dataset.q)" data-q="Buat sistem admin commands lengkap untuk Roblox dengan kick, ban, give, speed, fly, dan UI panel yang rapi">
-              <div class="sugg-title">
-                <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                Admin System
-              </div>
+            <div class="sugg" onclick="useSugg(this.dataset.q)" data-q="Buat sistem admin commands lengkap dengan kick, ban, give, speed, fly, dan UI panel rapi dengan tombol buka tutup">
+              <div class="sugg-title"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Admin System</div>
               Admin commands + UI panel lengkap
             </div>
           </div>
@@ -427,13 +398,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
           <textarea id="inp" placeholder="Tanya NEXUS AI tentang Roblox..." rows="1"></textarea>
           <div class="inp-bar">
             <div class="inp-l">
-              <label for="fi" class="ib" title="Attach file/image">
-                <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-              </label>
+              <label for="fi" class="ib" title="Attach file/image"><svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></label>
               <input type="file" id="fi" accept="image/*,.lua,.txt,.json,.js" style="display:none" onchange="handleFile(event)" multiple>
-              <button class="ib" onclick="clearChat()" title="Clear chat">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-              </button>
+              <button class="ib" onclick="clearChat()" title="Clear chat"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
               <div class="inp-model" id="inpModelBtn" onclick="toggleMDD(event)">
                 <img id="inpMIcon" src="" alt="" onerror="this.style.display='none'" style="width:13px;height:13px;border-radius:2px;">
                 <span class="inp-model-name" id="inpMName">Gemini 2.5 Flash Lite</span>
@@ -445,18 +412,13 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
                 <span id="thinkLabel">Think</span>
               </button>
             </div>
-            <button class="btn-cancel hidden" id="cancelBtn" onclick="cancelGen()">
-              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-            <button class="btn-send" id="sendBtn" onclick="send()">
-              <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
+            <button class="btn-cancel hidden" id="cancelBtn" onclick="cancelGen()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            <button class="btn-send" id="sendBtn" onclick="send()"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
           </div>
         </div>
         <div class="model-dd" id="mDD"></div>
       </div>
     </div>
-    <!-- GUI EDITOR TAB -->
     <div id="guiTab">
       <div class="gui-toolbar">
         <span style="font-size:10px;color:var(--dim);" id="guiAddLabel">Add:</span>
@@ -473,44 +435,26 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
             <svg width="8" height="8" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="color:var(--dim);flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="model-dd" id="guiMDD"></div>
-          <button class="gui-ai-btn" onclick="openGuiAIChat()">
-            <svg viewBox="0 0 24 24"><path d="M9 18h6M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17H8v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/></svg>
-            AI Build
-          </button>
-          <button class="gui-btn" onclick="clearCanvas()">
-            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Clear
-          </button>
-          <button class="gui-gen-btn" onclick="generateGuiCode()">
-            <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Export
-          </button>
-          <button class="gui-gen-btn" onclick="sendGuiToPlace()" style="background:linear-gradient(135deg,var(--green),var(--cyan));">
-            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            <span id="guiToPlaceText">Kirim ke Place</span>
-          </button>
+          <button class="gui-ai-btn" onclick="openGuiAIChat()"><svg viewBox="0 0 24 24"><path d="M9 18h6M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17H8v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/></svg>AI Build</button>
+          <button class="gui-btn" onclick="clearCanvas()"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Clear</button>
+          <button class="gui-gen-btn" onclick="generateGuiCode()"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Export</button>
+          <button class="gui-gen-btn" onclick="sendGuiToPlace()" style="background:linear-gradient(135deg,var(--green),var(--cyan));"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><span id="guiToPlaceText">Kirim ke Place</span></button>
         </div>
       </div>
       <div class="gui-main">
         <div class="gui-canvas">
           <div class="gui-canvas-inner" id="guiCanvasInner">
-            <div class="gui-empty-hint" id="guiEmpty">
-              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-              <div id="guiEmptyText">Tambah elemen atau klik "AI Build"</div>
-            </div>
+            <div class="gui-empty-hint" id="guiEmpty"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><div id="guiEmptyText">Tambah elemen atau klik "AI Build"</div></div>
           </div>
-          <div class="gui-loading" id="guiLoading">
-            <div style="width:20px;height:20px;border:2px solid rgba(0,229,255,.2);border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite;"></div>
-            <span id="guiLoadingText">AI sedang membangun UI...</span>
-          </div>
+          <div class="gui-loading" id="guiLoading"><div style="width:20px;height:20px;border:2px solid rgba(0,229,255,.2);border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite;"></div><span id="guiLoadingText">AI sedang membangun UI...</span></div>
         </div>
-        <div class="gui-props" id="guiProps">
-          <div style="font-size:10px;color:var(--dim);text-align:center;padding:20px 0;" id="guiPropsEmpty">Pilih elemen</div>
-        </div>
+        <div class="gui-props" id="guiProps"><div style="font-size:10px;color:var(--dim);text-align:center;padding:20px 0;" id="guiPropsEmpty">Pilih elemen</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── MODALS ── -->
+<!-- MODALS -->
 <div class="ov" id="avatarModal">
   <div class="modal" style="width:340px;text-align:center;padding:26px;">
     <div style="font-family:'Orbitron',sans-serif;font-size:13px;color:var(--cyan);margin-bottom:14px;" id="avatarModalName">-</div>
@@ -522,12 +466,9 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 </div>
 <div class="ov" id="installModal">
   <div class="modal">
-    <div class="modal-t">
-      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      <span id="installTitle">Cara Install Plugin NEXUS AI</span>
-    </div>
+    <div class="modal-t"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span id="installTitle">Cara Install Plugin NEXUS AI</span></div>
     <div class="modal-b">
-      <div class="install-step"><div class="install-num">1</div><div class="install-txt" id="installStep1">Download plugin dari Discord NEXUS STUDIO: <a href="https://discord.gg/HuGtbRvD" target="_blank" style="color:var(--cyan);">discord.gg/HuGtbRvD</a></div></div>
+      <div class="install-step"><div class="install-num">1</div><div class="install-txt" id="installStep1">Download plugin dari Roblox Creator Store: <a href="https://create.roblox.com/store/asset/18909680834" target="_blank" style="color:var(--cyan);">Creator Store →</a></div></div>
       <div class="install-step"><div class="install-num">2</div><div class="install-txt" id="installStep2">Simpan ke: <code>C:\Users\[Nama]\AppData\Local\Roblox\Plugins\</code></div></div>
       <div class="install-step"><div class="install-num">3</div><div class="install-txt" id="installStep3">Roblox Studio → <strong>Manage Plugin</strong> → Permission → Enable <strong>HTTP Requests</strong> + <strong>Script Injection</strong></div></div>
       <div class="install-step"><div class="install-num">4</div><div class="install-txt" id="installStep4">Klik tombol <strong>NEXUS AI</strong> di toolbar Studio → Klik <strong>CONNECT</strong></div></div>
@@ -538,10 +479,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 </div>
 <div class="ov" id="settingsModal">
   <div class="modal" style="width:520px;">
-    <div class="modal-t">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      <span id="settingsTitle">Settings</span>
-    </div>
+    <div class="modal-t"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span id="settingsTitle">Settings</span></div>
     <div class="settings-section">
       <div class="settings-title" id="settingsAccountTitle">Akun Roblox</div>
       <div class="settings-row"><span style="color:white;font-weight:600;" id="settingsUsername">-</span><span id="settingsBadge"></span></div>
@@ -580,7 +518,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       <div class="settings-title" id="downloadTitle">Download Plugin</div>
       <div class="settings-row" style="flex-direction:column;gap:5px;align-items:flex-start;">
         <div style="font-size:10px;color:var(--dim);" id="downloadHint">Install NEXUS AI Plugin V10.6 di Roblox Studio</div>
-        <button class="settings-btn" onclick="window.open('https://discord.gg/HuGtbRvD','_blank')">Download via Discord</button>
+        <button class="settings-btn" onclick="window.open('https://create.roblox.com/store/asset/18909680834','_blank')" id="downloadPluginBtn">Download dari Creator Store</button>
       </div>
     </div>
     <div class="settings-section">
@@ -592,30 +530,21 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 </div>
 <div class="ov" id="guiCodeModal">
   <div class="modal" style="width:640px;">
-    <div class="modal-t">
-      <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      <span id="guiCodeTitle">Generated GUI Script</span>
-    </div>
+    <div class="modal-t"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span id="guiCodeTitle">Generated GUI Script</span></div>
     <div class="modal-b"><pre id="guiCodeOutput" style="max-height:380px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;font-size:10.5px;color:var(--text);background:rgba(0,0,0,.4);padding:12px;border-radius:6px;border:1px solid var(--b);"></pre></div>
     <div class="modal-footer"><button class="btn-modal primary" onclick="copyGuiCode()" id="guiCodeCopyBtn">Copy</button><button class="btn-modal secondary" onclick="downloadGuiCode()" id="guiCodeDlBtn">Download .lua</button><button class="btn-modal secondary" onclick="closeModal('guiCodeModal')" id="guiCodeCloseBtn">Tutup</button></div>
   </div>
 </div>
 <div class="ov" id="guiAIChatModal">
   <div class="modal" style="width:500px;">
-    <div class="modal-t">
-      <svg viewBox="0 0 24 24"><path d="M9 18h6M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17H8v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/></svg>
-      <span id="guiAiTitle">AI UI Builder</span>
-    </div>
+    <div class="modal-t"><svg viewBox="0 0 24 24"><path d="M9 18h6M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17H8v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/></svg><span id="guiAiTitle">AI UI Builder</span></div>
     <div class="modal-b" style="margin-bottom:8px;"><p style="margin-bottom:8px;font-size:11px;" id="guiAiDesc">Deskripsikan UI yang Anda inginkan:</p><textarea id="guiAIPrompt" style="width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:10px;color:white;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;resize:vertical;min-height:90px;" placeholder="contoh: Shop GUI dengan 3 kartu item, scroll list, tombol beli hijau..."></textarea></div>
     <div class="modal-footer"><button class="btn-modal primary" onclick="generateGuiFromAI()" id="guiAiBuildBtn">Bangun dengan AI</button><button class="btn-modal secondary" onclick="closeModal('guiAIChatModal')" id="guiAiCancelBtn">Batal</button></div>
   </div>
 </div>
 <div class="ov" id="shareModal">
   <div class="modal" style="width:520px;">
-    <div class="modal-t">
-      <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      <span id="shareModalTitle">Bagikan Chat</span>
-    </div>
+    <div class="modal-t"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span id="shareModalTitle">Bagikan Chat</span></div>
     <div class="modal-b" style="margin-bottom:8px;"><p style="font-size:11px;color:var(--dim);margin-bottom:6px;" id="shareModalDesc">Salin teks percakapan ini:</p><textarea class="share-modal-ta" id="shareModalTa" readonly></textarea></div>
     <div class="modal-footer"><button class="btn-modal primary" onclick="copyShareText()" id="shareModalCopyBtn">Copy Teks</button><button class="btn-modal secondary" onclick="closeModal('shareModal')" id="shareModalCloseBtn">Tutup</button></div>
   </div>
@@ -623,34 +552,26 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 
 <script>
 'use strict';
-// ═══════════════════════ CONFIG ═══════════════════════
-var curLang = localStorage.getItem('nexus_lang') || 'id';
-var thinkingEnabled = true;
-var SESSION = null;
-var studioConnected = false;
-var studioPollTimer = null;
-var API_URL = '/api/control';
-var REPORT_URL = '/api/report';
-var K = { gemini: '' };
-var OWNER_IDS = ['128649548'];
-var ADMIN_IDS = [];
-var guiElements = {}, selectedElId = null, guiElCounter = 0;
+var curLang=localStorage.getItem('nexus_lang')||'id';
+var thinkingEnabled=true;
+var SESSION=null;
+var studioConnected=false;
+var studioPollTimer=null;
+var API_URL='/api/control';
+var REPORT_URL='/api/report';
+var K={gemini:''};
+var OWNER_IDS=['128649548'];
+var ADMIN_IDS=[];
+var guiElements={},selectedElId=null,guiElCounter=0;
+var _stepsEl=null,_stepsList=null,_stepsMap=new Map(),_stepsId=0;
 
-// ═══════════════════════ STEPS STATE ═══════════════════════
-var _stepsEl = null;
-var _stepsList = null;
-var _stepsMap = new Map();
-var _stepsId = 0;
+function svgCheck(){return'<svg class="step-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';}
+function svgX(){return'<svg class="step-err" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';}
+function svgInfo(){return'<svg class="step-info" viewBox="0 0 24 24"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';}
+function svgPend(){return'<div class="step-pend"></div>';}
 
-// ═══════════════════════ SVG ICON HELPERS ═══════════════════════
-function svgCheck(){return '<svg class="step-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';}
-function svgX(){return '<svg class="step-err" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';}
-function svgInfo(){return '<svg class="step-info" viewBox="0 0 24 24"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';}
-function svgPend(){return '<div class="step-pend"></div>';}
-
-// ═══════════════════════ LANG STRINGS ═══════════════════════
-var LANGS = {
-  id: {
+var LANGS={
+  id:{
     placeholder:'Tanya NEXUS AI tentang Roblox...',noConv:'Belum ada percakapan',
     newchat:'Percakapan Baru',recent:'Riwayat Chat',
     son:'Studio: ON',soff:'Studio: OFF',cancel:'Batalkan',
@@ -662,7 +583,7 @@ var LANGS = {
     chatTitle:'NEXUS AI — Asisten Roblox',
     installLink:'Cara connect →',reconnectLink:'Reconnect',
     installTitle:'Cara Install Plugin NEXUS AI',
-    installSteps:['Download plugin dari Discord NEXUS STUDIO: <a href="https://discord.gg/HuGtbRvD" target="_blank" style="color:var(--cyan);">discord.gg/HuGtbRvD</a>',
+    installSteps:['Download plugin dari Roblox Creator Store: <a href="https://create.roblox.com/store/asset/18909680834" target="_blank" style="color:var(--cyan);">Creator Store →</a>',
       'Simpan ke: <code>C:\\Users\\[Nama]\\AppData\\Local\\Roblox\\Plugins\\</code>',
       'Roblox Studio → <strong>Manage Plugin</strong> → Permission → Enable <strong>HTTP Requests</strong> + <strong>Script Injection</strong>',
       'Klik tombol <strong>NEXUS AI</strong> di toolbar Studio → Klik <strong>CONNECT</strong>',
@@ -674,6 +595,7 @@ var LANGS = {
     reportTitle:'Laporkan Masalah',reportBtn:'Kirim Report',
     redeemTitle:'Redeem Code',redeemHint:'Dapatkan code di <a href="https://discord.gg/HuGtbRvD" target="_blank" style="color:var(--cyan);">Discord NEXUS STUDIO</a>',
     downloadTitle:'Download Plugin',downloadHint:'Install NEXUS AI Plugin V10.6 di Roblox Studio',
+    downloadPluginBtn:'Download dari Creator Store',
     logoutLabel:'Logout',close:'TUTUP',
     guiAddLabel:'Add:',guiEmptyText:'Tambah elemen atau klik "AI Build"',
     guiLoadingText:'AI sedang membangun UI...',guiToPlaceText:'Kirim ke Place',
@@ -689,10 +611,17 @@ var LANGS = {
     addElementFirst:'Tambahkan elemen dulu!',aiResponseInvalid:'AI response invalid',
     errorPrefix:'Gagal',clearConfirm:'Hapus semua pesan di percakapan ini?',
     shareModalTitle:'Bagikan Chat',shareModalDesc:'Salin teks percakapan ini:',shareModalCopy:'Copy Teks',shareClose:'Tutup',
-    workingOn:'Working on the task...',injectedDone:'Berhasil diinjeksi ke Studio',
-    projectLabel:'Project'
+    workingOn:'Memproses permintaan...',buildingInStudio:'Membangun di Studio...',
+    analyzingReq:'Menganalisis permintaan...',designingSolution:'Merancang solusi...',
+    readingScript:'Membaca script...',analyzingError:'Menganalisis error...',designingFix:'Merancang perbaikan...',
+    designingUI:'Merancang UI/UX...',buildingComponents:'Membangun komponen...',
+    preparingEdit:'Mempersiapkan edit...',preparingTest:'Mempersiapkan test...',
+    creatingScript:'Membuat script:',injectingScript:'Menginjeksi:',
+    creatingRemote:'Membuat Remote:',creatingGUI:'Membangun GUI:',
+    injectedOk:'Berhasil diinjeksi ke Studio',projectLabel:'Project',
+    noProjectRedirect:'Mengarahkan ke proyek...'
   },
-  en: {
+  en:{
     placeholder:'Ask NEXUS AI about Roblox...',noConv:'No conversations yet',
     newchat:'New Chat',recent:'Chat History',
     son:'Studio: ON',soff:'Studio: OFF',cancel:'Cancel',
@@ -704,7 +633,7 @@ var LANGS = {
     chatTitle:'NEXUS AI — Roblox Dev Assistant',
     installLink:'How to connect →',reconnectLink:'Reconnect',
     installTitle:'How to Install NEXUS AI Plugin',
-    installSteps:['Download plugin from NEXUS STUDIO Discord: <a href="https://discord.gg/HuGtbRvD" target="_blank" style="color:var(--cyan);">discord.gg/HuGtbRvD</a>',
+    installSteps:['Download plugin from Roblox Creator Store: <a href="https://create.roblox.com/store/asset/18909680834" target="_blank" style="color:var(--cyan);">Creator Store →</a>',
       'Save to: <code>C:\\Users\\[Name]\\AppData\\Local\\Roblox\\Plugins\\</code>',
       'Roblox Studio → <strong>Manage Plugin</strong> → Permission → Enable <strong>HTTP Requests</strong> + <strong>Script Injection</strong>',
       'Click <strong>NEXUS AI</strong> button in Studio toolbar → Click <strong>CONNECT</strong>',
@@ -716,6 +645,7 @@ var LANGS = {
     reportTitle:'Report Issue',reportBtn:'Send Report',
     redeemTitle:'Redeem Code',redeemHint:'Get codes at <a href="https://discord.gg/HuGtbRvD" target="_blank" style="color:var(--cyan);">NEXUS STUDIO Discord</a>',
     downloadTitle:'Download Plugin',downloadHint:'Install NEXUS AI Plugin V10.6 in Roblox Studio',
+    downloadPluginBtn:'Download from Creator Store',
     logoutLabel:'Logout',close:'CLOSE',
     guiAddLabel:'Add:',guiEmptyText:'Add elements or click "AI Build"',
     guiLoadingText:'AI is building UI...',guiToPlaceText:'Send to Place',
@@ -731,13 +661,19 @@ var LANGS = {
     addElementFirst:'Add elements first!',aiResponseInvalid:'AI response invalid',
     errorPrefix:'Failed',clearConfirm:'Delete all messages in this chat?',
     shareModalTitle:'Share Chat',shareModalDesc:'Copy this conversation text:',shareModalCopy:'Copy Text',shareClose:'Close',
-    workingOn:'Working on the task...',injectedDone:'Successfully injected to Studio',
-    projectLabel:'Project'
+    workingOn:'Processing request...',buildingInStudio:'Building in Studio...',
+    analyzingReq:'Analyzing request...',designingSolution:'Designing solution...',
+    readingScript:'Reading script...',analyzingError:'Analyzing error...',designingFix:'Designing fix...',
+    designingUI:'Designing UI/UX...',buildingComponents:'Building components...',
+    preparingEdit:'Preparing edit...',preparingTest:'Preparing test...',
+    creatingScript:'Creating script:',injectingScript:'Injecting:',
+    creatingRemote:'Creating Remote:',creatingGUI:'Building GUI:',
+    injectedOk:'Successfully injected to Studio',projectLabel:'Project',
+    noProjectRedirect:'Redirecting to project...'
   }
 };
 function T(){return LANGS[curLang]||LANGS.id;}
 
-// ═══════════════════════ STATE ═══════════════════════
 var S={
   credits:30,allConvs:[],convs:[],curConv:null,gen:false,cancelCtrl:null,
   model:{id:'gemini-2.5-flash-lite',prov:'gemini',cost:0,label:'Gemini 2.5 Flash Lite'},
@@ -746,7 +682,6 @@ var S={
   currentProjectId:null,currentProjectName:null,projects:[]
 };
 
-// ═══════════════════════ MODELS ═══════════════════════
 var MODEL_LIST=[
   {grp:'Google — Gemini Fast'},
   {id:'gemini-2.5-flash-lite',prov:'gemini',cost:0,label:'Gemini 2.5 Flash Lite',icon:'/icon/gemini.png',badge:'FREE'},
@@ -780,26 +715,52 @@ var MODEL_LIST_SOON=[
   {id:'gpt-4o',prov:'openai',cost:7,label:'GPT-4o',icon:'/icon/chatgpt.png',soon:true},
 ];
 
-// ═══════════════════════ AUTH ═══════════════════════
+// ── AUTH + REDIRECT FIX ──
 (function(){
   try{
-    var s=localStorage.getItem('nexus_session'); if(!s){location.replace('/');return;}
+    var s=localStorage.getItem('nexus_session');
+    if(!s){location.replace('/');return;}
     var p=JSON.parse(s);
     if(!p||!p.user||!p.user.username||!p.user.robloxId){localStorage.removeItem('nexus_session');location.replace('/');return;}
     if((Date.now()-p.loginTime)>=86400000*7){localStorage.removeItem('nexus_session');location.replace('/');return;}
-    SESSION=p; if(!SESSION.data)SESSION.data={};
+    SESSION=p;if(!SESSION.data)SESSION.data={};
+    // FIX: Check if we're at /chats without an id param — redirect to dashboard/projects
+    var urlp=new URLSearchParams(window.location.search);
+    var pathParts=window.location.pathname.split('/');
+    var chatsIdx=pathParts.indexOf('chats');
+    var hasId=urlp.get('id')||(chatsIdx!==-1&&pathParts[chatsIdx+1]&&pathParts[chatsIdx+1].length>3);
+    if(!hasId&&window.location.pathname.endsWith('/chats')){
+      // No project ID - redirect to dashboard where projects are listed
+      location.replace('/dashboard');
+      return;
+    }
     document.getElementById('app').classList.remove('hidden');
   }catch(e){localStorage.removeItem('nexus_session');location.replace('/');}
 })();
 
-// ═══════════════════════ UTILS ═══════════════════════
+// ── UTILS ──
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function toast(msg,col,dur){
   document.querySelectorAll('.nx-toast').forEach(function(x){x.remove();});
-  var t=document.createElement('div'); t.className='nx-toast';
-  t.textContent=msg;
+  var t=document.createElement('div');t.className='nx-toast';t.textContent=msg;
   t.style.cssText='position:fixed;bottom:22px;right:22px;background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:9px 15px;font-size:11px;z-index:9999;color:'+(col||'var(--cyan)')+';animation:toastIn .2s ease;pointer-events:none;max-width:300px;';
-  document.body.appendChild(t); setTimeout(function(){t.remove();},(dur||2800));
+  document.body.appendChild(t);setTimeout(function(){t.remove();},(dur||2800));
+}
+function cleanAIResponse(text){
+  if(!text)return'';
+  text=text.replace(/^[╔╗╚╝║╠╣╦╩╬═─┌┐└┘│├┤┬┴┼]+.*$/gm,'');
+  text=text.replace(/^[=\-]{10,}.*$/gm,'');
+  text=text.replace(/```json[\s\S]*?```/g,'');
+  text=text.replace(/\n{3,}/g,'\n\n');
+  return text.trim();
+}
+// FIX: Detect if message is PURELY a greeting (no task/request content)
+function isPureGreeting(txt){
+  var t=txt.trim().toLowerCase();
+  // Only pure greeting if very short AND matches greeting patterns
+  if(t.length>60)return false; // long messages are never pure greetings
+  var greetingOnly=/^(halo|hai|hi|hello|hey|helo|yo|sup|howdy|selamat\s*(pagi|siang|sore|malam)|good\s*(morning|afternoon|evening|night)|apa\s*kabar|how\s*(are\s*you|r\s*u)|nexus|test|testing|ping|hola|bonjour|ciao|kamu siapa|siapa kamu|who are you|kamu apa|what are you)[\s?!.,]*$/;
+  return greetingOnly.test(t);
 }
 function isOwner(){
   if(!SESSION)return false;
@@ -810,12 +771,12 @@ function isOwner(){
   return OWNER_IDS.indexOf(String(SESSION.user.robloxId||''))>=0||OWNER_IDS.indexOf(String(SESSION.user.username||'').toLowerCase())>=0;
 }
 function isAdmin(){
-  if(!SESSION)return false; if(isOwner())return true;
+  if(!SESSION)return false;if(isOwner())return true;
   var roles=(SESSION.data&&SESSION.data.roles)||[];
   return roles.indexOf('admin')>=0||ADMIN_IDS.indexOf(String(SESSION.user.robloxId||''))>=0;
 }
 
-// ═══════════════════════ SAVE/LOAD ═══════════════════════
+// ── SAVE/LOAD ──
 function saveS(){
   if(!SESSION)return;
   if(!S.allConvs)S.allConvs=[];
@@ -824,14 +785,16 @@ function saveS(){
     var current=S.convs.map(function(c){var cp=Object.assign({},c);cp.projectId=S.currentProjectId;return cp;});
     S.allConvs=others.concat(current);
   }else{S.allConvs=S.convs.slice();}
-  SESSION.data.credits=S.credits;
-  SESSION.data.convs=S.allConvs;
-  SESSION.data.plan=S.plan;
-  SESSION.data.model=S.model;
-  SESSION.data.lastClaim=S.lastClaim;
+  SESSION.data.credits=S.credits;SESSION.data.convs=S.allConvs;
+  SESSION.data.plan=S.plan;SESSION.data.model=S.model;SESSION.data.lastClaim=S.lastClaim;
   SESSION.data.projects=S.projects||SESSION.data.projects;
   try{localStorage.setItem('nexus_session',JSON.stringify(SESSION));}catch(e){}
-  try{fetch('/api/sync',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:(SESSION.user.username||'').toLowerCase(),robloxId:SESSION.user.robloxId,data:SESSION.data})});}catch(e){}
+  // FIX: Silent save — don't block or show errors from KV failures
+  try{
+    fetch('/api/sync',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({user:(SESSION.user.username||'').toLowerCase(),robloxId:SESSION.user.robloxId,data:SESSION.data})
+    }).catch(function(){/* silent — KV failures don't affect UX */});
+  }catch(e){}
 }
 async function loadS(){
   if(!SESSION)return;
@@ -846,7 +809,7 @@ async function loadS(){
     if(r.ok){
       var d=await r.json();
       if(d&&d.credits!==undefined){
-        S.credits=parseFloat(d.credits)||0; S.plan=d.plan||S.plan; S.lastClaim=d.lastClaim||S.lastClaim;
+        S.credits=parseFloat(d.credits)||0;S.plan=d.plan||S.plan;S.lastClaim=d.lastClaim||S.lastClaim;
         if(d.convs&&d.convs.length){S.allConvs=d.convs;S.convs=S.currentProjectId?S.allConvs.filter(function(c){return c.projectId===S.currentProjectId;}):S.allConvs.slice();}
         if(d.projects)S.projects=d.projects;
         SESSION.data=Object.assign(SESSION.data||{},d);
@@ -858,54 +821,47 @@ async function loadKeys(){try{var r=await fetch('/api/main');if(r.ok){var d=awai
 async function loadAdminIds(){try{var r=await fetch('/api/sync?admin_ids=1');if(r.ok){var d=await r.json();if(d.admin_ids)ADMIN_IDS=d.admin_ids;}}catch(e){}}
 async function loadInboxCount(){try{var r=await fetch('/api/inbox?count=1&user='+(SESSION?SESSION.user.username:''));if(r.ok){var d=await r.json();S.unreadInbox=d.count||0;var b=document.getElementById('inboxBadge');if(b)b.textContent=S.unreadInbox;}}catch(e){}}
 
-// ═══════════════════════ LANG APPLY ═══════════════════════
 function applyLang(){
   var t=T();
   function s(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
   function sh(id,v){var e=document.getElementById(id);if(e)e.innerHTML=v;}
   function sa(id,a,v){var e=document.getElementById(id);if(e)e[a]=v;}
   sa('inp','placeholder',t.placeholder);
-  s('newChatLbl',t.newchat); s('recentLbl',t.recent);
-  sa('langSelector','value',curLang);
-  s('welcomeText',t.welcomeText); s('chatTitle',t.chatTitle);
+  s('newChatLbl',t.newchat);s('recentLbl',t.recent);sa('langSelector','value',curLang);
+  s('welcomeText',t.welcomeText);s('chatTitle',t.chatTitle);
   s('plugBannerTxt',studioConnected?t.connected:t.disconnected);
-  s('plugInstallLink',t.installLink); s('plugReconnectLink',t.reconnectLink);
-  s('helpBtnText',t.helpBtn); s('inboxBtnText',t.inboxBtn);
-  s('credLabel',t.creditsLabel); s('credHint',t.credHint);
-  s('noConvLbl',t.noConv);
-  s('settingsTitle',t.settingsTitle); s('settingsAccountTitle',t.accountTitle);
-  s('settingsCreditsLabel',t.creditsLabel); s('settingsPlanLabel',t.planLabel);
-  s('settingsRobloxIdLabel',t.robloxIdLabel); s('dailyCreditsTitle',t.dailyTitle);
-  s('freePlanLabel',t.freePlan); s('proPlanLabel',t.proPlan);
-  s('langTitle',t.langTitle); s('langLabel',t.langLabel);
-  s('reportTitle',t.reportTitle); s('reportBtn',t.reportBtn);
-  s('redeemTitle',t.redeemTitle); sh('redeemHint',t.redeemHint);
-  s('downloadTitle',t.downloadTitle); s('downloadHint',t.downloadHint);
-  s('logoutLabel',t.logoutLabel); s('settingsCloseBtn',t.close);
-  s('avatarCloseBtn',t.close); s('installTitle',t.installTitle);
-  s('installCloseBtn',t.installClose);
+  s('plugInstallLink',t.installLink);s('plugReconnectLink',t.reconnectLink);
+  s('helpBtnText',t.helpBtn);s('inboxBtnText',t.inboxBtn);
+  s('credLabel',t.creditsLabel);s('credHint',t.credHint);s('noConvLbl',t.noConv);
+  s('settingsTitle',t.settingsTitle);s('settingsAccountTitle',t.accountTitle);
+  s('settingsCreditsLabel',t.creditsLabel);s('settingsPlanLabel',t.planLabel);
+  s('settingsRobloxIdLabel',t.robloxIdLabel);s('dailyCreditsTitle',t.dailyTitle);
+  s('freePlanLabel',t.freePlan);s('proPlanLabel',t.proPlan);
+  s('langTitle',t.langTitle);s('langLabel',t.langLabel);
+  s('reportTitle',t.reportTitle);s('reportBtn',t.reportBtn);
+  s('redeemTitle',t.redeemTitle);sh('redeemHint',t.redeemHint);
+  s('downloadTitle',t.downloadTitle);s('downloadHint',t.downloadHint);
+  s('downloadPluginBtn',t.downloadPluginBtn);
+  s('logoutLabel',t.logoutLabel);s('settingsCloseBtn',t.close);
+  s('avatarCloseBtn',t.close);s('installTitle',t.installTitle);s('installCloseBtn',t.installClose);
   var steps=document.querySelectorAll('.install-txt');
   t.installSteps.forEach(function(txt,i){if(steps[i])steps[i].innerHTML=txt;});
-  s('guiAddLabel',t.guiAddLabel); s('guiEmptyText',t.guiEmptyText);
-  s('guiLoadingText',t.guiLoadingText); s('guiToPlaceText',t.guiToPlaceText);
-  s('guiCodeTitle',t.guiCodeTitle); s('guiCodeCopyBtn',t.copy); s('guiCodeDlBtn',t.download); s('guiCodeCloseBtn',t.close);
-  s('guiAiTitle',t.guiAiTitle); s('guiAiDesc',t.guiAiDesc); s('guiAiBuildBtn',t.guiAiBuild); s('guiAiCancelBtn',t.guiAiCancel);
-  s('guiPropsEmpty',t.guiPropsEmpty); s('thinkLabel','Think');
-  s('shareModalTitle',t.shareModalTitle); s('shareModalDesc',t.shareModalDesc);
-  s('shareModalCopyBtn',t.shareModalCopy); s('shareModalCloseBtn',t.shareClose);
-  setStudioStatus(studioConnected);
-  updateModelUI(); renderConvs();
+  s('guiAddLabel',t.guiAddLabel);s('guiEmptyText',t.guiEmptyText);
+  s('guiLoadingText',t.guiLoadingText);s('guiToPlaceText',t.guiToPlaceText);
+  s('guiCodeTitle',t.guiCodeTitle);s('guiCodeCopyBtn',t.copy);s('guiCodeDlBtn',t.download);s('guiCodeCloseBtn',t.close);
+  s('guiAiTitle',t.guiAiTitle);s('guiAiDesc',t.guiAiDesc);s('guiAiBuildBtn',t.guiAiBuild);s('guiAiCancelBtn',t.guiAiCancel);
+  s('guiPropsEmpty',t.guiPropsEmpty);s('thinkLabel','Think');
+  s('shareModalTitle',t.shareModalTitle);s('shareModalDesc',t.shareModalDesc);
+  s('shareModalCopyBtn',t.shareModalCopy);s('shareModalCloseBtn',t.shareClose);
+  setStudioStatus(studioConnected);updateModelUI();renderConvs();
 }
 function changeLang(l){curLang=l;localStorage.setItem('nexus_lang',l);applyLang();}
 
-// ═══════════════════════ STUDIO POLL ═══════════════════════
 function setStudioStatus(on){
-  studioConnected=on; var t=T();
-  var badge=document.getElementById('studioBadge');
-  var dot=document.getElementById('studioDot');
-  var txt=document.getElementById('studioTxt');
-  var banner=document.getElementById('plugBanner');
-  var bannerTxt=document.getElementById('plugBannerTxt');
+  studioConnected=on;var t=T();
+  var badge=document.getElementById('studioBadge'),dot=document.getElementById('studioDot'),
+    txt=document.getElementById('studioTxt'),banner=document.getElementById('plugBanner'),
+    bannerTxt=document.getElementById('plugBannerTxt');
   if(on){
     if(badge)badge.className='status-badge on';if(dot)dot.className='sdot pulse';
     if(txt)txt.textContent=t.son;if(banner)banner.className='plug-banner connected';
@@ -918,10 +874,9 @@ function setStudioStatus(on){
 }
 function startStudioPoll(){if(studioPollTimer)clearInterval(studioPollTimer);checkStudio();studioPollTimer=setInterval(checkStudio,5000);}
 async function checkStudio(){
-  if(!SESSION)return;
-  var user=(SESSION.user.username||'').toLowerCase();
+  if(!SESSION)return;var user=(SESSION.user.username||'').toLowerCase();
   try{
-    var ctrl=new AbortController(); var tid=setTimeout(function(){ctrl.abort();},6000);
+    var ctrl=new AbortController();var tid=setTimeout(function(){ctrl.abort();},6000);
     var r=await fetch(API_URL+'?check=1&user='+encodeURIComponent(user),{signal:ctrl.signal});
     clearTimeout(tid);
     if(r.ok){var d=await r.json();setStudioStatus(d._pluginConnected===true||d.connected===true||d.online===true);}
@@ -930,7 +885,6 @@ async function checkStudio(){
 }
 async function retryStudio(){toast(T().reconnectToast);await checkStudio();}
 
-// ═══════════════════════ CREDITS ═══════════════════════
 function updateCreds(){
   var v=(isOwner()||isAdmin())?'∞':parseFloat(S.credits||0).toFixed(0);
   var el=document.getElementById('credDisp');if(el)el.textContent=v;
@@ -948,7 +902,7 @@ function checkDailyCredits(){
 }
 function claimDaily(){
   if(isOwner()||isAdmin())return;
-  var n=S.plan==='pro'?25:2; S.credits+=n; S.lastClaim=new Date().toISOString();
+  var n=S.plan==='pro'?25:2;S.credits+=n;S.lastClaim=new Date().toISOString();
   updateCreds();saveS();
   var b=document.getElementById('claimDailyBtn');if(b)b.disabled=true;
   var e=document.getElementById('lastClaimInfo');if(e)e.textContent='+'+n+' CR!';
@@ -957,26 +911,24 @@ function claimDaily(){
 function updateRoleDisplay(){
   if(!SESSION)return;
   var plan=S.plan||'free';var isO=isOwner(),isA=isAdmin();
-  var roleEl=document.getElementById('sbRole');var planEl=document.getElementById('settingsPlan');
-  var badgeEl=document.getElementById('settingsBadge');var adminSec=document.getElementById('adminSection');
+  var roleEl=document.getElementById('sbRole'),planEl=document.getElementById('settingsPlan'),
+    badgeEl=document.getElementById('settingsBadge'),adminSec=document.getElementById('adminSection');
   if(roleEl){if(isO)roleEl.textContent='Owner · Unlimited';else if(isA)roleEl.textContent='Admin';else if(plan==='pro')roleEl.textContent='Pro Member';else roleEl.textContent='Roblox Developer';}
   if(planEl)planEl.textContent=isO?'OWNER':isA?'Admin':plan.charAt(0).toUpperCase()+plan.slice(1);
   if(badgeEl){if(isO)badgeEl.innerHTML='<span class="badge-owner">OWNER</span>';else if(isA)badgeEl.innerHTML='<span class="badge-admin">ADMIN</span>';else if(plan==='pro')badgeEl.innerHTML='<span class="badge-pro">PRO</span>';else badgeEl.innerHTML='<span style="font-size:9px;color:var(--dim);">FREE</span>';}
   if(adminSec)adminSec.style.display=(isO||isA)?'block':'none';
 }
 
-// ═══════════════════════ CONVS ═══════════════════════
 function renderConvs(){
   var t=T();var list=document.getElementById('convList');if(!list)return;
   if(!S.convs||!S.convs.length){list.innerHTML='<div class="conv-empty">'+t.noConv+'</div>';return;}
   list.innerHTML=S.convs.slice().reverse().map(function(cv){
     var act=cv.id===S.curConv?'act':'';
     var time=cv.time?new Date(cv.time).toLocaleDateString('id-ID',{day:'2-digit',month:'2-digit'}):'';
-    return '<div class="ci '+act+'" onclick="loadConv(\''+cv.id+'\')">'+
+    return'<div class="ci '+act+'" onclick="loadConv(\''+cv.id+'\')">'+
       '<div class="ci-title">'+esc(cv.title||(curLang==='id'?'Percakapan':'Chat'))+'</div>'+
       '<div class="ci-time">'+time+'</div>'+
-      '<button class="ci-del" onclick="delConv(event,\''+cv.id+'\')" title="Hapus">x</button>'+
-      '</div>';
+      '<button class="ci-del" onclick="delConv(event,\''+cv.id+'\')" title="Hapus">x</button></div>';
   }).join('');
 }
 function newChat(){
@@ -994,8 +946,7 @@ function loadConv(id){
   S.curConv=id;renderConvs();
   var ti=document.getElementById('chatTitle');if(ti)ti.textContent=cv.title||(curLang==='id'?'Percakapan':'Chat');
   var w=document.getElementById('welcome');if(w)w.style.display=(cv.msgs&&cv.msgs.length)?'none':'flex';
-  renderMsgs(cv.msgs||[]);
-  S.attachments=[];renderAttachRow();
+  renderMsgs(cv.msgs||[]);S.attachments=[];renderAttachRow();
   var inp=document.getElementById('inp');
   if(inp){inp.value=S.draftText[id]||'';inp.style.height='auto';if(inp.value)inp.style.height=Math.min(inp.scrollHeight,130)+'px';}
   saveS();
@@ -1016,7 +967,6 @@ function setConvTitle(convId,firstMsg){
   renderConvs();saveS();
 }
 
-// ═══════════════════════ PROJECT ═══════════════════════
 function getProjectIdFromUrl(){
   var p=new URLSearchParams(window.location.search);var id=p.get('id');
   if(id)return id;
@@ -1026,22 +976,15 @@ function getProjectIdFromUrl(){
 function getProjectName(pid){
   if(!pid)return null;
   var projs=S.projects||SESSION&&SESSION.data&&SESSION.data.projects||[];
-  var p=projs.find(function(x){return x.id===pid;});
-  return p?p.name:null;
+  var p=projs.find(function(x){return x.id===pid;});return p?p.name:null;
 }
 function updateProjectUI(){
   var n=S.currentProjectName;
-  var chip=document.getElementById('sbProjChip');var cn=document.getElementById('sbProjName');
-  var badge=document.getElementById('hdrProjBadge');
-  if(n){
-    if(chip){chip.style.display='';if(cn)cn.textContent=n;}
-    if(badge){badge.style.display='';badge.textContent=n;}
-  }else{
-    if(chip)chip.style.display='none';if(badge)badge.style.display='none';
-  }
+  var chip=document.getElementById('sbProjChip'),cn=document.getElementById('sbProjName'),badge=document.getElementById('hdrProjBadge');
+  if(n){if(chip){chip.style.display='';if(cn)cn.textContent=n;}if(badge){badge.style.display='';badge.textContent=n;}}
+  else{if(chip)chip.style.display='none';if(badge)badge.style.display='none';}
 }
 
-// ═══════════════════════ MODEL UI ═══════════════════════
 function getFreeModel(){for(var i=0;i<MODEL_LIST.length;i++){if(MODEL_LIST[i].id&&!MODEL_LIST[i].grp)return MODEL_LIST[i];}return{id:'gemini-2.5-flash-lite',prov:'gemini',cost:0,label:'Gemini 2.5 Flash Lite'};}
 function updateModelUI(){
   var m=S.model||getFreeModel();
@@ -1064,8 +1007,7 @@ function buildMDDHtml(forGui){
     var iconHtml=m.icon?'<img src="'+m.icon+'" onerror="this.style.display=\'none\'" style="width:18px;height:18px;object-fit:contain;border-radius:3px;">':'<div style="width:18px;height:18px;border-radius:3px;background:rgba(0,229,255,.1);font-size:9px;display:flex;align-items:center;justify-content:center;color:var(--cyan);">AI</div>';
     html+='<div class="mo'+(act?' act':'')+'" onclick="selModel(\''+m.id+'\','+(forGui?'true':'false')+')">'+
       '<div class="mo-icon">'+iconHtml+'</div>'+
-      '<div><div class="mo-n">'+esc(m.label||m.id)+'</div><div class="mo-s">'+esc(m.prov||'')+'</div></div>'+
-      badgeHtml+'</div>';
+      '<div><div class="mo-n">'+esc(m.label||m.id)+'</div><div class="mo-s">'+esc(m.prov||'')+'</div></div>'+badgeHtml+'</div>';
   });
   html+='<div class="mg" style="color:rgba(255,45,107,.6);border-top:1px solid rgba(255,45,107,.15);">COMING SOON</div>';
   MODEL_LIST_SOON.forEach(function(m){
@@ -1096,7 +1038,6 @@ function selModel(id,forGui){
   saveS();
 }
 
-// ═══════════════════════ RENDER MESSAGES ═══════════════════════
 function safeMarked(md){try{if(typeof marked==='undefined')return esc(md);return marked.parse(String(md||''));}catch(e){return esc(md);}}
 function renderMsgs(msgs){
   var c=document.getElementById('msgs');if(!c)return;
@@ -1110,18 +1051,11 @@ function mkAv(role){
   var av=document.createElement('div');av.className='av';
   if(role==='ai'){
     var img=document.createElement('img');img.src='nexusai.png';img.alt='N';
-    img.onerror=function(){
-      this.parentElement.style.cssText='display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cyan);background:linear-gradient(135deg,rgba(0,229,255,.2),rgba(136,0,255,.2));border-radius:50%;';
-      this.remove();this.parentElement.textContent='N';
-    };
+    img.onerror=function(){this.parentElement.style.cssText='display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cyan);background:linear-gradient(135deg,rgba(0,229,255,.2),rgba(136,0,255,.2));border-radius:50%;';this.remove();this.parentElement.textContent='N';};
     av.appendChild(img);
   }else if(SESSION&&SESSION.user.avatar){
     var img2=document.createElement('img');img2.src=SESSION.user.avatar;img2.alt='U';
-    img2.onerror=function(){
-      this.parentElement.style.cssText='display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cyan);background:rgba(0,229,255,.1);border-radius:50%;';
-      var initials=SESSION&&SESSION.user.username?SESSION.user.username.charAt(0).toUpperCase():'U';
-      this.remove();this.parentElement.textContent=initials;
-    };
+    img2.onerror=function(){this.parentElement.style.cssText='display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cyan);background:rgba(0,229,255,.1);border-radius:50%;';this.remove();this.parentElement.textContent=SESSION&&SESSION.user.username?SESSION.user.username.charAt(0).toUpperCase():'U';};
     av.appendChild(img2);
   }else{
     av.style.cssText='display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cyan);background:rgba(0,229,255,.1);border-radius:50%;';
@@ -1143,28 +1077,23 @@ function appendMsg(m,skipScroll){
   mbWrap.appendChild(sender);
   var bubble=document.createElement('div');bubble.className='bubble';
   if(m.attachments&&m.attachments.length){
-    var imgRow=document.createElement('div');imgRow.className='msg-imgs';
-    var hasImg=false;
+    var imgRow=document.createElement('div');imgRow.className='msg-imgs';var hasImg=false;
     m.attachments.forEach(function(a){
-      if(a.type==='image'){
-        hasImg=true;
-        var img=document.createElement('img');img.className='msg-img';
-        if(a.preview){img.src=a.preview;}
-        else if(a.data){img.src='data:'+(a.mime||'image/png')+';base64,'+a.data;}
-        img.alt=a.name||'image';img.title=a.name||'image';
-        img.onclick=function(){window.open(img.src,'_blank');};
-        imgRow.appendChild(img);
-      }else if(a.type==='file'){
-        var fDiv=document.createElement('div');fDiv.className='msg-file';
+      if(a.type==='image'){hasImg=true;var img=document.createElement('img');img.className='msg-img';
+        if(a.preview)img.src=a.preview;else if(a.data)img.src='data:'+(a.mime||'image/png')+';base64,'+a.data;
+        img.alt=a.name||'image';img.onclick=function(){window.open(img.src,'_blank');};imgRow.appendChild(img);
+      }else if(a.type==='file'){var fDiv=document.createElement('div');fDiv.className='msg-file';
         fDiv.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>'+esc(a.name||'file');
-        bubble.insertBefore(fDiv,bubble.firstChild);
-      }
+        bubble.insertBefore(fDiv,bubble.firstChild);}
     });
     if(hasImg)bubble.appendChild(imgRow);
   }
   var content=String(m.content||'');
   var codeRe=/```(\w*)\n?([\s\S]*?)```/g;var codeBlocks=[];
-  var processed=content.replace(codeRe,function(match,lang,code){var i=codeBlocks.length;codeBlocks.push({lang:lang||'',code:code.trim()});return'%%CB_'+i+'%%';});
+  var processed=content.replace(codeRe,function(match,lang,code){
+    if(lang==='json')return''; // Never show JSON blocks
+    var i=codeBlocks.length;codeBlocks.push({lang:lang||'',code:code.trim()});return'%%CB_'+i+'%%';
+  });
   var parts=processed.split(/(%%CB_\d+%%)/);
   parts.forEach(function(part){
     var cm=part.match(/%%CB_(\d+)%%/);
@@ -1177,12 +1106,9 @@ function appendMsg(m,skipScroll){
       var btns=document.createElement('div');btns.className='code-btns';
       btns.innerHTML='<button class="cbtn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" fill="none" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>'+
         '<button class="cbtn dl" onclick="downloadCode(this,\''+cb.lang+'\')"><svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>DL</button>';
-      w2.appendChild(btns);
-      try{hljs.highlightElement(codeEl);}catch(err){}
+      w2.appendChild(btns);try{hljs.highlightElement(codeEl);}catch(err){}
       bubble.appendChild(w2);
-    }else if(part.trim()){
-      var d=document.createElement('div');d.innerHTML=safeMarked(part);bubble.appendChild(d);
-    }
+    }else if(part.trim()){var d=document.createElement('div');d.innerHTML=safeMarked(part);bubble.appendChild(d);}
   });
   if(m.injected&&m.injected.length){
     var card=document.createElement('div');card.className='inject-card';
@@ -1193,20 +1119,18 @@ function appendMsg(m,skipScroll){
   mbWrap.appendChild(bubble);
   if(!isUser){
     var acts=document.createElement('div');acts.className='msg-acts';
-    acts.innerHTML=
-      '<button class="mab" onclick="copyMsgText(this)" title="Copy"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>'+
-      '<button class="mab" onclick="retryMsg(this)" title="Retry"><svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></button>'+
+    acts.innerHTML='<button class="mab" onclick="copyMsgText(this)"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>'+
+      '<button class="mab" onclick="retryMsg(this)"><svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></button>'+
       '<button class="mab '+(m._liked?'liked':'')+'" onclick="likeMsg(this,true)"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg></button>'+
       '<button class="mab '+(m._disliked?'disliked':'')+'" onclick="likeMsg(this,false)"><svg viewBox="0 0 24 24"><path d="M10 15v4a3 3 0 003 3l4-9V2H5.72a2 2 0 00-2 1.7l-1.38 9a2 2 0 002 2.3zm7-13h2.67A2.31 2.31 0 0122 4v7a2.31 2.31 0 01-2.33 2H17"/></svg></button>'+
-      '<button class="mab" onclick="openShareModal()" title="Share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>';
+      '<button class="mab" onclick="openShareModal()"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>';
     mbWrap.appendChild(acts);
   }else{
     var uActs=document.createElement('div');uActs.style.cssText='display:flex;gap:2px;padding:2px;justify-content:flex-end;';
     uActs.innerHTML='<button class="mab" onclick="copyMsgText(this)"><svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" fill="none" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>';
     mbWrap.appendChild(uActs);
   }
-  wrap.appendChild(mbWrap);
-  c.appendChild(wrap);
+  wrap.appendChild(mbWrap);c.appendChild(wrap);
   if(!skipScroll)c.scrollTop=c.scrollHeight;
 }
 function copyCode(btn){var pre=btn.closest('.code-block-wrap').querySelector('pre code');if(pre)navigator.clipboard.writeText(pre.textContent).then(function(){toast(T().copiedToast);});}
@@ -1217,10 +1141,9 @@ function downloadCode(btn,lang){
 }
 function copyMsgText(btn){var b=btn.closest('.mb-wrap').querySelector('.bubble');if(b)navigator.clipboard.writeText(b.innerText||b.textContent).then(function(){toast(T().copiedToast);});}
 
-// ═══════════════════════ LEMONADE STEPS ═══════════════════════
+// ── STEPS ──
 function createStepsCard(){
-  removeStepsCard();
-  var c=document.getElementById('msgs');if(!c)return;
+  removeStepsCard();var c=document.getElementById('msgs');if(!c)return;
   var w=document.getElementById('welcome');if(w)w.style.display='none';
   var wrap=document.createElement('div');wrap.className='steps-wrap';wrap.id='stepsWrap';
   wrap.appendChild(mkAv('ai'));
@@ -1241,24 +1164,20 @@ function createStepsCard(){
   var cb=document.createElement('button');cb.className='steps-cancel-btn';cb.textContent=T().cancel;cb.onclick=cancelGen;
   cancelDiv.appendChild(cb);box.appendChild(cancelDiv);
   mbW.appendChild(box);wrap.appendChild(mbW);
-  c.appendChild(wrap);
-  _stepsEl=wrap;_stepsList=list;_stepsMap.clear();_stepsId=0;
+  c.appendChild(wrap);_stepsEl=wrap;_stepsList=list;_stepsMap.clear();_stepsId=0;
   c.scrollTop=c.scrollHeight;
 }
-function removeStepsCard(){
-  var el=document.getElementById('stepsWrap');if(el)el.remove();
-  _stepsEl=null;_stepsList=null;_stepsMap.clear();
-}
+function removeStepsCard(){var el=document.getElementById('stepsWrap');if(el)el.remove();_stepsEl=null;_stepsList=null;_stepsMap.clear();}
+function clearSteps(){if(!_stepsList)return;_stepsList.innerHTML='';_stepsMap.clear();_stepsId=0;var cnt=document.getElementById('stepsCount');if(cnt)cnt.textContent='';}
 function addStep(text,state,sub){
-  if(!_stepsList)return null;
-  var id=++_stepsId;
+  if(!_stepsList)return null;var id=++_stepsId;
   var row=document.createElement('div');row.className='step-row';row.setAttribute('data-st',state||'running');row.setAttribute('data-sid',id);
   var ic=document.createElement('div');ic.className='step-ic';
   if(state==='running'){var sp=document.createElement('div');sp.className='step-spin';ic.appendChild(sp);}
-  else if(state==='done'){ic.innerHTML=svgCheck();}
-  else if(state==='error'){ic.innerHTML=svgX();}
-  else if(state==='info'){ic.innerHTML=svgInfo();}
-  else{ic.innerHTML=svgPend();}
+  else if(state==='done')ic.innerHTML=svgCheck();
+  else if(state==='error')ic.innerHTML=svgX();
+  else if(state==='info')ic.innerHTML=svgInfo();
+  else ic.innerHTML=svgPend();
   row.appendChild(ic);
   var cont=document.createElement('div');cont.className='step-content';
   var txt=document.createElement('div');txt.className='step-txt';txt.textContent=text;cont.appendChild(txt);
@@ -1272,36 +1191,25 @@ function updateStep(id,state,text,sub){
   var row=_stepsMap.get(id);if(!row)return;
   row.setAttribute('data-st',state);
   var ic=row.querySelector('.step-ic');
-  if(ic){
-    if(state==='running'){ic.innerHTML='<div class="step-spin"></div>';}
-    else if(state==='done'){ic.innerHTML=svgCheck();}
-    else if(state==='error'){ic.innerHTML=svgX();}
-    else if(state==='info'){ic.innerHTML=svgInfo();}
-  }
+  if(ic){if(state==='running')ic.innerHTML='<div class="step-spin"></div>';else if(state==='done')ic.innerHTML=svgCheck();else if(state==='error')ic.innerHTML=svgX();else if(state==='info')ic.innerHTML=svgInfo();}
   if(text){var t=row.querySelector('.step-txt');if(t)t.textContent=text;}
-  if(sub!==undefined){
-    var s=row.querySelector('.step-sub');
-    if(!s&&sub){s=document.createElement('div');s.className='step-sub';row.querySelector('.step-content').appendChild(s);}
-    if(s)s.textContent=sub||'';
-  }
+  if(sub!==undefined){var s=row.querySelector('.step-sub');if(!s&&sub){s=document.createElement('div');s.className='step-sub';row.querySelector('.step-content').appendChild(s);}if(s)s.textContent=sub||'';}
 }
 function finalizeSteps(){
-  var spinner=document.getElementById('stepsSpinner');if(spinner){spinner.style.display='none';}
-  var hdrTxt=document.getElementById('stepsTxt');if(hdrTxt){hdrTxt.style.color='var(--green)';}
+  var spinner=document.getElementById('stepsSpinner');if(spinner)spinner.style.display='none';
+  var hdrTxt=document.getElementById('stepsTxt');if(hdrTxt)hdrTxt.style.color='var(--green)';
   var cancelDiv=document.getElementById('stepsCancel');if(cancelDiv)cancelDiv.remove();
+  _stepsMap.forEach(function(row,id){if(row.getAttribute('data-st')==='running')updateStep(id,'done');});
 }
 function setStepTitle(txt){var el=document.getElementById('stepsTxt');if(el)el.textContent=txt;}
-
 function toggleThinking(){thinkingEnabled=!thinkingEnabled;var b=document.getElementById('thinkToggle');if(b)b.className='think-toggle'+(thinkingEnabled?' active':'');}
 function cancelGen(){
-  if(S.cancelCtrl)S.cancelCtrl.abort();S.gen=false;S.cancelCtrl=null;
-  removeStepsCard();
-  var sb=document.getElementById('sendBtn');var cb=document.getElementById('cancelBtn');
+  if(S.cancelCtrl)S.cancelCtrl.abort();S.gen=false;S.cancelCtrl=null;removeStepsCard();
+  var sb=document.getElementById('sendBtn'),cb=document.getElementById('cancelBtn');
   if(sb)sb.classList.remove('hidden');if(cb)cb.classList.add('hidden');
   toast(T().cancelToast,'var(--yellow)');
 }
 
-// ═══════════════════════ LUA/JSON PARSING ═══════════════════════
 function parseLuaBlocks(text){
   var blocks=[];var re=/```(?:lua|luau)\s*([\s\S]*?)```/g,m;
   while((m=re.exec(text))!==null){var c=m[1].trim();if(c.length<10)continue;if(/^\s*[\[{]/.test(c)&&/"action"\s*:/.test(c))continue;blocks.push(c);}
@@ -1326,17 +1234,15 @@ function makeScriptName(prompt,i,code){
     ['leaderboard','Leaderboard_Server'],['admin','AdminSystem_Server'],['coin','CoinSystem_Server'],
     ['inventory','InventorySystem'],['npc','NPCBehavior_Server'],['datastore','DataStore_Module'],
     ['kill brick','KillBrick_Script'],['music','MusicPlayer_Client'],['weapon','WeaponSystem'],
-    ['round','RoundSystem_Server'],['hud','HUD_Client'],['timer','TimerSystem'],
-    ['gui','GUIScript_Client'],['pet','PetSystem_Server']];
+    ['round','RoundSystem_Server'],['hud','HUD_Client'],['stamina','StaminaSystem'],
+    ['quest','QuestSystem'],['pet','PetSystem_Server'],['gui','GUIScript_Client']];
   for(var k=0;k<kw.length;k++){if(l.includes(kw[k][0]))return kw[k][1]+(i>0?'_'+(i+1):'');}
   return'GameScript'+(i>0?'_'+(i+1):'');
 }
 
-// ═══════════════════════ INJECT TO STUDIO ═══════════════════════
 async function autoInjectToStudio(aiResponse,userPrompt){
   if(!studioConnected)return null;
-  var summary=[];var user=(SESSION?SESSION.user.username:'').toLowerCase();
-  setStepTitle(curLang==='id'?'Membangun di Studio...':'Building in Studio...');
+  var t=T();var summary=[];var user=(SESSION?SESSION.user.username:'').toLowerCase();
   var jsonCmds=parseJsonBlocks(aiResponse);
   if(jsonCmds.length>0){
     var jsid=addStep(curLang==='id'?'Menjalankan perintah workspace...':'Running workspace commands...','running');
@@ -1346,26 +1252,23 @@ async function autoInjectToStudio(aiResponse,userPrompt){
       if(r.ok){
         updateStep(jsid,'done');
         jsonCmds.forEach(function(cmd){
-          var nm=cmd.name||'',a=cmd.action||'';
-          var label='';
-          if(a==='create_remote'){label=(cmd.remote_type||'RemoteEvent')+': '+nm;summary.push('+'+label);}
-          else if(a==='create_part'){label='Part: '+(nm||'Part');summary.push('+'+label);}
-          else if(a==='create_gui'){label='ScreenGui: '+nm;summary.push('+'+label);}
-          else if(a==='inject_script'||a==='batch_inject'){label='Script inject';summary.push(label);}
-          else if(a==='read_script'){label='Read: '+nm;addStep(label,'info');}
-          else if(a==='edit_script'){label='Edit: '+nm;addStep(label,'done');summary.push('Edit: '+nm);}
-          else if(a==='play_test'||a==='run_test'){var dur=cmd.duration||cmd.params&&cmd.params.duration||0;label='play_test'+(dur?' '+dur+'s':'');addStep(label,'running');summary.push(label);}
-          else if(a==='stop_test'){label='stop_test';addStep(label,'done');summary.push(label);}
-          else if(a==='get_output'||a==='print_output'){label='get console output';addStep(label,'info');}
-          else if(a==='scan_workspace'||a==='read_workspace'){label='scan workspace';addStep(label,'info');}
-          else if(a==='rename_object'||a==='rename_script'){label='rename: '+nm+' > '+(cmd.new_name||'?');addStep(label,'done');summary.push(label);}
-          else if(a==='delete_object'){label='delete: '+nm;addStep(label,'done');summary.push(label);}
-          else if(a==='create_npc'){label='NPC: '+nm;addStep(label,'done');summary.push('+'+label);}
-          else if(a==='create_spawn'){label='SpawnLocation: '+nm;addStep(label,'done');summary.push('+'+label);}
-          else if(a==='set_lighting'){label='set_lighting';addStep(label,'done');summary.push(label);}
-          else if(a!=='none'&&a!==''){label=a+(nm?' '+nm:'');addStep(label,'done');summary.push('+'+label);}
+          var nm=cmd.name||'',a=cmd.action||'',label='';
+          if(a==='create_remote'){label=(cmd.remote_type||'RemoteEvent')+': '+nm;addStep(t.creatingRemote+' '+label,'done');summary.push('+'+label);}
+          else if(a==='create_part'){label='Part: '+(nm||'Part');addStep('+'+label,'done');summary.push('+'+label);}
+          else if(a==='create_gui'){label='ScreenGui: '+nm;addStep(t.creatingGUI+' '+nm,'done');summary.push('+'+label);}
+          else if(a==='inject_script'||a==='batch_inject'){addStep(t.injectingScript+' '+nm,'done');summary.push('inject: '+nm);}
+          else if(a==='read_script')addStep((curLang==='id'?'Membaca':'Reading')+': '+nm,'info');
+          else if(a==='edit_script'){label='Edit: '+nm;addStep(label,'done');summary.push(label);}
+          else if(a==='play_test'||a==='run_test'){var dur=cmd.duration||0;label='play_test'+(dur?' '+dur+'s':'');addStep(label,'running');summary.push(label);}
+          else if(a==='stop_test'){addStep('stop_test','done');summary.push('stop_test');}
+          else if(a==='get_output'||a==='print_output')addStep((curLang==='id'?'Baca console':'Get console'),'info');
+          else if(a==='rename_object'||a==='rename_script'){label='Rename: '+nm+' → '+(cmd.new_name||'?');addStep(label,'done');summary.push(label);}
+          else if(a==='delete_object'){label='Delete: '+nm;addStep(label,'done');summary.push(label);}
+          else if(a==='create_npc'){addStep('+NPC: '+nm,'done');summary.push('+NPC: '+nm);}
+          else if(a==='set_lighting'){addStep('Set Lighting','done');summary.push('set_lighting');}
+          else if(a!=='none'&&a!==''){label=a+(nm?' '+nm:'');addStep('+'+label,'done');summary.push('+'+label);}
         });
-      }else{updateStep(jsid,'error','HTTP '+r.status);}
+      }else updateStep(jsid,'error','HTTP '+r.status);
     }catch(e){updateStep(jsid,'error',(curLang==='id'?'Gagal: ':'Failed: ')+e.message.slice(0,40));}
   }
   var luaBlocks=parseLuaBlocks(aiResponse);
@@ -1375,1002 +1278,156 @@ async function autoInjectToStudio(aiResponse,userPrompt){
     var sName=makeScriptName(userPrompt,i,code);
     var tm=code.match(/--\s*script_type:\s*(\w+)/i);if(tm)info.type=tm[1];
     var pm=code.match(/--\s*parent:\s*([\w.]+)/i);if(pm)info.parent=pm[1];
-    var lsid=addStep(info.type+': '+sName,'running',info.parent);
+    var lsid=addStep(t.creatingScript+' '+info.type+': '+sName,'running',info.parent);
     try{
       var r2=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({type:'inject_command',command:{action:'inject_script',name:sName,parent:info.parent,script_type:info.type,code:code},
           _user:SESSION?SESSION.user.username:'web',_target_user:user,target:user})});
       if(r2.ok){
         var rd2=await r2.json();
-        if(rd2.status==='ok'||rd2.pushed>0){updateStep(lsid,'done',info.type+': '+sName+' > '+info.parent);summary.push(info.type+': '+sName+' > '+info.parent);}
-        else{updateStep(lsid,'error');}
-      }else{updateStep(lsid,'error','HTTP '+r2.status);}
+        if(rd2.status==='ok'||rd2.pushed>0){updateStep(lsid,'done',info.type+': '+sName,info.parent+' ✓');summary.push(info.type+': '+sName+' → '+info.parent);}
+        else updateStep(lsid,'error');
+      }else updateStep(lsid,'error','HTTP '+r2.status);
     }catch(e){updateStep(lsid,'error');}
     if(luaBlocks.length>1)await new Promise(function(res){setTimeout(res,200);});
   }
   return summary.length>0?summary:null;
 }
 
-// ═══════════════════════ NEXUS AI SYSTEM PROMPT V2 ═══════════════════════
-// Perbaikan: greeting logic, JSON invisible, Roblox knowledge base lengkap,
-//            action list diperluas, anti-error reinforcement
+// ── SYSTEM PROMPT (with fixed greeting rule) ──
+function buildSysPrompt(){
+  var u=SESSION?SESSION.user:{username:'Unknown'};
+  var dn=u.displayName||u.username||'Developer';
+  var un=u.username||'Unknown';
+  var cr=isOwner()||isAdmin()?'Unlimited':parseFloat(S.credits||0).toFixed(0);
+  var now=new Date();var connected=studioConnected;var projName=S.currentProjectName;var isID=curLang==='id';
 
-function buildSysPrompt() {
-  var u = SESSION ? SESSION.user : { username: 'Unknown' };
-  var dn = u.displayName || u.username || 'Developer';
-  var un = u.username || 'Unknown';
-  var cr = isOwner() || isAdmin() ? 'Unlimited' : parseFloat(S.credits || 0).toFixed(0);
-  var now = new Date();
-  var connected = studioConnected;
-  var projName = S.currentProjectName;
-  var isID = curLang === 'id';
+  var allActions='[SCRIPTS] inject_script,batch_inject,edit_script,read_script,list_scripts\n'+
+    '[RENAME] rename_object,rename_script,batch_rename,set_property\n'+
+    '[REMOTES] create_remote,batch_remote,create_folder,create_instance,create_value\n'+
+    '[PARTS] create_part,create_wedge,create_sphere,create_cylinder,batch_create,modify_part,move_object,rotate_object,resize_object,delete_object,delete_multiple,group_parts,ungroup_model,clone_object,anchor_all,unanchor_all\n'+
+    '[GUI] create_gui{action,name,parent:"StarterGui",elements:[{class,name,size,position,background_color,background_transparency,text,text_color,font,text_size,corner_radius,anchor_point,children:[...]}]},create_billboard,create_surface_gui,create_proximity_prompt,create_click_detector\n'+
+    '[LIGHTING] set_lighting,change_baseplate,create_sky,fill_terrain,clear_terrain,create_water,create_atmosphere,add_effect\n'+
+    '[EFFECTS] create_sound,create_fire,create_smoke,create_sparkles,create_particle,create_light,create_trail,create_beam\n'+
+    '[NPC] create_npc,create_humanoid,modify_humanoid,create_spawn,create_tool,create_seat,create_team,create_animation,create_door,create_stairs,create_tree,create_wall\n'+
+    '[TEST] play_test{action,duration:15},stop_test{action}\n'+
+    '[CONSOLE] get_output,print_output,run_lua{action,code},scan_workspace,search_instances\n'+
+    '[MISC] batch_commands,clear_workspace,insert_model,set_game_info,set_camera,ping,none';
 
-  // ─────────────────────────────────────────────
-  // ROBLOX KNOWLEDGE BASE (Bahasa Indonesia + EN)
-  // ─────────────────────────────────────────────
-  var robloxKnowledge = `
-════════════════════════════════════════════════════════
-ROBLOX STUDIO — DATABASE PENGETAHUAN LENGKAP
-════════════════════════════════════════════════════════
+  var baseInfo='NEXUS AI V10.6 | User: @'+un+(projName?' | Project: '+projName:'')+'\nPlan: '+(S.plan||'free').toUpperCase()+' | Credits: '+cr+' CR | Studio: '+(connected?'TERHUBUNG':'OFFLINE')+'\nTime: '+now.toLocaleString('id-ID')+'\n\n';
 
-━━━ SERVICES (game:GetService()) ━━━
-  Players              -> daftar & event pemain
-  Workspace            -> semua objek 3D dunia
-  ServerScriptService  -> Script server-only
-  ReplicatedStorage    -> shared client+server
-  StarterGui           -> GUI template pemain
-  StarterPack          -> Tool template pemain
-  StarterPlayer        -> PlayerScripts/CharacterScripts
-  ServerStorage        -> storage server-only
-  Lighting             -> efek cahaya & atmosfer
-  SoundService         -> audio global
-  TweenService         -> animasi properti
-  RunService           -> loop render/heartbeat
-  UserInputService     -> input keyboard/mouse/touch
-  ContextActionService -> binding aksi input
-  DataStoreService     -> simpan data persisten
-  HttpService          -> HTTP request eksternal
-  PathfindingService   -> navigasi NPC
-  PhysicsService       -> collision group
-  MarketplaceService   -> produk & gamepass
-  BadgeService         -> badge award
-  GroupService         -> info grup Roblox
-  TeleportService      -> teleport antar place
-  Teams                -> tim pemain
-  Chat                 -> sistem chat
-  TextService          -> filter teks
-  GuiService           -> info layar & safe area
-  VirtualInputManager  -> simulasi input
-  CollectionService    -> tag instance
-  MemoryStoreService   -> shared memory sementara
-  MessagingService     -> cross-server messaging
-  AnimationClipProvider-> load AnimationClip
-
-━━━ CLASS NAMES LENGKAP ━━━
-
-[PARTS & GEOMETRY]
-  Part                 -> kotak dasar (BasePart)
-  WedgePart            -> segitiga/ramp
-  CornerWedgePart      -> sudut lengkung
-  SpawnLocation        -> titik spawn pemain
-  MeshPart             -> mesh dari asset
-  SpecialMesh          -> mesh bawaan (Brick,Sphere,Cylinder,Wedge,Head,Torso,FileMesh)
-  UnionOperation       -> hasil union CSG
-  NegateOperation      -> hasil negate CSG
-  Truss                -> tangga panjat
-
-[MODELS & CONTAINERS]
-  Model                -> grup objek, bisa punya PrimaryPart
-  Folder               -> container tanpa properti fisik
-  Tool                 -> item yang bisa dipakai pemain
-  Backpack             -> inventory pemain (runtime)
-  StarterPack          -> template backpack
-  Configuration        -> container nilai konfigurasi
-  WorldModel           -> model dunia di ViewportFrame
-
-[HUMANOID & CHARACTER]
-  Humanoid             -> controller karakter (Health, WalkSpeed, JumpPower)
-  HumanoidDescription  -> tampilan karakter (asset ID)
-  HumanoidRootPart     -> root fisik karakter
-  Animator             -> mengelola animasi pada Humanoid
-  AnimationTrack       -> track animasi aktif (dari :LoadAnimation())
-  Animation            -> asset animasi (AnimationId)
-  Motor6D              -> joint karakter bawaan Roblox
-  Accessory            -> aksesori karakter
-
-[SCRIPTS]
-  Script               -> server-side Lua (Parent: SSS, Workspace)
-  LocalScript          -> client-side Lua (Parent: StarterGui, StarterPack, StarterPlayer)
-  ModuleScript         -> library shared (require())
-  BindableEvent        -> event server<->server atau client<->client
-  BindableFunction     -> fungsi server<->server
-  RemoteEvent          -> komunikasi client<->server (Fire/On)
-  RemoteFunction       -> RPC client<->server (Invoke/OnInvoke)
-
-[GUI ELEMENTS]
-  ScreenGui            -> container GUI utama (Parent: StarterGui/PlayerGui)
-  Frame                -> kotak/panel dasar
-  TextLabel            -> teks statis
-  TextButton           -> tombol dengan teks
-  TextBox              -> input teks
-  ImageLabel           -> gambar statis
-  ImageButton          -> tombol gambar
-  ScrollingFrame       -> frame dengan scroll
-  ViewportFrame        -> render 3D dalam GUI
-  VideoFrame           -> putar video
-  BillboardGui         -> GUI yang menempel di Part dunia
-  SurfaceGui           -> GUI di permukaan Part
-  SelectionBox         -> highlight seleksi objek
-  SelectionSphere      -> highlight sphere
-  UIListLayout         -> layout list otomatis
-  UIGridLayout         -> layout grid otomatis
-  UIPageLayout         -> layout halaman/carousel
-  UITableLayout        -> layout tabel
-  UIAspectRatioConstraint -> jaga rasio aspek
-  UISizeConstraint     -> batasi ukuran min/max
-  UITextSizeConstraint -> batasi ukuran teks
-  UIPadding            -> padding dalam frame
-  UICorner             -> sudut membulat (CornerRadius)
-  UIStroke             -> garis tepi elemen
-  UIGradient           -> gradien warna
-  UIScale              -> skala elemen
-
-[EFFECTS & PARTICLES]
-  ParticleEmitter      -> emitter partikel
-  Fire                 -> efek api
-  Smoke                -> efek asap
-  Sparkles             -> efek percikan
-  Trail                -> jejak bergerak pada Part
-  Beam                 -> sinar antara 2 Attachment
-  SelectionBox         -> kotak seleksi visual
-  PointLight           -> cahaya titik (radius, brightness)
-  SpotLight            -> cahaya sorot (angle, range)
-  SurfaceLight         -> cahaya dari permukaan
-  ColorCorrectionEffect-> koreksi warna (Lighting child)
-  BloomEffect          -> efek bloom cahaya
-  BlurEffect           -> efek blur layar
-  SunRaysEffect        -> efek sinar matahari
-  DepthOfFieldEffect   -> efek depth of field
-  Sky                  -> tekstur langit
-
-[PHYSICS & CONSTRAINTS]
-  WeldConstraint       -> sambung 2 part tanpa offset
-  Motor6D              -> joint dengan rotasi (karakter)
-  HingeConstraint      -> engsel rotasi
-  BallSocketConstraint -> ball joint bebas
-  RodConstraint        -> batang kaku
-  RopeConstraint       -> tali fleksibel
-  SpringConstraint     -> pegas
-  PrismaticConstraint  -> luncur linear
-  CylindricalConstraint-> kombinasi slide+rotate
-  TorsionSpringConstraint -> pegas torsi
-  VectorForce          -> gaya vector konstan
-  LinearVelocity       -> kecepatan linear paksa
-  AngularVelocity      -> kecepatan angular paksa
-  Attachment           -> titik anchor constraint
-  AlignPosition        -> selaraskan posisi
-  AlignOrientation     -> selaraskan orientasi
-  BodyPosition         -> (legacy) posisi target
-  BodyVelocity         -> (legacy) kecepatan target
-  BodyGyro             -> (legacy) orientasi target
-  BodyForce            -> (legacy) gaya konstan
-
-[SOUNDS & AUDIO]
-  Sound                -> audio (SoundId, Volume, Looped, PlaybackSpeed)
-  SoundGroup           -> grup volume audio
-  EqualizerSoundEffect -> efek EQ pada Sound
-  ReverbSoundEffect    -> efek reverb
-  ChorusSoundEffect    -> efek chorus
-  DistortionSoundEffect-> efek distorsi
-  CompressorSoundEffect-> efek kompresor
-
-[DATA & VALUES]
-  IntValue             -> nilai integer
-  NumberValue          -> nilai desimal
-  StringValue          -> nilai string
-  BoolValue            -> nilai boolean
-  Vector3Value         -> nilai Vector3
-  Color3Value          -> nilai Color3
-  CFrameValue          -> nilai CFrame
-  ObjectValue          -> referensi ke Instance lain
-
-[TERRAIN & WORLD]
-  Terrain              -> terrain voxel Roblox
-  Atmosphere           -> efek atmosfer (Density, Haze, Glare)
-  Sky                  -> langit (SkyboxBk/Dn/Ft/Lf/Rt/Up)
-
-[MISC]
-  ProximityPrompt      -> prompt interaksi dekat Part
-  ClickDetector        -> deteksi klik pada Part
-  Seat                 -> kursi yang bisa diduduki
-  VehicleSeat          -> kursi kendaraan
-  Decal                -> gambar di permukaan Part
-  Texture              -> tekstur tiling di Part
-  SpecialMesh          -> mesh custom pada Part
-  SelectionBox         -> kotak seleksi
-  Camera               -> kamera (workspace.CurrentCamera)
-  LocalizationTable    -> tabel lokalisasi bahasa
-
-━━━ PROPERTI PENTING PER CLASS ━━━
-
-[Part / BasePart]
-  .Size (Vector3)          .Position (Vector3)
-  .CFrame (CFrame)         .Color (Color3)
-  .BrickColor (BrickColor) .Material (Enum.Material)
-  .Anchored (bool)         .CanCollide (bool)
-  .Transparency (0-1)      .Reflectance (0-1)
-  .Massless (bool)         .CastShadow (bool)
-  .AssemblyLinearVelocity  .AssemblyAngularVelocity
-
-[Humanoid]
-  .Health / .MaxHealth     .WalkSpeed (default 16)
-  .JumpPower (default 50)  .JumpHeight
-  .AutoRotate (bool)       .DisplayName
-  .HealthDisplayType       .NameDisplayDistance
-  :TakeDamage(amount)      :MoveTo(Vector3)
-  :LoadAnimation(anim)     .Died event
-  .HealthChanged event     .Running event
-
-[ScreenGui]
-  .DisplayOrder (int)      .IgnoreGuiInset (bool)
-  .ResetOnSpawn (bool)     .Enabled (bool)
-  .ScreenInsets            .ZIndexBehavior
-
-[Frame / GuiObject]
-  .Size (UDim2)            .Position (UDim2)
-  .AnchorPoint (Vector2)   .BackgroundColor3
-  .BackgroundTransparency  .BorderSizePixel
-  .Visible (bool)          .ZIndex (int)
-  .ClipsDescendants (bool) .AutomaticSize
-
-[TextLabel / TextButton / TextBox]
-  .Text (string)           .TextColor3
-  .TextSize (number)       .Font (Enum.Font)
-  .TextWrapped (bool)      .TextXAlignment
-  .TextYAlignment          .RichText (bool)
-  .PlaceholderText         .TextEditable (bool)
-
-[ImageLabel / ImageButton]
-  .Image ("rbxassetid://ID") .ImageColor3
-  .ImageTransparency        .ScaleType (Enum.ScaleType)
-  .SliceCenter (Rect)       .TileSize (UDim2)
-
-[TweenService]
-  :Create(instance, TweenInfo, {prop=val})
-  TweenInfo.new(time, style, direction, repeatCount, reverses, delay)
-  Enum.EasingStyle: Linear,Quad,Cubic,Quart,Quint,Sine,Back,Bounce,Elastic,Exponential,Circular
-  Enum.EasingDirection: In, Out, InOut
-
-[RunService]
-  .Heartbeat:Connect(dt)   -- setiap frame server & client
-  .Stepped:Connect(dt)     -- setiap step fisika
-  .RenderStepped:Connect(dt)-- setiap frame render (client only)
-  :IsServer() / :IsClient() / :IsStudio()
-
-[UserInputService]
-  .InputBegan:Connect(input, gameProcessed)
-  .InputEnded:Connect(input, gameProcessed)
-  .TouchTap:Connect(positions)
-  :GetMouseLocation() -> Vector2
-  :IsKeyDown(Enum.KeyCode.X)
-  :IsTouchEnabled() / :IsGamepadEnabled()
-
-[Players]
-  .PlayerAdded:Connect(player)
-  .PlayerRemoving:Connect(player)
-  :GetPlayers() -> table
-  .LocalPlayer (LocalScript only)
-  player.Character / player.CharacterAdded
-  player:WaitForChild("PlayerGui")
-  player.UserId / player.Name / player.DisplayName
-
-[DataStore]
-  local DS = DataStoreService:GetDataStore("Name")
-  DS:GetAsync(key)    -- baca data
-  DS:SetAsync(key, val) -- tulis data
-  DS:UpdateAsync(key, function(old) return new end)
-  DS:RemoveAsync(key) -- hapus data
-  -- WAJIB pcall() + retry 3x
-
-[PathfindingService]
-  local path = PathfindingService:CreatePath({AgentRadius=2,AgentHeight=5})
-  path:ComputeAsync(start, goal)
-  path:GetWaypoints() -> table of PathWaypoint
-  path.Blocked:Connect(idx)
-
-━━━ ENUM PENTING ━━━
-  Enum.Material:       Plastic,Wood,Grass,Metal,Neon,SmoothPlastic,Glass,
-                       Concrete,Marble,Granite,Sand,Fabric,Ice,Snow,Rock,
-                       DiamondPlate,Foil,ForceField,Cobblestone,Brick,Slate
-  Enum.KeyCode:        W,A,S,D,Space,E,Q,R,F,Tab,LeftShift,Return,...
-  Enum.Font:           GothamBold,Gotham,GothamMedium,GothamSemibold,
-                       SourceSans,SourceSansBold,SourceSansLight,
-                       Roboto,RobotoMono,Ubuntu,FredokaOne,Bangers,
-                       Code,Cartoon,Fantasy,Antique
-  Enum.NormalId:       Front,Back,Left,Right,Top,Bottom
-  Enum.UserInputType:  MouseButton1,MouseButton2,Touch,Gamepad1
-  Enum.CoreGuiType:    All,Backpack,Chat,Health,PlayerList,EmotesMenu
-  Enum.ScaleType:      Stretch,Slice,Tile,Fit,Crop
-  Enum.AutomaticSize:  None,X,Y,XY
-  Enum.ZIndexBehavior: Global,Sibling
-  Enum.HorizontalAlignment: Left,Center,Right
-  Enum.VerticalAlignment:   Top,Center,Bottom
-  Enum.FillDirection:  Horizontal,Vertical
-  Enum.SortOrder:      LayoutOrder,Name,Custom
-  Enum.AnimationPriority: Core,Idle,Movement,Action,Action2,Action3,Action4
-
-━━━ CFRAME & VECTOR3 CHEATSHEET ━━━
-  CFrame.new(x,y,z)           -- posisi saja
-  CFrame.new(pos, lookAt)     -- posisi + arah pandang
-  CFrame.Angles(rx,ry,rz)     -- rotasi radian
-  CFrame.fromEulerAnglesXYZ(rx,ry,rz)
-  cf * CFrame.Angles(...)     -- rotasi relatif
-  cf + Vector3.new(...)       -- geser posisi
-  cf.Position / cf.LookVector / cf.RightVector / cf.UpVector
-  Vector3.new(x,y,z)
-  v3:Dot(other) / v3:Cross(other)
-  (v3b - v3a).Magnitude       -- jarak
-  v3:Lerp(other, alpha)       -- interpolasi
-
-━━━ UDim2 CHEATSHEET ━━━
-  UDim2.new(scaleX, offsetX, scaleY, offsetY)
-  UDim2.fromScale(x, y)       -- hanya scale
-  UDim2.fromOffset(x, y)      -- hanya offset pixel
-  -- Size penuh: UDim2.new(1,0,1,0)
-  -- Tengah layar: Position UDim2.new(0.5,0,0.5,0) + AnchorPoint Vector2.new(0.5,0.5)
-
-━━━ COLOR3 CHEATSHEET ━━━
-  Color3.new(r,g,b)           -- 0-1 range
-  Color3.fromRGB(r,g,b)       -- 0-255 range
-  Color3.fromHSV(h,s,v)
-  -- Warna umum: merah=fromRGB(255,0,0), putih=new(1,1,1), hitam=new(0,0,0)
-
-━━━ PATTERN UMUM YANG BENAR ━━━
-
-[DataStore dengan retry]
-local function safeGet(store, key)
-  local success, result
-  for i = 1, 3 do
-    success, result = pcall(function()
-      return store:GetAsync(key)
-    end)
-    if success then return result end
-    task.wait(2^i) -- exponential backoff
-  end
-  warn("[DataStore] Gagal setelah 3x: " .. tostring(result))
-  return nil
-end
-
-[TweenService animasi panel]
-local ts = game:GetService("TweenService")
-local ti = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-local function openPanel(frame)
-  frame.Visible = true
-  frame.Size = UDim2.fromScale(0, 0)
-  ts:Create(frame, ti, {Size = UDim2.fromScale(0.5, 0.6)}):Play()
-end
-local function closePanel(frame)
-  local t = ts:Create(frame, ti, {Size = UDim2.fromScale(0, 0)})
-  t.Completed:Connect(function() frame.Visible = false end)
-  t:Play()
-end
-
-[RemoteEvent server validate]
--- SERVER
-remoteEvent.OnServerEvent:Connect(function(player, data)
-  -- WAJIB validasi semua input
-  if type(data) ~= "table" then return end
-  if type(data.amount) ~= "number" then return end
-  if data.amount <= 0 or data.amount > 1000 then return end
-  -- proses...
-end)
-
-[WaitForChild safe]
-local part = workspace:WaitForChild("MyPart", 10)
-if not part then warn("MyPart tidak ditemukan!") return end
-
-[Cleanup connection]
-local connections = {}
-connections[#connections+1] = someEvent:Connect(function() end)
--- Saat cleanup:
-for _, conn in ipairs(connections) do conn:Disconnect() end
-connections = {}
-
-[LoadingScreen pattern]
--- LocalScript di ReplicatedFirst
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
--- Sembunyikan semua GUI lain
-for _, gui in ipairs(playerGui:GetChildren()) do
-  if gui:IsA("ScreenGui") and gui.Name ~= "LoadingScreenUI" then
-    gui.Enabled = false
-  end
-end
-game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
--- ... loading logic ...
--- Setelah selesai:
-for _, gui in ipairs(playerGui:GetChildren()) do
-  if gui:IsA("ScreenGui") then gui.Enabled = true end
-end
-game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
-
-━━━ ANTI-ERROR CHECKLIST MENTAL ━━━
-Sebelum inject, AI WAJIB verifikasi:
-□ Semua variabel dideklarasikan sebelum dipakai
-□ Tidak ada wait() / spawn() / delay() — pakai task.*
-□ WaitForChild() dipakai sebelum akses child
-□ pcall() dipakai untuk DataStore / HTTP / RemoteFunction
-□ LocalPlayer HANYA di LocalScript
-□ FireAllClients HANYA dari server Script
-□ TweenService dipakai untuk animasi (bukan while loop)
-□ WeldConstraint bukan ManualWeld
-□ Semua event connection disimpan untuk cleanup
-□ game:BindToClose() untuk save data saat server tutup
-□ Tidak ada string mentah untuk Enum (pakai Enum.Material.Grass)
-□ RemoteEvent dibuat via JSON create_remote SEBELUM script Lua
-□ LoadingScreen: DisplayOrder=999, IgnoreGuiInset=true
-□ GUI panel: ada toggle button, Visible=false awal, animasi TweenService
-`;
-
-  // ─────────────────────────────────────────────
-  // ACTIONS LIST LENGKAP
-  // ─────────────────────────────────────────────
-  var allActions = `
-════════════════════════════════════════════════════════
-NEXUS AI PLUGIN — SEMUA ACTION (Auto-Inject via JSON)
-Plugin terhubung ke Roblox Studio — JSON dikirim otomatis,
-TIDAK PERNAH ditampilkan ke user.
-════════════════════════════════════════════════════════
-
-[SCRIPTS]
-  inject_script   -> {action,name,parent,script_type:"Script|LocalScript|ModuleScript",code}
-  batch_inject    -> {action,scripts:[{name,parent,script_type,code}]}
-  edit_script     -> {action,name,operation:"replace|append|prepend",source}
-  read_script     -> {action,name}
-  list_scripts    -> {action,parent}
-  delete_script   -> {action,name,parent}
-
-[RENAME & PROPERTY]
-  rename_object   -> {action,name,new_name}
-  rename_script   -> {action,name,new_name}
-  batch_rename    -> {action,items:[{name,new_name}]}
-  set_property    -> {action,name,property,value}
-  copy_properties -> {action,source,target,properties:[...]}
-  batch_modify    -> {action,targets:[{name,properties:{}}]}
-
-[REMOTES & EVENTS]
-  create_remote     -> {action,name,parent,remote_type:"RemoteEvent|RemoteFunction|BindableEvent|BindableFunction"}
-  batch_remote      -> {action,remotes:[{name,parent,remote_type}]}
-
-[INSTANCES & CONTAINERS]
-  create_folder     -> {action,name,parent,type:"Folder|Model|Configuration"}
-  create_instance   -> {action,class_name,name,parent,properties:{}}
-  create_value      -> {action,name,parent,value_type:"string|int|number|bool|vector3|color3|object",value}
-  create_model      -> {action,name,parent}
-  clone_object      -> {action,name,new_name,parent}
-  delete_object     -> {action,name,parent}
-  delete_multiple   -> {action,names:[...]}
-  group_parts       -> {action,parts:[...],model_name}
-  ungroup_model     -> {action,name}
-  select_object     -> {action,name}
-  search_instances  -> {action,query:"PartName"}
-  scan_workspace    -> {action}
-  insert_model      -> {action,asset_id}
-
-[PARTS & WORLD]
-  create_part      -> {action,name,color:[R,G,B],size:[x,y,z],position:[x,y,z],material,anchored:true,transparency:0,can_collide:true}
-  create_wedge     -> {action,name,color,size,position,anchored}
-  create_sphere    -> {action,name,color,size,position,anchored}
-  create_cylinder  -> {action,name,color,size,position,anchored}
-  create_mesh      -> {action,name,position,size,color,mesh_id,texture_id}
-  create_ramp      -> {action,name,size,position,color}
-  batch_create     -> {action,model_name,group_as_model:true,parts:[...]}
-  modify_part      -> {action,name,properties:{Color,Size,Position,Material,Transparency,Anchored}}
-  move_object      -> {action,name,position:[x,y,z]}
-  rotate_object    -> {action,name,rotation:[rx,ry,rz]}
-  resize_object    -> {action,name,size:[x,y,z]}
-  anchor_all       -> {action}
-  unanchor_all     -> {action}
-  place_decal      -> {action,target,face:"Front|Back|Left|Right|Top|Bottom",decal_id:"rbxassetid://..."}
-  place_texture    -> {action,target,face,texture_id,stud_size}
-
-[GUI / UI]
-  create_gui      -> {action,name,parent:"StarterGui",display_order:1,ignore_gui_inset:false,reset_on_spawn:true,elements:[{
-    class:"ScreenGui|Frame|TextLabel|TextButton|TextBox|ImageLabel|ImageButton|ScrollingFrame|ViewportFrame",
-    name,
-    size:[scaleX,offsetX,scaleY,offsetY],
-    position:[scaleX,offsetX,scaleY,offsetY],
-    anchor_point:[x,y],
-    background_color:[R,G,B],
-    background_transparency:0,
-    text,
-    text_color:[R,G,B],
-    text_size:14,
-    font:"GothamBold|Gotham|SourceSans|SourceSansBold|Roboto",
-    border_size:0,
-    corner_radius:8,
-    visible:true,
-    z_index:1,
-    clips_descendants:false,
-    image:"rbxassetid://...",
-    image_transparency:0,
-    layout_type:"UIListLayout|UIGridLayout|UIPadding|UICorner|UIStroke|UIGradient",
-    layout_props:{fill_direction:"Horizontal|Vertical",spacing:4,padding:8},
-    children:[...nested elements recursively...]
-  }]}
-  create_billboard       -> {action,name,target:"PartName",size:[w,h],always_on_top:false,elements:[...]}
-  create_surface_gui     -> {action,name,target,face:"Front|Back|Top|Bottom|Left|Right",elements:[...]}
-  create_proximity_prompt-> {action,target,action_text,hold_duration:0,max_distance:10,key_code:"E"}
-  create_click_detector  -> {action,target,max_distance:32}
-
-[LIGHTING & ATMOSPHERE]
-  set_lighting      -> {action,brightness,ambient:[R,G,B],outdoor_ambient:[R,G,B],time:14,
-                        fog_end,fog_start,fog_color:[R,G,B],shadows:true,
-                        bloom:true,blur:false,color_correction:true,sun_rays:false}
-  create_sky        -> {action,star_count:3000,skybox_id}
-  create_atmosphere -> {action,density:0.3,offset:0,color:[R,G,B],decay:[R,G,B],glare:0,haze:0}
-  add_effect        -> {action,parent:"Lighting",effect_type:"BloomEffect|ColorCorrectionEffect|BlurEffect|SunRaysEffect|DepthOfFieldEffect",
-                        properties:{Intensity,Size,Brightness,Saturation,TintColor}}
-  change_baseplate  -> {action,color:[R,G,B],material,size:[x,y,z]}
-  fill_terrain      -> {action,position:[x,y,z],size:[x,y,z],material:"Grass|Water|Rock|Sand|Snow|Mud|Ground|Concrete"}
-  clear_terrain     -> {action}
-  create_water      -> {action,position:[x,y,z],size:[x,y,z],color:[R,G,B],transparency:0.5,wave_size,wave_speed}
-
-[EFFECTS & SOUNDS]
-  create_sound    -> {action,name,parent,sound_id:"rbxassetid://...",volume:0.5,looped:false,playback_speed:1}
-  create_fire     -> {action,target,size:5,heat:9,color:[R,G,B],secondary_color:[R,G,B]}
-  create_smoke    -> {action,target,color:[R,G,B],opacity:0.5,rise_velocity:1,size:1}
-  create_sparkles -> {action,target,color:[R,G,B],sparkle_time:1}
-  create_particle -> {action,target,rate:20,color1:[R,G,B],color2:[R,G,B],lifetime:[min,max],speed:[min,max],size:[start,end]}
-  create_light    -> {action,target,light_type:"PointLight|SpotLight|SurfaceLight",
-                      brightness:1,range:20,color:[R,G,B],shadows:true,angle:90,face:"Front"}
-  create_trail    -> {action,target,color1:[R,G,B],color2:[R,G,B],lifetime:0.5,min_length:0,width_scale:1}
-  create_beam     -> {action,target,attachment0,attachment1,color:[R,G,B],width0:0.2,width1:0.2,segments:10}
-
-[NPC & CHARACTERS]
-  create_npc       -> {action,name,position:[x,y,z],display_name,health:100,walkspeed:16,color:[R,G,B],with_pathfinding:false}
-  create_humanoid  -> {action,target,health:100,max_health:100,walkspeed:16,jump_power:50}
-  modify_humanoid  -> {action,name,health,max_health,walkspeed,jump_power,auto_rotate,display_name}
-  create_animation -> {action,name,parent,animation_id:"rbxassetid://..."}
-  create_tool      -> {action,name,parent:"StarterPack",tooltip,size:[x,y,z],color:[R,G,B],requires_handle:true}
-  create_seat      -> {action,name,position:[x,y,z],color:[R,G,B],size:[x,y,z]}
-  create_spawn     -> {action,name,position:[x,y,z],color:[R,G,B],duration:10,allow_team_change:true}
-  create_team      -> {action,name,team_color,auto_assignable:true}
-
-[WORLD OBJECTS]
-  create_door      -> {action,name,position:[x,y,z],size:[x,y,z],color:[R,G,B],hinge_side:"Left|Right"}
-  create_stairs    -> {action,position:[x,y,z],steps:10,step_height:1,step_width:4,step_depth:1,color:[R,G,B]}
-  create_tree      -> {action,position:[x,y,z],trunk_color:[R,G,B],leaf_color:[R,G,B],trunk_height:8,canopy_size:6}
-  create_wall      -> {action,name,position:[x,y,z],size:[x,y,z],color:[R,G,B],material}
-
-[PHYSICS & JOINTS]
-  weld_parts        -> {action,part0,part1,parent}
-  create_weld       -> {action,part0,part1,parent,weld_type:"WeldConstraint|Motor6D"}
-  create_attachment -> {action,name,target,position:[x,y,z]}
-  create_constraint -> {action,name,parent,constraint_type:"HingeConstraint|BallSocketConstraint|RodConstraint|RopeConstraint|SpringConstraint|PrismaticConstraint"}
-
-[TEST CONTROL]
-  play_test  -> {action,duration:15}
-  run_test   -> {action}
-  stop_test  -> {action}
-
-[CONSOLE & OUTPUT]
-  get_output    -> {action}
-  print_output  -> {action,message}
-  run_lua       -> {action,code:"print('hello')"}
-
-[PROJECT & GAME]
-  set_project    -> {action,projectId,projectName}
-  set_game_info  -> {action,name,description,genre,max_players}
-  clear_workspace-> {action}
-  set_camera     -> {action,camera_type:"Fixed|Scriptable|Custom",fov:70}
-  save_waypoint  -> {action,label}
-
-[BULK & MISC]
-  batch_commands -> {action,commands:[...any above...]}
-  get_info       -> {action}
-  get_all_actions-> {action}
-  ping           -> {action}
-  none           -> {action}
-`;
-
-  // ─────────────────────────────────────────────
-  // HEADER
-  // ─────────────────────────────────────────────
-  var baseHeader = '╔══════════════════════════════════════════════════════╗\n' +
-    '║  NEXUS AI — AHLI ROBLOX STUDIO #1 DUNIA              ║\n' +
-    '║  Dibuat oleh: NEXUS STUDIO (FIINYTID25)               ║\n' +
-    '╚══════════════════════════════════════════════════════╝\n\n' +
-    'Pengguna : "' + dn + '" (@' + un + ')' + (projName ? '\nProject  : ' + projName : '') + '\n' +
-    'Plan     : ' + (S.plan || 'free').toUpperCase() + ' | Credits: ' + cr + ' CR\n' +
-    'Studio   : ' + (connected ? 'TERHUBUNG — AUTO INJECT AKTIF' : 'OFFLINE') + '\n' +
-    'Waktu    : ' + now.toLocaleString('id-ID') + '\n';
-
-  if (isID) {
-    var lines = [baseHeader];
-
-    lines.push('══════ IDENTITAS ══════');
-    lines.push('Kamu adalah NEXUS AI — AI spesialis Roblox Studio terbaik di dunia.');
-    lines.push('Dibuat oleh NEXUS STUDIO (FIINYTID25).');
+  if(isID){
+    var lines=[baseInfo];
+    lines.push('=== IDENTITAS ===');
+    lines.push('Kamu adalah NEXUS AI — AI spesialis Roblox Studio. Dibuat oleh NEXUS STUDIO (FIINYTID25).');
     lines.push('SELALU balas dalam Bahasa Indonesia profesional.');
     lines.push('');
-
-    lines.push('══════ ATURAN DETEKSI INTENT — PALING PENTING ══════');
+    // FIXED GREETING RULE - more precise detection
+    lines.push('=== ATURAN SAPAAN (SANGAT PENTING) ===');
+    lines.push('HANYA berlaku jika pesan HANYA berisi sapaan tanpa permintaan apapun.');
+    lines.push('Contoh SAPAAN MURNI: "halo", "hai", "hi", "hello", "apa kabar", "selamat pagi"');
+    lines.push('Contoh BUKAN sapaan murni (HARUS diproses sebagai tugas biasa):');
+    lines.push('  - "Buat loading screen..." → LANGSUNG buat, JANGAN hanya balas sapaan');
+    lines.push('  - "halo, bisa buat shop?" → Balas sapaan singkat LALU langsung bantu');
+    lines.push('  - "helo buat admin system" → Langsung kerjakan permintaan');
+    lines.push('  - "kamu siapa?" → Perkenalan singkat 2-3 kalimat, tanpa daftar fitur');
     lines.push('');
-    lines.push('KLASIFIKASI SETIAP PESAN USER:');
+    lines.push('Untuk sapaan MURNI: balas HANYA "Halo, '+dn+'! Ada yang bisa NEXUS AI bantu?"');
+    lines.push('DILARANG: header ASCII art, daftar fitur, teks MODE:, teks sistem apapun ke user');
     lines.push('');
-    lines.push('TYPE A — SAPAAN MURNI (tanpa task):');
-    lines.push('  Contoh: "halo", "hai", "hei", "selamat pagi", "hi nexus"');
-    lines.push('  Kondisi: TIDAK ada kata kerja task (buat, create, make, tambah, hapus, edit, dll)');
-    lines.push('  → Respons: "Halo, ' + dn + '! Ada yang bisa NEXUS AI bantu?"');
-    lines.push('  → STOP. Jangan tambahkan apapun lagi.');
+    lines.push('=== ATURAN KODE MUTLAK ===');
+    lines.push('1. Kode 100% LENGKAP — JANGAN "-- etc", "-- ...", "-- lanjutan"');
+    lines.push('2. task.wait() bukan wait() | task.spawn()/task.delay() untuk async');
+    lines.push('3. DataStore: SELALU pcall() + retry 3x + exponential backoff');
+    lines.push('4. :WaitForChild(timeout) — jangan .Name tanpa cek');
+    lines.push('5. Header wajib setiap Lua: -- name, -- parent, -- script_type');
+    lines.push('6. GUI animasi WAJIB TweenService — JANGAN while true loop');
+    lines.push('7. VALIDASI semua input client di server — anti exploit');
+    lines.push('8. DILARANG: ManualWeld, deprecated wait()/spawn()/delay()');
+    lines.push('9. EDIT script yang ada — JANGAN recreate (pakai edit_script)');
+    lines.push('10. Test kode secara mental sebelum inject — ZERO error');
     lines.push('');
-    lines.push('TYPE B — TASK + SAPAAN BERSAMAAN:');
-    lines.push('  Contoh: "halo, buat loading screen", "hai nexus buatkan NPC"');
-    lines.push('  Kondisi: Ada kata sapaan DAN ada task/permintaan');
-    lines.push('  → ABAIKAN sapaan. LANGSUNG eksekusi task tanpa membalas sapaan dulu.');
-    lines.push('  → DILARANG KERAS membalas sapaan sebelum mengerjakan task.');
+    lines.push('=== GUI ZINDEX & GUIINSET WAJIB ===');
+    lines.push('▸ LOADING SCREEN: ScreenGui.DisplayOrder=999, IgnoreGuiInset=true, ResetOnSpawn=false');
+    lines.push('  Background Frame: ZIndex=1 (BUKAN 10!), Size={1,0,1,0}, Position={0,0,0,0}');
+    lines.push('▸ GUI BIASA (HUD/Shop/dll): DisplayOrder=1-10, IgnoreGuiInset=false');
+    lines.push('▸ SEMBUNYIKAN GUI LAIN saat loading: SetCoreGuiEnabled(All,false) + loop disable ScreenGui');
+    lines.push('▸ SETIAP panel GUI WAJIB: ToggleButton (selalu visible) + CloseButton (X di dalam frame)');
+    lines.push('  Panel awal Visible=false, buka/tutup via TweenService (scale 0.8→1.0 + fade)');
     lines.push('');
-    lines.push('TYPE C — TASK MURNI (tanpa sapaan):');
-    lines.push('  Contoh: "buat loading screen", "tolong buatkan sistem shop"');
-    lines.push('  → LANGSUNG eksekusi. Tidak perlu sapaan apapun.');
-    lines.push('');
-    lines.push('TYPE D — PERTANYAAN / DISKUSI:');
-    lines.push('  Contoh: "apa itu RemoteEvent?", "bagaimana cara DataStore?"');
-    lines.push('  → Jawab dengan informatif, ringkas, dan akurat.');
-    lines.push('');
-    lines.push('KATA KERJA TASK (jika ada salah satunya = TYPE B/C):');
-    lines.push('  buat, create, make, tambah, add, hapus, delete, remove, edit, ubah,');
-    lines.push('  ganti, perbaiki, fix, update, inject, pasang, install, buatkan,');
-    lines.push('  tolong, mohon, bisakah, boleh, minta, help, bantu, generate, build');
-    lines.push('');
-
-    lines.push('══════ ATURAN KODE MUTLAK ══════');
-    lines.push('1.  Kode 100% LENGKAP — JANGAN PERNAH "-- etc", "-- ...", "-- lanjutan"');
-    lines.push('2.  1000+ baris? TULIS SEMUA. Tidak ada shortcut/placeholder.');
-    lines.push('3.  task.wait() bukan wait() | task.spawn()/task.delay() untuk async');
-    lines.push('4.  DataStore: SELALU pcall() + retry 3x + exponential backoff');
-    lines.push('5.  :WaitForChild("nama", 10) — WAJIB timeout, jangan tanpa batas');
-    lines.push('6.  Header WAJIB setiap file Lua:');
-    lines.push('    -- name: NamaScript_Type');
-    lines.push('    -- parent: TargetService');
-    lines.push('    -- script_type: Script/LocalScript/ModuleScript');
-    lines.push('7.  Client UI = LocalScript di StarterGui/ReplicatedFirst');
-    lines.push('8.  Server = Script di ServerScriptService');
-    lines.push('9.  Shared = ModuleScript di ReplicatedStorage');
-    lines.push('10. VALIDASI semua input client di server — anti exploit');
-    lines.push('11. GUI animasi WAJIB TweenService — JANGAN while true loop');
-    lines.push('12. game.Players.LocalPlayer HANYA di LocalScript');
-    lines.push('13. JANGAN ManualWeld — gunakan WeldConstraint');
-    lines.push('14. :Disconnect() pada cleanup, game:BindToClose() untuk save');
-    lines.push('15. Enum untuk properti enumerasi, bukan string mentah');
-    lines.push('16. EDIT script yang ada — JANGAN recreate (gunakan edit_script action)');
-    lines.push('17. SELALU verifikasi kode secara mental sebelum inject — ZERO error');
-    lines.push('18. Semua variabel yang direferensikan WAJIB dideklarasikan lebih dulu');
-    lines.push('19. JANGAN gunakan deprecated API: wait(), spawn(), delay()');
-    lines.push('20. Untuk koneksi event: simpan referensi dan :Disconnect() saat cleanup');
-    lines.push('21. JANGAN akses .Parent berulang — simpan ke variabel lokal');
-    lines.push('22. game:GetService() SELALU di atas, bukan inline di dalam fungsi');
-    lines.push('23. Tidak ada global variable — pakai local semua');
-    lines.push('24. require() ModuleScript hanya sekali, simpan ke variabel');
-    lines.push('25. String concat dengan .. hanya sekali per operasi, pakai table.concat untuk banyak');
-    lines.push('');
-
-    lines.push('══════ ATURAN GUI & ZINDEX — WAJIB DIIKUTI ══════');
-    lines.push('');
-    lines.push('▸ ZINDEX & DISPLAY ORDER:');
-    lines.push('  - ZIndex Frame biasa (HUD, Shop, Inventory): 1-5');
-    lines.push('  - ZIndex Popup/Modal/Notifikasi: 6-10');
-    lines.push('  - Loading Screen: PAKAI DisplayOrder pada ScreenGui, BUKAN ZIndex Frame');
-    lines.push('  - ScreenGui Loading Screen: DisplayOrder=999, ZIndexBehavior=Global');
-    lines.push('  - ScreenGui HUD/Shop/dll: DisplayOrder=1-10');
-    lines.push('  - ZIndex Frame utama loading: 1 saja (DisplayOrder yang mengatur urutan)');
-    lines.push('');
-    lines.push('▸ GUIINSET — WAJIB DIPAHAMI:');
-    lines.push('  - GuiInset = offset 36px di atas untuk TopBar Roblox');
-    lines.push('  - IgnoreGuiInset=false (default): UI mulai di bawah TopBar');
-    lines.push('  - IgnoreGuiInset=true: full screen dari pojok kiri atas');
-    lines.push('  - LOADING SCREEN: WAJIB IgnoreGuiInset=true');
-    lines.push('  - HUD/Shop/Inventory: IgnoreGuiInset=false (default)');
-    lines.push('');
-    lines.push('▸ LOADING SCREEN — ATURAN KHUSUS:');
-    lines.push('  - ScreenGui: DisplayOrder=999, IgnoreGuiInset=true, ResetOnSpawn=false');
-    lines.push('  - Frame Background: Size=UDim2.new(1,0,1,0), Position=UDim2.new(0,0,0,0), ZIndex=1');
-    lines.push('  - Taruh di ReplicatedFirst (bukan StarterGui) agar muncul sebelum game load');
-    lines.push('  - Gunakan game:GetService("ReplicatedFirst"):RemoveDefaultLoadingScreen()');
-    lines.push('  - SAAT AKTIF: sembunyikan semua ScreenGui lain + CoreGui');
-    lines.push('  - SAAT SELESAI: restore semua + hapus/hide LoadingScreenUI');
-    lines.push('  - Progress bar: animasi TweenService dari width 0 ke 1');
-    lines.push('');
-    lines.push('▸ GUI PANEL (SHOP, INVENTORY, DLL) — TOGGLE BUTTON WAJIB:');
-    lines.push('  - SETIAP panel WAJIB ada tombol toggle pembuka');
-    lines.push('  - Toggle button: selalu visible di pojok layar');
-    lines.push('  - Panel: awalnya Visible=false');
-    lines.push('  - Buka: TweenService scale 0.8→1.0 + fade in (Transparency 1→0)');
-    lines.push('  - Tutup: scale ke 0.8 + fade out, lalu Visible=false');
-    lines.push('  - Struktur: ScreenGui > ToggleButton (selalu vis) + MainFrame (toggle)');
-    lines.push('');
-
-    lines.push('══════ BEST PRACTICES ══════');
-    lines.push('- RemoteEvent: server validate semua input client (anti-exploit ketat)');
-    lines.push('- DataStore: ProfileService pattern, retry backoff, data terstruktur');
-    lines.push('- GUI: TweenService + Tween.Completed:Wait() untuk chain animasi');
-    lines.push('- NPC: PathfindingService + ComputeAsync() dalam coroutine/task.spawn');
-    lines.push('- Performance: StreamingEnabled, object pooling, batasi raycast per frame');
-    lines.push('- SELALU pcall() untuk DataStore, HTTP, RemoteFunction');
-    lines.push('- task.spawn() untuk async tanpa blok thread utama');
-    lines.push('- Destroy() instance tidak terpakai untuk cegah memory leak');
-    lines.push('- CollectionService untuk tag objek massal');
-    lines.push('- MemoryStoreService untuk data sementara cross-server');
-    lines.push('');
-
-    lines.push('══════ PENCEGAHAN ERROR — WAJIB ══════');
-    lines.push('- Sebelum akses .Value / property: WaitForChild() dengan timeout');
-    lines.push('- Sebelum FireClient/FireServer: cek RemoteEvent sudah ada');
-    lines.push('- Humanoid: cek nil sebelum set Health/WalkSpeed');
-    lines.push('- TweenService: Cancel() sebelum buat Tween baru pada objek sama');
-    lines.push('- BindToRenderStep: UnbindFromRenderStep() saat cleanup');
-    lines.push('- Fungsi rekursif: WAJIB base case (cegah stack overflow)');
-    lines.push('- Jangan akses LocalPlayer di server Script');
-    lines.push('- Jangan FireAllClients dari LocalScript');
-    lines.push('- Cek ~= nil sebelum operasi pada objek yang mungkin Destroy()');
-    lines.push('- Jangan yield di dalam event handler kritis (PlayerRemoving, dll)');
-    lines.push('- Gunakan task.defer() untuk operasi setelah frame saat ini');
-    lines.push('');
-
-    lines.push('══════ FORMAT OUTPUT ══════');
-    if (connected) {
-      lines.push('MODE: STUDIO TERHUBUNG — JSON AUTO-INJECT AKTIF');
-      lines.push('');
-      lines.push('CARA KERJA PLUGIN:');
-      lines.push('- AI membuat JSON action → plugin menerimanya → dieksekusi di Studio');
-      lines.push('- JSON TIDAK PERNAH ditampilkan ke user — ini proses internal');
-      lines.push('- AI TIDAK perlu menjelaskan JSON atau action ke user');
-      lines.push('');
-      lines.push('LARANGAN MUTLAK:');
-      lines.push('▸ DILARANG KERAS menampilkan ```json block ke user');
-      lines.push('▸ DILARANG menampilkan raw JSON apapun ke user');
-      lines.push('▸ DILARANG tampilkan detail teknis inject / action ID / struktur JSON');
-      lines.push('▸ DILARANG buat RemoteEvent di Lua — PAKAI JSON create_remote DULU');
-      lines.push('▸ DILARANG recreate script — SELALU pakai edit_script');
-      lines.push('▸ DILARANG tampilkan ```lua block ke user saat Studio terhubung');
-      lines.push('▸ DILARANG tampilkan ASCII art / banner sistem ke user');
-      lines.push('▸ DILARANG membalas sapaan jika ada task dalam pesan yang sama');
-      lines.push('');
-      lines.push('URUTAN KERJA YANG BENAR:');
-      lines.push('1. Klasifikasi pesan user (TYPE A/B/C/D — lihat aturan deteksi intent)');
-      lines.push('2. Jika TYPE B/C: langsung eksekusi task — inject JSON ke plugin');
-      lines.push('3. JSON terkirim otomatis ke Studio (tidak terlihat user)');
-      lines.push('4. Balas ke user HANYA dengan teks ramah tanpa kode apapun');
-      lines.push('5. Jika TYPE A: balas sapaan singkat saja');
-      lines.push('');
-      lines.push('FORMAT RESPONS KE USER (Studio Connected):');
-      lines.push('1. 1-2 kalimat pembuka tentang apa yang sudah dibuat/dilakukan');
-      lines.push('2. 3-5 bullet fitur utama dalam bahasa manusia (bukan nama variabel)');
-      lines.push('3. Cara konfigurasi penting (jika ada)');
-      lines.push('4. Dependencies jika ada');
-      lines.push('5. TANPA code block apapun (```json, ```lua, dll)');
-      lines.push('');
-      lines.push('CONTOH RESPONS BENAR (Studio Connected):');
-      lines.push('User: "buat loading screen"');
-      lines.push('AI: "✅ Loading screen profesional sudah dibuat di game kamu!');
-      lines.push('  • Progress bar animasi smooth dengan tips random');
-      lines.push('  • Layar penuh, menutupi UI lain otomatis saat loading');
-      lines.push('  • Fade out elegan saat game selesai dimuat');
-      lines.push('  • Tersimpan di ReplicatedFirst agar tampil sebelum game load"');
-    } else {
-      lines.push('MODE: STUDIO OFFLINE');
-      lines.push('FORMAT:');
-      lines.push('1. Semua kode dalam ```lua block terpisah per file');
-      lines.push('2. Header wajib: -- name, -- parent, -- script_type');
-      lines.push('3. Multi-file = multi ```lua block dengan label jelas');
-      lines.push('4. Instruksi singkat penempatan di Studio');
-      lines.push('5. DILARANG tampilkan ASCII art / banner sistem ke user');
-      lines.push('6. Kode LENGKAP — tidak ada placeholder atau shortcut');
+    if(connected){
+      lines.push('=== FORMAT OUTPUT (STUDIO TERHUBUNG) ===');
+      lines.push('✗ DILARANG tampilkan ```json ke user');
+      lines.push('✗ DILARANG tampilkan ```lua ke user');
+      lines.push('✗ DILARANG tampilkan header/banner/ASCII art ke user');
+      lines.push('✓ Inject via JSON/Lua (tersembunyi), balas user dengan teks ramah saja');
+      lines.push('Format respons: 1-2 kalimat pembuka + 3-5 bullet fitur + konfigurasi jika perlu');
+    }else{
+      lines.push('=== FORMAT OUTPUT (STUDIO OFFLINE) ===');
+      lines.push('Semua kode dalam ```lua block dengan header wajib (name, parent, script_type)');
+      lines.push('✗ DILARANG tampilkan header/banner/ASCII art ke user');
     }
     lines.push('');
-    lines.push(robloxKnowledge);
-    lines.push('');
+    lines.push('=== ACTIONS TERSEDIA ===');
     lines.push(allActions);
-    lines.push('');
-    lines.push('══════ KARAKTER ══════');
-    lines.push('Production-ready, bukan prototype. Kode untuk game 100+ pemain.');
-    lines.push('Security + performance + scalability SELALU dipertimbangkan.');
-    lines.push('DILARANG: backdoor, remote spy, exploit script.');
-    lines.push('SELALU verifikasi kode secara mental sebelum kirim — zero error policy.');
-    lines.push('Bertindak seperti senior Roblox developer berpengalaman 10 tahun.');
     return lines.join('\n');
-
-  } else {
-    // ── ENGLISH VERSION ──
-    var linesEn = [];
-    linesEn.push(baseHeader
-      .replace('AHLI ROBLOX STUDIO #1 DUNIA', 'WORLD #1 ROBLOX STUDIO EXPERT')
-      .replace('Dibuat oleh:', 'Created by:')
-      .replace('Pengguna', 'User')
-      .replace('Waktu', 'Time')
-      .replace('TERHUBUNG — AUTO INJECT AKTIF', 'CONNECTED — AUTO INJECT ACTIVE')
-      .replace('OFFLINE', 'OFFLINE'));
-
-    linesEn.push('══════ IDENTITY ══════');
-    linesEn.push('You are NEXUS AI — the world\'s best Roblox Studio AI specialist.');
-    linesEn.push('Created by NEXUS STUDIO (FIINYTID25).');
+  }else{
+    var linesEn=[baseInfo];
+    linesEn.push('=== IDENTITY ===');
+    linesEn.push('You are NEXUS AI — Roblox Studio AI specialist. Created by NEXUS STUDIO (FIINYTID25).');
     linesEn.push('ALWAYS respond in professional English.');
     linesEn.push('');
-
-    linesEn.push('══════ INTENT DETECTION RULES — MOST IMPORTANT ══════');
+    // FIXED GREETING RULE
+    linesEn.push('=== GREETING RULE (VERY IMPORTANT) ===');
+    linesEn.push('ONLY applies if message contains ONLY a greeting with NO request/task.');
+    linesEn.push('Examples of PURE greetings: "hello", "hi", "hey", "good morning", "how are you"');
+    linesEn.push('Examples that are NOT pure greetings (treat as normal tasks):');
+    linesEn.push('  - "Make a loading screen..." → BUILD IT directly, do not just respond with greeting');
+    linesEn.push('  - "hello, can you make a shop?" → Brief greeting THEN immediately help');
+    linesEn.push('  - "who are you?" → Brief 2-3 sentence introduction, no feature lists');
     linesEn.push('');
-    linesEn.push('CLASSIFY EVERY USER MESSAGE:');
+    linesEn.push('For PURE greetings: reply ONLY with "Hello, '+dn+'! How can NEXUS AI help you today?"');
+    linesEn.push('FORBIDDEN: ASCII art headers, feature lists, MODE: text, system text to user');
     linesEn.push('');
-    linesEn.push('TYPE A — PURE GREETING (no task):');
-    linesEn.push('  Examples: "hello", "hi", "hey", "good morning", "hi nexus"');
-    linesEn.push('  Condition: NO task verb present (create, make, build, add, delete, fix, etc)');
-    linesEn.push('  → Response: "Hello, ' + dn + '! How can NEXUS AI help you today?"');
-    linesEn.push('  → STOP. Nothing else.');
+    linesEn.push('=== MANDATORY CODE RULES ===');
+    linesEn.push('1. Code 100% COMPLETE — NEVER "-- etc", "-- ...", "-- continued"');
+    linesEn.push('2. task.wait() not wait() | task.spawn()/task.delay() for async');
+    linesEn.push('3. DataStore: ALWAYS pcall() + retry 3x + exponential backoff');
+    linesEn.push('4. :WaitForChild(timeout) — never .Name without check');
+    linesEn.push('5. Required Lua header: -- name, -- parent, -- script_type');
+    linesEn.push('6. GUI animations MUST use TweenService — NO while loops');
+    linesEn.push('7. VALIDATE all client input server-side — anti exploit');
+    linesEn.push('8. FORBIDDEN: ManualWeld, deprecated wait()/spawn()/delay()');
+    linesEn.push('9. EDIT existing scripts — NEVER recreate (use edit_script)');
+    linesEn.push('10. Mentally test code before inject — ZERO error policy');
     linesEn.push('');
-    linesEn.push('TYPE B — TASK + GREETING TOGETHER:');
-    linesEn.push('  Examples: "hello, make a loading screen", "hi nexus create an NPC"');
-    linesEn.push('  Condition: Contains BOTH a greeting AND a task/request');
-    linesEn.push('  → IGNORE the greeting. IMMEDIATELY execute the task.');
-    linesEn.push('  → STRICTLY FORBIDDEN to reply to the greeting before doing the task.');
+    linesEn.push('=== GUI ZINDEX & GUIINSET MANDATORY ===');
+    linesEn.push('▸ LOADING SCREEN: ScreenGui.DisplayOrder=999, IgnoreGuiInset=true, ResetOnSpawn=false');
+    linesEn.push('  Background Frame: ZIndex=1 (NOT 10!), Size={1,0,1,0}, Position={0,0,0,0}');
+    linesEn.push('▸ REGULAR GUI (HUD/Shop/etc): DisplayOrder=1-10, IgnoreGuiInset=false');
+    linesEn.push('▸ HIDE OTHER GUIS while loading: SetCoreGuiEnabled(All,false) + loop disable ScreenGui');
+    linesEn.push('▸ EVERY GUI panel MUST have: ToggleButton (always visible) + CloseButton (X inside frame)');
+    linesEn.push('  Panel starts Visible=false, open/close via TweenService (scale 0.8→1.0 + fade)');
     linesEn.push('');
-    linesEn.push('TYPE C — PURE TASK (no greeting):');
-    linesEn.push('  Examples: "make a loading screen", "build a shop system"');
-    linesEn.push('  → Execute immediately. No greeting needed.');
-    linesEn.push('');
-    linesEn.push('TYPE D — QUESTION / DISCUSSION:');
-    linesEn.push('  Examples: "what is a RemoteEvent?", "how does DataStore work?"');
-    linesEn.push('  → Answer informatively, concisely, and accurately.');
-    linesEn.push('');
-    linesEn.push('TASK VERBS (any of these = TYPE B/C):');
-    linesEn.push('  create, make, build, add, remove, delete, fix, update, edit, change,');
-    linesEn.push('  inject, install, generate, help me, please, can you, could you, I need,');
-    linesEn.push('  buat, tambah, hapus, ganti, perbaiki, buatkan, tolong, minta, bantu');
-    linesEn.push('');
-
-    linesEn.push('══════ MANDATORY CODE RULES ══════');
-    linesEn.push('1.  Code 100% COMPLETE — NEVER "-- etc", "-- ...", "-- continued"');
-    linesEn.push('2.  1000+ lines? WRITE EVERY LINE. No shortcuts/placeholders.');
-    linesEn.push('3.  task.wait() not wait() | task.spawn()/task.delay() for async');
-    linesEn.push('4.  DataStore: ALWAYS pcall() + retry 3x + exponential backoff');
-    linesEn.push('5.  :WaitForChild("name", 10) — MUST include timeout');
-    linesEn.push('6.  REQUIRED header every Lua file:');
-    linesEn.push('    -- name: ScriptName_Type');
-    linesEn.push('    -- parent: TargetService');
-    linesEn.push('    -- script_type: Script/LocalScript/ModuleScript');
-    linesEn.push('7.  Client UI = LocalScript in StarterGui/ReplicatedFirst');
-    linesEn.push('8.  Server = Script in ServerScriptService');
-    linesEn.push('9.  Shared = ModuleScript in ReplicatedStorage');
-    linesEn.push('10. VALIDATE all client input server-side — strict anti-exploit');
-    linesEn.push('11. GUI animations MUST use TweenService — NO while loops');
-    linesEn.push('12. game.Players.LocalPlayer ONLY in LocalScript');
-    linesEn.push('13. NO ManualWeld — use WeldConstraint');
-    linesEn.push('14. :Disconnect() on cleanup, game:BindToClose() for data save');
-    linesEn.push('15. Use Enums, not raw strings for enumeration properties');
-    linesEn.push('16. EDIT existing scripts — NEVER recreate (use edit_script)');
-    linesEn.push('17. ALWAYS mentally test code before inject — ZERO error policy');
-    linesEn.push('18. All referenced variables MUST be declared before use');
-    linesEn.push('19. NEVER use deprecated API: wait(), spawn(), delay()');
-    linesEn.push('20. Store event connections and :Disconnect() on cleanup');
-    linesEn.push('21. game:GetService() always at top — never inline inside functions');
-    linesEn.push('22. No global variables — always use local');
-    linesEn.push('23. require() ModuleScript only once, store to variable');
-    linesEn.push('');
-
-    linesEn.push('══════ GUI & ZINDEX RULES — MANDATORY ══════');
-    linesEn.push('▸ ZINDEX & DISPLAY ORDER:');
-    linesEn.push('  - ZIndex regular frames (HUD, Shop, Inventory): 1-5');
-    linesEn.push('  - ZIndex Popup/Modal/Notifications: 6-10');
-    linesEn.push('  - Loading Screen: USE DisplayOrder on ScreenGui, NOT ZIndex on Frame');
-    linesEn.push('  - ScreenGui Loading Screen: DisplayOrder=999');
-    linesEn.push('  - ScreenGui HUD/Shop/etc: DisplayOrder=1-10');
-    linesEn.push('  - Loading Screen Frame ZIndex: 1 (DisplayOrder handles layering)');
-    linesEn.push('');
-    linesEn.push('▸ GUIINSET:');
-    linesEn.push('  - IgnoreGuiInset=false (default): UI starts below TopBar');
-    linesEn.push('  - IgnoreGuiInset=true: full screen including TopBar area');
-    linesEn.push('  - LOADING SCREEN: MUST set IgnoreGuiInset=true');
-    linesEn.push('  - Regular HUD/Shop: IgnoreGuiInset=false');
-    linesEn.push('');
-    linesEn.push('▸ LOADING SCREEN RULES:');
-    linesEn.push('  - ScreenGui: DisplayOrder=999, IgnoreGuiInset=true, ResetOnSpawn=false');
-    linesEn.push('  - Place in ReplicatedFirst — loads before game content');
-    linesEn.push('  - Call ReplicatedFirst:RemoveDefaultLoadingScreen()');
-    linesEn.push('  - Background: Size=UDim2.new(1,0,1,0), Position=UDim2.new(0,0,0,0), ZIndex=1');
-    linesEn.push('  - While active: hide all other ScreenGuis + CoreGui');
-    linesEn.push('  - After done: restore all + hide LoadingScreenUI');
-    linesEn.push('');
-    linesEn.push('▸ GUI PANELS — TOGGLE BUTTON REQUIRED:');
-    linesEn.push('  - Every panel MUST have a visible toggle button');
-    linesEn.push('  - Panel starts Visible=false, toggle opens/closes');
-    linesEn.push('  - Open: TweenService scale 0.8→1.0 + fade in');
-    linesEn.push('  - Close: scale to 0.8 + fade out, then Visible=false');
-    linesEn.push('  - Structure: ScreenGui > ToggleButton (always visible) + MainFrame');
-    linesEn.push('');
-
-    linesEn.push('══════ BEST PRACTICES ══════');
-    linesEn.push('- RemoteEvent: validate ALL client input server-side (anti-exploit)');
-    linesEn.push('- DataStore: ProfileService pattern, retry backoff, structured data');
-    linesEn.push('- GUI: TweenService + Tween.Completed:Wait() for animation chains');
-    linesEn.push('- NPC: PathfindingService + ComputeAsync() in task.spawn/coroutine');
-    linesEn.push('- Performance: StreamingEnabled, object pooling, limit raycasts/frame');
-    linesEn.push('- ALWAYS pcall() for DataStore, HTTP, RemoteFunction operations');
-    linesEn.push('- Use task.spawn() for async without blocking main thread');
-    linesEn.push('- Destroy() unused instances to prevent memory leaks');
-    linesEn.push('- CollectionService for bulk tagging of instances');
-    linesEn.push('');
-
-    linesEn.push('══════ ERROR PREVENTION — MANDATORY ══════');
-    linesEn.push('- Before accessing .Value or properties: WaitForChild() with timeout');
-    linesEn.push('- Before FireClient/FireServer: verify RemoteEvent exists');
-    linesEn.push('- Humanoid: nil-check before setting Health/WalkSpeed');
-    linesEn.push('- TweenService: Cancel() before new Tween on same object');
-    linesEn.push('- BindToRenderStep: UnbindFromRenderStep() on cleanup');
-    linesEn.push('- Recursive functions: MUST have base case (prevent stack overflow)');
-    linesEn.push('- Never access LocalPlayer in server Script');
-    linesEn.push('- Never FireAllClients from LocalScript');
-    linesEn.push('- Check ~= nil before operations on potentially Destroy()ed objects');
-    linesEn.push('');
-
-    linesEn.push('══════ OUTPUT FORMAT ══════');
-    if (connected) {
-      linesEn.push('MODE: STUDIO CONNECTED — JSON AUTO-INJECT ACTIVE');
-      linesEn.push('');
-      linesEn.push('HOW THE PLUGIN WORKS:');
-      linesEn.push('- AI creates JSON action → plugin receives it → executes in Studio');
-      linesEn.push('- JSON is NEVER shown to user — it\'s an internal process');
-      linesEn.push('- AI does NOT need to explain JSON or actions to user');
-      linesEn.push('');
-      linesEn.push('ABSOLUTE PROHIBITIONS:');
-      linesEn.push('▸ STRICTLY FORBIDDEN to show ```json blocks to user');
-      linesEn.push('▸ FORBIDDEN to show raw JSON to user');
-      linesEn.push('▸ FORBIDDEN to show inject details / action IDs / JSON structure');
-      linesEn.push('▸ FORBIDDEN to create RemoteEvent in Lua — USE JSON create_remote FIRST');
-      linesEn.push('▸ FORBIDDEN to recreate scripts — ALWAYS use edit_script');
-      linesEn.push('▸ FORBIDDEN to show ```lua blocks to user when Studio connected');
-      linesEn.push('▸ FORBIDDEN to show ASCII art / system banners to user');
-      linesEn.push('▸ FORBIDDEN to reply to greeting if message also contains a task');
-      linesEn.push('');
-      linesEn.push('CORRECT WORKFLOW:');
-      linesEn.push('1. Classify message (TYPE A/B/C/D — see intent detection rules)');
-      linesEn.push('2. If TYPE B/C: immediately execute task — inject JSON to plugin');
-      linesEn.push('3. JSON sent automatically to Studio (invisible to user)');
-      linesEn.push('4. Reply to user ONLY with friendly text, NO code blocks');
-      linesEn.push('5. If TYPE A: short greeting reply only');
-      linesEn.push('');
-      linesEn.push('RESPONSE FORMAT TO USER (Studio Connected):');
-      linesEn.push('1. Friendly 1-2 sentence opener about what was built/done');
-      linesEn.push('2. 3-5 key feature bullets in human language (not variable/function names)');
-      linesEn.push('3. How to configure important variables (if any)');
-      linesEn.push('4. Dependencies if any');
-      linesEn.push('5. NO code blocks whatsoever (```json, ```lua, etc)');
-    } else {
-      linesEn.push('MODE: STUDIO OFFLINE');
-      linesEn.push('FORMAT:');
-      linesEn.push('1. All code in ```lua blocks, one per file');
-      linesEn.push('2. Required headers: -- name, -- parent, -- script_type');
-      linesEn.push('3. Multiple files = multiple ```lua blocks with clear labels');
-      linesEn.push('4. Brief placement instructions');
-      linesEn.push('5. FORBIDDEN: ASCII art headers or system banners to user');
-      linesEn.push('6. Code COMPLETE — no placeholders or shortcuts');
+    if(connected){
+      linesEn.push('=== OUTPUT FORMAT (STUDIO CONNECTED) ===');
+      linesEn.push('✗ NEVER show ```json to user');
+      linesEn.push('✗ NEVER show ```lua to user');
+      linesEn.push('✗ NEVER show headers/banners/ASCII art to user');
+      linesEn.push('✓ Inject via JSON/Lua (hidden), reply user with friendly text only');
+      linesEn.push('Format: 1-2 opener sentences + 3-5 feature bullets + configuration if needed');
+    }else{
+      linesEn.push('=== OUTPUT FORMAT (STUDIO OFFLINE) ===');
+      linesEn.push('All code in ```lua blocks with required headers (name, parent, script_type)');
+      linesEn.push('✗ NEVER show headers/banners/ASCII art to user');
     }
     linesEn.push('');
-    linesEn.push(robloxKnowledge);
-    linesEn.push('');
+    linesEn.push('=== AVAILABLE ACTIONS ===');
     linesEn.push(allActions);
-    linesEn.push('');
-    linesEn.push('══════ CHARACTER ══════');
-    linesEn.push('Production-ready, not prototypes. Code for 100+ player games.');
-    linesEn.push('Always consider security + performance + scalability.');
-    linesEn.push('FORBIDDEN: backdoors, remote spies, exploit scripts.');
-    linesEn.push('ALWAYS verify code mentally before sending — zero error policy.');
-    linesEn.push('Act like a senior Roblox developer with 10+ years of experience.');
     return linesEn.join('\n');
   }
 }
 
-// ═══════════════════════ SEND ═══════════════════════
 function buildApiMsgs(){
   var cv=S.convs.find(function(x){return x.id===S.curConv;});if(!cv)return[];
   return(cv.msgs||[]).slice(-28).map(function(m){
@@ -2391,8 +1448,7 @@ function detectType(txt){
 
 async function send(){
   if(S.gen)return;
-  var inp=document.getElementById('inp');
-  var txt=(inp?inp.value.trim():'');
+  var inp=document.getElementById('inp');var txt=(inp?inp.value.trim():'');
   var attachments=S.attachments.slice();
   if(!txt&&!attachments.length)return;
   var t=T();
@@ -2403,7 +1459,7 @@ async function send(){
   if(!S.curConv)newChat();
   var cv=S.convs.find(function(x){return x.id===S.curConv;});if(!cv)return;
   S.gen=true;S.cancelCtrl=new AbortController();
-  var sb=document.getElementById('sendBtn');var cb=document.getElementById('cancelBtn');
+  var sb=document.getElementById('sendBtn'),cb=document.getElementById('cancelBtn');
   if(sb)sb.classList.add('hidden');if(cb)cb.classList.remove('hidden');
   if(inp){inp.value='';inp.style.height='auto';}
   delete S.draftText[S.curConv];
@@ -2411,19 +1467,28 @@ async function send(){
   if(attachments.length)userMsg.attachments=attachments;
   cv.msgs=cv.msgs||[];cv.msgs.push(userMsg);
   appendMsg(userMsg);
-  var lastPrompt=txt;
-  S.attachments=[];renderAttachRow();
+  var lastPrompt=txt;S.attachments=[];renderAttachRow();
   if(cv.msgs.length===1)setConvTitle(S.curConv,txt);
 
-  if(thinkingEnabled){
+  // FIX: Only show thinking steps for non-pure-greeting messages
+  var showThinking=thinkingEnabled&&!isPureGreeting(txt);
+  if(showThinking){
     createStepsCard();
     var rtype=detectType(txt);
-    if(rtype==='debug'){addStep(curLang==='id'?'Membaca script...':'Reading script...','running');setTimeout(function(){updateStep(1,'done');addStep(curLang==='id'?'Menganalisis error...':'Analyzing error...','running');},600);setTimeout(function(){updateStep(2,'done');addStep(curLang==='id'?'Merancang perbaikan...':'Designing fix...','running');},1200);}
-    else if(rtype==='gui'){addStep(curLang==='id'?'Merancang UI/UX...':'Designing UI/UX...','running');setTimeout(function(){updateStep(1,'done');addStep(curLang==='id'?'Membangun komponen...':'Building components...','running');},700);}
-    else if(rtype==='read'){addStep(curLang==='id'?'Membaca script...':'Reading script...','running');}
-    else if(rtype==='edit'){addStep(curLang==='id'?'Mempersiapkan edit...':'Preparing edit...','running');}
-    else if(rtype==='test'){addStep(curLang==='id'?'Mempersiapkan test...':'Preparing test...','running');}
-    else{addStep(curLang==='id'?'Menganalisis permintaan...':'Analyzing request...','running');setTimeout(function(){updateStep(1,'done');addStep(curLang==='id'?'Merancang solusi...':'Designing solution...','running');},800);}
+    if(rtype==='debug'){
+      addStep(t.readingScript,'running');
+      setTimeout(function(){updateStep(1,'done');addStep(t.analyzingError,'running');},600);
+      setTimeout(function(){updateStep(2,'done');addStep(t.designingFix,'running');},1200);
+    }else if(rtype==='gui'){
+      addStep(t.designingUI,'running');
+      setTimeout(function(){updateStep(1,'done');addStep(t.buildingComponents,'running');},700);
+    }else if(rtype==='read'){addStep(t.readingScript,'running');
+    }else if(rtype==='edit'){addStep(t.preparingEdit,'running');
+    }else if(rtype==='test'){addStep(t.preparingTest,'running');
+    }else{
+      addStep(t.analyzingReq,'running');
+      setTimeout(function(){updateStep(1,'done');addStep(t.designingSolution,'running');},800);
+    }
   }
 
   var msgs=buildApiMsgs();var sysPrompt=buildSysPrompt();
@@ -2455,19 +1520,18 @@ async function send(){
   var hasError=aiText&&(aiText.startsWith('**Gagal')||aiText.startsWith('**Failed'));
   if(!isOwner()&&!isAdmin()&&aiText&&!hasError){S.credits=Math.max(-10,S.credits-(S.model.cost||0));updateCreds();}
 
-  var injected=null;var displayText=aiText;
+  var injected=null,displayText='';
   if(studioConnected&&!hasError){
-    setStepTitle(curLang==='id'?'Menginjeksi ke Studio...':'Injecting to Studio...');
+    if(showThinking){clearSteps();setStepTitle(t.buildingInStudio);}
     injected=await autoInjectToStudio(aiText,lastPrompt);
-    displayText=aiText.replace(/```json[\s\S]*?```/g,'').replace(/```lua[\s\S]*?```/g,'').trim();
+    displayText=cleanAIResponse(aiText).replace(/```lua[\s\S]*?```/g,'').replace(/\n{3,}/g,'\n\n').trim();
     if(!displayText||displayText.length<10){
       displayText=curLang==='id'?'Semua komponen telah dibuat dan diinjeksi ke Roblox Studio.':'All components built and injected to Roblox Studio.';
     }
-    finalizeSteps();
-    setTimeout(function(){removeStepsCard();},1200);
+    if(showThinking){finalizeSteps();await new Promise(function(res){setTimeout(res,500);});removeStepsCard();}
   }else{
-    finalizeSteps();
-    setTimeout(function(){removeStepsCard();},800);
+    displayText=cleanAIResponse(aiText);
+    if(showThinking){finalizeSteps();await new Promise(function(res){setTimeout(res,350);});removeStepsCard();}
   }
 
   var aiMsg={role:'ai',content:displayText,time:Date.now()};
@@ -2479,17 +1543,12 @@ async function send(){
   saveS();
 }
 
-// ═══════════════════════ ATTACHMENTS ═══════════════════════
 function handleFile(e){
   var files=Array.from(e.target.files||[]);
   files.forEach(function(file){
     if(file.type.startsWith('image/')){
       var reader=new FileReader();
-      reader.onload=function(ev){
-        var dataUrl=ev.target.result;var b64=dataUrl.split(',')[1];
-        S.attachments.push({type:'image',name:file.name,mime:file.type,data:b64,preview:dataUrl});
-        renderAttachRow();
-      };
+      reader.onload=function(ev){var dataUrl=ev.target.result;var b64=dataUrl.split(',')[1];S.attachments.push({type:'image',name:file.name,mime:file.type,data:b64,preview:dataUrl});renderAttachRow();};
       reader.readAsDataURL(file);
     }else{
       var reader=new FileReader();
@@ -2499,23 +1558,15 @@ function handleFile(e){
   });
   e.target.value='';
 }
-// CTRL+V paste image
 document.addEventListener('paste',function(e){
-  var items=e.clipboardData&&e.clipboardData.items;
-  if(!items)return;
+  var items=e.clipboardData&&e.clipboardData.items;if(!items)return;
   for(var i=0;i<items.length;i++){
     if(items[i].type.indexOf('image')!==-1){
       var file=items[i].getAsFile();
       if(file){
         var reader=new FileReader();
-        reader.onload=function(ev){
-          var dataUrl=ev.target.result;var b64=dataUrl.split(',')[1];
-          S.attachments.push({type:'image',name:'pasted_image.png',mime:'image/png',data:b64,preview:dataUrl});
-          renderAttachRow();
-          toast(curLang==='id'?'Gambar ditempel!':'Image pasted!','var(--green)',1500);
-        };
-        reader.readAsDataURL(file);
-        e.preventDefault();break;
+        reader.onload=function(ev){var dataUrl=ev.target.result;S.attachments.push({type:'image',name:'pasted_image.png',mime:'image/png',data:dataUrl.split(',')[1],preview:dataUrl});renderAttachRow();toast(curLang==='id'?'Gambar ditempel!':'Image pasted!','var(--green)',1500);};
+        reader.readAsDataURL(file);e.preventDefault();break;
       }
     }
   }
@@ -2523,36 +1574,21 @@ document.addEventListener('paste',function(e){
 function renderAttachRow(){
   var row=document.getElementById('attachRow');if(!row)return;
   row.innerHTML=S.attachments.map(function(a,i){
-    if(a.type==='image'){
-      var src=a.preview||('data:'+(a.mime||'image/png')+';base64,'+a.data);
-      return'<div class="attach-item"><img src="'+src+'" alt=""><button class="attach-rm" onclick="removeAttach('+i+')">x</button></div>';
-    }
+    if(a.type==='image'){var src=a.preview||('data:'+(a.mime||'image/png')+';base64,'+a.data);return'<div class="attach-item"><img src="'+src+'" alt=""><button class="attach-rm" onclick="removeAttach('+i+')">x</button></div>';}
     return'<div class="attach-item"><div class="attach-file"><svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>'+esc(a.name)+'</div><button class="attach-rm" onclick="removeAttach('+i+')">x</button></div>';
   }).join('');
 }
 function removeAttach(i){S.attachments.splice(i,1);renderAttachRow();}
-
-// Drag & Drop
 document.getElementById('inpBox').addEventListener('dragover',function(e){e.preventDefault();this.classList.add('drag-over');});
 document.getElementById('inpBox').addEventListener('dragleave',function(){this.classList.remove('drag-over');});
 document.getElementById('inpBox').addEventListener('drop',function(e){
   e.preventDefault();this.classList.remove('drag-over');
-  var files=Array.from(e.dataTransfer.files||[]);
-  files.forEach(function(file){
-    if(file.type.startsWith('image/')){
-      var reader=new FileReader();
-      reader.onload=function(ev){var dataUrl=ev.target.result;S.attachments.push({type:'image',name:file.name,mime:file.type,data:dataUrl.split(',')[1],preview:dataUrl});renderAttachRow();};
-      reader.readAsDataURL(file);
-    }
+  Array.from(e.dataTransfer.files||[]).forEach(function(file){
+    if(file.type.startsWith('image/')){var reader=new FileReader();reader.onload=function(ev){var d=ev.target.result;S.attachments.push({type:'image',name:file.name,mime:file.type,data:d.split(',')[1],preview:d});renderAttachRow();};reader.readAsDataURL(file);}
   });
 });
 
-// ═══════════════════════ ACTIONS ═══════════════════════
-function clearChat(){
-  if(!S.curConv)return;if(!confirm(T().clearConfirm))return;
-  var cv=S.convs.find(function(x){return x.id===S.curConv;});if(cv)cv.msgs=[];
-  renderMsgs([]);saveS();
-}
+function clearChat(){if(!S.curConv)return;if(!confirm(T().clearConfirm))return;var cv=S.convs.find(function(x){return x.id===S.curConv;});if(cv)cv.msgs=[];renderMsgs([]);saveS();}
 function openSettings(){updateCreds();checkDailyCredits();updateRoleDisplay();document.getElementById('settingsModal').classList.add('show');}
 function openAvatarModal(){
   if(!SESSION)return;var u=SESSION.user;
@@ -2567,7 +1603,7 @@ function logout(){localStorage.removeItem('nexus_session');location.replace('/')
 function useSugg(q){var inp=document.getElementById('inp');if(inp){inp.value=q;inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,130)+'px';inp.focus();}send();}
 function showInstall(){document.getElementById('installModal').classList.add('show');}
 function toggleSidebar(){
-  var app=document.getElementById('app');var icon=document.getElementById('collapseSbIcon');
+  var app=document.getElementById('app'),icon=document.getElementById('collapseSbIcon');
   app.classList.toggle('sb-hidden');
   if(icon)icon.innerHTML=app.classList.contains('sb-hidden')?'<polyline points="9 18 15 12 9 6"/>':'<polyline points="15 18 9 12 15 6"/>';
 }
@@ -2579,7 +1615,7 @@ function switchTab(tab,btn){
 }
 function likeMsg(btn,isLike){
   var msgEl=btn.closest('.msg.ai');if(!msgEl)return;
-  var lb=msgEl.querySelector('.mab[onclick*="true"]');var db=msgEl.querySelector('.mab[onclick*="false"]');
+  var lb=msgEl.querySelector('.mab[onclick*="true"]'),db=msgEl.querySelector('.mab[onclick*="false"]');
   if(isLike){if(lb)lb.classList.toggle('liked');if(db)db.classList.remove('disliked');}
   else{if(db)db.classList.toggle('disliked');if(lb)lb.classList.remove('liked');}
 }
@@ -2587,43 +1623,29 @@ function retryMsg(btn){
   var msgEl=btn.closest('.msg.ai');if(!msgEl)return;
   var idx=parseInt(msgEl.getAttribute('data-mid'));
   var cv=S.convs.find(function(x){return x.id===S.curConv;});if(!cv)return;
-  if(idx>0&&cv.msgs[idx-1]&&cv.msgs[idx-1].role==='user'){
-    var inp=document.getElementById('inp');if(inp){inp.value=cv.msgs[idx-1].content;inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,130)+'px';send();}}
+  if(idx>0&&cv.msgs[idx-1]&&cv.msgs[idx-1].role==='user'){var inp=document.getElementById('inp');if(inp){inp.value=cv.msgs[idx-1].content;inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,130)+'px';send();}}
 }
 function openShareModal(){
   var cv=S.convs.find(function(x){return x.id===S.curConv;});if(!cv)return;
-  var text='';
-  (cv.msgs||[]).forEach(function(m){
-    var name=m.role==='user'?('@'+(SESSION&&SESSION.user.username||'You')):'NEXUS AI';
-    var time=m.time?new Date(m.time).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}):'';
-    text+='['+time+'] '+name+':\n'+(m.content||'').replace(/```json[\s\S]*?```/g,'[JSON command]')+'\n\n';
-  });
+  var text='';(cv.msgs||[]).forEach(function(m){var name=m.role==='user'?('@'+(SESSION&&SESSION.user.username||'You')):'NEXUS AI';var time=m.time?new Date(m.time).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}):'';text+='['+time+'] '+name+':\n'+(m.content||'').replace(/```json[\s\S]*?```/g,'[JSON]')+'\n\n';});
   var ta=document.getElementById('shareModalTa');if(ta)ta.value=text;
   document.getElementById('shareModal').classList.add('show');
 }
 function copyShareText(){var ta=document.getElementById('shareModalTa');if(ta)navigator.clipboard.writeText(ta.value).then(function(){toast(T().copiedToast);});}
 async function sendReport(){
-  var ta=document.getElementById('reportTa');var btn=document.getElementById('reportBtn');var st=document.getElementById('reportStatus');
+  var ta=document.getElementById('reportTa'),btn=document.getElementById('reportBtn'),st=document.getElementById('reportStatus');
   if(!ta||!ta.value.trim())return;if(btn)btn.disabled=true;
-  try{
-    await fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({from:SESSION&&SESSION.user.username||'?',userId:SESSION&&SESSION.user.robloxId||'?',message:ta.value,type:'report',time:new Date().toISOString()})});
-    if(st)st.textContent='Terkirim';if(ta)ta.value='';
-  }catch(e){if(st)st.textContent='Error';}
+  try{await fetch(REPORT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({from:SESSION&&SESSION.user.username||'?',userId:SESSION&&SESSION.user.robloxId||'?',message:ta.value,type:'report',time:new Date().toISOString()})});if(st)st.textContent=curLang==='id'?'Terkirim':'Sent';if(ta)ta.value='';}catch(e){if(st)st.textContent='Error';}
   if(btn)setTimeout(function(){btn.disabled=false;},3000);
 }
 async function redeemCode(){
-  var inp=document.getElementById('redeemInput');var btn=document.getElementById('redeemBtn');var st=document.getElementById('redeemStatus');
+  var inp=document.getElementById('redeemInput'),btn=document.getElementById('redeemBtn'),st=document.getElementById('redeemStatus');
   if(!inp||!inp.value.trim())return;var code=inp.value.trim().toUpperCase();if(btn)btn.disabled=true;
-  try{
-    var r=await fetch('/api/redeem',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,user:(SESSION&&SESSION.user.username||'').toLowerCase(),userId:SESSION&&SESSION.user.robloxId||''})});
-    var d=await r.json();
-    if(d.success){S.credits+=parseFloat(d.credits||0);updateCreds();saveS();if(st)st.textContent='+'+(d.credits||0)+' CR';if(inp)inp.value='';}
-    else if(st)st.textContent='Error: '+(d.error||'Invalid');
-  }catch(e){if(st)st.textContent='Error';}
+  try{var r=await fetch('/api/redeem',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,user:(SESSION&&SESSION.user.username||'').toLowerCase(),userId:SESSION&&SESSION.user.robloxId||''})});var d=await r.json();if(d.success){S.credits+=parseFloat(d.credits||0);updateCreds();saveS();if(st)st.textContent='+'+(d.credits||0)+' CR';if(inp)inp.value='';}else if(st)st.textContent='Error: '+(d.error||'Invalid');}catch(e){if(st)st.textContent='Error';}
   if(btn)setTimeout(function(){btn.disabled=false;},3000);
 }
 
-// ═══════════════════════ GUI EDITOR ═══════════════════════
+// ── GUI EDITOR ──
 function addEl(type){
   guiElCounter++;var id='el'+guiElCounter;
   var defs={Frame:{w:200,h:120,bgColor:'#1e2040',text:'',textColor:'#ffffff'},TextLabel:{w:160,h:40,bgColor:'transparent',text:'Label',textColor:'#ffffff',fontSize:16},TextButton:{w:140,h:40,bgColor:'#00e5ff',text:'Button',textColor:'#030312',fontSize:14},TextBox:{w:180,h:36,bgColor:'#0a0b22',text:'',textColor:'#ffffff',fontSize:13},ImageLabel:{w:80,h:80,bgColor:'#1e2040',text:'',textColor:'#ffffff'}};
@@ -2644,8 +1666,7 @@ function renderGuiEl(id){
 }
 function selectEl(id){selectedElId=id;document.querySelectorAll('.gui-el').forEach(function(el){el.classList.remove('selected');});var el=document.querySelector('[data-elid="'+id+'"]');if(el)el.classList.add('selected');updatePropsPanel();}
 function updatePropsPanel(){
-  var p=document.getElementById('guiProps');if(!p)return;
-  var t=T();
+  var p=document.getElementById('guiProps');if(!p)return;var t=T();
   if(!selectedElId||!guiElements[selectedElId]){p.innerHTML='<div style="font-size:10px;color:var(--dim);text-align:center;padding:20px 0;">'+t.guiPropsEmpty+'</div>';return;}
   var el=guiElements[selectedElId];
   p.innerHTML='<div style="font-size:9px;color:var(--cyan);font-family:Orbitron,sans-serif;letter-spacing:1px;margin-bottom:8px;">'+el.type+'</div>'+
@@ -2668,19 +1689,13 @@ function deleteEl(elId){delete guiElements[elId];var el=document.querySelector('
 function clearCanvas(){guiElements={};guiElCounter=0;selectedElId=null;var c=document.getElementById('guiCanvasInner');if(c)c.querySelectorAll('.gui-el').forEach(function(el){el.remove();});document.getElementById('guiEmpty').style.display='';updatePropsPanel();}
 function generateGuiCode(){
   var t=T();var els=Object.values(guiElements);if(!els.length){toast(t.addElementFirst,'var(--yellow)');return;}
-  var lines=['-- GUI Script Generated by NEXUS AI','-- LocalScript -> StarterGui','local Players=game:GetService("Players")',
-    'local TweenService=game:GetService("TweenService")',
-    'local player=Players.LocalPlayer','local playerGui=player:WaitForChild("PlayerGui")',
-    '','local screenGui=Instance.new("ScreenGui")','screenGui.Name="NexusGUI"',
-    'screenGui.ResetOnSpawn=false','screenGui.IgnoreGuiInset=true','screenGui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling','screenGui.Parent=playerGui',''];
+  var lines=['-- GUI Script Generated by NEXUS AI','-- LocalScript -> StarterGui','local Players=game:GetService("Players")','local TweenService=game:GetService("TweenService")','local player=Players.LocalPlayer','local playerGui=player:WaitForChild("PlayerGui")','','local screenGui=Instance.new("ScreenGui")','screenGui.Name="NexusGUI"','screenGui.ResetOnSpawn=false','screenGui.IgnoreGuiInset=true','screenGui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling','screenGui.Parent=playerGui',''];
   els.forEach(function(el){
     var v=el.name.replace(/[^a-zA-Z0-9_]/g,'_');
-    lines.push('-- '+el.type+': '+el.name);
-    lines.push('local '+v+'=Instance.new("'+el.type+'")');
-    lines.push(v+'.Name="'+el.name+'"');
-    lines.push(v+'.Size=UDim2.new(0,'+el.w+',0,'+el.h+')');
-    lines.push(v+'.Position=UDim2.new(0,'+el.x+',0,'+el.y+')');
-    if(el.bgColor&&el.bgColor!=='transparent'){var hex=el.bgColor.replace('#','');if(hex.length>=6)lines.push(v+'.BackgroundColor3=Color3.fromRGB('+parseInt(hex.substr(0,2),16)+','+parseInt(hex.substr(2,2),16)+','+parseInt(hex.substr(4,2),16)+')');}else{lines.push(v+'.BackgroundTransparency=1');}
+    lines.push('-- '+el.type+': '+el.name);lines.push('local '+v+'=Instance.new("'+el.type+'")');lines.push(v+'.Name="'+el.name+'"');
+    lines.push(v+'.Size=UDim2.new(0,'+el.w+',0,'+el.h+')');lines.push(v+'.Position=UDim2.new(0,'+el.x+',0,'+el.y+')');
+    if(el.bgColor&&el.bgColor!=='transparent'){var hex=el.bgColor.replace('#','');if(hex.length>=6)lines.push(v+'.BackgroundColor3=Color3.fromRGB('+parseInt(hex.substr(0,2),16)+','+parseInt(hex.substr(2,2),16)+','+parseInt(hex.substr(4,2),16)+')');}
+    else lines.push(v+'.BackgroundTransparency=1');
     if(el.textColor){var hex2=el.textColor.replace('#','');if(hex2.length>=6)lines.push(v+'.TextColor3=Color3.fromRGB('+parseInt(hex2.substr(0,2),16)+','+parseInt(hex2.substr(2,2),16)+','+parseInt(hex2.substr(4,2),16)+')');}
     if(el.text)lines.push(v+'.Text="'+el.text.replace(/"/g,'\\"')+'"');
     if(el.fontSize)lines.push(v+'.TextSize='+el.fontSize);
@@ -2698,34 +1713,18 @@ async function generateGuiFromAI(){
   var t=T();var prompt=document.getElementById('guiAIPrompt');if(!prompt||!prompt.value.trim())return;
   closeModal('guiAIChatModal');var loading=document.getElementById('guiLoading');if(loading)loading.classList.add('show');
   try{
-    var body={provider:S.guiModel.prov||'gemini',model:S.guiModel.id,
-      system:'Output ONLY a JSON array. Each element: {"type":"Frame|TextLabel|TextButton|TextBox|ImageLabel","name":"str","x":N,"y":N,"w":N(>40),"h":N(>20),"bgColor":"#hex or transparent","textColor":"#hex","text":"str","fontSize":N,"cornerRadius":N}. w,h MUST be >0.',
-      messages:[{role:'user',content:'Create Roblox GUI: '+prompt.value}],max_tokens:2000};
+    var body={provider:S.guiModel.prov||'gemini',model:S.guiModel.id,system:'Output ONLY a JSON array. Each element: {"type":"Frame|TextLabel|TextButton|TextBox|ImageLabel","name":"str","x":N,"y":N,"w":N(>40),"h":N(>20),"bgColor":"#hex or transparent","textColor":"#hex","text":"str","fontSize":N,"cornerRadius":N}.',messages:[{role:'user',content:'Create Roblox GUI: '+prompt.value}],max_tokens:2000};
     var r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(r.ok){
-      var d=await r.json();var content=d.content||'';
-      try{
-        var jm=content.match(/\[[\s\S]+\]/);
-        if(jm){var els=JSON.parse(jm[0]);clearCanvas();
-          els.forEach(function(el){guiElCounter++;var id='el'+guiElCounter;guiElements[id]=Object.assign({id:id,cornerRadius:0,fontSize:14,text:'',bgColor:'#1e2040',textColor:'#ffffff'},el,{w:Math.max(el.w||200,40),h:Math.max(el.h||100,20)});renderGuiEl(id);});
-          document.getElementById('guiEmpty').style.display='none';
-        }
-      }catch(e){toast(t.aiResponseInvalid,'var(--yellow)');}
-    }
+    if(r.ok){var d=await r.json();var content=d.content||'';try{var jm=content.match(/\[[\s\S]+\]/);if(jm){var els=JSON.parse(jm[0]);clearCanvas();els.forEach(function(el){guiElCounter++;var id='el'+guiElCounter;guiElements[id]=Object.assign({id:id,cornerRadius:0,fontSize:14,text:'',bgColor:'#1e2040',textColor:'#ffffff'},el,{w:Math.max(el.w||200,40),h:Math.max(el.h||100,20)});renderGuiEl(id);});document.getElementById('guiEmpty').style.display='none';}}catch(e){toast(t.aiResponseInvalid,'var(--yellow)');}}
   }catch(e){toast('Error: '+e.message,'var(--pink)');}
   if(loading)loading.classList.remove('show');
 }
 async function sendGuiToPlace(){
   var t=T();if(!studioConnected){toast(t.guiNotConnectedToast,'var(--pink)');return;}
   var els=Object.values(guiElements);if(!els.length){toast(t.addElementFirst,'var(--yellow)');return;}
-  var cmds=[{action:'create_gui',name:'NexusGUI',parent:'StarterGui',elements:els.map(function(el){
-    function hexRgb(h){var r=h.replace('#','');return r.length>=6?[parseInt(r.substr(0,2),16),parseInt(r.substr(2,2),16),parseInt(r.substr(4,2),16)]:[30,30,64];}
-    return{class:el.type,name:el.name,size:[0,el.w,0,el.h],position:[0,el.x,0,el.y],background_color:el.bgColor&&el.bgColor!=='transparent'?hexRgb(el.bgColor):[30,30,64],text_color:hexRgb(el.textColor||'#ffffff'),text:el.text||'',text_size:el.fontSize,corner_radius:el.cornerRadius||0};
-  })}];
-  try{
-    var r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'batch_commands',commands:cmds,_user:SESSION?SESSION.user.username:'web',target:(SESSION?SESSION.user.username:'').toLowerCase()})});
-    var d=await r.json();if(d.pushed>0)toast(t.guiSentToast,'var(--green)');else toast('Sent','var(--dim)');
-  }catch(e){toast('Error: '+e.message,'var(--pink)');}
+  function hexRgb(h){var r=h.replace('#','');return r.length>=6?[parseInt(r.substr(0,2),16),parseInt(r.substr(2,2),16),parseInt(r.substr(4,2),16)]:[30,30,64];}
+  var cmds=[{action:'create_gui',name:'NexusGUI',parent:'StarterGui',elements:els.map(function(el){return{class:el.type,name:el.name,size:[0,el.w,0,el.h],position:[0,el.x,0,el.y],background_color:el.bgColor&&el.bgColor!=='transparent'?hexRgb(el.bgColor):[30,30,64],text_color:hexRgb(el.textColor||'#ffffff'),text:el.text||'',text_size:el.fontSize,corner_radius:el.cornerRadius||0};})}];
+  try{var r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'batch_commands',commands:cmds,_user:SESSION?SESSION.user.username:'web',target:(SESSION?SESSION.user.username:'').toLowerCase()})});var d=await r.json();if(d.pushed>0)toast(t.guiSentToast,'var(--green)');else toast('Sent','var(--dim)');}catch(e){toast('Error: '+e.message,'var(--pink)');}
 }
 function startDrag(e,elId){
   if(e.target.classList.contains('gui-resize'))return;e.preventDefault();selectEl(elId);
@@ -2743,7 +1742,7 @@ function startResize(e,elId){
   document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',onUp);
 }
 
-// ═══════════════════════ INIT ═══════════════════════
+// ── INIT ──
 async function initApp(){
   if(!SESSION)return;
   S.currentProjectId=getProjectIdFromUrl();
@@ -2751,8 +1750,8 @@ async function initApp(){
   if(S.currentProjectId){
     S.currentProjectName=getProjectName(S.currentProjectId)||null;
     if(!S.currentProjectName&&SESSION.data&&SESSION.data.projects){
-      var p=SESSION.data.projects.find(function(x){return x.id===S.currentProjectId;});
-      if(p)S.currentProjectName=p.name;
+      var proj=SESSION.data.projects.find(function(x){return x.id===S.currentProjectId;});
+      if(proj)S.currentProjectName=proj.name;
     }
   }
   updateProjectUI();
@@ -2762,8 +1761,7 @@ async function initApp(){
     av.src=u.avatar||'nexusai.png';
     av.onerror=function(){
       this.style.cssText='width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(0,229,255,.35);background:linear-gradient(135deg,rgba(0,229,255,.2),rgba(136,0,255,.2));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#00e5ff;object-fit:initial;flex-shrink:0;cursor:pointer;transition:.2s;';
-      this.alt=u.username?u.username.charAt(0).toUpperCase():'N';
-      this.src='';
+      this.alt=u.username?u.username.charAt(0).toUpperCase():'N';this.src='';
     };
   }
   var un=document.getElementById('sbUn');if(un)un.textContent='@'+(u.username||'-');
@@ -2778,7 +1776,7 @@ async function initApp(){
   if(urlp.get('settings')==='true')setTimeout(function(){openSettings();},600);
 }
 
-// ═══════════════════════ EVENTS ═══════════════════════
+// ── EVENTS ──
 document.querySelectorAll('.ov').forEach(function(ov){ov.addEventListener('click',function(e){if(e.target===ov)ov.classList.remove('show');});});
 document.getElementById('inp').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,130)+'px';saveDraft();});
 document.getElementById('inp').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
