@@ -8,151 +8,311 @@
 <link rel="icon" href="nexusai.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#030312;--bg2:#06071a;--bg3:#0a0b22;
-  --cyan:#00e5ff;--cyan2:rgba(0,229,255,.35);--cyan3:rgba(0,229,255,.12);
-  --purple:#8800ff;--pink:#ff2d6b;--green:#00ffaa;--yellow:#ffd600;--orange:#ff6b00;
-  --text:#b8cfff;--dim:#3a4a7a;--b:rgba(0,229,255,.12);--r:10px;
+:root {
+  --bg: #030312; --bg2: #06071a; --bg3: #0a0b22;
+  --cyan: #00e5ff; --cyan2: rgba(0,229,255,.35); --cyan3: rgba(0,229,255,.12);
+  --purple: #8800ff; --pink: #ff2d6b; --green: #00ffaa;
+  --yellow: #ffd600; --orange: #ff6b00;
+  --text: #b8cfff; --dim: #3a4a7a;
+  --b: rgba(0,229,255,.12); --r: 10px;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{min-height:100%;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--text);font-size:13px;}
-body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0,229,255,.012)1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.012)1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  min-height: 100%;
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    linear-gradient(rgba(0,229,255,.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,.012) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+}
 
-/* NAV */
-.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(3,3,18,.92);border-bottom:1px solid var(--b);backdrop-filter:blur(10px);}
-.nav-logo{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
-.nav-back{display:flex;align-items:center;gap:6px;color:var(--dim);font-size:10px;cursor:pointer;border:none;background:none;padding:4px 10px;border-radius:5px;border:1px solid var(--b);transition:.15s;}
-.nav-back:hover{color:var(--cyan);border-color:var(--cyan);}
+/* ── NAV ── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(3,3,18,.95);
+  border-bottom: 1px solid var(--b);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px; font-weight: 900;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-decoration: none; letter-spacing: 1px;
+}
+.nav-back {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--dim); font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  cursor: pointer; border: 1px solid var(--b);
+  background: transparent; padding: 5px 12px; border-radius: 6px;
+  transition: .15s; letter-spacing: .5px;
+}
+.nav-back:hover { color: var(--cyan); border-color: var(--cyan2); }
 
-/* MAIN */
-.main{max-width:680px;margin:0 auto;padding:30px 16px 60px;position:relative;z-index:1;}
+/* ── MAIN ── */
+.main {
+  max-width: 680px; margin: 0 auto;
+  padding: 30px 16px 80px;
+  position: relative; z-index: 1;
+}
 
-/* HERO */
-.hero{text-align:center;margin-bottom:32px;}
-.hero-icon{font-size:40px;margin-bottom:12px;}
-.hero-title{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;}
-.hero-sub{font-size:11px;color:var(--dim);}
+/* ── HERO ── */
+.hero { text-align: center; margin-bottom: 32px; }
+.hero-icon { font-size: 42px; margin-bottom: 14px; display: block; }
+.hero-title {
+  font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 6px; letter-spacing: 1px;
+}
+.hero-sub { font-size: 11px; color: var(--dim); letter-spacing: .5px; }
 
-/* USER CARD */
-.user-card{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:12px 16px;margin-bottom:28px;}
-.user-av{width:40px;height:40px;border-radius:50%;border:2px solid var(--cyan2);object-fit:cover;flex-shrink:0;}
-.user-info .un{font-size:12px;color:white;font-weight:600;}
-.user-info .cr{font-size:10px;color:var(--dim);margin-top:2px;}
-.user-info .cr span{color:var(--yellow);font-weight:700;}
+/* ── STEPS BAR ── */
+.steps-bar {
+  display: flex; align-items: center;
+  margin-bottom: 28px;
+}
+.step-item { display: flex; align-items: center; flex: 1; }
+.step-dot {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1.5px solid var(--dim);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-family: 'Orbitron', sans-serif; font-weight: 700;
+  color: var(--dim); flex-shrink: 0; transition: .3s;
+}
+.step-dot.active { border-color: var(--cyan); color: var(--cyan); background: rgba(0,229,255,.06); box-shadow: 0 0 10px rgba(0,229,255,.2); }
+.step-dot.done { border-color: var(--green); color: var(--green); background: rgba(0,255,170,.06); }
+.step-line { flex: 1; height: 1px; background: var(--b); margin: 0 4px; transition: background .3s; }
+.step-line.done { background: var(--green); }
 
-/* SECTION TITLE */
-.sec-title{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--b);}
+/* ── USER CARD ── */
+.user-card {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg2); border: 1px solid var(--b);
+  border-radius: var(--r); padding: 12px 16px; margin-bottom: 28px;
+}
+.user-av {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 2px solid var(--cyan2); object-fit: cover; flex-shrink: 0;
+}
+.user-info .un { font-size: 12px; color: white; font-weight: 600; }
+.user-info .cr { font-size: 10px; color: var(--dim); margin-top: 2px; }
+.user-info .cr span { color: var(--yellow); font-weight: 700; }
 
-/* PLAN CARDS */
-.plans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;}
-.plan-card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:18px 16px;cursor:pointer;transition:.2s;position:relative;overflow:hidden;}
-.plan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:.2s;}
-.plan-card:hover{border-color:var(--cyan2);transform:translateY(-2px);}
-.plan-card.selected{border-color:var(--cyan);box-shadow:0 0 16px rgba(0,229,255,.15);}
-.plan-card.selected::before{background:linear-gradient(90deg,var(--cyan),var(--purple));}
-.plan-badge{font-size:9px;font-weight:700;letter-spacing:1px;margin-bottom:8px;}
-.plan-badge.free{color:var(--green);}
-.plan-badge.pro{color:var(--cyan);}
-.plan-price{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:white;margin-bottom:2px;}
-.plan-price sub{font-size:11px;color:var(--dim);}
-.plan-period{font-size:9px;color:var(--dim);margin-bottom:12px;}
-.plan-features{list-style:none;}
-.plan-features li{font-size:10px;color:var(--text);padding:3px 0;display:flex;align-items:center;gap:5px;}
-.plan-features li::before{content:'✓';color:var(--green);font-size:9px;flex-shrink:0;}
-.plan-features li.dim::before{content:'–';color:var(--dim);}
-.plan-features li.dim{color:var(--dim);}
-.pro-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:white;font-size:8px;font-family:'Orbitron',sans-serif;padding:2px 8px;border-radius:10px;font-weight:700;}
-.plan-btn{width:100%;padding:9px;margin-top:14px;border:none;border-radius:6px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:.2s;}
-.plan-btn.free-btn{background:rgba(0,255,170,.1);color:var(--green);border:1px solid rgba(0,255,170,.2);}
-.plan-btn.pro-btn{background:linear-gradient(135deg,var(--cyan),var(--purple));color:white;}
-.plan-btn:disabled{opacity:.4;cursor:not-allowed;}
+/* ── SECTION TITLE ── */
+.sec-title {
+  font-family: 'Orbitron', sans-serif; font-size: 9px; color: var(--dim);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--b);
+}
 
-/* CREDIT PACKS */
-.packs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:28px;}
-.pack-card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px 12px;cursor:pointer;transition:.2s;text-align:center;position:relative;}
-.pack-card:hover{border-color:var(--cyan2);transform:translateY(-2px);}
-.pack-card.selected{border-color:var(--yellow);box-shadow:0 0 14px rgba(255,214,0,.12);}
-.pack-card.popular::after{content:'POPULAR';position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--yellow);color:#000;font-size:7px;font-weight:700;padding:2px 8px;border-radius:0 0 5px 5px;font-family:'Orbitron',sans-serif;}
-.pack-cr{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--yellow);}
-.pack-label{font-size:9px;color:var(--dim);margin:2px 0 8px;}
-.pack-price{font-size:12px;color:white;font-weight:700;}
-.pack-sub{font-size:9px;color:var(--dim);}
+/* ── PLAN CARDS ── */
+.plans { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+.plan-card {
+  background: var(--bg2); border: 1px solid var(--b);
+  border-radius: var(--r); padding: 18px 16px;
+  cursor: pointer; transition: .2s; position: relative; overflow: hidden;
+}
+.plan-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; background: transparent; transition: .2s;
+}
+.plan-card:hover { border-color: var(--cyan2); transform: translateY(-2px); }
+.plan-card.selected { border-color: var(--cyan); box-shadow: 0 0 20px rgba(0,229,255,.15); }
+.plan-card.selected::before { background: linear-gradient(90deg, var(--cyan), var(--purple)); }
+.plan-badge { font-size: 9px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+.plan-badge.free { color: var(--green); }
+.plan-badge.pro { color: var(--cyan); }
+.plan-price { font-family: 'Orbitron', sans-serif; font-size: 21px; font-weight: 900; color: white; margin-bottom: 2px; }
+.plan-price sub { font-size: 10px; color: var(--dim); }
+.plan-period { font-size: 9px; color: var(--dim); margin-bottom: 12px; }
+.plan-features { list-style: none; }
+.plan-features li {
+  font-size: 10px; color: var(--text); padding: 3px 0;
+  display: flex; align-items: center; gap: 6px;
+}
+.plan-features li::before { content: '✓'; color: var(--green); font-size: 9px; flex-shrink: 0; }
+.plan-features li.dim::before { content: '–'; color: var(--dim); }
+.plan-features li.dim { color: var(--dim); }
+.pro-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  color: white; font-size: 7px; font-family: 'Orbitron', sans-serif;
+  padding: 2px 8px; border-radius: 10px; font-weight: 700;
+}
+.plan-btn {
+  width: 100%; padding: 9px; margin-top: 14px;
+  border: none; border-radius: 6px;
+  font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700;
+  cursor: pointer; letter-spacing: 1px; transition: .2s;
+}
+.plan-btn.free-btn { background: rgba(0,255,170,.08); color: var(--green); border: 1px solid rgba(0,255,170,.2); }
+.plan-btn.pro-btn { background: linear-gradient(135deg, var(--cyan), var(--purple)); color: white; }
+.plan-btn:disabled { opacity: .4; cursor: not-allowed; }
 
-/* PAYMENT METHOD */
-.pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
-.pay-card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:14px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:10px;}
-.pay-card:hover{border-color:var(--cyan2);}
-.pay-card.selected{border-color:var(--cyan);}
-.pay-icon{width:40px;height:40px;border-radius:8px;object-fit:contain;flex-shrink:0;background:white;padding:4px;}
-.pay-name{font-size:12px;font-weight:700;color:white;}
-.pay-sub{font-size:9px;color:var(--dim);}
-.pay-check{margin-left:auto;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--dim);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.2s;}
-.pay-card.selected .pay-check{background:var(--cyan);border-color:var(--cyan);}
-.pay-card.selected .pay-check::after{content:'✓';color:#000;font-size:9px;font-weight:700;}
+/* ── CREDIT PACKS ── */
+.packs { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 28px; }
+.pack-card {
+  background: var(--bg2); border: 1px solid var(--b);
+  border-radius: var(--r); padding: 16px 12px;
+  cursor: pointer; transition: .2s; text-align: center; position: relative;
+}
+.pack-card:hover { border-color: var(--cyan2); transform: translateY(-2px); }
+.pack-card.selected { border-color: var(--yellow); box-shadow: 0 0 16px rgba(255,214,0,.12); }
+.pack-card.popular::after {
+  content: 'POPULAR'; position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  background: var(--yellow); color: #000; font-size: 7px; font-weight: 700;
+  padding: 2px 8px; border-radius: 0 0 5px 5px; font-family: 'Orbitron', sans-serif;
+}
+.pack-cr { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; color: var(--yellow); }
+.pack-label { font-size: 9px; color: var(--dim); margin: 2px 0 8px; }
+.pack-price { font-size: 13px; color: white; font-weight: 700; }
+.pack-sub { font-size: 9px; color: var(--dim); margin-top: 2px; }
 
-/* ORDER SUMMARY */
-.order-box{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:16px 18px;margin-bottom:20px;}
-.order-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;}
-.order-row.total{border-top:1px solid var(--b);margin-top:8px;padding-top:12px;}
-.order-label{font-size:11px;color:var(--dim);}
-.order-val{font-size:11px;color:var(--text);}
-.order-total-val{font-family:'Orbitron',sans-serif;font-size:16px;color:var(--yellow);font-weight:700;}
+/* ── PAYMENT METHOD ── */
+.pay-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.pay-card {
+  background: var(--bg2); border: 1px solid var(--b);
+  border-radius: var(--r); padding: 14px; cursor: pointer;
+  transition: .2s; display: flex; align-items: center; gap: 10px;
+}
+.pay-card:hover { border-color: var(--cyan2); }
+.pay-card.selected { border-color: var(--cyan); box-shadow: 0 0 12px rgba(0,229,255,.1); }
+.pay-icon { width: 40px; height: 40px; border-radius: 8px; object-fit: contain; flex-shrink: 0; background: white; padding: 4px; }
+.pay-name { font-size: 12px; font-weight: 700; color: white; }
+.pay-sub { font-size: 9px; color: var(--dim); }
+.pay-check {
+  margin-left: auto; width: 18px; height: 18px;
+  border-radius: 50%; border: 1.5px solid var(--dim);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: .2s;
+}
+.pay-card.selected .pay-check { background: var(--cyan); border-color: var(--cyan); }
+.pay-card.selected .pay-check::after { content: '✓'; color: #000; font-size: 9px; font-weight: 700; }
 
-/* PAYMENT INSTRUCTION */
-.pay-instruction{display:block;background:linear-gradient(135deg,rgba(0,229,255,.04),rgba(136,0,255,.04));border:1px solid var(--cyan2);border-radius:var(--r);padding:18px;margin-bottom:20px;}
-.inst-title{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--cyan);margin-bottom:12px;}
-.inst-number{font-size:18px;font-weight:700;color:white;letter-spacing:2px;font-family:'Orbitron',sans-serif;background:var(--bg3);padding:10px 14px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;cursor:pointer;border:1px solid var(--b);}
-.inst-number:hover{border-color:var(--cyan);}
-.inst-steps{list-style:none;}
-.inst-steps li{font-size:11px;color:var(--text);padding:4px 0;display:flex;gap:8px;}
-.inst-steps li span.num{color:var(--cyan);font-weight:700;flex-shrink:0;width:16px;}
-.inst-name{font-size:10px;color:var(--dim);margin-bottom:8px;}
-.inst-warn{margin-top:12px;padding:10px;background:rgba(255,214,0,.05);border:1px solid rgba(255,214,0,.2);border-radius:6px;font-size:10px;color:var(--yellow);}
+/* ── ORDER SUMMARY ── */
+.order-box {
+  background: var(--bg2); border: 1px solid var(--b);
+  border-radius: var(--r); padding: 16px 18px; margin-bottom: 20px;
+}
+.order-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
+.order-row.total { border-top: 1px solid var(--b); margin-top: 8px; padding-top: 12px; }
+.order-label { font-size: 11px; color: var(--dim); }
+.order-val { font-size: 11px; color: var(--text); }
+.order-total-val { font-family: 'Orbitron', sans-serif; font-size: 16px; color: var(--yellow); font-weight: 700; }
 
-/* CONFIRM BUTTON */
-.btn-pay{width:100%;padding:14px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:var(--r);color:white;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;letter-spacing:1px;}
-.btn-pay:hover{opacity:.88;transform:translateY(-1px);}
-.btn-pay:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+/* ── PAYMENT INSTRUCTION ── */
+.pay-instruction {
+  background: linear-gradient(135deg, rgba(0,229,255,.04), rgba(136,0,255,.04));
+  border: 1px solid var(--cyan2); border-radius: var(--r);
+  padding: 20px; margin-bottom: 20px;
+}
+.inst-title { font-family: 'Orbitron', sans-serif; font-size: 11px; color: var(--cyan); margin-bottom: 4px; }
+.inst-name { font-size: 10px; color: var(--dim); margin-bottom: 12px; }
+.inst-number {
+  font-size: 18px; font-weight: 700; color: white; letter-spacing: 2px;
+  font-family: 'Orbitron', sans-serif; background: var(--bg3);
+  padding: 10px 14px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; cursor: pointer; border: 1px solid var(--b); transition: .15s;
+}
+.inst-number:hover { border-color: var(--cyan); }
+.inst-steps { list-style: none; }
+.inst-steps li { font-size: 11px; color: var(--text); padding: 4px 0; display: flex; gap: 8px; }
+.inst-steps li .num { color: var(--cyan); font-weight: 700; flex-shrink: 0; width: 18px; }
+.inst-amount-verify { margin-top: 14px; }
+.inst-amount-verify label { font-size: 10px; color: var(--dim); display: block; margin-bottom: 6px; }
+.inst-amount-verify input {
+  width: 100%; background: var(--bg3); border: 1px solid var(--b);
+  border-radius: 6px; padding: 9px 12px; color: white;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none;
+  transition: border-color .15s;
+}
+.inst-amount-verify input:focus { border-color: var(--cyan2); }
+.inst-amount-verify input.valid { border-color: var(--green); }
+.inst-amount-verify input.invalid { border-color: var(--pink); }
+.verify-msg { font-size: 9px; margin-top: 5px; }
+.inst-warn {
+  margin-top: 14px; padding: 10px 12px;
+  background: rgba(255,214,0,.05); border: 1px solid rgba(255,214,0,.2);
+  border-radius: 6px; font-size: 10px; color: var(--yellow); line-height: 1.6;
+}
 
-/* STEPS */
-.steps-bar{display:flex;align-items:center;gap:0;margin-bottom:28px;}
-.step-item{display:flex;align-items:center;flex:1;}
-.step-dot{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--dim);display:flex;align-items:center;justify-content:center;font-size:10px;font-family:'Orbitron',sans-serif;font-weight:700;color:var(--dim);flex-shrink:0;transition:.3s;}
-.step-dot.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,.06);}
-.step-dot.done{border-color:var(--green);color:var(--green);background:rgba(0,255,170,.06);}
-.step-line{flex:1;height:1px;background:var(--b);}
-.step-line.done{background:var(--green);}
+/* ── BUTTONS ── */
+.btn-pay {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  border: none; border-radius: var(--r);
+  color: white; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700;
+  cursor: pointer; transition: .2s; letter-spacing: 1px;
+}
+.btn-pay:hover:not(:disabled) { opacity: .88; transform: translateY(-1px); }
+.btn-pay:disabled { opacity: .35; cursor: not-allowed; transform: none; }
 
-/* VIEWS */
-.view{display:none;}
-.view.active{display:block;}
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-/* TOAST */
-.toast-el{position:fixed;bottom:22px;right:22px;background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:10px 16px;font-size:11px;z-index:9999;transition:.3s;transform:translateY(10px);opacity:0;}
-.toast-el.show{transform:none;opacity:1;}
+/* ── CONFIRMED ── */
+.confirmed {
+  text-align: center; padding: 48px 0;
+  animation: fadeIn .3s ease;
+}
+.confirmed-icon { font-size: 64px; margin-bottom: 20px; display: block; }
+.confirmed-title { font-family: 'Orbitron', sans-serif; font-size: 18px; color: var(--green); margin-bottom: 12px; letter-spacing: 1px; }
+.confirmed-text { color: var(--dim); font-size: 11px; line-height: 1.8; margin-bottom: 8px; }
+.confirmed-contact { color: var(--text); font-size: 11px; margin-bottom: 32px; line-height: 1.8; }
+.confirmed-contact strong { color: var(--cyan); }
 
-@media(max-width:540px){
-  .plans{grid-template-columns:1fr 1fr;}
-  .packs{grid-template-columns:repeat(2,1fr);}
-  .pay-methods{grid-template-columns:1fr 1fr;}
+/* ── TOAST ── */
+.toast-el {
+  position: fixed; bottom: 22px; right: 22px;
+  background: var(--bg3); border: 1px solid var(--b);
+  border-radius: 8px; padding: 10px 16px; font-size: 11px;
+  z-index: 9999; transition: .3s; transform: translateY(10px); opacity: 0;
+  max-width: 260px; line-height: 1.5;
+}
+.toast-el.show { transform: none; opacity: 1; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  .hero-title { font-size: 18px; }
+  .plans { grid-template-columns: 1fr 1fr; }
+  .packs { grid-template-columns: 1fr 1fr; }
+  .pay-methods { grid-template-columns: 1fr 1fr; }
+  .plan-price { font-size: 18px; }
 }
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav class="nav">
   <a href="/chats" class="nav-logo">NEXUS AI</a>
   <button class="nav-back" onclick="goBack()">← Back</button>
 </nav>
 
 <div class="main">
+
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-icon">⭐</div>
+    <span class="hero-icon">⭐</span>
     <div class="hero-title">Get Credits</div>
     <div class="hero-sub">Choose a package that suits your needs</div>
   </div>
 
-  <!-- STEPS -->
+  <!-- STEPS BAR -->
   <div class="steps-bar" id="stepsBar">
     <div class="step-item">
       <div class="step-dot active" id="sd1">1</div>
@@ -167,20 +327,19 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     </div>
   </div>
 
-  <!-- USER INFO -->
+  <!-- USER CARD -->
   <div class="user-card">
-    <img class="user-av" id="payUserAv" src="nexusai.png" alt="">
+    <img class="user-av" id="payUserAv" src="nexusai.png" alt="avatar">
     <div class="user-info">
-      <div class="un" id="payUserName">-</div>
-      <div class="cr">Credits: <span id="payUserCR">-</span> CR</div>
+      <div class="un" id="payUserName">—</div>
+      <div class="cr">Balance: <span id="payUserCR">—</span> CR</div>
     </div>
   </div>
 
-  <!-- VIEW 1: SELECT PACKAGE -->
+  <!-- ── VIEW 1: SELECT PACKAGE ── -->
   <div class="view active" id="view1">
-    <div class="sec-title">Select Package</div>
 
-    <!-- PLANS -->
+    <div class="sec-title">Subscription Plans</div>
     <div class="plans">
       <!-- FREE -->
       <div class="plan-card" id="planFree" onclick="selectFreePlan()">
@@ -194,14 +353,15 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
           <li class="dim">Premium models</li>
           <li class="dim">Priority support</li>
         </ul>
-        <button class="plan-btn free-btn" id="freeBtnPlan" disabled>Active</button>
+        <button class="plan-btn free-btn" id="freeBtnPlan" disabled>Currently Active</button>
       </div>
-      <!-- PRO PLAN -->
+
+      <!-- PRO -->
       <div class="plan-card" id="planPro" onclick="selectProPlan()">
         <span class="pro-badge">HOT 🔥</span>
         <div class="plan-badge pro">PRO</div>
         <div class="plan-price">Rp 150K<sub style="font-size:10px;color:var(--dim);">/mo</sub></div>
-        <div class="plan-period">Monthly · Via OVO/DANA</div>
+        <div class="plan-period">Monthly · Via OVO / DANA</div>
         <ul class="plan-features">
           <li>200 CR instantly</li>
           <li>+25 CR daily (auto)</li>
@@ -214,28 +374,27 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       </div>
     </div>
 
-    <!-- CREDIT PACKS -->
-    <div class="sec-title">One‑time Credit Packs</div>
+    <div class="sec-title">One‑Time Credit Packs</div>
     <div class="packs">
-      <div class="pack-card" id="pack50" onclick="selectPack('50','38000','50 CR Starter')">
+      <div class="pack-card" id="pack50" onclick="selectPack('50', 38000, '50 CR Starter')">
         <div class="pack-cr">50</div>
         <div class="pack-label">Starter</div>
         <div class="pack-price">Rp 38K</div>
         <div class="pack-sub">≈ $2.38 USD</div>
       </div>
-      <div class="pack-card popular" id="pack80" onclick="selectPack('80','50000','80 CR Popular')">
+      <div class="pack-card popular" id="pack80" onclick="selectPack('80', 50000, '80 CR Popular')">
         <div class="pack-cr">80</div>
         <div class="pack-label">Popular</div>
         <div class="pack-price">Rp 50K</div>
         <div class="pack-sub">≈ $3.13 USD</div>
       </div>
-      <div class="pack-card" id="pack150" onclick="selectPack('150','120000','150 CR Pro')">
+      <div class="pack-card" id="pack150" onclick="selectPack('150', 120000, '150 CR Pro')">
         <div class="pack-cr">150</div>
         <div class="pack-label">Pro</div>
         <div class="pack-price">Rp 120K</div>
         <div class="pack-sub">≈ $7.50 USD</div>
       </div>
-      <div class="pack-card" id="pack500" onclick="selectPack('500','1500000','500 CR Mega')">
+      <div class="pack-card" id="pack500" onclick="selectPack('500', 1500000, '500 CR Mega')">
         <div class="pack-cr">500</div>
         <div class="pack-label">Mega</div>
         <div class="pack-price">Rp 1.5M</div>
@@ -243,13 +402,14 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       </div>
     </div>
 
-    <button class="btn-pay" id="btnNext1" onclick="goToPayment()" disabled>Continue to Payment →</button>
+    <button class="btn-pay" id="btnNext1" onclick="goToPayment()" disabled>
+      Continue to Payment →
+    </button>
   </div>
 
-  <!-- VIEW 2: PAYMENT METHOD -->
+  <!-- ── VIEW 2: PAYMENT METHOD ── -->
   <div class="view" id="view2">
-    <div class="sec-title">Select Payment Method</div>
-
+    <div class="sec-title">Payment Method</div>
     <div class="pay-methods">
       <div class="pay-card" id="payOVO" onclick="selectPayMethod('ovo')">
         <img class="pay-icon" src="icon/ovo.png" alt="OVO" onerror="this.style.display='none'">
@@ -274,58 +434,66 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
       <div class="sec-title" style="margin-bottom:10px;">Order Summary</div>
       <div class="order-row">
         <span class="order-label">Package</span>
-        <span class="order-val" id="sumPack">-</span>
+        <span class="order-val" id="sumPack">—</span>
       </div>
       <div class="order-row">
         <span class="order-label">Credits</span>
-        <span class="order-val" id="sumCR" style="color:var(--yellow);">-</span>
+        <span class="order-val" id="sumCR" style="color:var(--yellow);">—</span>
       </div>
       <div class="order-row">
         <span class="order-label">Method</span>
-        <span class="order-val" id="sumMethod">-</span>
+        <span class="order-val" id="sumMethod">—</span>
       </div>
       <div class="order-row total">
         <span class="order-label" style="color:white;font-weight:700;">Total</span>
-        <span class="order-total-val" id="sumTotal">-</span>
+        <span class="order-total-val" id="sumTotal">—</span>
       </div>
     </div>
 
     <div style="display:flex;gap:10px;">
-      <button class="nav-back" style="flex:1;justify-content:center;padding:12px;" onclick="goToView(1)">← Back</button>
-      <button class="btn-pay" style="flex:2;" id="btnPay" onclick="showPayInst()" disabled>View Payment Instructions →</button>
+      <button class="nav-back" style="flex:1;justify-content:center;padding:12px;border-radius:var(--r);" onclick="goToView(1)">← Back</button>
+      <button class="btn-pay" style="flex:2;" id="btnPay" onclick="showPayInst()" disabled>
+        View Payment Instructions →
+      </button>
     </div>
   </div>
 
-  <!-- VIEW 3: PAYMENT INSTRUCTION -->
+  <!-- ── VIEW 3: PAYMENT INSTRUCTION ── -->
   <div class="view" id="view3">
     <div class="sec-title">Payment Instructions</div>
 
-    <div class="pay-instruction" id="instBox">
+    <div class="pay-instruction">
       <div class="inst-title" id="instTitle">Transfer to OVO</div>
       <div class="inst-name" id="instName">Account name: NEXUS STUDIO</div>
       <div class="inst-number" id="instNumber" onclick="copyNumber()">
-        <span id="instNumVal">-</span>
-        <span style="font-size:9px;color:var(--dim);">Tap to copy number</span>
+        <span id="instNumVal">—</span>
+        <span style="font-size:9px;color:var(--dim);letter-spacing:.5px;">TAP TO COPY</span>
       </div>
 
       <ul class="inst-steps">
-        <li><span class="num">1.</span> Open your <strong id="instApp">OVO</strong> app</li>
-        <li><span class="num">2.</span> Select <strong>Transfer</strong> → enter the number above</li>
-        <li><span class="num">3.</span> Enter amount <strong id="instAmount">-</strong></li>
-        <li><span class="num">4.</span> In the note/memo, write: <strong id="instNote">-</strong></li>
-        <li><span class="num">5.</span> Confirm and complete the transfer</li>
-        <li><span class="num">6.</span> Screenshot the proof of transfer</li>
-        <li><span class="num">7.</span> Come back here and enter the exact amount to confirm:</li>
+        <li><span class="num">1.</span>Open your <strong id="instApp">OVO</strong> app</li>
+        <li><span class="num">2.</span>Select <strong>Transfer</strong> → enter the number above</li>
+        <li><span class="num">3.</span>Enter the exact amount: <strong id="instAmount">—</strong></li>
+        <li><span class="num">4.</span>In the note/memo field, write: <strong id="instNote">—</strong></li>
+        <li><span class="num">5.</span>Confirm and complete the transfer</li>
+        <li><span class="num">6.</span>Take a screenshot of your payment proof</li>
+        <li><span class="num">7.</span>Enter the transfer amount below to verify:</li>
       </ul>
-      <div style="margin-top:12px;">
-        <div style="font-size:10px;color:var(--dim);margin-bottom:6px;">Enter the transfer amount (Rp) to verify:</div>
-        <input type="number" id="confirmAmountInput" placeholder="e.g. 150000" style="width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:8px 12px;color:white;font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;" oninput="validatePaymentAmount(this.value)">
-        <div style="font-size:9px;color:var(--dim);margin-top:4px;" id="amountValidMsg"></div>
+
+      <div class="inst-amount-verify">
+        <label for="confirmAmountInput">Enter transfer amount (Rp) to confirm:</label>
+        <input
+          type="number"
+          id="confirmAmountInput"
+          placeholder="e.g. 150000"
+          oninput="validatePaymentAmount(this.value)"
+        >
+        <div class="verify-msg" id="amountValidMsg"></div>
       </div>
 
       <div class="inst-warn">
-        ⚠️ Credits will be added within <strong>1-24 hours</strong> after payment is verified.
-        Please keep your payment screenshot.
+        ⚠️ Credits will be added within <strong>1–24 hours</strong> after payment is verified.
+        Please keep your payment screenshot safe.
       </div>
     </div>
 
@@ -333,87 +501,109 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <div class="order-box">
       <div class="order-row">
         <span class="order-label">Package</span>
-        <span class="order-val" id="sumPack2">-</span>
+        <span class="order-val" id="sumPack2">—</span>
       </div>
       <div class="order-row total">
         <span class="order-label" style="color:white;font-weight:700;">Total to Pay</span>
-        <span class="order-total-val" id="sumTotal2">-</span>
+        <span class="order-total-val" id="sumTotal2">—</span>
       </div>
     </div>
 
-    <div style="display:flex;gap:10px;flex-direction:column;">
-      <button class="btn-pay" id="btnDone" onclick="confirmPayment()" disabled style="opacity:0.4;cursor:not-allowed;">✅ I Have Paid</button>
-      <button class="nav-back" style="width:100%;justify-content:center;padding:10px;" onclick="goToView(2)">← Back</button>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button class="btn-pay" id="btnDone" onclick="confirmPayment()" disabled>
+        ✅ I Have Transferred — Confirm Payment
+      </button>
+      <button class="nav-back" style="width:100%;justify-content:center;padding:10px;border-radius:var(--r);" onclick="goToView(2)">← Back</button>
     </div>
   </div>
 
-  <!-- VIEW 4: CONFIRMED -->
-  <div class="view" id="view4" style="text-align:center;padding:40px 0;">
-    <div style="font-size:60px;margin-bottom:20px;">✅</div>
-    <div style="font-family:'Orbitron',sans-serif;font-size:18px;color:var(--green);margin-bottom:12px;">Payment Confirmed!</div>
-    <p style="color:var(--dim);font-size:11px;margin-bottom:8px;">Your credits will be added within 1-24 hours after verification.</p>
-    <p style="color:var(--dim);font-size:11px;margin-bottom:28px;">Keep your payment screenshot for reference.</p>
-    <p style="color:var(--text);font-size:11px;margin-bottom:28px;">For inquiries, contact:<br><strong style="color:var(--cyan);">arifiinytid@gmail.com</strong></p>
-    <button class="btn-pay" onclick="window.location.href='/chats'">← Back to NEXUS AI</button>
+  <!-- ── VIEW 4: CONFIRMED ── -->
+  <div class="view" id="view4">
+    <div class="confirmed">
+      <span class="confirmed-icon">✅</span>
+      <div class="confirmed-title">Payment Submitted!</div>
+      <p class="confirmed-text">Your credits will be added within 1–24 hours after verification.<br>Please keep your payment screenshot for reference.</p>
+      <p class="confirmed-contact">For inquiries, contact us at:<br><strong>arifiinytid@gmail.com</strong><br>or join our Discord: <strong>discord.gg/HuGtbRvD</strong></p>
+      <button class="btn-pay" onclick="window.location.href='/chats'" style="max-width:320px;margin:0 auto;">
+        ← Back to NEXUS AI
+      </button>
+    </div>
   </div>
-</div>
+
+</div><!-- /main -->
+
+<!-- TOAST CONTAINER (dynamically added) -->
 
 <script>
-var OVO_NUMBER = '', DANA_NUMBER = '', OWNER_NAME = 'NEXUS STUDIO', paymentLoaded = false;
+// ── CONFIG ───────────────────────────────────────────────────────────────────
+var OVO_NUMBER = '';
+var DANA_NUMBER = '';
+var OWNER_NAME = 'NEXUS STUDIO';
+var paymentLoaded = false;
+
 async function loadPaymentConfig() {
   try {
     var r = await fetch('/api/payment');
     if (r.ok) {
       var d = await r.json();
-      OVO_NUMBER = (d.ovo && d.ovo.number) ? d.ovo.number : '';
+      OVO_NUMBER  = (d.ovo  && d.ovo.number)  ? d.ovo.number  : '';
       DANA_NUMBER = (d.dana && d.dana.number) ? d.dana.number : '';
-      OWNER_NAME = d.owner || 'NEXUS STUDIO';
+      OWNER_NAME  = d.owner || 'NEXUS STUDIO';
       paymentLoaded = true;
     }
-  } catch(e) {}
+  } catch (e) { /* silent */ }
 }
 
+// ── STATE ────────────────────────────────────────────────────────────────────
 var sel = { pack: null, cr: 0, price: 0, priceStr: '', label: '', method: null };
 var currentView = 1;
 var SESSION = null;
 
+// ── INIT ─────────────────────────────────────────────────────────────────────
 (function init() {
   try {
-    var s = localStorage.getItem('nexus_session');
-    if (s) {
-      SESSION = JSON.parse(s);
+    var raw = localStorage.getItem('nexus_session');
+    if (raw) {
+      SESSION = JSON.parse(raw);
       var u = SESSION.user || {};
       var av = document.getElementById('payUserAv');
       if (av) av.src = u.avatar || 'nexusai.png';
       var nm = document.getElementById('payUserName');
-      if (nm) nm.textContent = '@' + (u.username || '-');
+      if (nm) nm.textContent = '@' + (u.username || '—');
       var cr = document.getElementById('payUserCR');
-      var credits = (SESSION.data && SESSION.data.credits !== undefined) ? parseFloat(SESSION.data.credits).toFixed(2) : '-';
+      var credits = (SESSION.data && SESSION.data.credits !== undefined)
+        ? parseFloat(SESSION.data.credits).toFixed(2)
+        : '—';
       if (cr) cr.textContent = credits;
     }
-  } catch(e) {}
+  } catch (e) { /* silent */ }
   loadPaymentConfig();
 })();
 
+// ── HELPERS ──────────────────────────────────────────────────────────────────
 function goBack() {
   if (currentView > 1) goToView(currentView - 1);
   else window.location.href = '/chats';
 }
 
-function toast(msg, col) {
+function toast(msg, color) {
   var t = document.createElement('div');
   t.className = 'toast-el';
   t.textContent = msg;
-  t.style.color = col || 'var(--cyan)';
+  t.style.color = color || 'var(--cyan)';
   document.body.appendChild(t);
   setTimeout(function() { t.classList.add('show'); }, 10);
-  setTimeout(function() { t.classList.remove('show'); setTimeout(function() { t.remove(); }, 400); }, 3000);
+  setTimeout(function() {
+    t.classList.remove('show');
+    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 400);
+  }, 3000);
 }
 
 function goToView(n) {
   document.getElementById('view' + currentView).classList.remove('active');
   document.getElementById('view' + n).classList.add('active');
   currentView = n;
+  // Update step indicators (steps 1-3 only)
   for (var i = 1; i <= 3; i++) {
     var sd = document.getElementById('sd' + i);
     if (!sd) continue;
@@ -426,20 +616,33 @@ function goToView(n) {
   window.scrollTo(0, 0);
 }
 
+function formatRp(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1) + 'M';
+  if (n >= 1000)    return Math.round(n / 1000) + 'K';
+  return String(n);
+}
+
+// ── PLAN / PACK SELECTION ────────────────────────────────────────────────────
+function clearPackSelections() {
+  ['pack50','pack80','pack150','pack500'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.remove('selected');
+  });
+  var planPro = document.getElementById('planPro');
+  if (planPro) planPro.style.borderColor = '';
+}
+
 function selectFreePlan() {
   toast('You are already on the Free plan!', 'var(--green)');
 }
 
 function selectProPlan() {
-  sel.pack = 'pro-plan';
-  sel.cr = 200;
-  sel.price = 150000;
+  clearPackSelections();
+  sel.pack     = 'pro-plan';
+  sel.cr       = 200;
+  sel.price    = 150000;
   sel.priceStr = 'Rp 150K';
-  sel.label = 'Pro Plan (1 Month) · 200 CR';
-  ['pack50', 'pack80', 'pack150', 'pack500'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.classList.remove('selected');
-  });
+  sel.label    = 'Pro Plan (1 Month) · 200 CR';
   var planPro = document.getElementById('planPro');
   if (planPro) planPro.style.borderColor = 'var(--cyan)';
   var btnNext = document.getElementById('btnNext1');
@@ -448,40 +651,32 @@ function selectProPlan() {
 }
 
 function selectPack(cr, price, label) {
-  ['pack50', 'pack80', 'pack150', 'pack500'].forEach(function(id) {
-    document.getElementById(id).classList.remove('selected');
-  });
-  var planPro = document.getElementById('planPro');
-  if (planPro) planPro.style.borderColor = 'var(--b)';
-  var priceNum = parseInt(price);
-  sel.pack = cr;
-  sel.cr = parseInt(cr);
-  sel.price = priceNum;
-  sel.priceStr = 'Rp ' + formatRp(priceNum);
-  sel.label = label;
-  document.getElementById('pack' + cr).classList.add('selected');
+  clearPackSelections();
+  sel.pack     = cr;
+  sel.cr       = parseInt(cr, 10);
+  sel.price    = price;
+  sel.priceStr = 'Rp ' + formatRp(price);
+  sel.label    = label;
+  var el = document.getElementById('pack' + cr);
+  if (el) el.classList.add('selected');
   var btnNext = document.getElementById('btnNext1');
   if (btnNext) btnNext.disabled = false;
 }
 
-function formatRp(n) {
-  if (n >= 1000000) return (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1) + 'M';
-  if (n >= 1000) return Math.round(n / 1000) + 'K';
-  return n.toString();
-}
-
+// ── NAVIGATION ───────────────────────────────────────────────────────────────
 function goToPayment() {
-  if (!sel.pack) { toast('Select a package first!', 'var(--pink)'); return; }
-  document.getElementById('sumPack').textContent = sel.label;
-  document.getElementById('sumCR').textContent = sel.cr + ' CR';
-  document.getElementById('sumTotal').textContent = sel.priceStr;
-  document.getElementById('sumMethod').textContent = sel.method ? (sel.method === 'ovo' ? 'OVO' : 'DANA') : '-';
+  if (!sel.pack) { toast('Please select a package first.', 'var(--pink)'); return; }
+  document.getElementById('sumPack').textContent   = sel.label;
+  document.getElementById('sumCR').textContent     = sel.cr + ' CR';
+  document.getElementById('sumTotal').textContent  = sel.priceStr;
+  document.getElementById('sumMethod').textContent = sel.method
+    ? (sel.method === 'ovo' ? 'OVO' : 'DANA') : '—';
   goToView(2);
 }
 
 function selectPayMethod(m) {
   sel.method = m;
-  document.getElementById('payOVO').classList.toggle('selected', m === 'ovo');
+  document.getElementById('payOVO').classList.toggle('selected',  m === 'ovo');
   document.getElementById('payDANA').classList.toggle('selected', m === 'dana');
   document.getElementById('sumMethod').textContent = m === 'ovo' ? 'OVO' : 'DANA';
   var btnPay = document.getElementById('btnPay');
@@ -489,89 +684,96 @@ function selectPayMethod(m) {
 }
 
 function showPayInst() {
-  if (!sel.method) { toast('Select a payment method first!', 'var(--pink)'); return; }
+  if (!sel.method) { toast('Please select a payment method first.', 'var(--pink)'); return; }
   if (!paymentLoaded) {
-    toast('Loading payment configuration...', 'var(--yellow)');
+    toast('Loading payment configuration…', 'var(--yellow)');
     loadPaymentConfig().then(function() { if (paymentLoaded) showPayInst(); });
     return;
   }
-  var isOvo = sel.method === 'ovo';
-  var num = isOvo ? OVO_NUMBER : DANA_NUMBER;
-  var username = SESSION && SESSION.user ? SESSION.user.username : 'USER';
+  var isOvo   = sel.method === 'ovo';
+  var num     = isOvo ? OVO_NUMBER : DANA_NUMBER;
+  var uname   = SESSION && SESSION.user ? SESSION.user.username : 'USER';
 
-  document.getElementById('instTitle').textContent = 'Transfer to ' + (isOvo ? 'OVO' : 'DANA');
-  document.getElementById('instName').textContent = 'Account name: ' + OWNER_NAME;
-  document.getElementById('instNumVal').textContent = num;
-  document.getElementById('instApp').textContent = isOvo ? 'OVO' : 'DANA';
+  document.getElementById('instTitle').textContent  = 'Transfer to ' + (isOvo ? 'OVO' : 'DANA');
+  document.getElementById('instName').textContent   = 'Account name: ' + OWNER_NAME;
+  document.getElementById('instNumVal').textContent = num || '(not configured)';
+  document.getElementById('instApp').textContent    = isOvo ? 'OVO' : 'DANA';
   document.getElementById('instAmount').textContent = sel.priceStr;
-  document.getElementById('instNote').textContent = 'NEXUS-' + username + '-' + sel.cr + 'CR';
+  document.getElementById('instNote').textContent   = 'NEXUS-' + uname + '-' + sel.cr + 'CR';
+  document.getElementById('sumPack2').textContent   = sel.label;
+  document.getElementById('sumTotal2').textContent  = sel.priceStr;
 
-  document.getElementById('sumPack2').textContent = sel.label;
-  document.getElementById('sumTotal2').textContent = sel.priceStr;
-
+  // Reset verification
   var inp = document.getElementById('confirmAmountInput');
-  if (inp) inp.value = '';
+  if (inp) { inp.value = ''; inp.className = ''; }
   var msg = document.getElementById('amountValidMsg');
-  if (msg) msg.textContent = '';
-  var btn = document.getElementById('btnDone');
-  if (btn) { btn.disabled = true; btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed'; }
+  if (msg) { msg.textContent = ''; msg.style.color = ''; }
+  setDoneBtn(false);
 
   goToView(3);
 }
 
-function validatePaymentAmount(val) {
-  var amt = parseInt(val);
-  var expected = sel.price;
-  var msgEl = document.getElementById('amountValidMsg');
+// ── AMOUNT VALIDATION ────────────────────────────────────────────────────────
+function setDoneBtn(enabled) {
   var btn = document.getElementById('btnDone');
+  if (!btn) return;
+  btn.disabled = !enabled;
+  btn.style.opacity = enabled ? '1' : '0.35';
+  btn.style.cursor  = enabled ? 'pointer' : 'not-allowed';
+}
+
+function validatePaymentAmount(val) {
+  var amt      = parseInt(val, 10);
+  var expected = sel.price;
+  var msgEl    = document.getElementById('amountValidMsg');
+  var inp      = document.getElementById('confirmAmountInput');
+
   if (!amt || amt <= 0) {
-    if (msgEl) msgEl.textContent = '';
-    if (btn) { btn.disabled = true; btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed'; }
+    if (msgEl) { msgEl.textContent = ''; msgEl.style.color = ''; }
+    if (inp)   inp.className = '';
+    setDoneBtn(false);
     return;
   }
+
   if (amt === expected) {
-    if (msgEl) { msgEl.textContent = '✅ Amount matches! You can now confirm.'; msgEl.style.color = 'var(--green)'; }
-    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+    if (msgEl) { msgEl.textContent = '✅ Amount matches — you can now confirm.'; msgEl.style.color = 'var(--green)'; }
+    if (inp)   inp.className = 'valid';
+    setDoneBtn(true);
   } else if (Math.abs(amt - expected) < 1000) {
     if (msgEl) { msgEl.textContent = '⚠️ Close but not exact. Expected: Rp ' + expected.toLocaleString(); msgEl.style.color = 'var(--yellow)'; }
-    if (btn) { btn.disabled = true; btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed'; }
+    if (inp)   inp.className = 'invalid';
+    setDoneBtn(false);
   } else {
     if (msgEl) { msgEl.textContent = '❌ Amount does not match. Expected: Rp ' + expected.toLocaleString(); msgEl.style.color = 'var(--pink)'; }
-    if (btn) { btn.disabled = true; btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed'; }
+    if (inp)   inp.className = 'invalid';
+    setDoneBtn(false);
   }
 }
 
 function copyNumber() {
-  var isOvo = sel.method === 'ovo';
-  var num = isOvo ? OVO_NUMBER : DANA_NUMBER;
-  navigator.clipboard.writeText(num).then(function() {
-    toast('Number copied!', 'var(--green)');
-  }).catch(function() {
+  var num = sel.method === 'ovo' ? OVO_NUMBER : DANA_NUMBER;
+  if (!num) { toast('Number not available.', 'var(--pink)'); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(num)
+      .then(function() { toast('Number copied!', 'var(--green)'); })
+      .catch(function() { toast(num, 'var(--cyan)'); });
+  } else {
     toast(num, 'var(--cyan)');
-  });
+  }
 }
 
+// ── CONFIRM PAYMENT ──────────────────────────────────────────────────────────
 async function confirmPayment() {
-  if (!SESSION) return;
+  if (!SESSION) { toast('Session not found. Please log in again.', 'var(--pink)'); return; }
   var u = SESSION.user;
 
-  var packIdMapping = {
-    '50': 'small',
-    '80': 'popular',
-    '150': 'pro',
-    '500': 'mega',
-    'pro-plan': 'pro-plan'
-  };
-  var packId = packIdMapping[sel.pack];
-  if (!packId) {
-    toast('Invalid package selected', 'var(--pink)');
-    return;
-  }
+  var packIdMap = { '50':'small', '80':'popular', '150':'pro', '500':'mega', 'pro-plan':'pro-plan' };
+  var packId = packIdMap[sel.pack];
+  if (!packId) { toast('Invalid package selected.', 'var(--pink)'); return; }
+  if (!sel.method) { toast('No payment method selected.', 'var(--pink)'); return; }
 
-  if (!sel.method) {
-    toast('Select a payment method first', 'var(--pink)');
-    return;
-  }
+  var btnDone = document.getElementById('btnDone');
+  if (btnDone) { btnDone.disabled = true; btnDone.textContent = 'Submitting…'; }
 
   try {
     var response = await fetch('/api/payment', {
@@ -579,24 +781,26 @@ async function confirmPayment() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username: u.username,
-        userId: u.robloxId || '',
-        packId: packId,
-        method: sel.method,
-        amount: sel.price,
-        note: 'NEXUS-' + u.username + '-' + sel.cr + 'CR'
+        userId:   u.robloxId || '',
+        packId:   packId,
+        method:   sel.method,
+        amount:   sel.price,
+        note:     'NEXUS-' + u.username + '-' + sel.cr + 'CR'
       })
     });
-
     var data = await response.json();
     if (data.success) {
-      localStorage.setItem('lastPaymentId', data.transaction.id);
-      toast('Payment submitted! Waiting for verification.', 'var(--green)');
+      if (data.transaction && data.transaction.id)
+        localStorage.setItem('lastPaymentId', data.transaction.id);
+      toast('Payment submitted! Awaiting verification.', 'var(--green)');
       goToView(4);
     } else {
-      toast('Payment failed: ' + (data.error || 'Please try again.'), 'var(--pink)');
+      toast('Submission failed: ' + (data.error || 'Please try again.'), 'var(--pink)');
+      if (btnDone) { btnDone.disabled = false; btnDone.textContent = '✅ I Have Transferred — Confirm Payment'; }
     }
   } catch (e) {
     toast('Network error: ' + e.message, 'var(--pink)');
+    if (btnDone) { btnDone.disabled = false; btnDone.textContent = '✅ I Have Transferred — Confirm Payment'; }
   }
 }
 </script>
