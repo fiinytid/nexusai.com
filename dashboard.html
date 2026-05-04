@@ -1,502 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS AI — Dashboard</title>
-  <link rel="icon" href="nexusai.png">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #030312; --bg2: #06071a; --bg3: #0a0b22;
-      --cyan: #00e5ff; --purple: #8800ff; --pink: #ff2d6b;
-      --green: #00ffaa; --yellow: #ffd600;
-      --text: #b8cfff; --dim: #3a4a7a;
-      --b: rgba(0,229,255,.12); --r: 12px;
-    }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'JetBrains Mono', monospace;
-      background: var(--bg); color: var(--text);
-      min-height: 100vh; overflow-x: hidden;
-    }
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background:
-        radial-gradient(ellipse at 70% -5%, rgba(136,0,255,0.18) 0%, transparent 55%),
-        radial-gradient(ellipse at 0% 90%, rgba(0,229,255,0.07) 0%, transparent 45%),
-        linear-gradient(rgba(0,229,255,.005) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,229,255,.005) 1px, transparent 1px);
-      background-size: auto, auto, 40px 40px, 40px 40px;
-      pointer-events: none; z-index: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS AI — Dashboard</title>
+<link rel="icon" href="nexusai.png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030312;--bg2:#06071a;--bg3:#0a0b22;
+  --cyan:#00e5ff;--purple:#8800ff;--pink:#ff2d6b;
+  --green:#00ffaa;--yellow:#ffd600;
+  --text:#b8cfff;--dim:#3a4a7a;
+  --b:rgba(0,229,255,.12);--bb:rgba(0,229,255,.3);--r:12px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:"JetBrains Mono",monospace;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 72% -5%,rgba(136,0,255,.2) 0%,transparent 55%),radial-gradient(ellipse at 0% 88%,rgba(0,229,255,.07) 0%,transparent 45%),linear-gradient(rgba(0,229,255,.005) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.005) 1px,transparent 1px);background-size:auto,auto,40px 40px,40px 40px;pointer-events:none;z-index:0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes toastIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
-    /* ── LOADER ── */
-    #loader {
-      position: fixed; inset: 0; background: var(--bg); z-index: 9999;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 20px;
-    }
-    .loader-ring {
-      width: 48px; height: 48px; border-radius: 50%;
-      border: 2px solid rgba(0,229,255,.1);
-      border-top-color: var(--cyan);
-      animation: spin 1s linear infinite;
-    }
-    .loader-logo {
-      font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900;
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      letter-spacing: 3px;
-    }
-    .loader-sub { font-size: 9px; color: var(--dim); letter-spacing: 2px; text-transform: uppercase; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .4s;}
+#loader.hide{opacity:0;pointer-events:none;}
+.loader-logo{font-family:"Orbitron",sans-serif;font-size:24px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:3px;}
+.loader-ring{width:44px;height:44px;border-radius:50%;border:2px solid rgba(0,229,255,.1);border-top-color:var(--cyan);animation:spin 1s linear infinite;}
+.loader-sub{font-size:9px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;}
 
-    /* ── NAV ── */
-    .nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 36px; height: 58px;
-      background: rgba(3,3,18,0.9);
-      border-bottom: 1px solid var(--b);
-      backdrop-filter: blur(24px);
-    }
-    .nav-logo {
-      font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900;
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      text-decoration: none; letter-spacing: 2px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .nav-logo-icon {
-      width: 30px; height: 30px; border-radius: 7px;
-      background: linear-gradient(135deg, rgba(0,229,255,.12), rgba(136,0,255,.12));
-      border: 1px solid var(--b);
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
-    .nav-logo-icon img { width: 100%; height: 100%; object-fit: cover; }
-    .nav-right { display: flex; align-items: center; gap: 10px; }
-    .nav-credits {
-      display: flex; align-items: center; gap: 6px;
-      padding: 5px 13px; border-radius: 20px;
-      background: rgba(255,214,0,.06); border: 1px solid rgba(255,214,0,.18);
-      font-size: 11px; color: var(--yellow); font-weight: 600;
-      cursor: pointer; transition: .2s; text-decoration: none;
-    }
-    .nav-credits:hover { border-color: rgba(255,214,0,.45); background: rgba(255,214,0,.1); }
-    .nav-credits svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.2; }
-    .user-pill {
-      display: flex; align-items: center; gap: 8px;
-      cursor: pointer; padding: 4px 12px 4px 4px;
-      border-radius: 22px; border: 1px solid var(--b);
-      background: var(--bg2); transition: .2s;
-    }
-    .user-pill:hover { border-color: rgba(0,229,255,.3); background: var(--bg3); }
-    .user-av {
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 1.5px solid rgba(0,229,255,.4); object-fit: cover;
-      background: var(--bg3);
-    }
-    .user-name { font-size: 11px; color: var(--text); }
+/* NAV */
+.nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:56px;background:rgba(3,3,18,.92);border-bottom:1px solid var(--b);backdrop-filter:blur(24px);}
+.nav-logo{font-family:"Orbitron",sans-serif;font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;letter-spacing:2px;display:flex;align-items:center;gap:9px;}
+.nav-logo-icon{width:28px;height:28px;border-radius:7px;overflow:hidden;border:1px solid var(--b);flex-shrink:0;}
+.nav-logo-icon img{width:100%;height:100%;object-fit:cover;display:block;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-credits{display:flex;align-items:center;gap:5px;padding:5px 13px;border-radius:20px;background:rgba(255,214,0,.06);border:1px solid rgba(255,214,0,.18);font-size:11px;color:var(--yellow);font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;}
+.nav-credits:hover{border-color:rgba(255,214,0,.4);background:rgba(255,214,0,.1);}
+.nav-credits svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.2;}
 
-    /* ── MAIN ── */
-    .main {
-      max-width: 1100px; margin: 0 auto;
-      padding: 48px 24px 80px; position: relative; z-index: 1;
-    }
+/* USER PILL + DROPDOWN */
+.user-pill-wrap{position:relative;}
+.user-pill{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 10px 4px 4px;border-radius:22px;border:1px solid var(--b);background:var(--bg2);transition:.2s;user-select:none;}
+.user-pill:hover{border-color:rgba(0,229,255,.3);background:var(--bg3);}
+.user-pill.open{border-color:rgba(0,229,255,.35);}
+.user-av{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(0,229,255,.4);object-fit:cover;background:var(--bg3);flex-shrink:0;}
+.user-name{font-size:11px;color:var(--text);}
+.user-caret{width:10px;height:10px;stroke:var(--dim);fill:none;stroke-width:2;transition:.2s;flex-shrink:0;}
+.user-pill.open .user-caret{transform:rotate(180deg);}
 
-    /* ── PAGE HEADER ── */
-    .page-header {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 20px; margin-bottom: 40px; flex-wrap: wrap;
-    }
-    .header-left { display: flex; align-items: center; gap: 18px; }
-    .header-avatar-wrap {
-      width: 64px; height: 64px; border-radius: 16px;
-      background: var(--bg2); border: 1px solid var(--b);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 30px rgba(0,229,255,.07);
-      overflow: hidden; flex-shrink: 0;
-    }
-    .header-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .header-info h1 {
-      font-family: 'Orbitron', sans-serif; font-size: 23px; font-weight: 900;
-      color: #fff; margin-bottom: 5px; line-height: 1.2;
-    }
-    .header-info h1 span { color: var(--cyan); }
-    .header-info p { color: var(--dim); font-size: 11px; }
-    .plan-badge {
-      display: flex; align-items: center; gap: 6px;
-      padding: 6px 14px; border-radius: 20px;
-      font-size: 9px; font-weight: 700; font-family: 'Orbitron', sans-serif;
-      letter-spacing: 1px; cursor: pointer; transition: .2s;
-      border: 1px solid rgba(0,255,170,.25);
-      background: rgba(0,255,170,.06); color: var(--green);
-      text-decoration: none;
-    }
-    .plan-badge.pro { border-color: rgba(0,229,255,.3); background: rgba(0,229,255,.06); color: var(--cyan); }
-    .plan-badge.owner { border-color: rgba(255,214,0,.3); background: rgba(255,214,0,.06); color: var(--yellow); }
-    .plan-badge:hover { filter: brightness(1.15); transform: translateY(-1px); }
+.user-dd{position:absolute;top:calc(100% + 6px);right:0;width:248px;background:var(--bg2);border:1px solid var(--b);border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.95);z-index:9999;display:none;overflow:hidden;animation:fadeIn .18s ease;}
+.user-dd.open{display:block;}
+.ud-hdr{padding:14px 16px;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:11px;}
+.ud-av{width:42px;height:42px;border-radius:50%;border:2px solid rgba(0,229,255,.35);object-fit:cover;flex-shrink:0;}
+.ud-name{font-size:12px;color:white;font-weight:600;margin-bottom:2px;}
+.ud-role{font-size:9px;color:var(--dim);}
+.ud-section{padding:5px 0;}
+.ud-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;font-size:11px;color:var(--text);text-decoration:none;transition:.12s;}
+.ud-item:hover{background:rgba(0,229,255,.05);color:var(--cyan);}
+.ud-item svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;opacity:.6;}
+.ud-item:hover svg{opacity:1;}
+.ud-item .ud-badge{margin-left:auto;font-size:8px;font-weight:700;padding:2px 7px;border-radius:8px;background:rgba(0,229,255,.1);color:var(--cyan);}
+.ud-item.danger{color:rgba(255,45,107,.75);}
+.ud-item.danger:hover{background:rgba(255,45,107,.07);color:var(--pink);}
+.ud-divider{height:1px;background:var(--b);}
 
-    /* ── STATS ROW ── */
-    .stats-row {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 16px; margin-bottom: 36px;
-    }
-    .stat-card {
-      background: var(--bg2); border: 1px solid var(--b);
-      border-radius: var(--r); padding: 18px 20px;
-      display: flex; align-items: center; gap: 14px;
-      transition: .22s;
-    }
-    .stat-card:hover { border-color: rgba(0,229,255,.22); transform: translateY(-1px); }
-    .stat-icon {
-      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .stat-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
-    .stat-icon.yellow { background: rgba(255,214,0,.08); border: 1px solid rgba(255,214,0,.15); color: var(--yellow); }
-    .stat-icon.cyan   { background: rgba(0,229,255,.08); border: 1px solid rgba(0,229,255,.12); color: var(--cyan); }
-    .stat-icon.green  { background: rgba(0,255,170,.08); border: 1px solid rgba(0,255,170,.12); color: var(--green); }
-    .stat-val { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: #fff; line-height: 1; margin-bottom: 3px; }
-    .stat-lbl { font-size: 10px; color: var(--dim); }
+/* MAIN */
+.main{max-width:1060px;margin:0 auto;padding:44px 24px 80px;position:relative;z-index:1;}
 
-    /* ── CREATE CARD ── */
-    .create-card {
-      position: relative; overflow: hidden;
-      background: var(--bg2); border: 1px solid var(--b);
-      border-radius: 14px; padding: 26px 28px 24px;
-      margin-bottom: 40px;
-    }
-    .create-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent 5%, var(--cyan) 40%, var(--purple) 70%, transparent 95%);
-    }
-    .create-card-top {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 18px; gap: 10px; flex-wrap: wrap;
-    }
-    .card-title {
-      font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
-      color: var(--cyan); display: flex; align-items: center; gap: 8px; letter-spacing: .5px;
-    }
-    .card-title svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.5; }
-    .limit-badge {
-      font-size: 10px; color: var(--dim);
-      background: rgba(0,0,0,.3); border: 1px solid var(--b);
-      padding: 4px 12px; border-radius: 20px;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .limit-badge .used { color: var(--cyan); font-weight: 700; }
-    .input-row { display: flex; gap: 10px; align-items: center; }
-    .project-input {
-      flex: 1;
-      background: rgba(0,0,0,.4); border: 1px solid var(--b);
-      border-radius: 9px; padding: 13px 16px;
-      color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 13px;
-      outline: none; transition: .22s; min-width: 0;
-    }
-    .project-input:focus { border-color: rgba(0,229,255,.4); box-shadow: 0 0 0 3px rgba(0,229,255,.04); }
-    .project-input::placeholder { color: var(--dim); }
-    .project-input:disabled { opacity: .35; cursor: not-allowed; }
-    .btn-create {
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
-      color: #030312; border: none; border-radius: 9px;
-      padding: 0 24px; height: 48px; flex-shrink: 0;
-      font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 900;
-      cursor: pointer; transition: .22s; letter-spacing: .5px;
-      display: flex; align-items: center; gap: 7px; white-space: nowrap;
-    }
-    .btn-create:hover:not(:disabled) { opacity: .85; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,229,255,.25); }
-    .btn-create:active:not(:disabled) { transform: translateY(0); }
-    .btn-create:disabled { opacity: .3; cursor: not-allowed; filter: grayscale(.6); }
-    .btn-create svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.5; }
-    .btn-spinner {
-      display: none; width: 14px; height: 14px;
-      border: 2px solid rgba(3,3,18,.25); border-top-color: #030312;
-      border-radius: 50%; animation: spin .7s linear infinite;
-    }
-    .btn-create.loading .btn-spinner { display: block; }
-    .btn-create.loading .btn-lbl { opacity: 0; width: 0; overflow: hidden; }
+/* PAGE HEADER */
+.page-header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:36px;flex-wrap:wrap;}
+.header-left{display:flex;align-items:center;gap:16px;}
+.header-av-wrap{width:62px;height:62px;border-radius:15px;background:var(--bg2);border:1px solid var(--b);overflow:hidden;flex-shrink:0;box-shadow:0 0 28px rgba(0,229,255,.08);}
+.header-av-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.header-info h1{font-family:"Orbitron",sans-serif;font-size:22px;font-weight:900;color:#fff;margin-bottom:5px;line-height:1.2;}
+.header-info h1 span{color:var(--cyan);}
+.header-info p{color:var(--dim);font-size:11px;}
+.plan-badge{display:inline-flex;align-items:center;gap:5px;padding:7px 16px;border-radius:20px;font-size:9px;font-weight:700;font-family:"Orbitron",sans-serif;letter-spacing:1.5px;cursor:pointer;transition:.2s;border:1px solid rgba(0,255,170,.25);background:rgba(0,255,170,.06);color:var(--green);text-decoration:none;}
+.plan-badge.pro{border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.06);color:var(--cyan);}
+.plan-badge.owner{border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.06);color:var(--yellow);}
+.plan-badge:hover{filter:brightness(1.18);transform:translateY(-1px);}
 
-    /* ── MUST-CREATE NOTICE ── */
-    .must-notice {
-      display: flex; align-items: flex-start; gap: 12px;
-      background: rgba(0,229,255,.04); border: 1px solid rgba(0,229,255,.15);
-      border-radius: 10px; padding: 14px 16px; margin-top: 16px;
-    }
-    .must-notice svg { width: 16px; height: 16px; stroke: var(--cyan); fill: none; stroke-width: 2; flex-shrink: 0; margin-top: 1px; }
-    .must-notice p { font-size: 11px; color: var(--dim); line-height: 1.7; }
-    .must-notice p strong { color: var(--cyan); }
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+.stat-card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:18px 20px;display:flex;align-items:center;gap:13px;transition:.22s;cursor:default;}
+.stat-card:hover{border-color:rgba(0,229,255,.25);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.stat-icon{width:42px;height:42px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.stat-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;}
+.stat-icon.yellow{background:rgba(255,214,0,.08);border:1px solid rgba(255,214,0,.15);color:var(--yellow);}
+.stat-icon.cyan{background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.12);color:var(--cyan);}
+.stat-icon.green{background:rgba(0,255,170,.08);border:1px solid rgba(0,255,170,.12);color:var(--green);}
+.stat-val{font-family:"Orbitron",sans-serif;font-size:21px;font-weight:700;color:#fff;line-height:1;margin-bottom:3px;}
+.stat-lbl{font-size:9.5px;color:var(--dim);}
 
-    /* ── SECTION HEADER ── */
-    .section-header {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
-    }
-    .section-header h2 {
-      font-family: 'Orbitron', sans-serif; font-size: 10px;
-      color: var(--dim); text-transform: uppercase; letter-spacing: 2.5px;
-      white-space: nowrap;
-    }
-    .section-header .line { flex: 1; height: 1px; background: var(--b); }
-    .section-count {
-      font-size: 9px; color: var(--dim); padding: 2px 8px;
-      background: rgba(0,0,0,.3); border: 1px solid var(--b);
-      border-radius: 10px; flex-shrink: 0;
-    }
+/* CREATE CARD */
+.create-card{position:relative;overflow:hidden;background:var(--bg2);border:1px solid var(--b);border-radius:14px;padding:24px 26px 22px;margin-bottom:36px;}
+.create-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 5%,var(--cyan) 40%,var(--purple) 70%,transparent 95%);}
+.create-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:10px;flex-wrap:wrap;}
+.card-title{font-family:"Orbitron",sans-serif;font-size:11px;font-weight:700;color:var(--cyan);display:flex;align-items:center;gap:7px;}
+.card-title svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;}
+.limit-badge{font-size:10px;color:var(--dim);background:rgba(0,0,0,.3);border:1px solid var(--b);padding:4px 12px;border-radius:20px;display:flex;align-items:center;gap:4px;}
+.limit-badge .used{color:var(--cyan);font-weight:700;}
+.input-row{display:flex;gap:10px;align-items:center;}
+.project-input{flex:1;background:rgba(0,0,0,.4);border:1px solid var(--b);border-radius:9px;padding:12px 16px;color:#fff;font-family:"JetBrains Mono",monospace;font-size:13px;outline:none;transition:.22s;min-width:0;}
+.project-input:focus{border-color:rgba(0,229,255,.4);box-shadow:0 0 0 3px rgba(0,229,255,.05);}
+.project-input::placeholder{color:var(--dim);}
+.project-input:disabled{opacity:.35;cursor:not-allowed;}
+.btn-create{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#030312;border:none;border-radius:9px;padding:0 22px;height:46px;flex-shrink:0;font-family:"Orbitron",sans-serif;font-size:10px;font-weight:900;cursor:pointer;transition:.22s;letter-spacing:.5px;display:flex;align-items:center;gap:7px;white-space:nowrap;}
+.btn-create:hover:not(:disabled){opacity:.85;transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,229,255,.25);}
+.btn-create:disabled{opacity:.3;cursor:not-allowed;}
+.btn-create svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;}
+.btn-spinner{display:none;width:13px;height:13px;border:2px solid rgba(3,3,18,.25);border-top-color:#030312;border-radius:50%;animation:spin .7s linear infinite;}
+.btn-create.loading .btn-spinner{display:block;}
+.btn-create.loading .btn-lbl{opacity:0;width:0;overflow:hidden;}
+.save-status{margin-top:10px;font-size:10px;display:none;align-items:center;gap:6px;transition:.3s;}
+.save-status.saving{display:flex;color:var(--yellow);}
+.save-status.saved{display:flex;color:var(--green);}
+.save-status.error{display:flex;color:var(--pink);}
+.save-status svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
+.must-notice{display:flex;align-items:flex-start;gap:11px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.12);border-radius:9px;padding:12px 15px;margin-top:14px;}
+.must-notice svg{width:14px;height:14px;stroke:var(--cyan);fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;}
+.must-notice p{font-size:10.5px;color:var(--dim);line-height:1.7;}
+.must-notice strong{color:var(--cyan);}
 
-    /* ── PROJECTS GRID ── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 18px;
-    }
+/* SECTION HEADER */
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.section-header h2{font-family:"Orbitron",sans-serif;font-size:9.5px;color:var(--dim);text-transform:uppercase;letter-spacing:2.5px;white-space:nowrap;}
+.section-line{flex:1;height:1px;background:var(--b);}
+.section-count{font-size:9px;color:var(--dim);padding:2px 9px;background:rgba(0,0,0,.3);border:1px solid var(--b);border-radius:10px;flex-shrink:0;}
 
-    /* ── PROJECT CARD ── */
-    .project-card {
-      background: var(--bg2); border: 1px solid var(--b);
-      border-radius: var(--r); padding: 20px 20px 16px;
-      transition: .22s; cursor: pointer; position: relative;
-      overflow: hidden; display: flex; flex-direction: column;
-    }
-    .project-card::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(0,229,255,.03), transparent 60%);
-      opacity: 0; transition: .22s; pointer-events: none;
-    }
-    .project-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(0,229,255,.3);
-      box-shadow: 0 10px 32px rgba(0,0,0,.35);
-    }
-    .project-card:hover::after { opacity: 1; }
-    .project-card-top {
-      display: flex; align-items: flex-start;
-      justify-content: space-between; margin-bottom: 14px; gap: 8px;
-    }
-    .project-icon {
-      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
-      background: linear-gradient(135deg, rgba(0,229,255,.09), rgba(136,0,255,.09));
-      border: 1px solid var(--b);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .project-icon svg { width: 17px; height: 17px; stroke: var(--cyan); fill: none; stroke-width: 1.8; }
-    .project-top-right { display: flex; align-items: center; gap: 6px; }
-    .project-id-tag {
-      font-size: 9px; color: var(--dim);
-      background: rgba(0,0,0,.4); padding: 3px 8px;
-      border-radius: 5px; border: 1px solid var(--b);
-      font-family: 'JetBrains Mono', monospace;
-      max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .btn-del {
-      width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0;
-      background: rgba(255,45,107,.06); border: 1px solid rgba(255,45,107,.2);
-      color: rgba(255,45,107,.45);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: .18s; z-index: 5;
-    }
-    .btn-del:hover { background: rgba(255,45,107,.18); border-color: var(--pink); color: var(--pink); transform: scale(1.08); }
-    .btn-del svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.2; }
-    .project-name {
-      font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700;
-      color: #fff; margin-bottom: 6px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .project-desc { font-size: 10px; color: var(--dim); line-height: 1.6; margin-bottom: 14px; flex: 1; }
-    .project-meta {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 12px; margin-top: auto;
-      border-top: 1px solid rgba(255,255,255,.04);
-    }
-    .meta-date { font-size: 10px; color: var(--dim); display: flex; align-items: center; gap: 5px; }
-    .meta-date svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; opacity: .5; }
-    .meta-status {
-      font-size: 9px; color: var(--green);
-      background: rgba(0,255,170,.07); border: 1px solid rgba(0,255,170,.2);
-      padding: 3px 9px; border-radius: 10px;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse-dot 2s infinite; }
-    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.3} }
+/* PROJECTS GRID */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;}
 
-    /* ── OPEN BUTTON overlay on card ── */
-    .project-open-btn {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 10px 20px;
-      background: linear-gradient(135deg, rgba(0,229,255,.12), rgba(136,0,255,.12));
-      border-top: 1px solid rgba(0,229,255,.15);
-      font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700;
-      color: var(--cyan); letter-spacing: 1px; text-align: center;
-      opacity: 0; transition: .22s; pointer-events: none;
-    }
-    .project-card:hover .project-open-btn { opacity: 1; }
+/* PROJECT CARD */
+.project-card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:20px 20px 50px;transition:.22s;cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;animation:cardIn .3s ease;}
+.project-card::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,.03),transparent 60%);opacity:0;transition:.22s;pointer-events:none;}
+.project-card:hover{transform:translateY(-3px);border-color:rgba(0,229,255,.3);box-shadow:0 10px 32px rgba(0,0,0,.35);}
+.project-card:hover::after{opacity:1;}
+.project-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px;gap:8px;}
+.project-icon{width:40px;height:40px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(0,229,255,.09),rgba(136,0,255,.09));border:1px solid var(--b);display:flex;align-items:center;justify-content:center;}
+.project-icon svg{width:17px;height:17px;stroke:var(--cyan);fill:none;stroke-width:1.8;}
+.project-top-right{display:flex;align-items:center;gap:6px;}
+.project-id-tag{font-size:8.5px;color:var(--dim);background:rgba(0,0,0,.4);padding:3px 7px;border-radius:5px;border:1px solid var(--b);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.btn-del{width:28px;height:28px;border-radius:6px;flex-shrink:0;background:rgba(255,45,107,.06);border:1px solid rgba(255,45,107,.18);color:rgba(255,45,107,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.18s;z-index:5;border-width:1px;}
+.btn-del:hover{background:rgba(255,45,107,.18);border-color:var(--pink);color:var(--pink);transform:scale(1.08);}
+.btn-del svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.2;}
+.project-name{font-family:"Orbitron",sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.project-desc{font-size:9.5px;color:var(--dim);line-height:1.65;flex:1;}
+.project-meta{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;position:absolute;bottom:0;left:0;right:0;border-top:1px solid rgba(255,255,255,.04);background:rgba(6,7,26,.6);}
+.meta-date{font-size:9px;color:var(--dim);display:flex;align-items:center;gap:4px;}
+.meta-date svg{width:9px;height:9px;stroke:currentColor;fill:none;stroke-width:2;opacity:.5;}
+.meta-status{font-size:8.5px;color:var(--green);background:rgba(0,255,170,.07);border:1px solid rgba(0,255,170,.2);padding:3px 8px;border-radius:10px;display:flex;align-items:center;gap:4px;}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse-dot 2s infinite;}
+.project-open-btn{position:absolute;bottom:0;left:0;right:0;padding:10px 20px;background:linear-gradient(90deg,rgba(0,229,255,.15),rgba(136,0,255,.15));border-top:1px solid rgba(0,229,255,.18);font-family:"Orbitron",sans-serif;font-size:9px;font-weight:700;color:var(--cyan);letter-spacing:1px;text-align:center;opacity:0;transition:.22s;pointer-events:none;}
+.project-card:hover .project-open-btn{opacity:1;}
 
-    /* ── EMPTY STATE ── */
-    .empty-state {
-      grid-column: 1/-1; text-align: center; padding: 70px 20px;
-    }
-    .empty-icon {
-      width: 64px; height: 64px; border-radius: 14px;
-      background: var(--bg2); border: 1px solid var(--b);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
-    }
-    .empty-icon svg { width: 26px; height: 26px; stroke: var(--dim); fill: none; stroke-width: 1.4; }
-    .empty-state strong {
-      display: block; font-family: 'Orbitron', sans-serif;
-      font-size: 13px; color: var(--text); margin-bottom: 10px;
-    }
-    .empty-state p { font-size: 11px; color: var(--dim); line-height: 1.8; }
-    .empty-arrow {
-      display: inline-flex; align-items: center; gap: 7px;
-      margin-top: 18px; padding: 8px 16px; border-radius: 8px;
-      background: rgba(0,229,255,.04); border: 1px solid var(--b);
-      font-size: 10px; color: var(--cyan); animation: arrow-pulse 2s infinite;
-    }
-    .empty-arrow svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
-    @keyframes arrow-pulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+/* EMPTY STATE */
+.empty-state{grid-column:1/-1;text-align:center;padding:64px 20px;}
+.empty-icon{width:60px;height:60px;border-radius:14px;background:var(--bg2);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+.empty-icon svg{width:24px;height:24px;stroke:var(--dim);fill:none;stroke-width:1.4;}
+.empty-state strong{display:block;font-family:"Orbitron",sans-serif;font-size:12px;color:var(--text);margin-bottom:9px;}
+.empty-state p{font-size:10.5px;color:var(--dim);line-height:1.8;}
+.empty-arrow{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:7px 14px;border-radius:7px;background:rgba(0,229,255,.04);border:1px solid var(--b);font-size:9.5px;color:var(--cyan);animation:pulse-dot 2.5s infinite;}
+.empty-arrow svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;}
 
-    /* ── TOAST ── */
-    .nx-toast {
-      position: fixed; bottom: 22px; right: 22px; z-index: 9999;
-      padding: 10px 16px; border-radius: 8px; font-size: 11px;
-      font-family: 'JetBrains Mono', monospace;
-      background: var(--bg3); border: 1px solid var(--b);
-      animation: toastIn .22s ease; pointer-events: none; max-width: 300px;
-    }
-    @keyframes toastIn { from{opacity:0;transform:translateX(10px)} to{opacity:1;transform:none} }
+/* TOAST */
+.nx-toast{position:fixed;bottom:22px;right:22px;z-index:9999;padding:10px 16px;border-radius:8px;font-size:11px;font-family:"JetBrains Mono",monospace;background:var(--bg3);border:1px solid var(--b);animation:toastIn .22s ease;pointer-events:none;max-width:300px;}
 
-    /* ── CONFIRM MODAL ── */
-    .overlay {
-      position: fixed; inset: 0; background: rgba(3,3,18,.92);
-      z-index: 500; display: none; align-items: center; justify-content: center;
-      backdrop-filter: blur(6px);
-    }
-    .overlay.show { display: flex; }
-    .modal-box {
-      background: var(--bg2); border: 1px solid var(--b);
-      border-radius: 14px; padding: 28px; width: 390px; max-width: 94vw;
-      box-shadow: 0 24px 64px rgba(0,0,0,.85);
-    }
-    .modal-icon {
-      width: 44px; height: 44px; border-radius: 10px;
-      background: rgba(255,45,107,.1); border: 1px solid rgba(255,45,107,.25);
-      display: flex; align-items: center; justify-content: center; margin: 0 0 16px;
-    }
-    .modal-icon svg { width: 20px; height: 20px; stroke: var(--pink); fill: none; stroke-width: 2; }
-    .modal-title {
-      font-family: 'Orbitron', sans-serif; font-size: 13px;
-      font-weight: 700; color: #fff; margin-bottom: 8px;
-    }
-    .modal-desc { font-size: 11px; color: var(--dim); line-height: 1.7; margin-bottom: 22px; }
-    .modal-desc .highlight { color: var(--cyan); font-weight: 600; }
-    .modal-btns { display: flex; gap: 10px; }
-    .modal-btn {
-      flex: 1; padding: 10px; border-radius: 8px;
-      font-family: 'JetBrains Mono', monospace; font-size: 11px;
-      font-weight: 600; cursor: pointer; transition: .15s;
-    }
-    .modal-btn.cancel { background: var(--bg3); color: var(--text); border: 1px solid var(--b); }
-    .modal-btn.cancel:hover { border-color: rgba(0,229,255,.3); color: var(--cyan); }
-    .modal-btn.danger { background: rgba(255,45,107,.12); color: var(--pink); border: 1px solid rgba(255,45,107,.3); }
-    .modal-btn.danger:hover { background: var(--pink); color: #fff; border-color: var(--pink); }
+/* OVERLAYS & MODALS */
+.overlay{position:fixed;inset:0;background:rgba(3,3,18,.92);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.overlay.show{display:flex;}
+.modal-box{background:var(--bg2);border:1px solid var(--b);border-radius:14px;padding:26px;width:420px;max-width:94vw;box-shadow:0 24px 64px rgba(0,0,0,.9);animation:fadeIn .2s ease;}
+.modal-box.wide{width:500px;}
+.modal-icon{width:42px;height:42px;border-radius:10px;background:rgba(255,45,107,.1);border:1px solid rgba(255,45,107,.25);display:flex;align-items:center;justify-content:center;margin:0 0 14px;}
+.modal-icon svg{width:18px;height:18px;stroke:var(--pink);fill:none;stroke-width:2;}
+.modal-icon.cyan-icon{background:rgba(0,229,255,.08);border-color:rgba(0,229,255,.2);}
+.modal-icon.cyan-icon svg{stroke:var(--cyan);}
+.modal-title{font-family:"Orbitron",sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;}
+.modal-desc{font-size:11px;color:var(--dim);line-height:1.7;margin-bottom:20px;}
+.highlight{color:var(--cyan);font-weight:600;}
+.modal-btns{display:flex;gap:9px;}
+.modal-btn{flex:1;padding:10px;border-radius:8px;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;cursor:pointer;transition:.15s;border:none;}
+.modal-btn.cancel{background:var(--bg3);color:var(--text);border:1px solid var(--b);}
+.modal-btn.cancel:hover{border-color:rgba(0,229,255,.3);color:var(--cyan);}
+.modal-btn.danger{background:rgba(255,45,107,.12);color:var(--pink);border:1px solid rgba(255,45,107,.3);}
+.modal-btn.danger:hover{background:var(--pink);color:#fff;}
+.modal-btn.primary{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#030312;}
+.modal-btn.primary:hover{opacity:.85;}
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      .nav { padding: 0 16px; }
-      .main { padding: 28px 14px 60px; }
-      .stats-row { grid-template-columns: 1fr 1fr; }
-      .stats-row .stat-card:last-child { grid-column: span 2; }
-      .header-info h1 { font-size: 18px; }
-      .input-row { flex-direction: column; }
-      .btn-create { width: 100%; justify-content: center; height: 46px; }
-    }
-    @media (max-width: 400px) {
-      .stats-row { grid-template-columns: 1fr; }
-      .stats-row .stat-card:last-child { grid-column: span 1; }
-    }
-  </style>
+/* SETTINGS MODAL */
+.settings-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.settings-hdr-title{font-family:"Orbitron",sans-serif;font-size:13px;font-weight:700;color:var(--cyan);display:flex;align-items:center;gap:8px;}
+.settings-hdr-title svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;}
+.settings-close{background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;line-height:1;padding:2px 6px;border-radius:4px;transition:.12s;}
+.settings-close:hover{color:var(--pink);background:rgba(255,45,107,.08);}
+.settings-sec{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--b);}
+.settings-sec:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.settings-sec-title{font-size:9px;color:var(--cyan);text-transform:uppercase;letter-spacing:2px;font-family:"Orbitron",sans-serif;margin-bottom:12px;}
+.settings-av-row{display:flex;align-items:center;gap:13px;padding:8px 0;}
+.settings-av{width:50px;height:50px;border-radius:50%;border:2px solid rgba(0,229,255,.35);object-fit:cover;flex-shrink:0;}
+.settings-av-name{font-size:13px;color:white;font-weight:600;margin-bottom:2px;}
+.settings-av-id{font-size:10px;color:var(--dim);}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;font-size:11px;gap:10px;}
+.settings-row label{color:var(--text);flex:1;}
+.s-val{font-weight:700;}
+.s-val.yellow{color:var(--yellow);}
+.s-val.cyan{color:var(--cyan);}
+.s-val.green{color:var(--green);}
+.settings-btn{padding:5px 13px;border-radius:6px;font-size:10px;cursor:pointer;border:1px solid var(--b);background:rgba(0,229,255,.04);color:var(--text);transition:.15s;font-family:"JetBrains Mono",monospace;}
+.settings-btn:hover{border-color:rgba(0,229,255,.3);color:var(--cyan);}
+.settings-btn.danger{border-color:rgba(255,45,107,.3);color:var(--pink);}
+.settings-btn.danger:hover{background:rgba(255,45,107,.1);}
+.settings-btn.success{border-color:rgba(0,255,170,.3);color:var(--green);}
+.settings-btn.success:hover{background:rgba(0,255,170,.08);}
+.settings-btn:disabled{opacity:.4;cursor:not-allowed;}
+.redeem-row{display:flex;gap:8px;width:100%;margin-top:6px;}
+.redeem-input{flex:1;background:var(--bg3);border:1px solid var(--b);border-radius:6px;padding:7px 11px;color:white;font-family:"JetBrains Mono",monospace;font-size:11px;outline:none;transition:.18s;}
+.redeem-input:focus{border-color:rgba(0,229,255,.35);}
+
+@media(max-width:640px){
+  .nav{padding:0 14px;}
+  .main{padding:26px 12px 60px;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .header-info h1{font-size:18px;}
+  .input-row{flex-direction:column;}
+  .btn-create{width:100%;justify-content:center;}
+  .user-name{display:none;}
+}
+@media(max-width:400px){
+  .stats-row{grid-template-columns:1fr;}
+}
+</style>
 </head>
 <body>
 
-<!-- Loader -->
 <div id="loader">
   <div class="loader-logo">NEXUS AI</div>
   <div class="loader-ring"></div>
   <div class="loader-sub">Loading workspace...</div>
 </div>
 
-<!-- Nav -->
 <nav class="nav">
   <a href="/dashboard" class="nav-logo">
-    <div class="nav-logo-icon">
-      <img src="nexusai.png" alt="" onerror="this.style.display='none'">
-    </div>
+    <div class="nav-logo-icon"><img src="nexusai.png" alt="" onerror="this.style.display=\'none\'"></div>
     NEXUS AI
   </a>
   <div class="nav-right">
-    <a href="/payment" class="nav-credits" id="navCredits" title="Buy Credits">
+    <a href="/payment" class="nav-credits" id="navCredits">
       <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
       <span id="navCreditsVal">–</span> CR
     </a>
-    <div class="user-pill" onclick="location.href='/dashboard'">
-      <img id="userAv" class="user-av" src="nexusai.png" alt="">
-      <span id="userName" class="user-name">@...</span>
+    <div class="user-pill-wrap">
+      <div class="user-pill" id="userPill" onclick="toggleDD()">
+        <img id="userAv" class="user-av" src="nexusai.png" alt="">
+        <span id="userName" class="user-name">@...</span>
+        <svg class="user-caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="user-dd" id="userDD">
+        <div class="ud-hdr">
+          <img id="udAv" class="ud-av" src="nexusai.png" alt="">
+          <div>
+            <div class="ud-name" id="udName">@username</div>
+            <div class="ud-role" id="udRole">Free Plan</div>
+          </div>
+        </div>
+        <div class="ud-section">
+          <a class="ud-item" onclick="openSettings();closeDD()">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            Settings
+          </a>
+          <a class="ud-item" href="/payment" onclick="closeDD()">
+            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Buy Credits
+            <span class="ud-badge" id="udCredits">30 CR</span>
+          </a>
+          <a class="ud-item" href="/inbox" onclick="closeDD()">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+            Inbox
+          </a>
+          <a class="ud-item" href="https://discord.gg/HuGtbRvD" target="_blank" onclick="closeDD()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+            Discord Community
+          </a>
+        </div>
+        <div class="ud-divider"></div>
+        <div class="ud-section">
+          <a class="ud-item" onclick="claimDailyDD()">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span id="ddDailyTxt">Claim Daily Credits</span>
+          </a>
+        </div>
+        <div class="ud-divider"></div>
+        <div class="ud-section">
+          <a class="ud-item danger" onclick="showLogoutModal();closeDD()">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Logout
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
 
-<!-- Main -->
 <div class="main">
-
-  <!-- Header -->
   <div class="page-header">
     <div class="header-left">
-      <div class="header-avatar-wrap">
+      <div class="header-av-wrap">
         <img id="headerAv" src="nexusai.png" alt="">
       </div>
       <div class="header-info">
-        <h1>Welcome, <span id="welcomeName">Dev</span></h1>
-        <p>NEXUS AI Project Hub — Pick a project to start chatting</p>
+        <h1>Welcome, <span id="welcomeName">Dev</span>!</h1>
+        <p>NEXUS AI Project Hub — Select a project to start chatting</p>
       </div>
     </div>
     <a href="/payment" class="plan-badge" id="planBadge">FREE PLAN</a>
   </div>
 
-  <!-- Stats -->
   <div class="stats-row">
     <div class="stat-card">
-      <div class="stat-icon yellow">
-        <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      </div>
-      <div>
-        <div class="stat-val" id="statCredits">–</div>
-        <div class="stat-lbl">Credits Available</div>
-      </div>
+      <div class="stat-icon yellow"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <div><div class="stat-val" id="statCredits">–</div><div class="stat-lbl">Credits Available</div></div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon cyan">
-        <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-      </div>
-      <div>
-        <div class="stat-val" id="statProjects">0</div>
-        <div class="stat-lbl">Total Projects</div>
-      </div>
+      <div class="stat-icon cyan"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></div>
+      <div><div class="stat-val" id="statProjects">0</div><div class="stat-lbl">Total Projects</div></div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon green">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
-      <div>
-        <div class="stat-val" id="statPlan">FREE</div>
-        <div class="stat-lbl">Current Plan</div>
-      </div>
+      <div class="stat-icon green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div><div class="stat-val" id="statPlan">FREE</div><div class="stat-lbl">Current Plan</div></div>
     </div>
   </div>
 
-  <!-- Create Card -->
   <div class="create-card">
     <div class="create-card-top">
       <div class="card-title">
@@ -511,114 +347,167 @@
       </div>
     </div>
     <div class="input-row">
-      <input
-        type="text" id="projectName" class="project-input"
-        placeholder="Project name — e.g. Obby Game, Shop System, Simulator..."
-        maxlength="60"
-        onkeydown="if(event.key==='Enter') createProject()"
-      >
+      <input type="text" id="projectName" class="project-input" placeholder="Project name — e.g. Obby Game, Shop System, Simulator..." maxlength="60" onkeydown="if(event.key===\'Enter\')createProject()">
       <button id="btnCreate" class="btn-create" onclick="createProject()">
         <div class="btn-spinner"></div>
         <span class="btn-lbl">CREATE</span>
         <svg class="btn-lbl" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
+    <div class="save-status" id="saveStatus">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span id="saveStatusTxt">Saved to server</span>
+    </div>
     <div class="must-notice">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <p>
-        <strong>Project required to chat.</strong> You must create or select a project below before you can access the AI chat. Each project has its own isolated chat history and automatically sends the project name to your Studio plugin.
-      </p>
+      <p><strong>Project required to chat.</strong> Create or select a project below before accessing AI chat. Each project has its own isolated chat history and automatically syncs with your Studio plugin.</p>
     </div>
   </div>
 
-  <!-- Projects Section -->
   <div class="section-header">
     <h2>Your Projects</h2>
-    <div class="line"></div>
+    <div class="section-line"></div>
     <div class="section-count" id="sectionCount">0 projects</div>
   </div>
   <div id="projectsGrid" class="projects-grid"></div>
-
 </div>
 
-<!-- Delete Confirm Modal -->
-<div class="overlay" id="confirmModal">
+<!-- DELETE MODAL -->
+<div class="overlay" id="deleteModal">
   <div class="modal-box">
     <div class="modal-icon">
       <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
     </div>
     <div class="modal-title">Delete Project?</div>
-    <div class="modal-desc">
-      Are you sure you want to delete <span class="highlight" id="confirmName">"this project"</span>?
-      All chat history in this project will be removed. This cannot be undone.
-    </div>
+    <div class="modal-desc">Are you sure you want to delete <span class="highlight" id="deleteProjectName">"this project"</span>? All chat history will be permanently removed. This cannot be undone.</div>
     <div class="modal-btns">
-      <button class="modal-btn cancel" onclick="closeConfirm()">Cancel</button>
-      <button class="modal-btn danger" id="confirmDeleteBtn">Delete Project</button>
+      <button class="modal-btn cancel" onclick="closeModal(\'deleteModal\')">Cancel</button>
+      <button class="modal-btn danger" id="deleteConfirmBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGOUT MODAL -->
+<div class="overlay" id="logoutModal">
+  <div class="modal-box">
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </div>
+    <div class="modal-title">Sign Out?</div>
+    <div class="modal-desc">You will be signed out of NEXUS AI. Your projects and chat history are safely stored on the server.</div>
+    <div class="modal-btns">
+      <button class="modal-btn cancel" onclick="closeModal(\'logoutModal\')">Cancel</button>
+      <button class="modal-btn danger" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="overlay" id="settingsModal">
+  <div class="modal-box wide">
+    <div class="settings-hdr">
+      <div class="settings-hdr-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </div>
+      <button class="settings-close" onclick="closeModal(\'settingsModal\')">×</button>
+    </div>
+    <div class="settings-sec">
+      <div class="settings-sec-title">Roblox Account</div>
+      <div class="settings-av-row">
+        <img id="settingsAv" class="settings-av" src="nexusai.png" alt="">
+        <div>
+          <div class="settings-av-name" id="settingsName">@username</div>
+          <div class="settings-av-id" id="settingsId">Roblox ID: –</div>
+        </div>
+      </div>
+      <div class="settings-row"><label>Credits</label><span class="s-val yellow" id="settingsCredits">–</span></div>
+      <div class="settings-row"><label>Plan</label><span class="s-val cyan" id="settingsPlanVal">Free</span></div>
+    </div>
+    <div class="settings-sec">
+      <div class="settings-sec-title">Daily Credits</div>
+      <div class="settings-row"><label>Free Plan</label><span style="color:var(--green);font-size:11px;">+2 CR / day</span></div>
+      <div class="settings-row"><label>Pro Plan</label><span style="color:var(--cyan);font-size:11px;">+25 CR / day</span></div>
+      <div class="settings-row">
+        <span id="dailyClaimInfo" style="font-size:10px;color:var(--dim);flex:1;"></span>
+        <button class="settings-btn success" id="claimBtn" onclick="claimDaily()">Claim Daily</button>
+      </div>
+    </div>
+    <div class="settings-sec">
+      <div class="settings-sec-title">Redeem Code</div>
+      <div style="font-size:10px;color:var(--dim);margin-bottom:8px;">Get codes on <a href="https://discord.gg/HuGtbRvD" target="_blank" style="color:var(--cyan);">NEXUS STUDIO Discord</a></div>
+      <div class="redeem-row">
+        <input type="text" id="redeemInput" class="redeem-input" placeholder="Enter redeem code...">
+        <button class="settings-btn" onclick="redeemCode()">Redeem</button>
+      </div>
+      <div id="redeemMsg" style="font-size:10px;margin-top:6px;display:none;"></div>
+    </div>
+    <div class="settings-sec">
+      <div class="settings-sec-title">Studio Plugin</div>
+      <div class="settings-row">
+        <label>NEXUS AI Plugin for Roblox Studio</label>
+        <button class="settings-btn" onclick="window.open(\'https://create.roblox.com/store/asset/91870814099475/NEXUS-AI\',\'_blank\')">Download</button>
+      </div>
+    </div>
+    <div class="settings-sec">
+      <div class="settings-sec-title" style="color:var(--pink);">Account</div>
+      <div class="settings-row">
+        <label>Sign out of this session</label>
+        <button class="settings-btn danger" onclick="closeModal(\'settingsModal\');showLogoutModal()">Sign Out</button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-'use strict';
+"use strict";
+const API_SYNC = "/api/sync";
+const API_CONTROL = "/api/control";
+let SESSION = null, USER_DATA = null;
 
-const API_CONTROL = '/api/control';
-let SESSION = null;
-let USER_DATA = null;
-
-// ─── GENERATE PROJECT ID ─────────────────────────────────────────────────────
 function generateProjectId() {
-  let rand = '';
-  try {
-    const arr = new Uint8Array(12);
-    crypto.getRandomValues(arr);
-    rand = Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
-  } catch (_) {
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 24; i++) rand += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return 'nxs_' + rand + '_' + Date.now().toString(36);
+  let r = "";
+  try { const a = new Uint8Array(12); crypto.getRandomValues(a); r = Array.from(a).map(b => b.toString(16).padStart(2,"0")).join(""); }
+  catch(_){ const c="abcdefghijklmnopqrstuvwxyz0123456789"; for(let i=0;i<24;i++) r+=c[Math.floor(Math.random()*c.length)]; }
+  return "nxs_" + r + "_" + Date.now().toString(36);
 }
 
-// ─── AUTH INIT ───────────────────────────────────────────────────────────────
 async function init() {
-  const raw = localStorage.getItem('nexus_session');
-  if (!raw) { location.replace('/'); return; }
-
+  const raw = localStorage.getItem("nexus_session");
+  if (!raw) { location.replace("/"); return; }
   try {
     SESSION = JSON.parse(raw);
-    if (!SESSION?.user?.username) throw new Error('no user');
-    if (Date.now() - (SESSION.loginTime || 0) > 86400000 * 7) throw new Error('expired');
-  } catch (_) {
-    localStorage.removeItem('nexus_session');
-    location.replace('/');
-    return;
-  }
+    if (!SESSION?.user?.username) throw new Error("no user");
+    if (Date.now() - (SESSION.loginTime || 0) > 86400000 * 7) throw new Error("expired");
+  } catch(_) { localStorage.removeItem("nexus_session"); location.replace("/"); return; }
 
   const u = SESSION.user;
-  const avSrc = u.avatar ||
-    (u.robloxId ? `https://www.roblox.com/headshot-thumbnail/image?userId=${u.robloxId}&width=150&height=150&format=png` : 'nexusai.png');
-
-  document.getElementById('userName').textContent = '@' + u.username;
-  document.getElementById('welcomeName').textContent = u.username;
-  ['userAv', 'headerAv'].forEach(id => {
+  const av = u.avatar || (u.robloxId ? `https://www.roblox.com/headshot-thumbnail/image?userId=${u.robloxId}&width=150&height=150&format=png` : "nexusai.png");
+  ["userAv","headerAv","udAv","settingsAv"].forEach(id => {
     const el = document.getElementById(id);
-    if (el) { el.src = avSrc; el.onerror = () => { el.src = 'nexusai.png'; }; }
+    if (el) { el.src = av; el.onerror = () => { el.src = "nexusai.png"; }; }
   });
+  document.getElementById("userName").textContent = "@" + u.username;
+  document.getElementById("welcomeName").textContent = u.username;
+  document.getElementById("udName").textContent = "@" + u.username;
+  document.getElementById("settingsName").textContent = "@" + u.username;
+  document.getElementById("settingsId").textContent = "Roblox ID: " + (u.robloxId || "–");
 
   await syncFromServer();
-  document.getElementById('loader').style.display = 'none';
+  const loader = document.getElementById("loader");
+  loader.classList.add("hide");
+  setTimeout(() => { loader.style.display = "none"; }, 400);
   renderAll();
 }
 
-// ─── SERVER SYNC ─────────────────────────────────────────────────────────────
+// ── SYNC FROM SERVER (GET fresh data) ──────────────────────────────────────
 async function syncFromServer() {
   try {
-    const username = (SESSION.user.username || '').toLowerCase();
-    const r = await fetch(`/api/sync?user=${encodeURIComponent(username)}`);
+    const username = (SESSION.user.username || "").toLowerCase();
+    const r = await fetch(`${API_SYNC}?user=${encodeURIComponent(username)}`);
     if (r.ok) {
       const d = await r.json();
-      if (d) {
+      if (d && typeof d === "object") {
         USER_DATA = d;
         if (!Array.isArray(USER_DATA.projects)) USER_DATA.projects = [];
         SESSION.data = Object.assign(SESSION.data || {}, d);
@@ -626,134 +515,157 @@ async function syncFromServer() {
         return;
       }
     }
-  } catch (_) {}
+  } catch(e) { console.warn("[NEXUS] syncFromServer:", e.message); }
   USER_DATA = SESSION.data || {};
   if (!Array.isArray(USER_DATA.projects)) USER_DATA.projects = [];
 }
 
-async function saveToServer() {
-  if (!SESSION) return;
-  const username = (SESSION.user.username || '').toLowerCase();
+// ── SAVE TO SERVER (POST) — returns true on success ─────────────────────────
+async function saveToServer(opts) {
+  if (!SESSION || !USER_DATA) return false;
+  opts = opts || {};
+  const username = (SESSION.user.username || "").toLowerCase();
   SESSION.data = Object.assign(SESSION.data || {}, USER_DATA);
   saveLocal();
-  try {
-    await fetch('/api/sync', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user: username, data: USER_DATA })
-    });
-  } catch (_) {}
-}
 
-function saveLocal() {
-  try { localStorage.setItem('nexus_session', JSON.stringify(SESSION)); } catch (_) {}
-}
+  if (opts.showStatus) setSaveStatus("saving", "Saving to server...");
 
-// ─── SEND PROJECT NAME TO CONTROL.JS (PLUGIN) ────────────────────────────────
-async function notifyPluginOfProject(projectId, projectName) {
-  if (!SESSION) return;
-  const username = (SESSION.user.username || '').toLowerCase();
+  // Send ONLY safe fields that sync.js accepts
+  const safeData = {
+    projects:    USER_DATA.projects    || [],
+    lastClaim:   USER_DATA.lastClaim   || null,
+    avatar:      SESSION.user.avatar   || "",
+    displayName: SESSION.user.displayName || "",
+    robloxId:    SESSION.user.robloxId || "",
+  };
+
   try {
-    await fetch(API_CONTROL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type: 'set_project',
-        _user: username,
-        user: username,
-        projectId: projectId,
-        projectName: projectName,
-      })
+    const r = await fetch(API_SYNC, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user: username, robloxId: SESSION.user.robloxId || "", data: safeData })
     });
-  } catch (_) {
-    // Silently fail — plugin may not be connected yet, chats.html retries on open
+    if (!r.ok) { throw new Error("HTTP " + r.status); }
+    const result = await r.json();
+    if (result.success || result.data) {
+      // Update local with server-confirmed data
+      if (result.data) {
+        // Server controls credits/plan — update from server response
+        if (result.data.credits !== undefined) USER_DATA.credits = result.data.credits;
+        if (result.data.plan) USER_DATA.plan = result.data.plan;
+        if (result.data.roles) USER_DATA.roles = result.data.roles;
+        if (Array.isArray(result.data.projects)) USER_DATA.projects = result.data.projects;
+        SESSION.data = Object.assign(SESSION.data || {}, result.data);
+        saveLocal();
+      }
+      if (opts.showStatus) setSaveStatus("saved", "Saved to server ✓");
+      return true;
+    }
+    throw new Error(result.error || "Server rejected save");
+  } catch(e) {
+    console.error("[NEXUS] saveToServer failed:", e.message);
+    if (opts.showStatus) setSaveStatus("error", "Save failed — check connection");
+    return false;
   }
 }
 
-// ─── RENDER ALL ──────────────────────────────────────────────────────────────
-function renderAll() {
-  renderCredits();
-  renderPlan();
-  renderProjects();
+function saveLocal() {
+  try { localStorage.setItem("nexus_session", JSON.stringify(SESSION)); } catch(_) {}
+}
+
+function setSaveStatus(state, msg) {
+  const el = document.getElementById("saveStatus");
+  const txt = document.getElementById("saveStatusTxt");
+  if (!el || !txt) return;
+  el.className = "save-status " + state;
+  txt.textContent = msg;
+  if (state === "saved") setTimeout(() => { el.style.display = "none"; }, 3000);
+  if (state === "error") setTimeout(() => { el.style.display = "none"; }, 5000);
+}
+
+async function notifyPlugin(projectId, projectName) {
+  if (!SESSION) return;
+  const username = (SESSION.user.username || "").toLowerCase();
+  try {
+    await fetch(API_CONTROL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "set_project", _user: username, user: username, projectId, projectName })
+    });
+  } catch(_) {}
+}
+
+// ── RENDER ─────────────────────────────────────────────────────────────────
+function renderAll() { renderCredits(); renderPlan(); renderProjects(); updateDailyStatus(); }
+
+function getCredits() {
+  const c = USER_DATA.credits ?? SESSION?.data?.credits ?? 30;
+  const plan = (USER_DATA.plan || "free").toLowerCase();
+  const roles = USER_DATA.roles || [];
+  const unlimited = plan === "owner" || plan === "unlimited" || roles.includes("owner");
+  return { display: unlimited ? "∞" : parseFloat(c).toFixed(0), unlimited };
 }
 
 function renderCredits() {
-  const credits = USER_DATA.credits ?? SESSION?.data?.credits ?? 30;
-  const plan = (USER_DATA.plan || 'free').toLowerCase();
-  const roles = USER_DATA.roles || [];
-  const unlimited = plan === 'owner' || plan === 'unlimited' || roles.includes('owner');
-  const display = unlimited ? '∞' : parseFloat(credits).toFixed(0);
-  document.getElementById('navCreditsVal').textContent = display;
-  document.getElementById('statCredits').textContent = display;
+  const { display } = getCredits();
+  document.getElementById("navCreditsVal").textContent = display;
+  document.getElementById("statCredits").textContent = display;
+  document.getElementById("settingsCredits").textContent = display + " CR";
+  document.getElementById("udCredits").textContent = display + " CR";
 }
 
 function renderPlan() {
-  const plan = (USER_DATA.plan || 'free').toLowerCase();
+  const plan = (USER_DATA.plan || "free").toLowerCase();
   const roles = USER_DATA.roles || [];
-  const isOwner = plan === 'owner' || roles.includes('owner');
-  const isAdmin = roles.includes('admin');
-  const isPro = plan === 'pro';
-
-  let label = 'FREE', cls = '';
-  if (isOwner)      { label = 'OWNER'; cls = 'owner'; }
-  else if (isAdmin) { label = 'ADMIN'; cls = 'pro'; }
-  else if (isPro)   { label = 'PRO';   cls = 'pro'; }
-
-  document.getElementById('statPlan').textContent = label;
-  const pb = document.getElementById('planBadge');
-  if (pb) { pb.textContent = label + ' PLAN'; pb.className = 'plan-badge' + (cls ? ' ' + cls : ''); }
+  const isOwner = plan === "owner" || roles.includes("owner");
+  const isAdmin = roles.includes("admin");
+  const isPro = plan === "pro";
+  let label = "FREE", cls = "";
+  if (isOwner) { label = "OWNER"; cls = "owner"; }
+  else if (isAdmin) { label = "ADMIN"; cls = "pro"; }
+  else if (isPro) { label = "PRO"; cls = "pro"; }
+  document.getElementById("statPlan").textContent = label;
+  document.getElementById("settingsPlanVal").textContent = label;
+  document.getElementById("udRole").textContent = label + " Plan";
+  const pb = document.getElementById("planBadge");
+  if (pb) { pb.textContent = label + " PLAN"; pb.className = "plan-badge" + (cls ? " " + cls : ""); }
 }
 
 function getLimit() {
-  const plan = (USER_DATA.plan || 'free').toLowerCase();
+  const plan = (USER_DATA.plan || "free").toLowerCase();
   const roles = USER_DATA.roles || [];
-  const isOwner = plan === 'owner' || roles.includes('owner') || roles.includes('admin');
-  return isOwner ? 999 : plan === 'pro' ? 10 : 3;
+  return (plan === "owner" || roles.includes("owner") || roles.includes("admin")) ? 999 : plan === "pro" ? 10 : 3;
 }
 
 function renderProjects() {
   const projects = USER_DATA.projects || [];
   const limit = getLimit();
-  const isUnlimited = limit === 999;
-
-  document.getElementById('projectCount').textContent = projects.length;
-  document.getElementById('projectLimit').textContent = isUnlimited ? '∞' : limit;
-  document.getElementById('statProjects').textContent = projects.length;
-  document.getElementById('sectionCount').textContent =
-    projects.length + ' project' + (projects.length !== 1 ? 's' : '');
-
+  const unlimited = limit === 999;
+  document.getElementById("projectCount").textContent = projects.length;
+  document.getElementById("projectLimit").textContent = unlimited ? "∞" : limit;
+  document.getElementById("statProjects").textContent = projects.length;
+  document.getElementById("sectionCount").textContent = projects.length + " project" + (projects.length !== 1 ? "s" : "");
   const atLimit = projects.length >= limit;
-  document.getElementById('btnCreate').disabled = atLimit;
-  const inp = document.getElementById('projectName');
+  document.getElementById("btnCreate").disabled = atLimit;
+  const inp = document.getElementById("projectName");
   if (inp) inp.disabled = atLimit;
-
-  const grid = document.getElementById('projectsGrid');
-
+  const grid = document.getElementById("projectsGrid");
   if (!projects.length) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">
-          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-        </div>
-        <strong>No projects yet</strong>
-        <p>You must create a project before you can chat.<br>Each project has its own AI chat history.</p>
-        <div class="empty-arrow">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Type a name above and click CREATE
-        </div>
-      </div>`;
+    grid.innerHTML = `<div class="empty-state">
+      <div class="empty-icon"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></div>
+      <strong>No projects yet</strong>
+      <p>Create a project to start chatting with NEXUS AI.<br>Each project has its own isolated AI chat history.</p>
+      <div class="empty-arrow"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Type a name above and click CREATE</div>
+    </div>`;
     return;
   }
-
   grid.innerHTML = projects.map(p => `
-    <div class="project-card" onclick="openProject('${esc(p.id)}', '${esc(p.name)}')">
+    <div class="project-card" onclick="openProject(\'${esc(p.id)}\',\'${esc(p.name)}\')">
       <div class="project-card-top">
-        <div class="project-icon">
-          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-        </div>
+        <div class="project-icon"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></div>
         <div class="project-top-right">
-          <span class="project-id-tag" title="${esc(p.id)}">${esc(p.id.slice(0, 16))}…</span>
-          <button class="btn-del" onclick="confirmDelete(event,'${esc(p.id)}','${esc(p.name)}')" title="Delete project">
+          <span class="project-id-tag" title="${esc(p.id)}">${esc(p.id.slice(0,14))}…</span>
+          <button class="btn-del" onclick="confirmDelete(event,\'${esc(p.id)}\',\'${esc(p.name)}\')" title="Delete project">
             <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
           </button>
         </div>
@@ -761,120 +673,179 @@ function renderProjects() {
       <div class="project-name">${esc(p.name)}</div>
       <div class="project-desc">Roblox AI project — isolated chat history &amp; Studio sync</div>
       <div class="project-meta">
-        <span class="meta-date">
-          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          ${new Date(p.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
-        </span>
+        <span class="meta-date"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${new Date(p.createdAt).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>
         <span class="meta-status"><span class="status-dot"></span>Active</span>
       </div>
       <div class="project-open-btn">▶ OPEN PROJECT</div>
-    </div>
-  `).join('');
+    </div>`).join("");
 }
 
-// ─── CREATE PROJECT ───────────────────────────────────────────────────────────
+// ── CREATE PROJECT — save before redirect ─────────────────────────────────
 async function createProject() {
-  const nameInput = document.getElementById('projectName');
-  const name = nameInput.value.trim();
+  const inp = document.getElementById("projectName");
+  const name = inp.value.trim();
   if (!name) {
-    nameInput.focus();
-    nameInput.style.borderColor = 'rgba(255,45,107,.5)';
-    setTimeout(() => { nameInput.style.borderColor = ''; }, 1500);
-    toast('Please enter a project name', 'var(--yellow)');
+    inp.focus(); inp.style.borderColor = "rgba(255,45,107,.5)";
+    setTimeout(() => { inp.style.borderColor = ""; }, 1500);
+    toast("Please enter a project name", "var(--yellow)");
     return;
   }
-
   const limit = getLimit();
-  if ((USER_DATA.projects || []).length >= limit) {
-    toast('Project limit reached — upgrade to Pro', 'var(--pink)');
-    return;
-  }
+  if ((USER_DATA.projects || []).length >= limit) { toast("Project limit reached — upgrade to Pro", "var(--pink)"); return; }
 
-  const btn = document.getElementById('btnCreate');
-  btn.disabled = true;
-  btn.classList.add('loading');
-  nameInput.disabled = true;
+  const btn = document.getElementById("btnCreate");
+  btn.disabled = true; btn.classList.add("loading"); inp.disabled = true;
 
   const pid = generateProjectId();
-  const newProject = { id: pid, name, createdAt: new Date().toISOString() };
+  const proj = { id: pid, name: name, createdAt: new Date().toISOString() };
 
   if (!USER_DATA.projects) USER_DATA.projects = [];
-  USER_DATA.projects.unshift(newProject);
+  USER_DATA.projects.unshift(proj);
+  saveLocal(); // immediate local save
+  renderProjects();
 
-  try {
-    await saveToServer();
-    // Notify plugin immediately about active project
-    await notifyPluginOfProject(pid, name);
-    toast('Project created! Opening chat...', 'var(--green)', 1500);
-    setTimeout(() => {
-      window.location.href = '/chats?id=' + encodeURIComponent(pid);
-    }, 600);
-  } catch (e) {
-    USER_DATA.projects = USER_DATA.projects.filter(p => p.id !== pid);
-    btn.disabled = false;
-    btn.classList.remove('loading');
-    nameInput.disabled = false;
-    toast('Failed to save. Try again.', 'var(--pink)');
+  // Save to server and WAIT for confirmation
+  const saved = await saveToServer({ showStatus: true });
+  if (!saved) {
+    toast("Saved locally — will sync when online", "var(--yellow)", 3000);
+  } else {
+    toast("Project created! Opening chat...", "var(--green)", 1500);
   }
+  // Notify plugin
+  await notifyPlugin(pid, name);
+  // Navigate to chat
+  setTimeout(() => { window.location.href = "/chats?id=" + encodeURIComponent(pid); }, 700);
 }
 
-// ─── OPEN PROJECT ─────────────────────────────────────────────────────────────
 async function openProject(id, name) {
-  // Notify plugin of selected project before navigating
-  await notifyPluginOfProject(id, decodeHTMLEntities(name));
-  window.location.href = '/chats?id=' + encodeURIComponent(id);
+  const decoded = decodeEnt(name);
+  await notifyPlugin(id, decoded);
+  window.location.href = "/chats?id=" + encodeURIComponent(id);
 }
 
-// Decode HTML entities for plugin notification
-function decodeHTMLEntities(str) {
-  const el = document.createElement('div');
-  el.innerHTML = str;
-  return el.textContent || el.innerText || str;
-}
-
-// ─── DELETE PROJECT ───────────────────────────────────────────────────────────
 function confirmDelete(e, id, name) {
   e.stopPropagation();
-  document.getElementById('confirmName').textContent = '"' + decodeHTMLEntities(name) + '"';
-  document.getElementById('confirmModal').classList.add('show');
-  document.getElementById('confirmDeleteBtn').onclick = () => executeDelete(id);
-}
-
-function closeConfirm() {
-  document.getElementById('confirmModal').classList.remove('show');
+  document.getElementById("deleteProjectName").textContent = `"${decodeEnt(name)}"`;
+  document.getElementById("deleteModal").classList.add("show");
+  document.getElementById("deleteConfirmBtn").onclick = () => executeDelete(id);
 }
 
 async function executeDelete(id) {
-  closeConfirm();
+  closeModal("deleteModal");
   USER_DATA.projects = (USER_DATA.projects || []).filter(p => p.id !== id);
   renderProjects();
-  await saveToServer();
-  toast('Project deleted', 'var(--dim)');
+  await saveToServer({});
+  toast("Project deleted", "var(--dim)");
 }
 
-// ─── UTILS ────────────────────────────────────────────────────────────────────
-function esc(s) {
-  return String(s || '')
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+// ── DAILY CREDITS ──────────────────────────────────────────────────────────
+function updateDailyStatus() {
+  const plan = (USER_DATA.plan || "free").toLowerCase();
+  const roles = USER_DATA.roles || [];
+  const isPrivileged = plan === "owner" || roles.includes("owner") || roles.includes("admin");
+  const btn = document.getElementById("claimBtn");
+  const info = document.getElementById("dailyClaimInfo");
+  const ddTxt = document.getElementById("ddDailyTxt");
+  if (isPrivileged) {
+    if (info) info.textContent = "Credits unlimited";
+    if (btn) btn.disabled = true;
+    if (ddTxt) ddTxt.textContent = "Credits Unlimited";
+    return;
+  }
+  const last = USER_DATA.lastClaim;
+  if (last) {
+    const diff = (Date.now() - new Date(last)) / 3600000;
+    if (diff < 24) {
+      const h = Math.ceil(24 - diff);
+      if (info) info.textContent = `Available in ${h}h`;
+      if (btn) btn.disabled = true;
+      if (ddTxt) ddTxt.textContent = `Daily (${h}h left)`;
+      return;
+    }
+  }
+  if (info) info.textContent = "Daily credits available!";
+  if (btn) btn.disabled = false;
+  if (ddTxt) ddTxt.textContent = "Claim Daily Credits";
 }
 
+async function claimDaily() {
+  const plan = (USER_DATA.plan || "free").toLowerCase();
+  const roles = USER_DATA.roles || [];
+  if (plan === "owner" || roles.includes("owner") || roles.includes("admin")) return;
+  const n = plan === "pro" ? 25 : 2;
+  USER_DATA.credits = (parseFloat(USER_DATA.credits) || 0) + n;
+  USER_DATA.lastClaim = new Date().toISOString();
+  renderCredits(); updateDailyStatus();
+  await saveToServer({});
+  toast(`+${n} CR claimed!`, "var(--green)");
+}
+function claimDailyDD() { claimDaily(); closeDD(); }
+
+// ── REDEEM CODE ─────────────────────────────────────────────────────────────
+async function redeemCode() {
+  const inp = document.getElementById("redeemInput");
+  const msg = document.getElementById("redeemMsg");
+  if (!inp || !inp.value.trim()) { toast("Enter a redeem code", "var(--yellow)"); return; }
+  const code = inp.value.trim().toUpperCase();
+  if (msg) { msg.style.display = "none"; }
+  try {
+    const r = await fetch("/api/redeem", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code, user: (SESSION.user.username || "").toLowerCase(), userId: SESSION.user.robloxId || "" })
+    });
+    const d = await r.json();
+    if (d.success) {
+      USER_DATA.credits = (parseFloat(USER_DATA.credits) || 0) + parseFloat(d.credits || 0);
+      renderCredits(); await saveToServer({});
+      if (msg) { msg.style.display = "block"; msg.style.color = "var(--green)"; msg.textContent = `+${d.credits} CR redeemed!`; }
+      if (inp) inp.value = "";
+    } else {
+      if (msg) { msg.style.display = "block"; msg.style.color = "var(--pink)"; msg.textContent = "Error: " + (d.error || "Invalid code"); }
+    }
+  } catch(e) {
+    if (msg) { msg.style.display = "block"; msg.style.color = "var(--pink)"; msg.textContent = "Failed to connect to server"; }
+  }
+}
+
+// ── UI HELPERS ─────────────────────────────────────────────────────────────
+function toggleDD() {
+  const pill = document.getElementById("userPill"), dd = document.getElementById("userDD");
+  const open = dd.classList.contains("open");
+  if (open) closeDD();
+  else { dd.classList.add("open"); pill.classList.add("open"); }
+}
+function closeDD() {
+  document.getElementById("userDD").classList.remove("open");
+  document.getElementById("userPill").classList.remove("open");
+}
+function openSettings() {
+  renderCredits(); renderPlan(); updateDailyStatus();
+  document.getElementById("settingsModal").classList.add("show");
+}
+function showLogoutModal() { document.getElementById("logoutModal").classList.add("show"); }
+function doLogout() { localStorage.removeItem("nexus_session"); location.replace("/"); }
+function closeModal(id) { document.getElementById(id).classList.remove("show"); }
+
+// ── UTILS ─────────────────────────────────────────────────────────────────
+function esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function decodeEnt(s) { const el = document.createElement("div"); el.innerHTML = s; return el.textContent || el.innerText || s; }
 function toast(msg, color, dur) {
-  document.querySelectorAll('.nx-toast').forEach(t => t.remove());
-  const t = document.createElement('div');
-  t.className = 'nx-toast';
-  t.textContent = msg;
-  t.style.color = color || 'var(--cyan)';
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), dur || 2800);
+  document.querySelectorAll(".nx-toast").forEach(t => t.remove());
+  const t = document.createElement("div"); t.className = "nx-toast"; t.textContent = msg; t.style.color = color || "var(--cyan)";
+  document.body.appendChild(t); setTimeout(() => t.remove(), dur || 2800);
 }
 
-// ─── MODAL CLOSE ON BACKDROP ─────────────────────────────────────────────────
-document.getElementById('confirmModal').addEventListener('click', function(e) {
-  if (e.target === this) closeConfirm();
+// Close dropdown on outside click
+document.addEventListener("click", e => {
+  const wrap = document.querySelector(".user-pill-wrap");
+  if (wrap && !wrap.contains(e.target)) closeDD();
+});
+// Close overlays on backdrop click
+["deleteModal","logoutModal","settingsModal"].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener("click", function(e) { if (e.target === this) closeModal(id); });
 });
 
-// ─── START ────────────────────────────────────────────────────────────────────
 init();
 </script>
 </body>
