@@ -104,10 +104,6 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 .sdot{width:5px;height:5px;border-radius:50%;background:currentColor;}
 .sdot.pulse{animation:pd 1.8s infinite;}
 @keyframes pd{0%,100%{opacity:1}50%{opacity:.25}}
-.hdr-suspend-btn{display:flex;align-items:center;gap:4px;padding:3px 9px;border-radius:6px;border:1px solid rgba(255,45,107,.3);color:var(--pink);background:rgba(255,45,107,.06);font-size:9px;cursor:pointer;flex-shrink:0;transition:.2s;font-family:'Orbitron',sans-serif;font-weight:700;}
-.hdr-suspend-btn:hover{border-color:rgba(255,45,107,.5);background:rgba(255,45,107,.12);}
-.hdr-suspend-btn.active{border-color:rgba(255,214,0,.5);background:rgba(255,214,0,.08);color:var(--yellow);}
-.hdr-suspend-btn svg{width:9px;height:9px;stroke:currentColor;fill:none;stroke-width:2.5;flex-shrink:0;}
 .toggle-sw{width:38px;height:20px;border-radius:10px;background:var(--dim);border:none;cursor:pointer;position:relative;transition:.25s;flex-shrink:0;outline:none;}
 .toggle-sw.on{background:var(--cyan);}
 .toggle-sw::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:white;transition:.25s;box-shadow:0 1px 4px rgba(0,0,0,.4);}
@@ -385,10 +381,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
     <div class="chat-hdr">
       <div class="chat-title" id="chatTitle">NEXUS AI — Asisten Roblox</div>
       <div class="proj-badge-hdr" id="hdrProjBadge" style="display:none;"></div>
-      <button class="hdr-suspend-btn" id="suspendHdrBtn" onclick="toggleSuspend()">
-        <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-        <span id="suspendHdrTxt">SUSPEND</span>
-      </button>
+
       <div class="status-badge off" id="studioBadge" onclick="retryStudio()"><div class="sdot pulse" id="studioDot"></div><span id="studioTxt">Studio: OFF</span></div>
     </div>
     <div class="chat-tabs">
@@ -594,7 +587,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 
 <script>
 'use strict';
-var PLUGIN_VER='V1.1.95';
+var PLUGIN_VER='V1.1.96';
 var curLang=localStorage.getItem('nexus_lang')||'id';
 var thinkingEnabled=true;
 var SESSION=null;
@@ -745,8 +738,8 @@ function T(){return LANGS[curLang]||LANGS.id;}
 
 var S={
   credits:30,allConvs:[],convs:[],curConv:null,gen:false,cancelCtrl:null,
-  model:{id:'gemini-2.5-flash-lite',prov:'gemini',cost:0,label:'Gemini 2.5 Flash Lite'},
-  guiModel:{id:'gemini-2.5-flash-lite',prov:'gemini',cost:0,label:'Gemini 2.5 Flash Lite'},
+  model:{id:'gemini-3.1-flash-lite',prov:'gemini',cost:0,label:'Gemini 3.1 Flash Lite'},
+  guiModel:{id:'gemini-3.1-flash-lite',prov:'gemini',cost:0,label:'Gemini 3.1 Flash Lite'},
   plan:'free',draftText:{},attachments:[],lastClaim:null,unreadInbox:0,
   currentProjectId:null,currentProjectName:null,projects:[],
   suspended:false,
@@ -755,28 +748,11 @@ var S={
 };
 
 var MODEL_LIST=[
-  {grp:'Google — Gemini Fast'},
-  {id:'gemini-2.5-flash-lite',prov:'gemini',cost:0,label:'Gemini 2.5 Flash Lite',icon:'/icon/gemini.png',badge:'FREE'},
-  {id:'gemini-2.0-flash',prov:'gemini',cost:0,label:'Gemini 2.0 Flash',icon:'/icon/gemini.png',badge:'FREE'},
-  {id:'gemini-3-flash-preview',prov:'gemini',cost:2,label:'Gemini 3 Flash',icon:'/icon/gemini.png',badge:'FAST'},
-  {id:'gemini-3.1-flash-lite',prov:'gemini',cost:5,label:'Gemini 3.1 Flash Lite',icon:'/icon/gemini.png',badge:'NEW'},
-  {grp:'Google — Gemini Smart'},
+  {grp:'Google — Gemini'},
   {id:'gemini-2.5-flash',prov:'gemini',cost:1,label:'Gemini 2.5 Flash',icon:'/icon/gemini.png',badge:'SMART'},
-  {id:'gemini-2.5-pro-preview',prov:'gemini',cost:3,label:'Gemini 2.5 Pro Preview',icon:'/icon/gemini.png',badge:'BEST'},
-  {id:'gemini-3.1-pro-preview',prov:'gemini',cost:8,label:'Gemini 3.1 Pro',icon:'/icon/gemini.png',badge:'NEW'},
-  {grp:'Groq — Super Fast & Free'},
-  {id:'llama-3.1-8b-instant',prov:'groq',cost:0,label:'Llama 3.1 8B Instant',icon:'/icon/groq.ico',badge:'FREE'},
-  {id:'llama-3.3-70b-versatile',prov:'groq',cost:0,label:'Llama 3.3 70B Versatile',icon:'/icon/groq.ico',badge:'FREE'},
-  {id:'openai/gpt-oss-120b',prov:'groq',cost:0,label:'OpenAI OSS 120B',icon:'/icon/groq.ico',badge:'FREE'},
-  {grp:'Mistral'},
-  {id:'mistral-small-latest',prov:'mistral',cost:0,label:'Mistral Small',icon:'/icon/mistral.png',badge:'FREE'},
-  {id:'mistral-medium-latest',prov:'mistral',cost:0,label:'Mistral Medium',icon:'/icon/mistral.png',badge:'FREE'},
-  {grp:'DeepSeek'},
-  {id:'deepseek-chat',prov:'deepseek',cost:1,label:'DeepSeek V3 Chat',icon:'/icon/deepseek.svg'},
-  {id:'deepseek-reasoner',prov:'deepseek',cost:2,label:'DeepSeek R1 Reasoner',icon:'/icon/deepseek.svg'},
-  {grp:'OpenRouter'},
-  {id:'meta-llama/llama-3.1-8b-instruct',prov:'openrouter',cost:0,label:'Llama 3.1 8B (OR)',icon:'/icon/openrouter.png',badge:'FREE'},
-  {id:'mistralai/mistral-7b-instruct',prov:'openrouter',cost:0,label:'Mistral 7B (OR)',icon:'/icon/openrouter.png',badge:'FREE'}
+  {id:'gemini-3-flash-preview',prov:'gemini',cost:2,label:'Gemini 3 Flash',icon:'/icon/gemini.png',badge:'FAST'},
+  {id:'gemini-3.1-flash-lite',prov:'gemini',cost:0,label:'Gemini 3.1 Flash Lite',icon:'/icon/gemini.png',badge:'FREE'},
+  {id:'gemini-3.1-pro-preview',prov:'gemini',cost:8,label:'Gemini 3.1 Pro',icon:'/icon/gemini.png',badge:'BEST'}
 ];
 var MODEL_LIST_SOON=[
   {grp:'Anthropic — Claude'},
@@ -1157,7 +1133,7 @@ function getProjectName(pid){if(!pid)return null;var projs=S.projects||SESSION&&
 function updateProjectUI(){var n=S.currentProjectName;var chip=document.getElementById('sbProjChip'),cn=document.getElementById('sbProjName'),badge=document.getElementById('hdrProjBadge');if(n){if(chip){chip.style.display='';if(cn)cn.textContent=n;}if(badge){badge.style.display='';badge.textContent=n;}}else{if(chip)chip.style.display='none';if(badge)badge.style.display='none';}}
 
 /* ── MODEL UI ── */
-function getFreeModel(){for(var i=0;i<MODEL_LIST.length;i++){if(MODEL_LIST[i].id&&!MODEL_LIST[i].grp)return MODEL_LIST[i];}return{id:'gemini-2.5-flash-lite',prov:'gemini',cost:0,label:'Gemini 2.5 Flash Lite'};}
+function getFreeModel(){for(var i=0;i<MODEL_LIST.length;i++){if(MODEL_LIST[i].id&&!MODEL_LIST[i].grp)return MODEL_LIST[i];}return{id:'gemini-3.1-flash-lite',prov:'gemini',cost:0,label:'Gemini 3.1 Flash Lite'};}
 function updateModelUI(){
   var m=S.model||getFreeModel();
   var el=document.getElementById('inpMName');if(el)el.textContent=m.label||m.id;
@@ -1178,12 +1154,7 @@ function buildMDDHtml(forGui){
     var iconHtml=m.icon?'<img src="'+m.icon+'" onerror="this.style.display=\'none\'" style="width:18px;height:18px;object-fit:contain;border-radius:3px;">'  :'<div style="width:18px;height:18px;border-radius:3px;background:rgba(0,229,255,.1);font-size:9px;display:flex;align-items:center;justify-content:center;color:var(--cyan);">AI</div>';
     html+='<div class="mo'+(act?' act':'')+'" onclick="selModel(\''+m.id+'\','+(forGui?'true':'false')+')">'+'<div class="mo-icon">'+iconHtml+'</div><div><div class="mo-n">'+esc(m.label||m.id)+'</div><div class="mo-s">'+esc(m.prov||'')+'</div></div>'+badgeHtml+'</div>';
   });
-  html+='<div class="mg" style="color:rgba(255,45,107,.6);border-top:1px solid rgba(255,45,107,.15);">COMING SOON</div>';
-  MODEL_LIST_SOON.forEach(function(m){
-    if(m.grp){html+='<div class="mg" style="opacity:.5;">'+esc(m.grp)+'</div>';return;}
-    var iconHtml=m.icon?'<img src="'+m.icon+'" style="width:18px;height:18px;opacity:.4;object-fit:contain;border-radius:3px;">':'<div style="opacity:.4;font-size:9px;color:var(--dim);">AI</div>';
-    html+='<div class="mo disabled"><div class="mo-icon">'+iconHtml+'</div><div><div class="mo-n" style="opacity:.4;">'+esc(m.label||m.id)+'<span style="font-size:8px;color:var(--pink);margin-left:5px;">Soon</span></div><div class="mo-s" style="opacity:.4;">'+esc(m.prov||'')+'</div></div><span class="mb-badge" style="opacity:.3;background:rgba(100,100,100,.1);color:#888;">'+m.cost+' CR</span></div>';
-  });
+  
   return html;
 }
 function toggleMDD(e){
@@ -1520,7 +1491,7 @@ async function autoInjectToStudio(aiResponse,userPrompt){
   return summary.length>0?summary:null;
 }
 
-/* ── NEXUS AI SYSTEM PROMPT (COMPLETE REWRITE V1.1.95) ── */
+/* ── NEXUS AI SYSTEM PROMPT (COMPLETE REWRITE V1.1.93) ── */
 function buildSysPrompt(){
   var u=SESSION?SESSION.user:{username:'Unknown'};
   var dn=u.displayName||u.username||'Developer';
