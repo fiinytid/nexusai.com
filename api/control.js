@@ -1,8 +1,8 @@
-// api/control.js — NEXUS AI V1.1.9
+// api/control.js — NEXUS AI
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
 const TMP = '/tmp';
-export const REQUIRED_PLUGIN_VERSION = 'V1.1.96';
+export const REQUIRED_PLUGIN_VERSION = 'V1.1.97';
 export const WEB_VERSION = 'V10.5';
 
 // ─── SANITIZE ─────────────────────────────────────────────
@@ -10,7 +10,7 @@ function san(user) {
   return (user || 'default').replace(/[^a-zA-Z0-9_\-]/g, '_').toLowerCase().substring(0, 40);
 }
 
-// ─── FILE PATHS ───────────────────────────────────────────
+// ─── FILE PATHS ──────────────────────────────────────────
 function queueFile(u)      { return `${TMP}/nq_${san(u)}.json`; }
 function pollFile(u)       { return `${TMP}/np_${san(u)}.txt`; }
 function outFile(u)        { return `${TMP}/no_${san(u)}.json`; }
