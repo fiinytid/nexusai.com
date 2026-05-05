@@ -244,7 +244,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 
 <nav class="nav">
   <a href="/dashboard" class="nav-logo">
-    <div class="nav-logo-icon"><img src="nexusai.png" alt="" onerror="this.style.display=\'none\'"></div>
+    <div class="nav-logo-icon"><img src="nexusai.png" alt="" onerror="this.style.display='none'"></div>
     NEXUS AI
   </a>
   <div class="nav-right">
@@ -347,7 +347,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
       </div>
     </div>
     <div class="input-row">
-      <input type="text" id="projectName" class="project-input" placeholder="Project name — e.g. Obby Game, Shop System, Simulator..." maxlength="60" onkeydown="if(event.key===\'Enter\')createProject()">
+      <input type="text" id="projectName" class="project-input" placeholder="Project name — e.g. Obby Game, Shop System, Simulator..." maxlength="60" onkeydown="if(event.key==='Enter')createProject()">
       <button id="btnCreate" class="btn-create" onclick="createProject()">
         <div class="btn-spinner"></div>
         <span class="btn-lbl">CREATE</span>
@@ -381,7 +381,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     <div class="modal-title">Delete Project?</div>
     <div class="modal-desc">Are you sure you want to delete <span class="highlight" id="deleteProjectName">"this project"</span>? All chat history will be permanently removed. This cannot be undone.</div>
     <div class="modal-btns">
-      <button class="modal-btn cancel" onclick="closeModal(\'deleteModal\')">Cancel</button>
+      <button class="modal-btn cancel" onclick="closeModal('deleteModal')">Cancel</button>
       <button class="modal-btn danger" id="deleteConfirmBtn">Delete</button>
     </div>
   </div>
@@ -396,7 +396,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
     <div class="modal-title">Sign Out?</div>
     <div class="modal-desc">You will be signed out of NEXUS AI. Your projects and chat history are safely stored on the server.</div>
     <div class="modal-btns">
-      <button class="modal-btn cancel" onclick="closeModal(\'logoutModal\')">Cancel</button>
+      <button class="modal-btn cancel" onclick="closeModal('logoutModal')">Cancel</button>
       <button class="modal-btn danger" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
@@ -410,7 +410,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         Settings
       </div>
-      <button class="settings-close" onclick="closeModal(\'settingsModal\')">×</button>
+      <button class="settings-close" onclick="closeModal('settingsModal')">×</button>
     </div>
     <div class="settings-sec">
       <div class="settings-sec-title">Roblox Account</div>
@@ -446,14 +446,14 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
       <div class="settings-sec-title">Studio Plugin</div>
       <div class="settings-row">
         <label>NEXUS AI Plugin for Roblox Studio</label>
-        <button class="settings-btn" onclick="window.open(\'https://create.roblox.com/store/asset/91870814099475/NEXUS-AI\',\'_blank\')">Download</button>
+        <button class="settings-btn" onclick="window.open('https://create.roblox.com/store/asset/91870814099475/NEXUS-AI','_blank')">Download</button>
       </div>
     </div>
     <div class="settings-sec">
       <div class="settings-sec-title" style="color:var(--pink);">Account</div>
       <div class="settings-row">
         <label>Sign out of this session</label>
-        <button class="settings-btn danger" onclick="closeModal(\'settingsModal\');showLogoutModal()">Sign Out</button>
+        <button class="settings-btn danger" onclick="closeModal('settingsModal');showLogoutModal()">Sign Out</button>
       </div>
     </div>
   </div>
@@ -660,12 +660,12 @@ function renderProjects() {
     return;
   }
   grid.innerHTML = projects.map(p => `
-    <div class="project-card" onclick="openProject(\'${esc(p.id)}\',\'${esc(p.name)}\')">
+    <div class="project-card" onclick="openProject('${esc(p.id)}','${esc(p.name)}')">
       <div class="project-card-top">
         <div class="project-icon"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></div>
         <div class="project-top-right">
           <span class="project-id-tag" title="${esc(p.id)}">${esc(p.id.slice(0,14))}…</span>
-          <button class="btn-del" onclick="confirmDelete(event,\'${esc(p.id)}\',\'${esc(p.name)}\')" title="Delete project">
+          <button class="btn-del" onclick="confirmDelete(event,'${esc(p.id)}','${esc(p.name)}')" title="Delete project">
             <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
           </button>
         </div>
