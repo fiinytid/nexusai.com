@@ -515,7 +515,7 @@ export default async function handler(req, res) {
       for (const tryModel of modelChain) {
         const maxTok = stepfunMaxTokens[tryModel] || 8192;
         try {
-          const r = await fetchWithRetry('https://api.stepfun.com/v1/chat/completions', {
+          const r = await fetchWithRetry('https://api.stepfun.ai/v1/chat/completions', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
