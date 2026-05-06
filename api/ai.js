@@ -494,12 +494,53 @@ export default async function handler(req, res) {
     }
 
     // ══════════════════════════════════════════════════════════════════
+    // 8. STEPFUN
+    // ══════════════════════════════════════════════════════════════════
+    if (provider === 'stepfun') {
+      const key = process.env.STEPFUN_API_KEY;
+      if (!key) return res.status(503).json({ error: 'StepFun not configured. Add STEPFUN_API_KEY to environment variables.' });
+
+      const normalized = normalizeMessages(messages, 'stepfun');
+      const allMsgs = system ? [{ role: 'system', content: system }, ...normalized] : normalized;
+
+      const r = await fetchWithRetry('https://api.stepfun.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: allMsgs,
+          max_tokens: Math.min(max_tokens || 16384, 65536),
+          temperature: 0.7,
+        }),
+      });
+
+      if (!r.ok) {
+        const err = await parseApiError(r, 'StepFun');
+        if (err.status === 429) {
+          return res.status(429).json({ error: 'StepFun rate limit. Please wait and try again.' });
+        }
+        if (err.status === 402 || err.message.toLowerCase().includes('insufficient')) {
+          return res.status(402).json({ error: 'StepFun quota exceeded. Please add credits.' });
+        }
+        return res.status(err.status || 500).json({ error: err.message });
+      }
+
+      const d = await r.json();
+      const text = d?.choices?.[0]?.message?.content;
+      if (!text) return res.status(500).json({ error: 'Empty response from StepFun' });
+      return res.status(200).json({ content: text });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
     // Unknown provider
     // ══════════════════════════════════════════════════════════════════
     return res.status(400).json({
-      error: `Unknown provider: "${provider}". Supported: gemini, claude, openai, openrouter, deepseek, groq, mistral`,
+      error: `Unknown provider: "${provider}". Supported: gemini, claude, openai, openrouter, deepseek, groq, mistral, stepfun`,
     });
-
+    
   } catch (e) {
     // Global error handler
     if (e.name === 'AbortError') {
