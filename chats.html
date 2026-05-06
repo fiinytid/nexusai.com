@@ -587,7 +587,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(0
 
 <script>
 'use strict';
-var PLUGIN_VER='V1.1.96';
+var PLUGIN_VER='V1.1.97';
 var curLang=localStorage.getItem('nexus_lang')||'id';
 var thinkingEnabled=true;
 var SESSION=null;
@@ -748,7 +748,7 @@ var S={
 };
 
 var MODEL_LIST=[
-  {grp:'Google — Gemini'},
+  {grp:'Google'},
   {id:'gemini-2.5-flash',prov:'gemini',cost:1,label:'Gemini 2.5 Flash',icon:'/icon/gemini.png',badge:'SMART'},
   {id:'gemini-3-flash-preview',prov:'gemini',cost:2,label:'Gemini 3 Flash',icon:'/icon/gemini.png',badge:'FAST'},
   {id:'gemini-3.1-flash-lite',prov:'gemini',cost:0,label:'Gemini 3.1 Flash Lite',icon:'/icon/gemini.png',badge:'FREE'},
@@ -758,7 +758,7 @@ var MODEL_LIST=[
   {id:'gpt-5.5',prov:'openai',cost:14,label:'ChatGPT 5.5',icon:'/icon/chatgpt.png',badge:'BEST CODER'}
 ];
 var MODEL_LIST_SOON=[
-  {grp:'Anthropic — Claude'},
+  {grp:'Anthropic'},
   {id:'claude-haiku-4-5',prov:'claude',cost:3,label:'Claude Haiku 4.5',icon:'/icon/claude.png',soon:true},
   {id:'claude-sonnet-4-6',prov:'claude',cost:12,label:'Claude Sonnet 4.6',icon:'/icon/claude.png',soon:true},
   {grp:'OpenAI'},
