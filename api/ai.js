@@ -1,4 +1,4 @@
-// api/ai.js — NEXUS AI (Improved v2)
+// api/ai.js — NEXUS AI (v3 — Fixed StepFun + All Providers)
 
 /**
  * Normalize messages array for different providers
@@ -20,10 +20,11 @@ function normalizeMessages(msgs, provider) {
       else role = 'user';
     }
 
-    // Ensure content is a string or valid array
     if (Array.isArray(msg.content)) {
-      // Filter out invalid content items
-      msg.content = msg.content.filter(c => c && (c.type === 'text' || c.type === 'image' || c.type === 'document' || c.type === 'inline_data'));
+      msg.content = msg.content.filter(c => c && (
+        c.type === 'text' || c.type === 'image' ||
+        c.type === 'document' || c.type === 'inline_data'
+      ));
       if (msg.content.length === 0) continue;
     } else {
       msg.content = String(msg.content || '');
@@ -34,12 +35,11 @@ function normalizeMessages(msgs, provider) {
     normalized.push(msg);
   }
 
-  // Ensure Gemini: no consecutive same-role messages
+  // Gemini: no consecutive same-role messages
   if (provider === 'gemini') {
     const deduped = [];
     for (const msg of normalized) {
       if (deduped.length > 0 && deduped[deduped.length - 1].role === msg.role) {
-        // Merge content
         const prev = deduped[deduped.length - 1];
         if (typeof prev.content === 'string' && typeof msg.content === 'string') {
           prev.content += '\n' + msg.content;
@@ -66,8 +66,7 @@ async function fetchWithRetry(url, options, retries = 2, timeoutMs = 120000) {
       const response = await fetch(url, {
         ...options,
         signal: options.signal
-          ? // merge signals if user already has one
-            createMergedSignal(options.signal, controller.signal)
+          ? createMergedSignal(options.signal, controller.signal)
           : controller.signal,
       });
       clearTimeout(timeout);
@@ -75,7 +74,7 @@ async function fetchWithRetry(url, options, retries = 2, timeoutMs = 120000) {
     } catch (e) {
       clearTimeout(timeout);
       lastError = e;
-      if (e.name === 'AbortError') throw e; // Don't retry on abort
+      if (e.name === 'AbortError') throw e;
       if (attempt < retries) {
         await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
       }
@@ -105,7 +104,6 @@ async function parseApiError(response, providerName) {
     if (errData?.error?.message) errMsg = errData.error.message;
     else if (errData?.message) errMsg = errData.message;
     else if (typeof errData?.error === 'string') errMsg = errData.error;
-    // Return original error data for status handling
     return { message: errMsg, status: response.status, data: errData };
   } catch (_) {
     return { message: errMsg, status: response.status, data: null };
@@ -138,6 +136,7 @@ export default async function handler(req, res) {
   }
 
   try {
+
     // ══════════════════════════════════════════════════════════════════
     // 1. GEMINI
     // ══════════════════════════════════════════════════════════════════
@@ -145,7 +144,6 @@ export default async function handler(req, res) {
       const key = process.env.GEMINI_API_KEY;
       if (!key) return res.status(503).json({ error: 'Gemini not configured. Add GEMINI_API_KEY to environment variables.' });
 
-      // Build fallback chain
       const modelChain = [model];
       if (model !== 'gemini-2.5-flash-lite') modelChain.push('gemini-2.5-flash-lite');
       if (model !== 'gemini-2.0-flash') modelChain.push('gemini-2.0-flash');
@@ -195,7 +193,6 @@ export default async function handler(req, res) {
           if (!r.ok) {
             const err = await parseApiError(r, 'Gemini');
             lastError = err.message;
-            // Retry on overload / quota
             if (err.status === 503 || err.status === 429 ||
                 err.message.includes('overloaded') || err.message.includes('quota') ||
                 err.message.includes('RESOURCE_EXHAUSTED') || err.message.includes('UNAVAILABLE')) {
@@ -227,7 +224,7 @@ export default async function handler(req, res) {
       return res.status(503).json({
         error: 'Gemini models are currently overloaded or unavailable. ' + (lastError || ''),
         overloaded: true,
-        suggestion: 'Try switching to a Groq or Mistral model.',
+        suggestion: 'Try switching to a StepFun or Groq model.',
       });
     }
 
@@ -292,12 +289,8 @@ export default async function handler(req, res) {
 
       if (!r.ok) {
         const err = await parseApiError(r, 'OpenAI');
-        if (err.status === 429) {
-          return res.status(429).json({ error: 'OpenAI rate limit reached. Please wait a moment and try again.' });
-        }
-        if (err.status === 402 || err.message.includes('insufficient_quota')) {
-          return res.status(402).json({ error: 'OpenAI quota exceeded. Please add credits to your OpenAI account.' });
-        }
+        if (err.status === 429) return res.status(429).json({ error: 'OpenAI rate limit reached. Please wait a moment and try again.' });
+        if (err.status === 402 || err.message.includes('insufficient_quota')) return res.status(402).json({ error: 'OpenAI quota exceeded. Please add credits to your OpenAI account.' });
         return res.status(err.status || 500).json({ error: err.message });
       }
 
@@ -335,12 +328,8 @@ export default async function handler(req, res) {
 
       if (!r.ok) {
         const err = await parseApiError(r, 'OpenRouter');
-        if (err.status === 402 || err.message.toLowerCase().includes('insufficient balance')) {
-          return res.status(402).json({ error: 'OpenRouter balance is empty. Please top up at openrouter.ai' });
-        }
-        if (err.status === 429) {
-          return res.status(429).json({ error: 'OpenRouter rate limit. Please wait and try again.' });
-        }
+        if (err.status === 402 || err.message.toLowerCase().includes('insufficient balance')) return res.status(402).json({ error: 'OpenRouter balance is empty. Please top up at openrouter.ai' });
+        if (err.status === 429) return res.status(429).json({ error: 'OpenRouter rate limit. Please wait and try again.' });
         return res.status(err.status || 500).json({ error: err.message });
       }
 
@@ -380,9 +369,7 @@ export default async function handler(req, res) {
 
       if (!r.ok) {
         const err = await parseApiError(r, 'DeepSeek');
-        if (err.status === 402 || err.message.toLowerCase().includes('insufficient balance')) {
-          return res.status(402).json({ error: 'DeepSeek balance is empty. Please top up at platform.deepseek.com' });
-        }
+        if (err.status === 402 || err.message.toLowerCase().includes('insufficient balance')) return res.status(402).json({ error: 'DeepSeek balance is empty. Please top up at platform.deepseek.com' });
         return res.status(err.status || 500).json({ error: err.message });
       }
 
@@ -394,9 +381,7 @@ export default async function handler(req, res) {
       const reasoning = choice.message?.reasoning_content || '';
 
       let finalContent = '';
-      if (reasoning) {
-        finalContent += '🧠 **Reasoning (DeepSeek R1):**\n' + reasoning + '\n\n---\n\n';
-      }
+      if (reasoning) finalContent += '🧠 **Reasoning (DeepSeek R1):**\n' + reasoning + '\n\n---\n\n';
       finalContent += content;
 
       if (!finalContent.trim()) return res.status(500).json({ error: 'Empty response from DeepSeek' });
@@ -413,7 +398,6 @@ export default async function handler(req, res) {
       const normalized = normalizeMessages(messages, 'groq');
       const allMsgs = system ? [{ role: 'system', content: system }, ...normalized] : normalized;
 
-      // Groq has token limits per model
       const groqMaxTokens = {
         'llama-3.1-8b-instant': 8192,
         'llama-3.3-70b-versatile': 32768,
@@ -437,12 +421,8 @@ export default async function handler(req, res) {
 
       if (!r.ok) {
         const err = await parseApiError(r, 'Groq');
-        if (err.status === 429) {
-          return res.status(429).json({ error: 'Groq rate limit reached. Please try again in a moment.' });
-        }
-        if (err.status === 413 || err.message.includes('context_length_exceeded') || err.message.includes('too large')) {
-          return res.status(413).json({ error: 'Message too long for Groq. Please start a new chat or use a model with larger context.' });
-        }
+        if (err.status === 429) return res.status(429).json({ error: 'Groq rate limit reached. Please try again in a moment.' });
+        if (err.status === 413 || err.message.includes('context_length_exceeded') || err.message.includes('too large')) return res.status(413).json({ error: 'Message too long for Groq. Please start a new chat or use a model with larger context.' });
         return res.status(err.status || 500).json({ error: err.message });
       }
 
@@ -478,12 +458,8 @@ export default async function handler(req, res) {
 
       if (!r.ok) {
         const err = await parseApiError(r, 'Mistral');
-        if (err.status === 429) {
-          return res.status(429).json({ error: 'Mistral rate limit. Please wait and try again.' });
-        }
-        if (err.status === 402) {
-          return res.status(402).json({ error: 'Mistral quota exceeded. Please add credits.' });
-        }
+        if (err.status === 429) return res.status(429).json({ error: 'Mistral rate limit. Please wait and try again.' });
+        if (err.status === 402) return res.status(402).json({ error: 'Mistral quota exceeded. Please add credits.' });
         return res.status(err.status || 500).json({ error: err.message });
       }
 
@@ -494,44 +470,113 @@ export default async function handler(req, res) {
     }
 
     // ══════════════════════════════════════════════════════════════════
-    // 8. STEPFUN
+    // 8. STEPFUN — FIXED (correct model IDs + fallback chain)
     // ══════════════════════════════════════════════════════════════════
     if (provider === 'stepfun') {
       const key = process.env.STEPFUN_API_KEY;
-      if (!key) return res.status(503).json({ error: 'StepFun not configured. Add STEPFUN_API_KEY to environment variables.' });
+      if (!key) return res.status(503).json({
+        error: 'StepFun not configured. Add STEPFUN_API_KEY to Vercel Environment Variables (make sure to select ALL environments: Production, Preview, Development).',
+      });
 
       const normalized = normalizeMessages(messages, 'stepfun');
       const allMsgs = system ? [{ role: 'system', content: system }, ...normalized] : normalized;
 
-      const r = await fetchWithRetry('https://api.stepfun.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${key}`,
-        },
-        body: JSON.stringify({
-          model,
-          messages: allMsgs,
-          max_tokens: Math.min(max_tokens || 16384, 65536),
-          temperature: 0.7,
-        }),
-      });
+      // StepFun valid model IDs — fallback chain
+      // step-1-8k is the lightest/fastest, used as fallback
+      const stepfunFallback = {
+        'step-1-8k':   'step-1-8k',
+        'step-1-32k':  'step-1-8k',
+        'step-1-128k': 'step-1-32k',
+        'step-1-256k': 'step-1-128k',
+        'step-2-16k':  'step-1-32k',
+        'step-1o-mini':'step-1-8k',
+        'step-1o-turbo':'step-1-32k',
+        'step-2-turbo':'step-2-16k',
+        'step-3-5-flash':'step-1-32k',
+      };
 
-      if (!r.ok) {
-        const err = await parseApiError(r, 'StepFun');
-        if (err.status === 429) {
-          return res.status(429).json({ error: 'StepFun rate limit. Please wait and try again.' });
+      // Build fallback chain: [requested model, fallback, step-1-8k]
+      const primaryFallback = stepfunFallback[model] || 'step-1-8k';
+      const modelChain = [...new Set([model, primaryFallback, 'step-1-8k'])];
+
+      const stepfunMaxTokens = {
+        'step-1-8k':    8192,
+        'step-1-32k':   16384,
+        'step-1-128k':  32768,
+        'step-1-256k':  32768,
+        'step-2-16k':   16384,
+        'step-1o-mini': 8192,
+        'step-1o-turbo':16384,
+        'step-2-turbo': 16384,
+        'step-3-5-flash':16384,
+      };
+
+      let lastError = null;
+      for (const tryModel of modelChain) {
+        const maxTok = stepfunMaxTokens[tryModel] || 8192;
+        try {
+          const r = await fetchWithRetry('https://api.stepfun.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${key}`,
+            },
+            body: JSON.stringify({
+              model: tryModel,
+              messages: allMsgs,
+              max_tokens: Math.min(max_tokens || maxTok, maxTok),
+              temperature: 0.7,
+            }),
+          });
+
+          if (!r.ok) {
+            const err = await parseApiError(r, 'StepFun');
+            lastError = err.message;
+
+            // 401 = wrong API key — no point retrying with fallback models
+            if (err.status === 401) {
+              return res.status(401).json({
+                error: 'StepFun: Invalid API key. Check STEPFUN_API_KEY in Vercel → Settings → Environment Variables. Make sure it is set for ALL environments (Production, Preview, Development) and redeploy.',
+              });
+            }
+            // 404 = model not found — try next in chain
+            if (err.status === 404 || err.message.toLowerCase().includes('model') || err.message.toLowerCase().includes('not found')) {
+              continue;
+            }
+            // 429 = rate limit
+            if (err.status === 429) {
+              return res.status(429).json({ error: 'StepFun rate limit. Please wait and try again.' });
+            }
+            // 402 = quota
+            if (err.status === 402 || err.message.toLowerCase().includes('insufficient') || err.message.toLowerCase().includes('balance')) {
+              return res.status(402).json({ error: 'StepFun quota exceeded. Please top up at platform.stepfun.com' });
+            }
+            // 503 / 529 = overloaded — try next fallback
+            if (err.status === 503 || err.status === 529 || err.message.toLowerCase().includes('overload')) {
+              continue;
+            }
+            return res.status(err.status || 500).json({ error: `StepFun: ${err.message}` });
+          }
+
+          const d = await r.json();
+          const text = d?.choices?.[0]?.message?.content;
+          if (!text) {
+            lastError = `Empty response from ${tryModel}`;
+            continue;
+          }
+          return res.status(200).json({ content: text, model_used: tryModel });
+
+        } catch (e) {
+          if (e.name === 'AbortError') throw e;
+          lastError = e.message;
+          continue;
         }
-        if (err.status === 402 || err.message.toLowerCase().includes('insufficient')) {
-          return res.status(402).json({ error: 'StepFun quota exceeded. Please add credits.' });
-        }
-        return res.status(err.status || 500).json({ error: err.message });
       }
 
-      const d = await r.json();
-      const text = d?.choices?.[0]?.message?.content;
-      if (!text) return res.status(500).json({ error: 'Empty response from StepFun' });
-      return res.status(200).json({ content: text });
+      return res.status(503).json({
+        error: `StepFun unavailable. ${lastError || 'All fallback models failed.'}`,
+        suggestion: 'Try switching to Gemini or Groq.',
+      });
     }
 
     // ══════════════════════════════════════════════════════════════════
@@ -540,9 +585,8 @@ export default async function handler(req, res) {
     return res.status(400).json({
       error: `Unknown provider: "${provider}". Supported: gemini, claude, openai, openrouter, deepseek, groq, mistral, stepfun`,
     });
-    
+
   } catch (e) {
-    // Global error handler
     if (e.name === 'AbortError') {
       return res.status(408).json({ error: 'Request timed out. Please try again.' });
     }
