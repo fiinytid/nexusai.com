@@ -1,5 +1,13 @@
 {
   "dependencies": {
-    "ws": "^8.20.0"
+    "@supabase/supabase-js": "^2.43.0",
+    "@vercel/kv": "^1.0.1",
+    "@vercel/edge-config": "^1.1.0",
+    "ws": "^8.20.0",
+    "dotenv": "^16.4.5",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "lucide-react": "latest"
   }
 }
